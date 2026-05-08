@@ -104,8 +104,15 @@
     .hashtag-section{padding-left:0}
   }
 </style>
+<style id="auth-splash-style">
+body{visibility:hidden}
+.auth-splash{position:fixed;inset:0;background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);z-index:9999;display:flex;align-items:center;justify-content:center;visibility:visible}
+.auth-splash-spinner{width:40px;height:40px;border:2px solid rgba(212,163,86,0.2);border-top-color:#FAC775;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
 </head>
 <body>
+<div class="auth-splash" id="authSplash"><div class="auth-splash-spinner"></div></div>
 
 <header class="main-header">
   <div class="header-inner">
@@ -428,18 +435,23 @@
 <script src="supabase-config.js"></script>
 <script src="header-dinamico.js"></script>
 <script>
-// Bloquear página si no está logueado
 (function() {
   const checkLogin = setInterval(async () => {
     if (typeof sb !== 'undefined' && sb !== null) {
       clearInterval(checkLogin);
       const { data: { user } } = await sb.auth.getUser();
       if (!user) {
-        window.location.href = 'login.html';
+        window.location.replace('login.html');
+      } else {
+        // Mostrar la página
+        document.getElementById('auth-splash-style').remove();
+        const splash = document.getElementById('authSplash');
+        if (splash) splash.remove();
       }
     }
-  }, 100);
+  }, 50);
 })();
 </script>
+
 </body>
 </html>
