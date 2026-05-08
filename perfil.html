@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1A0A12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Milena">
+<title>Mi perfil · Milena Machado</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* Hero del perfil */
+  .profile-hero{padding:50px 32px 32px;text-align:center;position:relative;overflow:hidden;max-width:780px;margin:0 auto}
+  .profile-glow-1{position:absolute;width:400px;height:400px;left:-100px;top:-100px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.25),transparent 65%);pointer-events:none}
+  .profile-glow-2{position:absolute;width:340px;height:340px;right:-80px;top:-60px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.22),transparent 70%);pointer-events:none}
+
+  .profile-content{position:relative}
+  .profile-avatar-wrap{position:relative;display:inline-block;margin-bottom:18px}
+  .profile-avatar{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#B8294A,#E8B8C4);border:2.5px solid rgba(212,163,86,0.6);box-shadow:0 12px 32px rgba(212,163,86,0.25)}
+  .rank-badge{position:absolute;right:0;bottom:0;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#FAC775,#D4A356);border:3px solid #1A0A12;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(212,163,86,0.4)}
+
+  .profile-name{font-size:32px;font-weight:500;margin:0 0 6px;letter-spacing:-0.02em}
+  .profile-level{font-size:11px;letter-spacing:0.18em;color:#FAC775;font-weight:500;margin-bottom:18px}
+
+  .level-bar{max-width:380px;margin:0 auto 6px;height:8px;background:rgba(255,245,240,0.08);border-radius:4px;overflow:hidden}
+  .level-fill{width:71%;height:100%;background:linear-gradient(90deg,#B8294A,#FAC775,#D4A356);border-radius:4px;box-shadow:0 0 12px rgba(212,163,86,0.4)}
+  .level-progress-text{font-size:11.5px;color:rgba(255,245,240,0.6)}
+  .level-progress-text strong{color:#FAC775}
+
+  /* Stats grid */
+  .stats-grid{max-width:780px;margin:32px auto;padding:0 32px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .stat-card{padding:18px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:13px;text-align:center;transition:all 0.25s}
+  .stat-card:hover{transform:translateY(-2px);border-color:rgba(212,163,86,0.3)}
+  .stat-num{font-size:26px;font-weight:500;font-family:Georgia,serif;letter-spacing:-0.02em;margin-bottom:4px}
+  .stat-num.gold{color:#FAC775}
+  .stat-num.rose{color:#E8B8C4}
+  .stat-label{font-size:9.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.55);font-weight:500}
+
+  /* Filtros */
+  .insignias-section{max-width:1280px;margin:0 auto;padding:24px 32px 50px}
+  .insignias-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:14px}
+  .insignias-title{font-size:22px;font-weight:500;font-family:Georgia,serif}
+  .insignia-filters{display:flex;gap:6px;flex-wrap:wrap}
+
+  .insignias-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+
+  /* Insignia card */
+  .insignia{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:13px;padding:18px 14px;text-align:center;cursor:pointer;transition:all 0.4s cubic-bezier(0.34,1.4,0.64,1);position:relative;overflow:hidden}
+  .insignia:hover{transform:translateY(-3px);border-color:rgba(212,163,86,0.35);box-shadow:0 14px 32px rgba(0,0,0,0.4)}
+  .insignia.locked{opacity:0.45}
+  .insignia.locked:hover{opacity:0.65}
+
+  .hexagon{width:80px;height:80px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;-webkit-clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);position:relative;font-size:32px}
+  .hex-silver{background:linear-gradient(135deg,#E8B8C4,#C97990,#7A1B2E)}
+  .hex-gold{background:linear-gradient(135deg,#FAC775,#D4A356,#B88A35);box-shadow:0 0 24px rgba(212,163,86,0.3)}
+  .hex-diamond{background:linear-gradient(135deg,#E8B8C4,#FAC775,#9FE1CB,#B8294A);box-shadow:0 0 28px rgba(232,184,196,0.4)}
+  .hex-locked{background:rgba(255,245,240,0.06);border:0.5px dashed rgba(255,245,240,0.2)}
+  .hex-emerald{background:linear-gradient(135deg,#9FE1CB,#5DCAA5,#1A6B4A)}
+
+  .insignia-name{font-size:13px;font-weight:500;margin-bottom:4px;font-family:Georgia,serif;font-style:italic}
+  .insignia-desc{font-size:10.5px;color:rgba(255,245,240,0.55);line-height:1.4;margin-bottom:6px}
+  .insignia-rarity{font-size:9px;letter-spacing:0.18em;font-weight:500}
+  .rarity-common{color:rgba(255,245,240,0.5)}
+  .rarity-rare{color:#E8B8C4}
+  .rarity-epic{color:#FAC775}
+  .rarity-legendary{background:linear-gradient(95deg,#FAC775,#E8B8C4,#9FE1CB,#FAC775);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  @media (max-width:768px){
+    .profile-hero{padding:30px 16px 24px}
+    .profile-name{font-size:26px}
+    .stats-grid{grid-template-columns:repeat(2,1fr);padding:0 16px;margin:20px auto}
+    .insignias-section{padding:20px 16px 30px}
+    .insignias-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+    .insignia{padding:14px 10px}
+    .hexagon{width:64px;height:64px;font-size:24px}
+  }
+</style>
+</head>
+<body>
+
+<header class="main-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">M</div>
+      <div class="logo-text">MILENA<br>MACHADO</div>
+    </a>
+    <a href="index.html" class="nav-btn">INICIO</a>
+    <a href="cursos.html" class="nav-btn">CURSOS</a>
+    <a href="blog.html" class="nav-btn">BLOG</a>
+    <a href="comunidad.html" class="nav-btn">COMUNIDAD</a>
+    <div style="margin-left:auto"><a href="login.html" class="btn-outline">MI PERFIL</a></div>
+  </div>
+</header>
+
+<!-- Hero del perfil -->
+<section class="profile-hero">
+  <div class="profile-glow-1"></div>
+  <div class="profile-glow-2"></div>
+  <div class="profile-content">
+    <div class="profile-avatar-wrap">
+      <div class="profile-avatar"></div>
+      <div class="rank-badge">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#3D1208"><path d="M6 3h12l4 6-10 13L2 9z"/></svg>
+      </div>
+    </div>
+    <h1 class="profile-name serif">Carolina <span class="serif-it gradtext" style="font-size:32px">Saldívar</span></h1>
+    <div class="profile-level">💎 NIVEL 4 · BRILLANTE</div>
+    <div class="level-bar">
+      <div class="level-fill"></div>
+    </div>
+    <p class="level-progress-text"><strong>2.840</strong> / 4.000 💎 hasta NIVEL 5 · MILLONARIA</p>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-num gold">12</div>
+    <div class="stat-label">INSIGNIAS</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">5</div>
+    <div class="stat-label">CURSOS</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">87</div>
+    <div class="stat-label">POSTS</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num rose">2.840</div>
+    <div class="stat-label">💎 DIAMANTES</div>
+  </div>
+</div>
+
+<!-- Insignias -->
+<section class="insignias-section">
+  <div class="insignias-header">
+    <h2 class="insignias-title serif">Mis insignias</h2>
+    <div class="insignia-filters">
+      <span class="chip chip-active">Todas · 17</span>
+      <span class="chip chip-quiet">Conseguidas · 12</span>
+      <span class="chip chip-quiet">Pendientes · 5</span>
+    </div>
+  </div>
+
+  <div class="insignias-grid">
+
+    <!-- Bienvenida -->
+    <div class="insignia">
+      <div class="hexagon hex-silver">👋</div>
+      <div class="insignia-name">Bienvenida</div>
+      <div class="insignia-desc">Te uniste a CMM</div>
+      <div class="insignia-rarity rarity-common">COMÚN</div>
+    </div>
+
+    <!-- Primer curso -->
+    <div class="insignia">
+      <div class="hexagon hex-silver">🎓</div>
+      <div class="insignia-name">Primer curso</div>
+      <div class="insignia-desc">Completaste un curso</div>
+      <div class="insignia-rarity rarity-common">COMÚN</div>
+    </div>
+
+    <!-- Mente CMM (diamante) -->
+    <div class="insignia">
+      <div class="hexagon hex-diamond">💎</div>
+      <div class="insignia-name">Mente CMM</div>
+      <div class="insignia-desc">Terminaste el curso principal</div>
+      <div class="insignia-rarity rarity-legendary">LEGENDARIA</div>
+    </div>
+
+    <!-- Story Pro -->
+    <div class="insignia">
+      <div class="hexagon hex-gold">📱</div>
+      <div class="insignia-name">Story Pro</div>
+      <div class="insignia-desc">Stories que venden + curso</div>
+      <div class="insignia-rarity rarity-epic">ÉPICA</div>
+    </div>
+
+    <!-- Certificada -->
+    <div class="insignia">
+      <div class="hexagon hex-gold">🏆</div>
+      <div class="insignia-name">Certificada</div>
+      <div class="insignia-desc">Certificación SM aprobada</div>
+      <div class="insignia-rarity rarity-epic">ÉPICA</div>
+    </div>
+
+    <!-- Primer post -->
+    <div class="insignia">
+      <div class="hexagon hex-silver">✏️</div>
+      <div class="insignia-name">Primer post</div>
+      <div class="insignia-desc">Posteaste en la comunidad</div>
+      <div class="insignia-rarity rarity-common">COMÚN</div>
+    </div>
+
+    <!-- Conversadora -->
+    <div class="insignia">
+      <div class="hexagon hex-silver">💬</div>
+      <div class="insignia-name">Conversadora</div>
+      <div class="insignia-desc">50 comentarios útiles</div>
+      <div class="insignia-rarity rarity-rare">RARA</div>
+    </div>
+
+    <!-- Creadora -->
+    <div class="insignia">
+      <div class="hexagon hex-gold">✨</div>
+      <div class="insignia-name">Creadora</div>
+      <div class="insignia-desc">50 posts en la comunidad</div>
+      <div class="insignia-rarity rarity-epic">ÉPICA</div>
+    </div>
+
+    <!-- Top voz (locked) -->
+    <div class="insignia locked">
+      <div class="hexagon hex-locked">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.4)" stroke-width="1.6" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      </div>
+      <div class="insignia-name">Top voz</div>
+      <div class="insignia-desc">100 me gusta en un post</div>
+      <div class="insignia-rarity rarity-epic">ÉPICA</div>
+    </div>
+
+    <!-- Mentora (locked) -->
+    <div class="insignia locked">
+      <div class="hexagon hex-locked">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.4)" stroke-width="1.6" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      </div>
+      <div class="insignia-name">Mentora</div>
+      <div class="insignia-desc">Ayudaste a 10 alumnas</div>
+      <div class="insignia-rarity rarity-rare">RARA</div>
+    </div>
+
+    <!-- Primer cliente (emerald off-palette) -->
+    <div class="insignia">
+      <div class="hexagon hex-emerald">💰</div>
+      <div class="insignia-name">Primer cliente</div>
+      <div class="insignia-desc">Cerraste tu primer venta</div>
+      <div class="insignia-rarity rarity-rare">RARA</div>
+    </div>
+
+    <!-- Constancia -->
+    <div class="insignia">
+      <div class="hexagon hex-silver">🔥</div>
+      <div class="insignia-name">Constancia</div>
+      <div class="insignia-desc">30 días seguidos en CMM</div>
+      <div class="insignia-rarity rarity-rare">RARA</div>
+    </div>
+
+    <!-- Diamante (locked premium) -->
+    <div class="insignia locked">
+      <div class="hexagon hex-locked">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.4)" stroke-width="1.6" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      </div>
+      <div class="insignia-name">Diamante</div>
+      <div class="insignia-desc">Facturaste Gs 100M</div>
+      <div class="insignia-rarity rarity-legendary">LEGENDARIA</div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="main-footer">
+  Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
+</footer>
+
+
+</body>
+</html>

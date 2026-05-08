@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creando Mentes Millonarias · Milena Machado</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .breadcrumb-bar{padding:18px 32px;max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:16px}
+  .back-circle{width:38px;height:38px;border-radius:50%;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.15);color:#FFF5F0;display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;transition:all 0.25s}
+  .back-circle:hover{background:rgba(255,245,240,0.1);transform:translateX(-2px)}
+  .breadcrumb-meta{font-size:10px;letter-spacing:0.18em;color:rgba(255,245,240,0.5);margin-bottom:2px}
+  .breadcrumb-title{font-size:24px;font-weight:500;margin:0;font-family:Georgia,serif;font-style:italic}
+
+  .course-layout{max-width:1280px;margin:0 auto;padding:0 32px 50px;display:grid;grid-template-columns:340px 1fr;gap:24px}
+
+  .course-poster{aspect-ratio:2/3;border-radius:12px;background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%);position:relative;overflow:hidden;border:0.5px solid rgba(255,245,240,0.15)}
+  .course-poster .glow1{position:absolute;width:140px;height:140px;left:-30px;top:-30px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)}
+  .course-poster .glow2{position:absolute;width:120px;height:120px;right:-30px;bottom:-30px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)}
+  .course-poster .silhouette{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:55%;aspect-ratio:1/1.3;background:radial-gradient(ellipse 50% 60% at 50% 35%,rgba(255,245,240,0.08),transparent 60%),radial-gradient(ellipse 40% 50% at 50% 70%,rgba(255,245,240,0.05),transparent 65%);opacity:0.35}
+  .course-poster .scrim{position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 50%,rgba(14,5,9,0.55) 0%,rgba(14,5,9,0.85) 100%)}
+  .course-poster-content{position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);text-align:center}
+  .course-poster-tag{font-size:11.5px;letter-spacing:0.22em;color:rgba(255,245,240,0.85);font-weight:600;margin-bottom:14px}
+  .course-poster-title{font-size:30px;line-height:1.1;font-weight:500;font-family:Georgia,serif;font-style:italic;letter-spacing:-0.015em}
+  .course-poster-bottom{position:absolute;left:24px;right:24px;bottom:20px;text-align:center;font-size:12px;color:rgba(255,245,240,0.7);letter-spacing:0.08em}
+
+  .course-cta{width:100%;margin-top:16px;padding:16px;font-size:13px;font-weight:500;border-radius:12px;letter-spacing:0.18em;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none}
+
+  .course-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .action-btn{padding:11px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:10px;color:#FFF5F0;font-size:11px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.25s}
+  .action-btn:hover{background:rgba(255,245,240,0.08)}
+
+  .progress-card{margin-top:18px;padding:14px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:11px}
+  .progress-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .progress-label{font-size:10.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.55);font-weight:500}
+  .progress-amt{font-size:11px;color:#FAC775;font-weight:500}
+  .progress-track{height:6px;background:rgba(255,245,240,0.08);border-radius:3px;overflow:hidden}
+  .progress-fill-multi{width:58%;height:100%;background:linear-gradient(90deg,#B8294A,#FAC775,#D4A356);border-radius:3px}
+
+  /* Aulas */
+  .aulas-card{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:14px;padding:20px;height:fit-content}
+  .aulas-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-bottom:14px;border-bottom:0.5px solid rgba(255,245,240,0.08)}
+  .aulas-title{font-size:17px;font-weight:500;margin:0 0 4px;font-family:Georgia,serif}
+  .aulas-count{font-size:11.5px;color:rgba(255,245,240,0.55)}
+
+  .lesson{display:flex;align-items:center;gap:14px;padding:10px 8px;border-radius:9px;background:rgba(255,245,240,0.02);margin-bottom:6px;cursor:pointer;text-decoration:none;color:inherit;transition:background 0.2s}
+  .lesson:hover{background:rgba(255,245,240,0.05)}
+  .lesson.current{background:linear-gradient(90deg,rgba(212,163,86,0.12),rgba(212,163,86,0.04));border:0.5px solid rgba(212,163,86,0.4);padding:12px 10px}
+
+  .lesson-thumb{width:64px;height:42px;border-radius:6px;position:relative;flex-shrink:0;overflow:hidden}
+  .lesson-thumb-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4),transparent)}
+  .lesson-status{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .status-done{width:18px;height:18px;background:rgba(93,202,165,0.85)}
+  .status-current{width:22px;height:22px;background:#FAC775}
+
+  .lesson-info{flex:1}
+  .lesson-tag-row{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+  .lesson-current-tag{font-size:9px;letter-spacing:0.14em;color:#FAC775;font-weight:500}
+  .lesson-title-text{font-size:13px;font-weight:500}
+  .lesson-title-text.done{color:rgba(255,245,240,0.65);text-decoration:line-through;text-decoration-color:rgba(255,245,240,0.3)}
+  .lesson-meta{display:flex;align-items:center;gap:6px;margin-top:3px;font-size:10.5px;color:rgba(255,245,240,0.45)}
+  .lesson-meta.done{color:rgba(255,245,240,0.45)}
+  .lesson-meta.current{color:rgba(255,245,240,0.7)}
+
+  @media (max-width:900px){
+    .breadcrumb-bar{padding:14px 16px}
+    .breadcrumb-title{font-size:18px}
+    .course-layout{grid-template-columns:1fr;padding:0 16px 30px;gap:18px}
+    .course-poster{max-width:280px;margin:0 auto}
+  }
+</style>
+</head>
+<body>
+
+<header class="main-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">M</div>
+      <div class="logo-text">MILENA<br>MACHADO</div>
+    </a>
+    <a href="index.html" class="nav-btn">INICIO</a>
+    <a href="cursos.html" class="nav-btn active">CURSOS</a>
+    <a href="blog.html" class="nav-btn">BLOG</a>
+    <a href="comunidad.html" class="nav-btn">COMUNIDAD</a>
+    <div style="margin-left:auto"><a href="login.html" class="btn-outline">ENTRAR</a></div>
+  </div>
+</header>
+
+<div class="breadcrumb-bar">
+  <a href="cursos.html" class="back-circle">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </a>
+  <div>
+    <div class="breadcrumb-meta">FORMACIÓN PRINCIPAL</div>
+    <h2 class="breadcrumb-title">Creando Mentes Millonarias</h2>
+  </div>
+</div>
+
+<div class="course-layout">
+
+  <!-- Columna izquierda: poster + acciones -->
+  <div>
+    <div class="course-poster">
+      <div class="glow1"></div>
+      <div class="glow2"></div>
+      <div class="silhouette"></div>
+      <div class="scrim"></div>
+      <div class="course-poster-content">
+        <div class="course-poster-tag">CLASE 8 · 12 MÓDULOS</div>
+        <div class="course-poster-title">Embudos<br>que escalan</div>
+      </div>
+      <div class="course-poster-bottom">FORMACIÓN PRINCIPAL</div>
+    </div>
+
+    <a href="clase.html" class="cta-gold course-cta">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#3D1208"><path d="M8 5v14l11-7z"/></svg>
+      CONTINUAR APRENDIENDO
+    </a>
+
+    <div class="course-actions">
+      <button class="action-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/></svg>
+        Sobre
+      </button>
+      <button class="action-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg>
+        Favoritar
+      </button>
+    </div>
+
+    <div class="progress-card">
+      <div class="progress-row">
+        <span class="progress-label">PROGRESO</span>
+        <span class="progress-amt">7 de 12 clases</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill-multi"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Columna derecha: lista de aulas -->
+  <div class="aulas-card">
+    <div class="aulas-header">
+      <div>
+        <h3 class="aulas-title">Información General</h3>
+        <span class="aulas-count">Total de clases (7 de 12)</span>
+      </div>
+    </div>
+
+    <!-- AULA COMPLETADA -->
+    <a href="clase.html" class="lesson">
+      <div class="lesson-thumb" style="background:linear-gradient(135deg,#7A1B2E,#B8294A)">
+        <div class="lesson-thumb-overlay"></div>
+        <div class="lesson-status status-done">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1A0A12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+      </div>
+      <div class="lesson-info">
+        <div class="lesson-title-text done">Bienvenida al curso</div>
+        <div class="lesson-meta done">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><polyline points="14 2 14 8 20 8" stroke-linejoin="round"/><path d="M20 13V8L14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+          Contenido · 4 min
+        </div>
+      </div>
+    </a>
+
+    <!-- AULA ACTUAL -->
+    <a href="clase.html" class="lesson current">
+      <div class="lesson-thumb" style="background:linear-gradient(135deg,#4A0F1E,#7A1B2E)">
+        <div class="lesson-status status-current">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="#3D1208"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+      <div class="lesson-info">
+        <div class="lesson-tag-row">
+          <span class="lesson-current-tag">EN CURSO</span>
+          <span style="width:4px;height:4px;border-radius:50%;background:#FAC775"></span>
+        </div>
+        <div class="lesson-title-text">Embudos que escalan</div>
+        <div class="lesson-meta current">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.6)" stroke-width="1.7"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          Video · 18 min
+        </div>
+      </div>
+    </a>
+
+    <!-- AULA PENDIENTE -->
+    <a href="clase.html" class="lesson">
+      <div class="lesson-thumb" style="background:linear-gradient(135deg,#3D1208,#7A1B2E)">
+        <div class="lesson-thumb-overlay"></div>
+      </div>
+      <div class="lesson-info">
+        <div class="lesson-title-text">Métricas que importan</div>
+        <div class="lesson-meta">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          Video · 24 min
+        </div>
+      </div>
+    </a>
+
+    <!-- AULA TIPO ENLACE -->
+    <a href="#" class="lesson">
+      <div class="lesson-thumb" style="background:linear-gradient(135deg,#2D0A18,#4A0F1E);display:flex;align-items:center;justify-content:center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8B8C4" stroke-width="1.7"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" stroke-linecap="round"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" stroke-linecap="round"/></svg>
+      </div>
+      <div class="lesson-info">
+        <div class="lesson-title-text">Plantillas descargables</div>
+        <div class="lesson-meta">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" stroke-linecap="round"/></svg>
+          Recurso · enlace externo
+        </div>
+      </div>
+    </a>
+
+    <!-- AULA TAREA -->
+    <a href="#" class="lesson">
+      <div class="lesson-thumb" style="background:linear-gradient(135deg,#3D1208,#5A0F2A);display:flex;align-items:center;justify-content:center">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#E8B8C4" stroke-width="1.7"><path d="M9 11l3 3L22 4" stroke-linecap="round"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke-linecap="round"/></svg>
+      </div>
+      <div class="lesson-info">
+        <div class="lesson-title-text">Tarea: Diseñá tu primer embudo</div>
+        <div class="lesson-meta">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><path d="M9 11l3 3L22 4" stroke-linecap="round"/></svg>
+          Tarea · entregable
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<footer class="main-footer">
+  Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cursos · Milena Machado</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .page-hero{padding:50px 32px 30px;text-align:center;position:relative;overflow:hidden}
+  .page-hero-glow-1{position:absolute;width:400px;height:400px;left:-100px;top:-100px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.25),transparent 65%)}
+  .page-hero-glow-2{position:absolute;width:340px;height:340px;right:-80px;top:-60px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.22),transparent 70%)}
+  .page-hero-content{position:relative;max-width:680px;margin:0 auto}
+  .page-badge{display:inline-block;padding:6px 14px;background:rgba(212,163,86,0.12);border:0.5px solid rgba(212,163,86,0.4);border-radius:20px;font-size:11.5px;letter-spacing:0.2em;color:#FAC775;font-weight:500;margin-bottom:18px}
+  .page-title{font-size:58px;line-height:1.05;font-weight:500;margin:0 0 14px}
+  .page-subtitle{font-size:17px;color:rgba(255,245,240,0.75);line-height:1.5;max-width:520px;margin:0 auto}
+
+  section.courses-section{max-width:1280px;padding:30px 32px;margin:0 auto}
+  .section-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px}
+  .courses-section h2{font-size:28px;font-weight:500;margin:0 0 22px}
+
+  /* CARD MÁS GRANDE Y CHAMATIVO */
+  .poster-card{aspect-ratio:3/4;cursor:pointer;position:relative}
+  .poster-card-inner{
+    padding:28px 22px;
+    display:flex;flex-direction:column;
+    justify-content:center;align-items:center;
+    height:100%;box-sizing:border-box;
+    position:relative;text-align:center;
+  }
+
+  /* Degradado para destacar texto */
+  .text-shadow-overlay{
+    position:absolute;inset:0;
+    background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(14,5,9,0.55) 0%,rgba(14,5,9,0.7) 70%,rgba(14,5,9,0.4) 100%);
+    pointer-events:none;
+  }
+
+  /* Comprado */
+  .check-icon{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:rgba(93,202,165,0.2);backdrop-filter:blur(10px);border:0.5px solid rgba(93,202,165,0.5);display:flex;align-items:center;justify-content:center;z-index:10}
+  .progress-track{width:100%;height:5px;background:rgba(255,245,240,0.15);border-radius:3px;overflow:hidden;margin-top:16px}
+  .progress-fill{height:100%;background:linear-gradient(90deg,#FAC775,#D4A356);border-radius:3px}
+
+  /* Bloqueado */
+  .lock-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,5,9,0.4) 0%,rgba(14,5,9,0.65) 100%);backdrop-filter:blur(1px);pointer-events:none}
+  .price-badge{position:absolute;top:14px;right:14px;padding:7px 12px;background:rgba(212,163,86,0.18);backdrop-filter:blur(12px);border:0.5px solid rgba(212,163,86,0.55);border-radius:9px;font-size:12px;color:#FAC775;font-weight:600;letter-spacing:0.04em;display:flex;align-items:center;gap:6px;z-index:10}
+  .unlock-btn{margin-top:18px;padding:11px 24px;background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208;font-size:12px;font-weight:600;border-radius:24px;text-align:center;letter-spacing:0.14em;transition:all 0.25s;display:inline-block;border:none;font-family:inherit;cursor:pointer}
+  .unlock-btn:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 8px 20px rgba(212,163,86,0.4)}
+
+  /* Texto del card */
+  .poster-cat{position:relative;font-size:11px;letter-spacing:0.22em;color:rgba(255,245,240,0.85);font-weight:600;margin-bottom:14px;text-align:center}
+  .poster-cat.gold{color:#FAC775}
+  .poster-cat.live{color:#FF8090}
+  .poster-cat.exclusive{color:#E8B8C4}
+  .poster-cat.green{color:#9FE1CB}
+  .poster-title{position:relative;font-family:Georgia,serif;font-style:italic;font-size:24px;line-height:1.15;font-weight:500;letter-spacing:-0.015em;text-align:center;margin-bottom:12px}
+  .poster-meta{position:relative;font-size:13px;color:rgba(255,245,240,0.7);text-align:center;display:flex;align-items:center;justify-content:center;gap:7px}
+  .meta-dot{width:5px;height:5px;border-radius:50%;display:inline-block}
+  .progress-text{position:relative;font-size:11.5px;color:rgba(255,245,240,0.65);margin-top:8px;text-align:center;letter-spacing:0.04em}
+
+  /* Plan upsell */
+  .plan-card{margin-top:42px;padding:28px 32px;background:rgba(212,163,86,0.06);border:0.5px solid rgba(212,163,86,0.25);border-radius:18px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .plan-icon{width:60px;height:60px;border-radius:50%;background:rgba(212,163,86,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .plan-content{flex:1;min-width:280px}
+  .plan-title{font-size:20px;color:#FAC775;margin-bottom:6px;font-style:italic;font-family:Georgia,serif;font-weight:500}
+  .plan-desc{font-size:15px;color:rgba(255,245,240,0.78);line-height:1.5}
+  .plan-cta{padding:14px 28px;font-size:13px;font-weight:500;border-radius:12px;letter-spacing:0.12em;flex-shrink:0}
+
+  @media (max-width:900px){
+    .page-hero{padding:30px 16px 20px}
+    .page-title{font-size:38px}
+    .page-subtitle{font-size:14px}
+    section.courses-section{padding:20px 16px}
+    .section-row{grid-template-columns:repeat(2,1fr);gap:12px}
+    .poster-title{font-size:18px}
+    .poster-cat{font-size:9px}
+    .poster-meta{font-size:11px}
+    .courses-section h2{font-size:22px}
+    .plan-card{padding:22px;flex-direction:column;text-align:center}
+  }
+  @media (max-width:520px){
+    .section-row{grid-template-columns:1fr;gap:14px}
+    .poster-title{font-size:24px}
+  }
+</style>
+</head>
+<body>
+
+<header class="main-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">M</div>
+      <div class="logo-text">MILENA<br>MACHADO</div>
+    </a>
+    <a href="index.html" class="nav-btn">INICIO</a>
+    <a href="cursos.html" class="nav-btn active">CURSOS</a>
+    <a href="blog.html" class="nav-btn">BLOG</a>
+    <a href="comunidad.html" class="nav-btn">COMUNIDAD</a>
+    <div style="margin-left:auto"><a href="login.html" class="btn-outline">ENTRAR</a></div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="page-hero-glow-1"></div>
+  <div class="page-hero-glow-2"></div>
+  <div class="page-hero-content">
+    <span class="page-badge">CATÁLOGO COMPLETO</span>
+    <h1 class="page-title serif">Todos los <span class="serif-it gradtext" style="font-size:58px">cursos</span></h1>
+    <p class="page-subtitle">Elegí dónde empezar. Cada curso está diseñado para resultados concretos en tu negocio.</p>
+  </div>
+</section>
+
+<section class="courses-section">
+  <h2 class="serif">Marketing Digital</h2>
+  <div class="section-row">
+
+    <!-- COMPRADO -->
+    <a href="curso-detalle.html" class="poster-hover poster-card">
+      <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)">
+        <div style="position:absolute;width:160px;height:160px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>
+        <div style="position:absolute;width:140px;height:140px;right:-30px;bottom:-30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)"></div>
+        <div class="text-shadow-overlay"></div>
+        <div class="check-icon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <div class="poster-card-inner">
+          <div class="poster-cat">FORMACIÓN</div>
+          <div class="poster-title">Creando Mentes<br>Millonarias</div>
+          <div class="poster-meta">
+            <span class="meta-dot" style="background:#5DCAA5"></span>
+            12 mód · 8 h
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width:65%"></div>
+          </div>
+          <div class="progress-text">65% completado</div>
+        </div>
+      </div>
+    </a>
+
+    <!-- BLOQUEADO -->
+    <a href="checkout.html" class="poster-hover poster-card">
+      <div class="poster-shadow" style="background:linear-gradient(160deg,#5A0F2A 0%,#8B2244 50%,#2D0A18 100%)">
+        <div style="position:absolute;width:160px;height:160px;right:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.5),transparent 70%)"></div>
+        <div class="lock-overlay"></div>
+        <div class="text-shadow-overlay"></div>
+        <div class="price-badge">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          Gs 480.000
+        </div>
+        <div class="poster-card-inner">
+          <div class="poster-cat">CONTENIDO</div>
+          <div class="poster-title">Stories que<br>venden</div>
+          <div class="poster-meta">
+            <span class="meta-dot" style="background:#5DCAA5"></span>
+            8 mód · 5 h
+          </div>
+          <button class="unlock-btn">DESBLOQUEAR</button>
+        </div>
+      </div>
+    </a>
+
+    <!-- BLOQUEADO PREMIUM -->
+    <a href="checkout.html" class="poster-hover poster-card">
+      <div class="poster-shadow" style="background:linear-gradient(160deg,#4A0F1E 0%,#7A1B2E 50%,#3D1208 100%)">
+        <div style="position:absolute;width:160px;height:160px;left:-30px;bottom:-30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(212,163,86,0.5),transparent 70%)"></div>
+        <div class="lock-overlay"></div>
+        <div class="text-shadow-overlay"></div>
+        <div class="price-badge">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="#FAC775"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
+          Gs 1.200.000
+        </div>
+        <div class="poster-card-inner">
+          <div class="poster-cat gold">PREMIUM · CERTIFICADO</div>
+          <div class="poster-title">Certificación<br>Social Media</div>
+          <div class="poster-meta">
+            <span class="meta-dot" style="background:#D4A356"></span>
+            24 h · oficial
+          </div>
+          <button class="unlock-btn">DESBLOQUEAR</button>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <h2 class="serif" style="margin-top:32px">Acompañá más</h2>
+  <div class="section-row">
+    <a href="#" class="poster-hover poster-card">
+      <div class="poster-shadow" style="background:linear-gradient(160deg,#3D0A1A 0%,#7A1B2E 60%,#1A0509 100%)">
+        <div style="position:absolute;width:160px;height:160px;right:-25px;top:-15px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(255,59,71,0.5),transparent 70%)"></div>
+        <div class="text-shadow-overlay"></div>
+        <div class="check-icon" style="background:rgba(255,59,71,0.15);border-color:rgba(255,59,71,0.5)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF3B47"><path d="M22 8.4c0-2-1.5-3.6-3.5-3.8C16 4.4 13 4.3 12 4.3s-4 .1-6.5.3C3.5 4.8 2 6.4 2 8.4c-.2 1.5-.2 3 0 4.5 0 2 1.5 3.6 3.5 3.8 2.5.2 5.5.3 6.5.3s4-.1 6.5-.3c2-.2 3.5-1.8 3.5-3.8.2-1.5.2-3 0-4.5zM10 14.5v-7l6 3.5z"/></svg>
+        </div>
+        <div class="poster-card-inner">
+          <div class="poster-cat live">CANAL</div>
+          <div class="poster-title">YouTube<br>de Milena</div>
+          <div class="poster-meta">
+            <span class="meta-dot" style="background:#FF3B47"></span>
+            cada semana
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="poster-hover poster-card">
+      <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#3D1208 100%)">
+        <div class="lock-overlay"></div>
+        <div class="text-shadow-overlay"></div>
+        <div class="price-badge" style="background:rgba(232,184,196,0.15);border-color:rgba(232,184,196,0.4);color:#E8B8C4">
+          INCLUIDO EN PLAN
+        </div>
+        <div class="poster-card-inner">
+          <div class="poster-cat exclusive">EXCLUSIVO</div>
+          <div class="poster-title">Club del<br>Libro</div>
+          <div class="poster-meta">
+            <span class="meta-dot" style="background:#5DCAA5"></span>
+            1 libro al mes
+          </div>
+          <button class="unlock-btn">VER PLAN ANUAL</button>
+        </div>
+      </div>
+    </a>
+
+    <a href="blog.html" class="poster-hover poster-card">
+      <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#5A0F2A 50%,#1A0509 100%)">
+        <div style="position:absolute;width:160px;height:160px;right:-25px;top:-15px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.45),transparent 70%)"></div>
+        <div class="text-shadow-overlay"></div>
+        <div class="check-icon" style="background:rgba(93,202,165,0.18);border-color:rgba(93,202,165,0.5)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9FE1CB" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="poster-card-inner">
+          <div class="poster-cat green">GRATIS · LECTURAS</div>
+          <div class="poster-title">Blog · Ideas<br>que venden</div>
+          <div class="poster-meta">
+            <span class="meta-dot" style="background:#5DCAA5"></span>
+            artículos nuevos
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Plan upsell -->
+  <div class="plan-card">
+    <div class="plan-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/></svg>
+    </div>
+    <div class="plan-content">
+      <div class="plan-title">¿Querés acceso a todo?</div>
+      <div class="plan-desc">Suscribite al <strong style="color:#FFF5F0">Plan Anual CMM</strong> y desbloqueá todos los cursos + comunidad por <strong style="color:#FAC775">Gs 1.500.000/año</strong> (ahorrás 60%).</div>
+    </div>
+    <a href="checkout.html"><button class="cta-gold plan-cta">VER PLAN ANUAL</button></a>
+  </div>
+</section>
+
+<footer class="main-footer">
+  Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
+</footer>
+
+</body>
+</html>

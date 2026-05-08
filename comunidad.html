@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comunidad · Milena Machado</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .page-hero{padding:40px 32px 24px;text-align:center;position:relative;overflow:hidden}
+  .page-hero-glow-1{position:absolute;width:400px;height:400px;left:-100px;top:-100px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.25),transparent 65%);pointer-events:none}
+  .page-hero-glow-2{position:absolute;width:340px;height:340px;right:-80px;top:-60px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.22),transparent 70%);pointer-events:none}
+  .page-hero-content{position:relative;max-width:680px;margin:0 auto}
+  .page-badge{display:inline-block;padding:6px 14px;background:rgba(212,163,86,0.12);border:0.5px solid rgba(212,163,86,0.4);border-radius:20px;font-size:11.5px;letter-spacing:0.2em;color:#FAC775;font-weight:500;margin-bottom:14px}
+  .page-title{font-size:46px;line-height:1.05;font-weight:500;margin:0 0 10px}
+  .page-subtitle{font-size:15.5px;color:rgba(255,245,240,0.7);line-height:1.5}
+
+  .feed-layout{max-width:780px;margin:0 auto;padding:0 32px 50px}
+
+  .filters-bar{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap;padding-bottom:14px;border-bottom:0.5px solid rgba(255,245,240,0.06)}
+  .filters-chips{display:flex;gap:7px;flex-wrap:wrap;flex:1}
+  .search-wrap{position:relative}
+  .search-input{padding:10px 14px 10px 38px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:22px;color:#FFF5F0;font-size:13px;outline:none;width:200px;font-family:inherit}
+  .search-input:focus{border-color:rgba(212,163,86,0.5)}
+
+  /* Composer */
+  .composer{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:14px;padding:18px;margin-bottom:24px}
+  .composer-row{display:flex;gap:12px;align-items:flex-start}
+  .composer-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7A1B2E,#E8B8C4);flex-shrink:0;border:0.5px solid rgba(255,245,240,0.15)}
+  .composer-input{flex:1;padding:14px 16px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:10px;color:#FFF5F0;font-size:14px;outline:none;font-family:inherit;min-height:48px;resize:vertical}
+  .composer-input:focus{border-color:rgba(212,163,86,0.5)}
+
+  /* HASHTAGS clickeables */
+  .hashtag-section{margin-top:14px;padding-left:54px}
+  .hashtag-label{font-size:10.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.5);font-weight:500;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .hashtag-info{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:rgba(255,245,240,0.08);font-size:9px;color:rgba(255,245,240,0.6);cursor:help}
+  .hashtag-chips{display:flex;gap:6px;flex-wrap:wrap}
+  .hashtag-chip{
+    padding:7px 13px;
+    background:rgba(255,245,240,0.04);
+    border:0.5px solid rgba(255,245,240,0.15);
+    border-radius:18px;
+    font-size:12px;
+    color:rgba(255,245,240,0.75);
+    cursor:pointer;
+    transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);
+    font-family:inherit;
+    user-select:none;
+  }
+  .hashtag-chip:hover{transform:translateY(-1px);background:rgba(255,245,240,0.08);color:#FFF5F0}
+  .hashtag-chip.selected{
+    background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.08));
+    border-color:#FAC775;
+    color:#FAC775;
+    box-shadow:0 0 0 0.5px rgba(212,163,86,0.3),0 4px 12px rgba(212,163,86,0.15);
+  }
+
+  .composer-tools{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:0.5px solid rgba(255,245,240,0.06);padding-left:54px;flex-wrap:wrap;gap:10px}
+  .composer-tools-left{display:flex;gap:6px}
+  .tool-btn{padding:8px 12px;background:transparent;border:0.5px solid rgba(255,245,240,0.12);border-radius:8px;color:rgba(255,245,240,0.65);font-size:11.5px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.25s;font-family:inherit}
+  .tool-btn:hover{background:rgba(255,245,240,0.04);color:#FFF5F0}
+  .post-btn{padding:9px 22px;font-size:11.5px;font-weight:500;border-radius:9px;letter-spacing:0.1em}
+  .post-btn:disabled{opacity:0.5;cursor:not-allowed}
+
+  /* Posts */
+  .post{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:14px;padding:18px;margin-bottom:14px;transition:border-color 0.25s}
+  .post:hover{border-color:rgba(255,245,240,0.18)}
+  .post.pinned{border:0.5px solid rgba(212,163,86,0.4);background:linear-gradient(135deg,rgba(212,163,86,0.05),transparent)}
+
+  .post-head{display:flex;align-items:center;gap:11px;margin-bottom:11px}
+  .post-avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;border:0.5px solid rgba(255,245,240,0.15)}
+  .post-avatar.milena{background:linear-gradient(135deg,#B8294A,#E8B8C4);border:1.5px solid #FAC775}
+  .post-author-info{flex:1;min-width:0}
+  .post-author-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .post-author-name{font-size:13.5px;font-weight:500}
+  .pinned-tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(212,163,86,0.15);border:0.5px solid rgba(212,163,86,0.4);border-radius:5px;font-size:9.5px;color:#FAC775;font-weight:500;letter-spacing:0.06em}
+  .post-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,245,240,0.5);margin-top:2px}
+
+  .post-body{font-size:14px;line-height:1.55;color:rgba(255,245,240,0.88);margin:0 0 14px}
+  .hashtag{color:#FAC775;cursor:pointer;font-weight:500}
+  .hashtag:hover{text-decoration:underline}
+
+  .post-image{width:100%;aspect-ratio:16/9;border-radius:10px;position:relative;overflow:hidden;margin-bottom:14px}
+
+  .post-actions{display:flex;align-items:center;gap:8px;padding-top:10px;border-top:0.5px solid rgba(255,245,240,0.06)}
+  .pa-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;background:transparent;border:none;color:rgba(255,245,240,0.65);font-size:12px;cursor:pointer;border-radius:7px;font-family:inherit;transition:all 0.2s}
+  .pa-btn:hover{background:rgba(255,245,240,0.05);color:#FFF5F0}
+  .pa-btn.liked{color:#E8B8C4}
+  .pa-btn.save{margin-left:auto}
+
+  .show-more{width:100%;padding:12px;background:transparent;border:0.5px dashed rgba(255,245,240,0.18);border-radius:9px;color:rgba(255,245,240,0.6);font-size:12px;cursor:pointer;letter-spacing:0.06em;font-family:inherit;transition:all 0.25s}
+  .show-more:hover{background:rgba(255,245,240,0.04);color:#FFF5F0;border-color:rgba(212,163,86,0.4)}
+
+  /* Toast */
+  .toast{position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg,#5DCAA5,#9FE1CB);color:#0E0509;padding:14px 22px;border-radius:11px;font-size:13px;font-weight:500;box-shadow:0 12px 32px rgba(93,202,165,0.4);z-index:2000;display:none;align-items:center;gap:9px;animation:slideUp 0.3s ease-out}
+  .toast.show{display:flex}
+  @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+  @media (max-width:768px){
+    .page-hero{padding:30px 16px 20px}
+    .page-title{font-size:32px}
+    .feed-layout{padding:0 16px 30px}
+    .search-input{width:100%}
+    .composer-tools{padding-left:0}
+    .hashtag-section{padding-left:0}
+  }
+</style>
+</head>
+<body>
+
+<header class="main-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">M</div>
+      <div class="logo-text">MILENA<br>MACHADO</div>
+    </a>
+    <a href="index.html" class="nav-btn">INICIO</a>
+    <a href="cursos.html" class="nav-btn">CURSOS</a>
+    <a href="blog.html" class="nav-btn">BLOG</a>
+    <a href="comunidad.html" class="nav-btn active">COMUNIDAD</a>
+    <div style="margin-left:auto"><a href="login.html" class="btn-outline">ENTRAR</a></div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="page-hero-glow-1"></div>
+  <div class="page-hero-glow-2"></div>
+  <div class="page-hero-content">
+    <span class="page-badge">COMUNIDAD CMM</span>
+    <h1 class="page-title serif">Conectá con quienes <br><span class="serif-it gradtext" style="font-size:46px">ya están vendiendo</span></h1>
+    <p class="page-subtitle">Compartí avances, hacé preguntas, ayudá a otras emprendedoras.</p>
+  </div>
+</section>
+
+<div class="feed-layout">
+
+  <!-- Filtros -->
+  <div class="filters-bar">
+    <div class="filters-chips">
+      <span class="chip chip-active">General</span>
+      <span class="chip chip-quiet">📌 Anuncios</span>
+      <span class="chip chip-quiet">💡 Consejos</span>
+      <span class="chip chip-quiet">🚀 Avances</span>
+      <span class="chip chip-quiet">❓ Preguntas</span>
+      <span class="chip chip-quiet">🏆 Logros</span>
+    </div>
+    <div class="search-wrap">
+      <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" placeholder="#hashtag o palabra"/>
+    </div>
+  </div>
+
+  <!-- COMPOSER con hashtags clickeables -->
+  <div class="composer">
+    <div class="composer-row">
+      <div class="composer-avatar"></div>
+      <textarea class="composer-input" placeholder="¿Qué querés compartir hoy con la comunidad?" id="composerText"></textarea>
+    </div>
+
+    <!-- Hashtags clickeables -->
+    <div class="hashtag-section">
+      <div class="hashtag-label">
+        ETIQUETAS
+        <span class="hashtag-info" title="Elegí 1 o más etiquetas para clasificar tu post">?</span>
+      </div>
+      <div class="hashtag-chips" id="hashtagChips">
+        <!-- Se rellenan con JS desde localStorage -->
+      </div>
+    </div>
+
+    <div class="composer-tools">
+      <div class="composer-tools-left">
+        <button class="tool-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Foto
+        </button>
+        <button class="tool-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          Video
+        </button>
+      </div>
+      <button class="cta-gold post-btn" onclick="publicar()">PUBLICAR</button>
+    </div>
+  </div>
+
+  <!-- Post pineado de Milena -->
+  <div class="post pinned">
+    <div class="post-head">
+      <div class="post-avatar milena"></div>
+      <div class="post-author-info">
+        <div class="post-author-row">
+          <span class="post-author-name">Milena Machado</span>
+          <span class="pinned-tag">📌 FUNDADORA</span>
+          <span class="lvl lvl-6">💎 NIVEL 6 · DIAMANTE</span>
+        </div>
+        <div class="post-meta">
+          <span>hace 2 h</span>
+          <span>·</span>
+          <span>📌 Anuncios</span>
+        </div>
+      </div>
+    </div>
+    <p class="post-body">¡Bienvenidas todas las nuevas! 💎 Esta semana arrancamos un <span class="hashtag">#desafio30dias</span> donde cada día publicamos UN avance concreto. Quien complete los 30 días gana acceso anticipado al nuevo curso. ¿Quién se suma?</p>
+    <div class="post-actions">
+      <button class="pa-btn liked">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="url(#dM)" style="filter:drop-shadow(0 0 3px rgba(232,184,196,0.5))"><defs><linearGradient id="dM" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#B8294A"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
+        347
+      </button>
+      <button class="pa-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        128 comentarios
+      </button>
+      <button class="pa-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Compartir
+      </button>
+      <button class="pa-btn save">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        Guardar
+      </button>
+    </div>
+  </div>
+
+  <!-- Post de alumna con foto -->
+  <div class="post">
+    <div class="post-head">
+      <div class="post-avatar" style="background:linear-gradient(135deg,#7A1B2E,#C97990)"></div>
+      <div class="post-author-info">
+        <div class="post-author-row">
+          <span class="post-author-name">Carolina Saldívar</span>
+          <span class="lvl lvl-4">NIVEL 4 · BRILLANTE</span>
+        </div>
+        <div class="post-meta">
+          <span>hace 5 h</span>
+          <span>·</span>
+          <span>🚀 Avances</span>
+        </div>
+      </div>
+    </div>
+    <p class="post-body">¡FACTURÉ MI PRIMER MILLÓN! 🎉 Hace 6 meses arranqué el curso de CMM sin saber nada. Hoy cerré una venta de Gs 1.200.000 con un cliente que me dijo SÍ a la primera propuesta. <span class="hashtag">#primervimillon</span> <span class="hashtag">#desafio30dias</span></p>
+    <div class="post-image" style="background:linear-gradient(135deg,#2D0A18,#7A1B2E,#1A0509)">
+      <div style="position:absolute;width:240px;height:240px;left:-60px;top:-60px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.5),transparent 65%)"></div>
+      <div style="position:absolute;width:200px;height:200px;right:-50px;bottom:-50px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.45),transparent 65%)"></div>
+      <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:90px">💰</div>
+    </div>
+    <div class="post-actions">
+      <button class="pa-btn liked">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="url(#dC)" style="filter:drop-shadow(0 0 3px rgba(232,184,196,0.5))"><defs><linearGradient id="dC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#B8294A"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
+        184
+      </button>
+      <button class="pa-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        47
+      </button>
+      <button class="pa-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Compartir
+      </button>
+      <button class="pa-btn save">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Post pregunta -->
+  <div class="post">
+    <div class="post-head">
+      <div class="post-avatar" style="background:linear-gradient(135deg,#4A0F1E,#B8294A)"></div>
+      <div class="post-author-info">
+        <div class="post-author-row">
+          <span class="post-author-name">Diego Ramírez</span>
+          <span class="lvl lvl-2">NIVEL 2 · EN CAMINO</span>
+        </div>
+        <div class="post-meta">
+          <span>hace 1 d</span>
+          <span>·</span>
+          <span>❓ Preguntas</span>
+        </div>
+      </div>
+    </div>
+    <p class="post-body">Chicos, una duda con Pagopar: ¿les conviene cobrar en USD o en Gs? Mis clientes son mitad de Paraguay y mitad de Argentina. <span class="hashtag">#pagopar</span> <span class="hashtag">#cobros</span></p>
+    <div class="post-actions">
+      <button class="pa-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="1.7"><path d="M6 3h12l4 6-10 13L2 9z" stroke-linejoin="round"/></svg>
+        12
+      </button>
+      <button class="pa-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        18
+      </button>
+      <button class="pa-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <button class="pa-btn save">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Post consejo -->
+  <div class="post">
+    <div class="post-head">
+      <div class="post-avatar" style="background:linear-gradient(135deg,#D4A356,#E8B8C4)"></div>
+      <div class="post-author-info">
+        <div class="post-author-row">
+          <span class="post-author-name">Patricia Méndez</span>
+          <span class="lvl lvl-5">NIVEL 5 · MILLONARIA</span>
+        </div>
+        <div class="post-meta">
+          <span>hace 2 d</span>
+          <span>·</span>
+          <span>💡 Consejos</span>
+        </div>
+      </div>
+    </div>
+    <p class="post-body">Un tip que me cambió la vida: <strong style="color:#FAC775">DEJÁ de responder DMs a las 23 hs.</strong> Si trabajás 24/7 le enseñás a tus clientes que sos urgente y barata. Si tenés horario claro, te respetan más y cobrás mejor. <span class="hashtag">#mindset</span></p>
+    <div class="post-actions">
+      <button class="pa-btn liked">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="url(#dP)" style="filter:drop-shadow(0 0 3px rgba(232,184,196,0.5))"><defs><linearGradient id="dP" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#B8294A"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
+        96
+      </button>
+      <button class="pa-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        24
+      </button>
+      <button class="pa-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <button class="pa-btn save">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <button class="show-more">CARGAR MÁS POSTS</button>
+
+</div>
+
+<footer class="main-footer">
+  Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E0509" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastText">Post publicado</span>
+</div>
+
+<script>
+  // ============================
+  // HASHTAGS DESDE LOCALSTORAGE
+  // ============================
+  const HASHTAGS_DEFAULT = [
+    'desafio30dias',
+    'mindset',
+    'primervimillon',
+    'pagopar',
+    'cobros',
+    'embudos',
+    'marketing',
+    'ventas',
+    'paraguay',
+    'instagram',
+    'stories',
+    'reels',
+    'comunidad',
+    'leccion'
+  ];
+
+  // Carga hashtags definidos por Milena en admin, o usa defaults
+  let hashtagsDisponibles = JSON.parse(localStorage.getItem('milena_hashtags') || 'null') || HASHTAGS_DEFAULT;
+  let hashtagsSeleccionados = [];
+
+  function renderHashtags(){
+    const container = document.getElementById('hashtagChips');
+    container.innerHTML = hashtagsDisponibles.map(h => `
+      <button class="hashtag-chip" data-tag="${h}" onclick="toggleHashtag(this)" type="button">#${h}</button>
+    `).join('');
+  }
+
+  function toggleHashtag(el){
+    const tag = el.dataset.tag;
+    if(hashtagsSeleccionados.includes(tag)){
+      hashtagsSeleccionados = hashtagsSeleccionados.filter(t => t !== tag);
+      el.classList.remove('selected');
+    } else {
+      hashtagsSeleccionados.push(tag);
+      el.classList.add('selected');
+    }
+  }
+
+  function publicar(){
+    const text = document.getElementById('composerText').value.trim();
+    if(!text){
+      mostrarToast('Escribí algo primero ✏️', false);
+      return;
+    }
+    const hashtagsTexto = hashtagsSeleccionados.length > 0
+      ? ' · con etiquetas: ' + hashtagsSeleccionados.map(h => '#' + h).join(', ')
+      : '';
+    mostrarToast('✓ Publicado' + hashtagsTexto);
+
+    // Limpiar
+    document.getElementById('composerText').value = '';
+    hashtagsSeleccionados = [];
+    document.querySelectorAll('.hashtag-chip.selected').forEach(c => c.classList.remove('selected'));
+  }
+
+  function mostrarToast(msg){
+    const t = document.getElementById('toast');
+    document.getElementById('toastText').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // INIT
+  renderHashtags();
+
+  // Escuchar cambios de hashtags (si Milena los edita en otra pestaña)
+  window.addEventListener('storage', (e) => {
+    if(e.key === 'milena_hashtags'){
+      hashtagsDisponibles = JSON.parse(e.newValue) || HASHTAGS_DEFAULT;
+      hashtagsSeleccionados = [];
+      renderHashtags();
+    }
+  });
+</script>
+
+</body>
+</html>

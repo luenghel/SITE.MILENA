@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Milena Machado · Creando Mentes Millonarias</title>
+<meta name="description" content="Marketing que vende. La guía práctica para escalar tu negocio en Paraguay.">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  html,body{
+    background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);
+    color:#FFF5F0;
+    min-height:100vh;
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    scroll-behavior:smooth;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+  .serif{font-family:Georgia,"Times New Roman",serif;letter-spacing:-0.015em}
+  .serif-it{font-family:Georgia,serif;font-style:italic;font-weight:500}
+  .gradtext{
+    background:linear-gradient(95deg,#B8294A 0%,#E8B8C4 25%,#FAC775 50%,#D4A356 65%,#E8B8C4 85%,#B8294A 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    font-style:italic;font-weight:500;
+  }
+
+  /* HEADER */
+  .main-header{
+    background:rgba(14,5,9,0.85);
+    backdrop-filter:blur(28px) saturate(160%);
+    -webkit-backdrop-filter:blur(28px) saturate(160%);
+    border-bottom:0.5px solid rgba(255,245,240,0.08);
+    padding:18px 32px;
+    position:sticky;top:0;z-index:100;
+  }
+  .header-inner{display:flex;align-items:center;gap:28px;max-width:1400px;margin:0 auto}
+  .logo{display:flex;align-items:center;gap:11px;cursor:pointer;text-decoration:none;color:inherit}
+  .logo-box{width:36px;height:36px;border:0.5px solid rgba(255,245,240,0.55);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-size:18px;font-weight:500}
+  .logo-text{font-size:11px;line-height:1.15;letter-spacing:0.18em;font-weight:500}
+  .nav-btn{padding:10px 18px;color:rgba(255,245,240,0.65);font-size:12px;font-weight:500;letter-spacing:0.1em;background:transparent;border:none;cursor:pointer;transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);text-decoration:none;display:inline-flex;align-items:center;gap:7px;border-radius:24px}
+  .nav-btn:hover{color:#FFF5F0;transform:translateY(-1px)}
+  .nav-btn.active{background:linear-gradient(135deg,rgba(212,163,86,0.18),rgba(212,163,86,0.08));border:0.5px solid rgba(212,163,86,0.5);color:#FAC775}
+
+  .btn-outline{padding:11px 22px;border:0.5px solid rgba(255,245,240,0.55);border-radius:24px;font-size:12px;letter-spacing:0.18em;font-weight:500;background:transparent;color:#FFF5F0;cursor:pointer;transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);text-decoration:none;display:inline-block}
+  .btn-outline:hover{transform:translateY(-2px) scale(1.04);background:rgba(255,245,240,0.08);border-color:rgba(255,245,240,0.85)}
+
+  .cta-gold{
+    background:linear-gradient(135deg,#FAC775 0%,#E8B547 50%,#D4A356 100%);
+    color:#3D1208;
+    box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.5),inset 0 -1.5px 2px rgba(74,15,30,0.18);
+    border:0.5px solid rgba(74,15,30,0.18);
+    transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);
+    cursor:pointer;font-weight:500;
+  }
+  .cta-gold:hover{transform:translateY(-2px) scale(1.03);filter:brightness(1.05);box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.5),inset 0 -1.5px 2px rgba(74,15,30,0.18),0 8px 20px rgba(212,163,86,0.4)}
+
+  .scroll-row{overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-top:30px;padding-bottom:40px;margin-top:-10px;margin-bottom:-40px}
+  .scroll-row::-webkit-scrollbar{display:none}
+
+  .poster-hover{transition:transform 0.4s cubic-bezier(0.34,1.4,0.64,1);will-change:transform;position:relative;z-index:1;cursor:pointer;transform-origin:center center;text-decoration:none;color:inherit;display:block}
+  .poster-hover:hover{transform:scale(1.06);z-index:30}
+  .poster-hover:hover .poster-shadow{box-shadow:0 22px 48px rgba(0,0,0,0.7),0 0 0 0.5px rgba(255,245,240,0.3);border-color:rgba(255,245,240,0.35)}
+  .poster-shadow{border-radius:10px;overflow:hidden;width:100%;height:100%;position:relative;border:0.5px solid rgba(255,245,240,0.12);transition:box-shadow 0.4s ease,border-color 0.4s ease}
+
+  .main-footer{padding:30px 32px 20px;text-align:center;border-top:0.5px solid rgba(255,245,240,0.06);margin-top:40px;font-size:12px;color:rgba(255,245,240,0.5)}
+  .main-footer .heart{color:#FF6B7A}
+
+  /* HERO */
+  .hero{position:relative;overflow:hidden;min-height:640px}
+  .hero-gradient{position:absolute;inset:0;background:linear-gradient(115deg,#4A152A 0%,#2D0A1A 45%,#1A0A12 75%,#0E0509 100%)}
+  .hero-glow-1{position:absolute;width:600px;height:600px;left:-150px;top:-150px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.4) 0%,rgba(232,184,196,0) 65%)}
+  .hero-glow-2{position:absolute;width:500px;height:500px;right:-100px;top:0;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.32) 0%,rgba(212,163,86,0) 70%)}
+  .hero-glow-3{position:absolute;width:420px;height:420px;right:100px;bottom:-80px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.5) 0%,rgba(184,41,74,0) 65%)}
+  .hero-inner{max-width:1400px;padding:80px 40px 60px;margin:0 auto;position:relative;display:flex;align-items:center;gap:60px}
+  .hero-content{flex:1;max-width:720px}
+  .hero-visual{flex:1;height:480px;position:relative;display:flex;align-items:center;justify-content:center}
+  .hero-circle-1{width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(255,245,240,0.08),rgba(255,245,240,0) 70%);border:0.5px solid rgba(255,245,240,0.08);position:absolute}
+  .hero-circle-2{width:220px;height:220px;border-radius:50%;background:linear-gradient(135deg,rgba(184,41,74,0.45),rgba(212,163,86,0.3));border:0.5px solid rgba(255,245,240,0.18);backdrop-filter:blur(12px);position:absolute}
+
+  .hero-badge{display:inline-block;padding:4px 11px;background:rgba(184,41,74,0.92);font-size:11px;font-weight:500;border-radius:8px;letter-spacing:0.1em;margin-bottom:18px}
+  .hero-title{font-size:64px;line-height:1;font-weight:500;margin:0}
+  .hero-title .vende-row{display:flex;align-items:baseline;gap:22px}
+  .hero-title .que{font-size:50px;color:rgba(255,245,240,0.85);font-style:normal}
+  .hero-title .vende{font-size:110px;letter-spacing:-0.025em}
+  .hero-desc{font-size:18px;color:rgba(255,245,240,0.85);line-height:1.45;margin-top:22px;max-width:480px}
+  .hero-tags{display:flex;gap:22px;align-items:center;margin-top:32px;font-size:12px;letter-spacing:0.13em}
+  .hero-tags .quiet{color:rgba(255,245,240,0.45)}
+  .hero-tags .strong{color:#FFF5F0;font-weight:500}
+  .hero-cta{margin-top:32px;width:380px;padding:20px 36px;font-size:13.5px;font-weight:500;border-radius:14px;letter-spacing:0.2em;display:block}
+
+  /* SECTION */
+  section.row-section{padding:40px 40px 0;max-width:1400px;margin:0 auto}
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .section-title-group{display:flex;align-items:center;gap:10px}
+  .section-title{font-size:22px;font-weight:500;margin:0}
+  .free-badge{display:inline-flex;align-items:center;padding:2px 8px;background:rgba(93,202,165,0.15);border:0.5px solid rgba(93,202,165,0.4);border-radius:7px;font-size:9.5px;color:#9FE1CB;letter-spacing:0.04em}
+  .ver-todo{font-size:12px;color:rgba(255,245,240,0.5);cursor:pointer;text-decoration:none}
+  .ver-todo:hover{color:#FFF5F0}
+
+  .row-track{display:flex;gap:12px;width:max-content}
+  .poster-item{flex:0 0 175px}
+  .poster{aspect-ratio:2/3;cursor:pointer}
+  .poster-inner{padding:13px;display:flex;flex-direction:column;justify-content:flex-end;height:100%;box-sizing:border-box;position:relative}
+  .silhouette{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:55%;aspect-ratio:1/1.3;background:radial-gradient(ellipse 50% 60% at 50% 35%,rgba(255,245,240,0.18) 0%,rgba(255,245,240,0) 60%),radial-gradient(ellipse 40% 50% at 50% 70%,rgba(255,245,240,0.1) 0%,rgba(255,245,240,0) 65%);pointer-events:none}
+  .scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(14,5,9,0.85) 0%,rgba(14,5,9,0.3) 50%,rgba(14,5,9,0) 100%);pointer-events:none}
+  .top-icon{position:absolute;top:10px;right:10px;width:26px;height:26px;border-radius:50%;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center}
+  .poster-cat{position:relative;font-size:9px;letter-spacing:0.18em;color:rgba(255,245,240,0.7);font-weight:500;margin-bottom:5px}
+  .poster-title{position:relative;font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:17px;line-height:1.05;font-weight:500;letter-spacing:-0.02em}
+  .poster-meta{position:relative;font-size:10px;color:rgba(255,245,240,0.55);margin-top:6px;display:flex;align-items:center;gap:5px}
+  .meta-dot{width:4px;height:4px;border-radius:50%}
+
+  /* COMUNIDAD */
+  section.community{max-width:1400px;padding:70px 40px 20px;margin:0 auto}
+  .community-card{position:relative;overflow:hidden;border-radius:18px;border:0.5px solid rgba(255,245,240,0.12);padding:54px 60px;background:linear-gradient(135deg,#2D0A18 0%,#4A0F1E 50%,#1A0509 100%)}
+  .community-glow-1{position:absolute;width:360px;height:360px;left:-100px;top:-120px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.4),transparent 65%);pointer-events:none}
+  .community-glow-2{position:absolute;width:280px;height:280px;right:-80px;top:-60px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.32),transparent 70%);pointer-events:none}
+  .community-glow-3{position:absolute;width:320px;height:320px;right:80px;bottom:-160px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 65%);pointer-events:none}
+  .community-content{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;max-width:720px;margin:0 auto}
+  .community-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(255,245,240,0.08);border:0.5px solid rgba(255,245,240,0.2);border-radius:24px;font-size:10.5px;letter-spacing:0.18em;color:rgba(255,245,240,0.85);font-weight:500;margin-bottom:22px;backdrop-filter:blur(10px)}
+  .community-title{font-size:44px;line-height:1.05;font-weight:500;margin:0;letter-spacing:-0.02em}
+  .community-desc{font-size:16px;color:rgba(255,245,240,0.78);line-height:1.5;margin-top:20px;max-width:540px}
+  .community-cta{margin-top:36px;padding:18px 42px;font-size:13.5px;font-weight:500;border-radius:14px;letter-spacing:0.2em;display:inline-flex;align-items:center;gap:10px}
+
+  @media (max-width:900px){
+    .hero{min-height:auto}
+    .hero-inner{padding:30px 20px 20px;flex-direction:column;gap:0}
+    .hero-visual{display:none}
+    .hero-title{font-size:38px}
+    .hero-title .que{font-size:30px}
+    .hero-title .vende{font-size:62px}
+    .hero-tags{gap:14px;font-size:11px;flex-wrap:wrap}
+    .hero-cta{width:100%;padding:18px 0;font-size:12.5px}
+    section.row-section{padding:24px 16px 0}
+    .section-title{font-size:18px}
+    .row-track{padding:0 16px}
+    section.community{padding:32px 16px 8px}
+    .community-card{padding:32px 24px}
+    .community-title{font-size:26px}
+    .community-desc{font-size:13px}
+    .community-cta{padding:14px 28px;font-size:12px}
+    .main-header{padding:14px 16px}
+    .header-inner{gap:10px;flex-wrap:wrap}
+    .nav-btn{padding:8px 12px;font-size:11px}
+    .btn-outline{padding:9px 18px;font-size:11px}
+  }
+</style>
+</head>
+<body>
+
+<header class="main-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">M</div>
+      <div class="logo-text">MILENA<br>MACHADO</div>
+    </a>
+    <a href="index.html" class="nav-btn active">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5L12 3l9 7.5V21H3z" stroke-linejoin="round"/><path d="M9 21V13h6v8" stroke-linejoin="round"/></svg>
+      INICIO
+    </a>
+    <a href="cursos.html" class="nav-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      CURSOS
+    </a>
+    <a href="blog.html" class="nav-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8" stroke-linejoin="round"/></svg>
+      BLOG
+    </a>
+    <a href="comunidad.html" class="nav-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8" stroke-linecap="round"/></svg>
+      COMUNIDAD
+    </a>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:14px">
+      <a href="login.html" class="btn-outline">ENTRAR</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-gradient"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-glow-3"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">NUEVO MÓDULO</div>
+      <h1 class="hero-title serif">
+        <div>Marketing</div>
+        <div class="vende-row">
+          <span class="que">que</span>
+          <span class="vende gradtext">Vende</span>
+        </div>
+      </h1>
+      <p class="hero-desc">La guía práctica para escalar tu negocio <span style="color:#E8B8C4">en Paraguay</span>.</p>
+      <div class="hero-tags">
+        <span class="quiet">ESTRATEGIA</span>
+        <span class="strong">CONTENIDO</span>
+        <span class="quiet">EMBUDO</span>
+        <span class="quiet">EN VIVO</span>
+      </div>
+      <a href="curso-detalle.html"><button class="cta-gold hero-cta">QUIERO INSCRIBIRME AHORA</button></a>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-circle-1"></div>
+      <div class="hero-circle-2"></div>
+    </div>
+  </div>
+</section>
+
+<section class="row-section">
+  <div class="section-header">
+    <div class="section-title-group">
+      <h2 class="section-title serif">Marketing Digital</h2>
+    </div>
+    <a href="cursos.html" class="ver-todo">ver todo →</a>
+  </div>
+  <div class="scroll-row" style="margin-left:-40px;margin-right:-40px;padding-left:40px;padding-right:40px">
+    <div class="row-track">
+      <div class="poster-item">
+        <a href="curso-detalle.html" class="poster-hover poster">
+          <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)">
+            <div style="position:absolute;width:130px;height:130px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>
+            <div style="position:absolute;width:100px;height:100px;right:-15px;top:30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)"></div>
+            <div class="silhouette"></div>
+            <div class="scrim"></div>
+            <div class="poster-inner">
+              <div class="top-icon" style="background:rgba(14,5,9,0.55);border:0.5px solid rgba(255,245,240,0.22)">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="#FFF5F0"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+              <div class="poster-cat">FORMACIÓN</div>
+              <div class="poster-title">Creando Mentes<br>Millonarias</div>
+              <div class="poster-meta"><span class="meta-dot" style="background:#5DCAA5"></span>12 mód · 8 h</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="poster-item">
+        <a href="curso-detalle.html" class="poster-hover poster">
+          <div class="poster-shadow" style="background:linear-gradient(160deg,#5A0F2A 0%,#8B2244 50%,#2D0A18 100%)">
+            <div style="position:absolute;width:130px;height:130px;right:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.5),transparent 70%)"></div>
+            <div style="position:absolute;width:100px;height:100px;left:-20px;bottom:40px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(212,163,86,0.35),transparent 70%)"></div>
+            <div class="silhouette"></div>
+            <div class="scrim"></div>
+            <div class="poster-inner">
+              <div class="top-icon" style="background:rgba(14,5,9,0.55);border:0.5px solid rgba(255,245,240,0.22)">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="#FFF5F0"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+              <div class="poster-cat">CONTENIDO</div>
+              <div class="poster-title">Stories que<br>venden</div>
+              <div class="poster-meta"><span class="meta-dot" style="background:#5DCAA5"></span>8 mód · 5 h</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="poster-item">
+        <a href="curso-detalle.html" class="poster-hover poster">
+          <div class="poster-shadow" style="background:linear-gradient(160deg,#4A0F1E 0%,#7A1B2E 50%,#3D1208 100%)">
+            <div style="position:absolute;width:130px;height:130px;left:-30px;bottom:-30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(212,163,86,0.5),transparent 70%)"></div>
+            <div style="position:absolute;width:100px;height:100px;right:-20px;top:30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.4),transparent 70%)"></div>
+            <div class="silhouette"></div>
+            <div class="scrim"></div>
+            <div class="poster-inner">
+              <div class="top-icon" style="background:rgba(212,163,86,0.2);border:0.5px solid rgba(212,163,86,0.55)">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="#FAC775"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+              <div class="poster-cat">PREMIUM</div>
+              <div class="poster-title">Certificación<br>Social Media</div>
+              <div class="poster-meta"><span class="meta-dot" style="background:#D4A356"></span>24 h · oficial</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="row-section">
+  <div class="section-header">
+    <div class="section-title-group">
+      <h2 class="section-title serif">Acompañá más</h2>
+    </div>
+    <a href="#" class="ver-todo">ver todo →</a>
+  </div>
+  <div class="scroll-row" style="margin-left:-40px;margin-right:-40px;padding-left:40px;padding-right:40px">
+    <div class="row-track">
+      <div class="poster-item">
+        <a href="#" class="poster-hover poster">
+          <div class="poster-shadow" style="background:linear-gradient(160deg,#3D0A1A 0%,#7A1B2E 60%,#1A0509 100%)">
+            <div style="position:absolute;width:130px;height:130px;right:-25px;top:-15px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(255,59,71,0.5),transparent 70%)"></div>
+            <div class="silhouette"></div>
+            <div class="scrim"></div>
+            <div class="poster-inner">
+              <div class="top-icon" style="background:rgba(255,59,71,0.15);border:0.5px solid rgba(255,59,71,0.5)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF3B47"><path d="M22 8.4c0-2-1.5-3.6-3.5-3.8C16 4.4 13 4.3 12 4.3s-4 .1-6.5.3C3.5 4.8 2 6.4 2 8.4c-.2 1.5-.2 3 0 4.5 0 2 1.5 3.6 3.5 3.8 2.5.2 5.5.3 6.5.3s4-.1 6.5-.3c2-.2 3.5-1.8 3.5-3.8.2-1.5.2-3 0-4.5zM10 14.5v-7l6 3.5z"/></svg>
+              </div>
+              <div class="poster-cat">CANAL</div>
+              <div class="poster-title">YouTube<br>de Milena</div>
+              <div class="poster-meta"><span class="meta-dot" style="background:#FF3B47"></span>cada semana</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="poster-item">
+        <a href="#" class="poster-hover poster">
+          <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#3D1208 100%)">
+            <div style="position:absolute;width:130px;height:130px;left:-20px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(212,163,86,0.5),transparent 70%)"></div>
+            <div style="position:absolute;left:48%;top:38%;transform:translate(-50%,-50%);width:70px;height:90px;background:linear-gradient(135deg,rgba(212,163,86,0.4),rgba(232,184,196,0.25));border:0.5px solid rgba(255,245,240,0.18);border-radius:3px;backdrop-filter:blur(8px)"></div>
+            <div style="position:absolute;left:55%;top:42%;transform:translate(-50%,-50%);width:70px;height:90px;background:linear-gradient(135deg,rgba(184,41,74,0.4),rgba(212,163,86,0.2));border:0.5px solid rgba(255,245,240,0.15);border-radius:3px;backdrop-filter:blur(8px)"></div>
+            <div class="scrim"></div>
+            <div class="poster-inner">
+              <div class="top-icon" style="background:rgba(14,5,9,0.55);border:0.5px solid rgba(255,245,240,0.22)">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFF5F0" stroke-width="1.8"><path d="M4 4v16M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4"/></svg>
+              </div>
+              <div class="poster-cat">EXCLUSIVO</div>
+              <div class="poster-title">Club del<br>Libro</div>
+              <div class="poster-meta"><span class="meta-dot" style="background:#5DCAA5"></span>1 libro al mes</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="row-section">
+  <div class="section-header">
+    <div class="section-title-group">
+      <h2 class="section-title serif">Contenidos gratuitos</h2>
+      <span class="free-badge">GRATIS</span>
+    </div>
+    <a href="#" class="ver-todo">ver todo →</a>
+  </div>
+  <div class="scroll-row" style="margin-left:-40px;margin-right:-40px;padding-left:40px;padding-right:40px">
+    <div class="row-track">
+      <div class="poster-item">
+        <a href="blog.html" class="poster-hover poster">
+          <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#5A0F2A 50%,#1A0509 100%)">
+            <div style="position:absolute;width:130px;height:130px;right:-25px;top:-15px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.45),transparent 70%)"></div>
+            <div style="position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:80px;height:100px;display:flex;gap:2px">
+              <div style="flex:1;background:linear-gradient(135deg,rgba(184,41,74,0.5),rgba(74,15,30,0.7));border-radius:1.5px;border:0.5px solid rgba(255,245,240,0.15)"></div>
+              <div style="flex:1;background:linear-gradient(135deg,rgba(212,163,86,0.4),rgba(122,27,46,0.6));border-radius:1.5px;border:0.5px solid rgba(255,245,240,0.12)"></div>
+              <div style="flex:1;background:linear-gradient(135deg,rgba(232,184,196,0.4),rgba(184,41,74,0.5));border-radius:1.5px;border:0.5px solid rgba(255,245,240,0.18)"></div>
+            </div>
+            <div class="scrim"></div>
+            <div class="poster-inner">
+              <div class="top-icon" style="background:rgba(14,5,9,0.55);border:0.5px solid rgba(255,245,240,0.22)">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFF5F0" stroke-width="1.8"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v18H6.5a2.5 2.5 0 0 0 0 5H20" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="poster-cat">LECTURAS</div>
+              <div class="poster-title">Libros<br>recomendados</div>
+              <div class="poster-meta"><span class="meta-dot" style="background:#5DCAA5"></span>15 títulos</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="poster-item">
+        <a href="#" class="poster-hover poster">
+          <div class="poster-shadow" style="background:linear-gradient(160deg,#3D0A1A 0%,#4A0F1E 55%,#2D0A18 100%)">
+            <div style="position:absolute;width:130px;height:130px;left:-25px;top:-15px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.4),transparent 70%)"></div>
+            <div style="position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.5) 0%,rgba(74,15,30,0.7) 100%);border:0.5px solid rgba(255,245,240,0.2);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.85)" stroke-width="1.5" stroke-linecap="round"><line x1="6" y1="9" x2="6" y2="15"/><line x1="10" y1="6" x2="10" y2="18"/><line x1="14" y1="8" x2="14" y2="16"/><line x1="18" y1="11" x2="18" y2="13"/></svg>
+            </div>
+            <div class="scrim"></div>
+            <div class="poster-inner">
+              <div class="top-icon" style="background:rgba(14,5,9,0.55);border:0.5px solid rgba(255,245,240,0.22)">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFF5F0" stroke-width="1.8"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>
+              </div>
+              <div class="poster-cat">PODCAST</div>
+              <div class="poster-title">Entrevistas<br>y charlas</div>
+              <div class="poster-meta"><span class="meta-dot" style="background:#5DCAA5"></span>invitados top</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="community">
+  <div class="community-card">
+    <div class="community-glow-1"></div>
+    <div class="community-glow-2"></div>
+    <div class="community-glow-3"></div>
+    <div class="community-content">
+      <div class="community-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c0-3 3-5 7-5s7 2 7 5" stroke-linecap="round"/><path d="M14 14c2.5 0 5 1.5 5 4" stroke-linecap="round"/></svg>
+        COMUNIDAD MILENA
+      </div>
+      <h2 class="community-title serif">Conectá con quienes <br><span class="serif-it" style="color:#E8B8C4">ya están vendiendo</span></h2>
+      <p class="community-desc">Compartí tus dudas, mostrá tus avances y aprendé en directo de Milena y de cientos de emprendedores como vos.</p>
+      <a href="comunidad.html"><button class="cta-gold community-cta">
+        ENTRAR A LA COMUNIDAD
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </button></a>
+    </div>
+  </div>
+</section>
+
+<footer class="main-footer">
+  Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
+</footer>
+
+</body>
+</html>

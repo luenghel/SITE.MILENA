@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1A0A12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Milena">
+<title>Blog · Milena Machado · Marketing y ventas en Paraguay</title>
+<meta name="description" content="Estrategias de marketing, ventas y mentalidad para emprendedoras paraguayas que quieren escalar su negocio.">
+<meta name="author" content="Milena Machado">
+
+<!-- Open Graph (para WhatsApp, Facebook, etc) -->
+<meta property="og:title" content="Blog de Milena Machado · Marketing para emprendedoras paraguayas">
+<meta property="og:description" content="Ideas que venden. Estrategias prácticas para escalar tu negocio en Paraguay.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_PY">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Blog de Milena Machado">
+<meta name="twitter:description" content="Ideas que venden. Marketing para emprendedoras paraguayas.">
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  html,body{
+    background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);
+    color:#FFF5F0;
+    min-height:100vh;
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  .serif{font-family:Georgia,"Times New Roman",serif;letter-spacing:-0.015em}
+  .serif-it{font-family:Georgia,serif;font-style:italic;font-weight:500}
+  .gradtext{
+    background:linear-gradient(95deg,#B8294A 0%,#E8B8C4 25%,#FAC775 50%,#D4A356 65%,#E8B8C4 85%,#B8294A 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    font-style:italic;font-weight:500;
+  }
+  a{color:inherit;text-decoration:none}
+
+  /* Header */
+  header.main{
+    background:rgba(14,5,9,0.85);
+    backdrop-filter:blur(28px) saturate(160%);
+    -webkit-backdrop-filter:blur(28px) saturate(160%);
+    border-bottom:0.5px solid rgba(255,245,240,0.08);
+    padding:18px 32px;
+    position:sticky;top:0;z-index:100;
+  }
+  .header-inner{display:flex;align-items:center;gap:28px;max-width:1280px;margin:0 auto}
+  .logo{display:flex;align-items:center;gap:11px;cursor:pointer}
+  .logo-box{width:36px;height:36px;border:0.5px solid rgba(255,245,240,0.55);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-size:18px;font-weight:500}
+  .logo-text{font-size:11px;line-height:1.15;letter-spacing:0.18em;font-weight:500}
+  .nav-btn{padding:9px 18px;color:rgba(255,245,240,0.65);font-size:12px;font-weight:500;letter-spacing:0.1em;background:transparent;border:none;cursor:pointer;transition:all 0.25s}
+  .nav-btn:hover{color:#FFF5F0;transform:translateY(-1px)}
+  .nav-btn.active{padding:10px 20px;border-radius:24px;background:linear-gradient(135deg,rgba(212,163,86,0.18),rgba(212,163,86,0.08));border:0.5px solid rgba(212,163,86,0.5);color:#FAC775}
+  .btn-outline{padding:10px 24px;border:0.5px solid rgba(255,245,240,0.55);border-radius:24px;font-size:12px;letter-spacing:0.18em;font-weight:500;background:transparent;color:inherit;cursor:pointer;transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1)}
+  .btn-outline:hover{transform:translateY(-2px) scale(1.04);background:rgba(255,245,240,0.08);border-color:rgba(255,245,240,0.85)}
+
+  /* Hero */
+  section.hero{position:relative;overflow:hidden;padding:60px 32px 50px;text-align:center}
+  .hero-bg-1{position:absolute;width:540px;height:540px;left:-160px;top:-160px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.3),transparent 65%);pointer-events:none}
+  .hero-bg-2{position:absolute;width:420px;height:420px;right:-120px;top:-80px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.25),transparent 70%);pointer-events:none}
+  .hero-bg-3{position:absolute;width:360px;height:360px;left:50%;bottom:-180px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.3),transparent 65%);pointer-events:none}
+  .hero-content{position:relative;max-width:680px;margin:0 auto}
+  .hero-badge{display:inline-block;padding:5px 13px;background:rgba(212,163,86,0.12);border:0.5px solid rgba(212,163,86,0.4);border-radius:20px;font-size:10.5px;letter-spacing:0.2em;color:#FAC775;font-weight:500;margin-bottom:18px}
+  .hero-title{font-size:54px;line-height:1.05;font-weight:500;margin:0 0 14px}
+  .hero-subtitle{font-size:16px;color:rgba(255,245,240,0.75);line-height:1.5;max-width:520px;margin:0 auto}
+
+  /* Filtros */
+  section.filters{padding:0 32px 24px;max-width:1280px;margin:0 auto}
+  .filters-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .chips{display:flex;gap:7px;flex-wrap:wrap}
+  .chip{padding:6px 12px;border-radius:18px;font-size:11px;font-weight:500;letter-spacing:0.04em;cursor:pointer;border:0.5px solid transparent;transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1)}
+  .chip-active{background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208}
+  .chip-quiet{background:rgba(255,245,240,0.04);border-color:rgba(255,245,240,0.12);color:rgba(255,245,240,0.7)}
+  .chip-quiet:hover{transform:translateY(-1px) scale(1.04);background:rgba(255,245,240,0.08)}
+  .search-wrap{position:relative}
+  .search-input{padding:9px 14px 9px 38px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:22px;color:#FFF5F0;font-size:12px;outline:none;width:240px;font-family:inherit}
+  .search-input:focus{border-color:rgba(212,163,86,0.5)}
+  .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none}
+
+  /* Featured */
+  section.featured{padding:0 32px 28px;max-width:1280px;margin:0 auto}
+  .featured-card{display:grid;grid-template-columns:1.2fr 1fr;gap:0;background:rgba(255,245,240,0.03);border:0.5px solid rgba(212,163,86,0.3);border-radius:16px;overflow:hidden;cursor:pointer;transition:all 0.4s cubic-bezier(0.34,1.4,0.64,1)}
+  .featured-card:hover{transform:translateY(-4px);border-color:rgba(212,163,86,0.6);box-shadow:0 22px 50px rgba(0,0,0,0.5)}
+  .featured-image{aspect-ratio:16/10;background:linear-gradient(135deg,#2D0A18,#4A0F1E,#7A1B2E);position:relative;overflow:hidden}
+  .featured-bg-1{position:absolute;width:340px;height:340px;left:-80px;top:-80px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.4),transparent 65%)}
+  .featured-bg-2{position:absolute;width:260px;height:260px;right:-60px;bottom:-60px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.4),transparent 70%)}
+  .featured-emoji{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:80px}
+  .featured-badge{position:absolute;top:18px;left:18px;padding:5px 12px;background:rgba(14,5,9,0.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:7px;font-size:10px;letter-spacing:0.16em;color:#FAC775;font-weight:500}
+  .featured-content{padding:32px;display:flex;flex-direction:column;justify-content:center}
+  .article-meta{display:flex;align-items:center;gap:9px;margin-bottom:14px}
+  .article-cat{font-size:10px;letter-spacing:0.18em;font-weight:500}
+  .article-cat.marketing{color:#E8B8C4}
+  .article-cat.mentalidad{color:#FAC775}
+  .article-cat.paraguay{color:#9FE1CB}
+  .article-cat.ventas{color:#FAC775}
+  .article-cat.redes{color:#E8B8C4}
+  .article-cat.casos{color:#9FE1CB}
+  .meta-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,245,240,0.3)}
+  .meta-time{font-size:11px;color:rgba(255,245,240,0.55)}
+  .featured-title{font-size:30px;line-height:1.15;font-weight:500;margin:0 0 12px}
+  .featured-desc{font-size:13.5px;color:rgba(255,245,240,0.75);line-height:1.55;margin:0 0 20px}
+  .featured-author{display:flex;align-items:center;gap:11px;margin-top:auto}
+  .author-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#B8294A,#E8B8C4);border:1.5px solid rgba(212,163,86,0.4);flex-shrink:0}
+  .author-info{flex:1}
+  .author-name{font-size:12.5px;font-weight:500}
+  .author-date{font-size:10.5px;color:rgba(255,245,240,0.5)}
+  .featured-cta{display:flex;align-items:center;gap:5px;padding:5px 11px;background:rgba(212,163,86,0.12);border:0.5px solid rgba(212,163,86,0.35);border-radius:18px;font-size:10.5px;color:#FAC775;font-weight:500}
+
+  /* Grid */
+  section.articles-grid{padding:0 32px 50px;max-width:1280px;margin:0 auto}
+  .section-title{font-size:22px;font-weight:500;margin:0 0 20px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .article-card{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:13px;overflow:hidden;cursor:pointer;transition:all 0.4s cubic-bezier(0.34,1.4,0.64,1);display:flex;flex-direction:column}
+  .article-card:hover{transform:translateY(-4px);border-color:rgba(212,163,86,0.3);box-shadow:0 16px 40px rgba(0,0,0,0.4)}
+  .card-image{aspect-ratio:16/10;position:relative;overflow:hidden}
+  .card-image .emoji{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:42px}
+  .card-content{padding:18px}
+  .card-title{font-size:18px;line-height:1.2;font-weight:500;margin:0 0 9px}
+  .card-desc{font-size:12px;color:rgba(255,245,240,0.65);line-height:1.5;margin:0 0 14px}
+  .card-footer{display:flex;align-items:center;gap:9px;font-size:10.5px;color:rgba(255,245,240,0.5);padding-top:11px;border-top:0.5px solid rgba(255,245,240,0.06)}
+
+  /* Load more */
+  .load-more-wrap{display:flex;justify-content:center;margin-top:30px}
+  .load-more{padding:12px 28px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.18);border-radius:24px;color:#FFF5F0;font-size:11.5px;font-weight:500;letter-spacing:0.12em;cursor:pointer;transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);font-family:inherit}
+  .load-more:hover{transform:translateY(-2px) scale(1.03);background:rgba(255,245,240,0.08);border-color:rgba(255,245,240,0.35)}
+
+  /* Newsletter */
+  section.newsletter{padding:0 32px 40px;max-width:1280px;margin:0 auto}
+  .newsletter-card{position:relative;overflow:hidden;border-radius:16px;border:0.5px solid rgba(212,163,86,0.3);padding:36px 28px;background:linear-gradient(135deg,#2D0A18 0%,#4A0F1E 50%,#1A0509 100%);text-align:center}
+  .newsletter-bg-1{position:absolute;width:300px;height:300px;left:-80px;top:-80px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.4),transparent 65%);pointer-events:none}
+  .newsletter-bg-2{position:absolute;width:240px;height:240px;right:-60px;bottom:-60px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.32),transparent 70%);pointer-events:none}
+  .newsletter-content{position:relative;max-width:520px;margin:0 auto}
+  .newsletter-badge{font-size:10.5px;letter-spacing:0.2em;color:#FAC775;font-weight:500}
+  .newsletter-title{font-size:26px;font-weight:500;margin:8px 0 10px}
+  .newsletter-desc{font-size:13px;color:rgba(255,245,240,0.7);margin:0 0 18px}
+  .newsletter-form{display:flex;gap:8px;max-width:380px;margin:0 auto}
+  .newsletter-input{flex:1;padding:12px 14px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.18);border-radius:10px;color:#FFF5F0;font-size:12.5px;outline:none;font-family:inherit}
+  .newsletter-input:focus{border-color:rgba(212,163,86,0.5)}
+  .cta-gold{padding:12px 22px;background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208;border:none;border-radius:10px;font-size:11px;font-weight:500;letter-spacing:0.1em;cursor:pointer;transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.5),inset 0 -1.5px 2px rgba(74,15,30,0.18);font-family:inherit}
+  .cta-gold:hover{transform:translateY(-2px) scale(1.03);filter:brightness(1.05);box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.5),inset 0 -1.5px 2px rgba(74,15,30,0.18),0 8px 20px rgba(212,163,86,0.4)}
+
+  /* Footer */
+  footer{padding:30px 32px 20px;text-align:center;border-top:0.5px solid rgba(255,245,240,0.06);margin-top:40px;font-size:12px;color:rgba(255,245,240,0.5)}
+  footer .heart{color:#FF6B7A}
+
+  /* Mobile */
+  @media (max-width:768px){
+    header.main{padding:14px 16px}
+    .header-inner{gap:10px;flex-wrap:wrap}
+    .nav-btn{padding:8px 12px;font-size:11px}
+    .nav-btn.active{padding:8px 14px}
+    .btn-outline{padding:8px 18px;font-size:11px}
+    section.hero{padding:36px 16px 30px}
+    .hero-title{font-size:38px}
+    .hero-subtitle{font-size:14px}
+    section.filters{padding:0 16px 18px}
+    .search-input{width:100%}
+    section.featured{padding:0 16px 24px}
+    .featured-card{grid-template-columns:1fr}
+    .featured-content{padding:22px}
+    .featured-title{font-size:22px}
+    section.articles-grid{padding:0 16px 40px}
+    .grid{grid-template-columns:1fr;gap:14px}
+    section.newsletter{padding:0 16px 30px}
+    .newsletter-title{font-size:22px}
+    .newsletter-form{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="main">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">M</div>
+      <div class="logo-text">MILENA<br>MACHADO</div>
+    </a>
+    <a href="index.html" class="nav-btn">INICIO</a>
+    <a href="cursos.html" class="nav-btn">CURSOS</a>
+    <a href="blog.html" class="nav-btn active">BLOG</a>
+    <a href="comunidad.html" class="nav-btn">COMUNIDAD</a>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:12px">
+      <a href="login.html" class="btn-outline">ENTRAR</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-1"></div>
+  <div class="hero-bg-2"></div>
+  <div class="hero-bg-3"></div>
+  <div class="hero-content">
+    <span class="hero-badge">EL BLOG DE CMM</span>
+    <h1 class="hero-title serif">Ideas que <span class="serif-it gradtext">venden</span></h1>
+    <p class="hero-subtitle">Estrategias de marketing, ventas y mentalidad escritas para emprendedoras paraguayas que quieren escalar su negocio.</p>
+  </div>
+</section>
+
+<!-- FILTROS -->
+<section class="filters">
+  <div class="filters-row">
+    <div class="chips">
+      <a href="#" class="chip chip-active">Todos</a>
+      <a href="#marketing" class="chip chip-quiet">Marketing</a>
+      <a href="#ventas" class="chip chip-quiet">Ventas</a>
+      <a href="#mentalidad" class="chip chip-quiet">Mentalidad</a>
+      <a href="#redes" class="chip chip-quiet">Redes sociales</a>
+      <a href="#casos" class="chip chip-quiet">Casos reales</a>
+      <a href="#paraguay" class="chip chip-quiet">Paraguay</a>
+    </div>
+    <div class="search-wrap">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
+      <input class="search-input" placeholder="Buscar artículos..." id="searchInput" oninput="filterArticles()"/>
+    </div>
+  </div>
+</section>
+
+<!-- ARTÍCULO DESTACADO -->
+<section class="featured">
+  <a href="articulo-1.html" style="text-decoration:none;color:inherit">
+    <div class="featured-card">
+      <div class="featured-image">
+        <div class="featured-bg-1"></div>
+        <div class="featured-bg-2"></div>
+        <div class="featured-emoji">📈</div>
+        <span class="featured-badge">⭐ DESTACADO</span>
+      </div>
+      <div class="featured-content">
+        <div class="article-meta">
+          <span class="article-cat marketing">MARKETING</span>
+          <span class="meta-dot"></span>
+          <span class="meta-time">12 min de lectura</span>
+        </div>
+        <h2 class="featured-title serif-it">Cómo conseguí mis primeras 100 alumnas <span style="color:#E8B8C4">vendiendo en Asunción</span> sin pagar publicidad</h2>
+        <p class="featured-desc">Te cuento paso a paso lo que hice durante 4 meses para escalar mi marca personal en Paraguay. Sin trucos, sin atajos, solo método.</p>
+        <div class="featured-author">
+          <div class="author-avatar"></div>
+          <div class="author-info">
+            <div class="author-name">Milena Machado</div>
+            <div class="author-date">12 abril 2026</div>
+          </div>
+          <div class="featured-cta">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Leer artículo
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</section>
+
+<!-- GRID DE ARTÍCULOS -->
+<section class="articles-grid">
+  <h2 class="section-title serif">Últimos artículos</h2>
+
+  <div class="grid" id="articlesGrid">
+
+    <!-- Card 1 -->
+    <a href="#" class="article-card" data-cat="redes" data-title="errores stories engagement">
+      <div class="card-image" style="background:linear-gradient(135deg,#5A0F2A,#8B2244,#2D0A18)">
+        <div style="position:absolute;width:200px;height:200px;right:-50px;top:-50px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.45),transparent 65%)"></div>
+        <div style="position:absolute;width:140px;height:140px;left:-30px;bottom:-30px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.4),transparent 65%)"></div>
+        <div class="emoji">📱</div>
+      </div>
+      <div class="card-content">
+        <div class="article-meta">
+          <span class="article-cat redes">REDES SOCIALES</span>
+          <span class="meta-dot"></span>
+          <span class="meta-time">8 min</span>
+        </div>
+        <h3 class="card-title serif-it">7 errores que cometés en tus stories y te están haciendo perder ventas</h3>
+        <p class="card-desc">Después de revisar 200+ cuentas paraguayas, identifiqué patrones que matan el engagement. Te los cuento todos.</p>
+        <div class="card-footer">
+          <span>Milena Machado</span>
+          <span>·</span>
+          <span>5 abr</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 2 -->
+    <a href="#" class="article-card" data-cat="mentalidad" data-title="precios mentalidad cobrar">
+      <div class="card-image" style="background:linear-gradient(135deg,#3D1208,#7A1B2E,#1A0509)">
+        <div style="position:absolute;width:180px;height:180px;left:-40px;top:-40px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.5),transparent 65%)"></div>
+        <div style="position:absolute;width:160px;height:160px;right:-40px;bottom:-40px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.5),transparent 65%)"></div>
+        <div class="emoji">💎</div>
+      </div>
+      <div class="card-content">
+        <div class="article-meta">
+          <span class="article-cat mentalidad">MENTALIDAD</span>
+          <span class="meta-dot"></span>
+          <span class="meta-time">6 min</span>
+        </div>
+        <h3 class="card-title serif-it">¿Por qué cobrás barato? La mentalidad que te frena para subir tus precios</h3>
+        <p class="card-desc">El precio bajo no es estrategia, es miedo. Te explico cómo identificar las creencias que te están saboteando.</p>
+        <div class="card-footer">
+          <span>Milena Machado</span>
+          <span>·</span>
+          <span>28 mar</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 3 -->
+    <a href="#" class="article-card" data-cat="paraguay" data-title="metodos cobro online paraguay pagopar bancard">
+      <div class="card-image" style="background:linear-gradient(135deg,#2D0A18,#4A0F1E,#3D1208)">
+        <div style="position:absolute;width:200px;height:200px;right:-50px;bottom:-50px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.4),transparent 65%)"></div>
+        <div style="position:absolute;width:140px;height:140px;left:-30px;top:-30px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.35),transparent 65%)"></div>
+        <div class="emoji">🇵🇾</div>
+      </div>
+      <div class="card-content">
+        <div class="article-meta">
+          <span class="article-cat paraguay">PARAGUAY</span>
+          <span class="meta-dot"></span>
+          <span class="meta-time">10 min</span>
+        </div>
+        <h3 class="card-title serif-it">Los 5 métodos de cobro online en Paraguay y cuál te conviene según tu negocio</h3>
+        <p class="card-desc">Pagopar, Bancard, Tigo Money... ¿cuál usar? Comparativa real de comisiones, facilidad y experiencia.</p>
+        <div class="card-footer">
+          <span>Milena Machado</span>
+          <span>·</span>
+          <span>22 mar</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 4 -->
+    <a href="#" class="article-card" data-cat="marketing" data-title="embudo ventas paraguay">
+      <div class="card-image" style="background:linear-gradient(135deg,#5A0F2A,#7A1B2E,#3D1208)">
+        <div style="position:absolute;width:200px;height:200px;left:-40px;top:-40px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.5),transparent 65%)"></div>
+        <div style="position:absolute;width:160px;height:160px;right:-40px;bottom:-40px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.4),transparent 65%)"></div>
+        <div class="emoji">📊</div>
+      </div>
+      <div class="card-content">
+        <div class="article-meta">
+          <span class="article-cat marketing">MARKETING</span>
+          <span class="meta-dot"></span>
+          <span class="meta-time">9 min</span>
+        </div>
+        <h3 class="card-title serif-it">Cómo armar un embudo de ventas desde cero (con ejemplos paraguayos)</h3>
+        <p class="card-desc">El método paso a paso para diseñar tu primer embudo. Con plantilla descargable.</p>
+        <div class="card-footer">
+          <span>Milena Machado</span>
+          <span>·</span>
+          <span>15 mar</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 5 -->
+    <a href="#" class="article-card" data-cat="casos" data-title="caso real carolina facturo">
+      <div class="card-image" style="background:linear-gradient(135deg,#3D0A1A,#4A0F1E,#1A0509)">
+        <div style="position:absolute;width:170px;height:170px;right:-30px;top:-30px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.5),transparent 65%)"></div>
+        <div style="position:absolute;width:150px;height:150px;left:-20px;bottom:-20px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.45),transparent 65%)"></div>
+        <div class="emoji">✨</div>
+      </div>
+      <div class="card-content">
+        <div class="article-meta">
+          <span class="article-cat casos">CASOS REALES</span>
+          <span class="meta-dot"></span>
+          <span class="meta-time">7 min</span>
+        </div>
+        <h3 class="card-title serif-it">Carolina facturó Gs 8M en su primer mes: cómo lo hizo paso a paso</h3>
+        <p class="card-desc">Entrevista con una de las alumnas top de CMM. Te cuenta exactamente cómo aplicó el método.</p>
+        <div class="card-footer">
+          <span>Milena Machado</span>
+          <span>·</span>
+          <span>8 mar</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 6 -->
+    <a href="#" class="article-card" data-cat="ventas" data-title="script whatsapp ventas premium">
+      <div class="card-image" style="background:linear-gradient(135deg,#4A0F1E,#7A1B2E,#2D0A18)">
+        <div style="position:absolute;width:180px;height:180px;left:-40px;bottom:-40px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 65%)"></div>
+        <div style="position:absolute;width:140px;height:140px;right:-30px;top:-30px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.4),transparent 65%)"></div>
+        <div class="emoji">💰</div>
+      </div>
+      <div class="card-content">
+        <div class="article-meta">
+          <span class="article-cat ventas">VENTAS</span>
+          <span class="meta-dot"></span>
+          <span class="meta-time">11 min</span>
+        </div>
+        <h3 class="card-title serif-it">El script de WhatsApp que uso para cerrar ventas premium (lo regalo)</h3>
+        <p class="card-desc">Después de 3 años perfeccionándolo, comparto el flujo exacto que me funciona para cerrar Gs 1M+.</p>
+        <div class="card-footer">
+          <span>Milena Machado</span>
+          <span>·</span>
+          <span>1 mar</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="load-more-wrap">
+    <button class="load-more">CARGAR MÁS ARTÍCULOS</button>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="newsletter-card">
+    <div class="newsletter-bg-1"></div>
+    <div class="newsletter-bg-2"></div>
+    <div class="newsletter-content">
+      <span class="newsletter-badge">📩 NEWSLETTER GRATIS</span>
+      <h3 class="newsletter-title serif">Recibí los artículos <span class="serif-it" style="color:#E8B8C4">en tu mail</span></h3>
+      <p class="newsletter-desc">Cada lunes, una idea concreta para vender más esta semana. Sin spam, sin vueltas.</p>
+      <form class="newsletter-form" onsubmit="suscribir(event)">
+        <input class="newsletter-input" type="email" placeholder="vos@ejemplo.com" required>
+        <button type="submit" class="cta-gold">SUSCRIBIRME</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026</div>
+</footer>
+
+<script>
+  // Búsqueda en vivo
+  function filterArticles(){
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('#articlesGrid .article-card');
+    cards.forEach(card => {
+      const title = card.dataset.title || '';
+      const cardText = card.innerText.toLowerCase();
+      const matches = title.includes(q) || cardText.includes(q);
+      card.style.display = matches ? '' : 'none';
+    });
+  }
+
+  // Filtros por categoría (chips)
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.chip').forEach(c => {
+        c.classList.remove('chip-active');
+        c.classList.add('chip-quiet');
+      });
+      chip.classList.remove('chip-quiet');
+      chip.classList.add('chip-active');
+
+      const cat = chip.getAttribute('href').replace('#','');
+      const cards = document.querySelectorAll('#articlesGrid .article-card');
+      cards.forEach(card => {
+        if(!cat || cat === '' || cat === 'todos') card.style.display = '';
+        else card.style.display = card.dataset.cat === cat ? '' : 'none';
+      });
+    });
+  });
+
+  // Newsletter
+  function suscribir(e){
+    e.preventDefault();
+    const email = e.target.querySelector('input').value;
+    alert('¡Gracias por suscribirte! Te avisaremos cuando publiquemos un nuevo artículo. (Por ahora es solo demo - cuando conectemos Supabase guardamos los emails)');
+    e.target.reset();
+  }
+</script>
+
+
+</body>
+</html>

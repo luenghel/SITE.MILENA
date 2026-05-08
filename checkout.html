@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pago seguro · Milena Machado</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  html,body{
+    background:#FAF6F2;
+    color:#2D1818;
+    min-height:100vh;
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  input,textarea,select{font-family:inherit;color:inherit}
+  .serif{font-family:Georgia,"Times New Roman",serif;letter-spacing:-0.015em}
+  .serif-it{font-family:Georgia,serif;font-style:italic;font-weight:500}
+  .gradtext{
+    background:linear-gradient(95deg,#7A1B2E 0%,#B8294A 30%,#D4A356 65%,#7A1B2E 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    font-style:italic;font-weight:500;
+  }
+
+  .checkout-header{
+    background:#FFFFFF;
+    border-bottom:1px solid rgba(45,24,24,0.08);
+    padding:18px 32px;
+    position:sticky;top:0;z-index:100;
+    box-shadow:0 1px 3px rgba(45,24,24,0.04);
+  }
+  .ch-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo-box{width:38px;height:38px;border:1px solid rgba(45,24,24,0.6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-size:19px;font-weight:500;color:#2D1818}
+  .logo-text{font-size:11.5px;line-height:1.15;letter-spacing:0.18em;font-weight:500;color:#2D1818}
+
+  .ssl-badge{display:flex;align-items:center;gap:7px;font-size:12px;color:#0F7B5A;font-weight:500;padding:6px 12px;background:rgba(15,123,90,0.08);border:1px solid rgba(15,123,90,0.2);border-radius:20px}
+
+  .steps-bar{padding:32px 32px 12px;max-width:1080px;margin:0 auto}
+  .steps-row{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:24px;flex-wrap:wrap}
+  .step{display:flex;align-items:center;gap:9px}
+  .step-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600}
+  .step-done .step-num{background:#0F7B5A;color:#FFF}
+  .step-active .step-num{background:linear-gradient(135deg,#D4A356,#B88A35);color:#FFF;box-shadow:0 0 0 5px rgba(212,163,86,0.18)}
+  .step-future .step-num{background:rgba(45,24,24,0.06);border:1px solid rgba(45,24,24,0.15);color:rgba(45,24,24,0.5)}
+  .step-label{font-size:12px;font-weight:600;letter-spacing:0.06em}
+  .step-done .step-label{color:#0F7B5A}
+  .step-active .step-label{color:#B88A35}
+  .step-future .step-label{color:rgba(45,24,24,0.45)}
+  .step-divider{width:70px;height:2px;background:rgba(45,24,24,0.1);border-radius:1px}
+  .step-divider.done{background:#0F7B5A}
+
+  .checkout-layout{display:grid;grid-template-columns:1.2fr 0.85fr;gap:28px;padding:0 32px 60px;max-width:1080px;margin:0 auto}
+
+  .checkout-title{font-size:30px;font-weight:500;margin:0 0 8px;font-family:Georgia,serif;letter-spacing:-0.015em;color:#2D1818}
+  .checkout-subtitle{font-size:14px;color:rgba(45,24,24,0.65);margin:0 0 24px}
+
+  .method-card{
+    padding:16px 18px;
+    background:#FFFFFF;
+    border:1.5px solid rgba(45,24,24,0.1);
+    border-radius:13px;
+    cursor:pointer;
+    transition:all 0.25s;
+    display:flex;align-items:center;gap:15px;
+    margin-bottom:10px;
+    box-shadow:0 1px 3px rgba(45,24,24,0.03);
+  }
+  .method-card:hover{border-color:rgba(122,27,46,0.3);box-shadow:0 4px 12px rgba(45,24,24,0.08);transform:translateY(-1px)}
+  .method-card.selected{
+    background:linear-gradient(135deg,rgba(212,163,86,0.08),rgba(212,163,86,0.02));
+    border-color:#D4A356;
+    box-shadow:0 0 0 2px rgba(212,163,86,0.15),0 4px 12px rgba(212,163,86,0.12);
+  }
+
+  .method-icon{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .method-info{flex:1}
+  .method-title{display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap}
+  .method-name{font-size:15px;font-weight:600;color:#2D1818}
+  .method-tag{padding:3px 9px;border-radius:6px;font-size:10px;font-weight:600;letter-spacing:0.05em}
+  .method-tag.recommended{background:#0F7B5A;color:#FFF}
+  .method-desc{font-size:12px;color:rgba(45,24,24,0.6)}
+  .method-radio{width:22px;height:22px;border-radius:50%;flex-shrink:0;border:2px solid rgba(45,24,24,0.2);transition:all 0.2s}
+  .method-card.selected .method-radio{background:linear-gradient(135deg,#D4A356,#B88A35);border:none;display:flex;align-items:center;justify-content:center}
+
+  .card-form{
+    background:#FFFFFF;
+    border:1.5px solid rgba(212,163,86,0.4);
+    border-radius:14px;
+    padding:24px;
+    margin-top:16px;
+    box-shadow:0 4px 14px rgba(212,163,86,0.08);
+  }
+  .card-form-title{font-size:18px;font-weight:600;margin:0 0 18px;font-family:Georgia,serif;font-style:italic;color:#2D1818}
+  .field{margin-bottom:16px}
+  .field-label{font-size:11px;letter-spacing:0.16em;color:rgba(45,24,24,0.65);font-weight:600;display:block;margin-bottom:8px}
+  .field-input{
+    width:100%;padding:13px 15px;
+    background:#FAF6F2;
+    border:1.5px solid rgba(45,24,24,0.12);
+    border-radius:10px;
+    color:#2D1818;
+    font-size:14px;
+    outline:none;box-sizing:border-box;
+    font-family:inherit;
+    transition:all 0.2s;
+  }
+  .field-input:focus{border-color:#D4A356;background:#FFF;box-shadow:0 0 0 3px rgba(212,163,86,0.15)}
+  .field-input.mono{font-family:"SF Mono","Monaco",monospace;letter-spacing:0.04em;font-size:15px}
+  .field-input::placeholder{color:rgba(45,24,24,0.35)}
+
+  .card-num-wrap{position:relative}
+  .card-logos{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;gap:6px}
+  .card-logo{width:32px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;letter-spacing:-0.05em;color:#FFF}
+  .card-logo.visa{background:linear-gradient(135deg,#1a3a8c,#3a5fce)}
+  .card-logo.mc{background:#FFF;border:1px solid rgba(45,24,24,0.1);position:relative;overflow:hidden}
+  .card-logo.mc::before{content:'';position:absolute;left:5px;top:5px;width:9px;height:9px;border-radius:50%;background:#eb001b}
+  .card-logo.mc::after{content:'';position:absolute;right:5px;top:5px;width:9px;height:9px;border-radius:50%;background:#f79e1b}
+
+  .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+  .checkbox-row{display:flex;align-items:center;gap:11px;padding:12px 0;cursor:pointer;margin-top:8px}
+  .checkbox-box{width:20px;height:20px;border-radius:6px;background:#D4A356;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 3px rgba(212,163,86,0.3)}
+  .checkbox-text{font-size:13px;font-weight:600;color:#2D1818}
+  .checkbox-sub{font-size:11.5px;color:rgba(45,24,24,0.6);margin-top:2px}
+
+  .summary-aside{height:fit-content;position:sticky;top:100px}
+  .summary-card{
+    background:#FFFFFF;
+    border:1.5px solid rgba(45,24,24,0.08);
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 4px 24px rgba(45,24,24,0.06);
+  }
+  .summary-section{padding:18px 20px;border-bottom:1px solid rgba(45,24,24,0.06)}
+  .summary-section:last-child{border-bottom:none}
+  .summary-section h3{font-size:18px;font-weight:600;margin:0;font-family:Georgia,serif;color:#2D1818}
+
+  .product-row{display:flex;gap:14px}
+  .product-poster{width:60px;height:80px;border-radius:9px;background:linear-gradient(160deg,#2D0A18,#4A0F1E,#1A0509);position:relative;overflow:hidden;flex-shrink:0;border:1px solid rgba(45,24,24,0.1);display:flex;align-items:center;justify-content:center;font-size:22px}
+  .product-poster .glow{position:absolute;width:90px;height:90px;left:-25px;top:-15px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.5),transparent 70%)}
+  .product-tag{font-size:10.5px;letter-spacing:0.16em;color:#B88A35;font-weight:600;margin-bottom:5px}
+  .product-name{font-size:16px;font-weight:600;line-height:1.2;margin-bottom:6px;font-family:Georgia,serif;font-style:italic;color:#2D1818}
+  .product-meta{font-size:12px;color:rgba(45,24,24,0.6);line-height:1.3}
+
+  .includes-section{background:linear-gradient(135deg,rgba(212,163,86,0.08),rgba(212,163,86,0.02))}
+  .includes-label{font-size:10.5px;letter-spacing:0.18em;color:#B88A35;font-weight:700;margin-bottom:11px}
+  .includes-list{display:flex;flex-direction:column;gap:7px}
+  .includes-item{display:flex;align-items:center;gap:9px;font-size:13px;color:#2D1818;font-weight:500}
+
+  .coupon-toggle{display:flex;align-items:center;gap:9px;font-size:13px;color:#7A1B2E;cursor:pointer;font-weight:600}
+  .coupon-toggle:hover{color:#B8294A}
+
+  .totals-row{display:flex;justify-content:space-between;font-size:13.5px;color:rgba(45,24,24,0.75);margin-bottom:7px}
+  .totals-divider{height:1px;background:rgba(45,24,24,0.1);margin:8px 0 14px}
+  .total-block{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px}
+  .total-label{font-size:10.5px;letter-spacing:0.18em;color:rgba(45,24,24,0.55);font-weight:700;margin-bottom:4px}
+  .total-amount{font-size:32px;font-weight:600;color:#7A1B2E;letter-spacing:-0.02em;font-family:Georgia,serif}
+  .cuotas-mini{text-align:right}
+  .cuotas-mini .label{font-size:11px;color:rgba(45,24,24,0.55)}
+  .cuotas-mini .amt{font-size:13px;color:#B88A35;font-weight:600}
+
+  .pay-button{
+    width:100%;padding:17px;
+    font-size:14px;font-weight:600;
+    border-radius:12px;
+    letter-spacing:0.18em;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    background:linear-gradient(135deg,#D4A356 0%,#B88A35 100%);
+    color:#FFF;
+    border:none;cursor:pointer;
+    transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);
+    box-shadow:0 4px 14px rgba(212,163,86,0.4);
+    font-family:inherit;
+  }
+  .pay-button:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 8px 24px rgba(212,163,86,0.5);filter:brightness(1.05)}
+  .pay-button:active{transform:scale(0.98)}
+
+  .guarantee{display:flex;align-items:center;gap:11px;padding:13px 14px;background:linear-gradient(135deg,rgba(15,123,90,0.06),rgba(15,123,90,0.02));border:1.5px solid rgba(15,123,90,0.25);border-radius:11px;margin-top:14px}
+  .guarantee-text{font-size:12px;line-height:1.45;color:#2D1818}
+  .guarantee-text strong{color:#0F7B5A}
+
+  .trust-seals{margin-top:18px;display:flex;flex-direction:column;gap:11px}
+  .seal{display:flex;align-items:center;gap:11px;padding:13px 15px;background:#FFFFFF;border:1px solid rgba(45,24,24,0.08);border-radius:11px}
+  .seal-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .seal-text-name{font-size:12.5px;font-weight:600;line-height:1.3;color:#2D1818}
+  .seal-text-desc{font-size:11px;color:rgba(45,24,24,0.55);margin-top:2px}
+
+  .support-card{margin-top:16px;padding:15px;background:#FFFFFF;border:1.5px dashed rgba(45,24,24,0.15);border-radius:11px;text-align:center}
+  .support-text{font-size:12px;color:rgba(45,24,24,0.65);margin-bottom:6px}
+  .support-link{font-size:13px;color:#7A1B2E;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  .support-link:hover{color:#B8294A}
+
+  .footer{padding:32px 32px 28px;text-align:center;border-top:1px solid rgba(45,24,24,0.06);margin-top:40px;font-size:12px;color:rgba(45,24,24,0.5)}
+  .footer .heart{color:#B8294A}
+
+  @media (max-width:900px){
+    .checkout-layout{grid-template-columns:1fr;padding:0 16px 30px;gap:20px}
+    .checkout-header{padding:14px 16px}
+    .summary-aside{position:static}
+    .checkout-title{font-size:24px}
+    .total-amount{font-size:26px}
+    .step-divider{width:40px}
+    .ssl-badge{font-size:11px;padding:5px 10px}
+  }
+  @media (max-width:520px){
+    .step-label{display:none}
+    .step-divider{width:30px}
+  }
+</style>
+</head>
+<body>
+
+<header class="checkout-header">
+  <div class="ch-inner">
+    <a href="cursos.html" class="logo">
+      <div class="logo-box">M</div>
+      <div class="logo-text">MILENA<br>MACHADO</div>
+    </a>
+    <div class="ssl-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0F7B5A" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span>Conexión segura SSL</span>
+    </div>
+  </div>
+</header>
+
+<div class="steps-bar">
+  <div class="steps-row">
+    <div class="step step-done">
+      <div class="step-num">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <span class="step-label">CARRITO</span>
+    </div>
+    <div class="step-divider done"></div>
+    <div class="step step-active">
+      <div class="step-num">2</div>
+      <span class="step-label">PAGO</span>
+    </div>
+    <div class="step-divider"></div>
+    <div class="step step-future">
+      <div class="step-num">3</div>
+      <span class="step-label">CONFIRMACIÓN</span>
+    </div>
+  </div>
+</div>
+
+<div class="checkout-layout">
+
+  <div>
+    <h2 class="checkout-title">Cómo querés <span class="serif-it gradtext" style="font-size:30px">pagar</span>?</h2>
+    <p class="checkout-subtitle">Elegí el método que más te convenga · Procesado por Pagopar</p>
+
+    <div onclick="seleccionar(this,'tarjeta')" class="method-card selected" data-method="tarjeta">
+      <div class="method-icon" style="background:linear-gradient(135deg,#D4A356,#B88A35)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      </div>
+      <div class="method-info">
+        <div class="method-title">
+          <span class="method-name">Tarjeta de crédito o débito</span>
+          <span class="method-tag recommended">RECOMENDADO</span>
+        </div>
+        <div class="method-desc">Visa · Mastercard · Amex · Cabal · y más</div>
+      </div>
+      <div class="method-radio">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+    </div>
+
+    <div onclick="seleccionar(this,'qr')" class="method-card" data-method="qr">
+      <div class="method-icon" style="background:linear-gradient(135deg,#7A1B2E,#B8294A)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      </div>
+      <div class="method-info">
+        <div class="method-name">Pago con QR</div>
+        <div class="method-desc">Escaneá con tu app del banco · Itaú · BNF · Continental · Atlas</div>
+      </div>
+      <div class="method-radio"></div>
+    </div>
+
+    <div onclick="seleccionar(this,'tigo')" class="method-card" data-method="tigo">
+      <div class="method-icon" style="background:linear-gradient(135deg,#0097dd,#005a96)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+      </div>
+      <div class="method-info">
+        <div class="method-name">Tigo Money</div>
+        <div class="method-desc">Pagá desde tu billetera Tigo Money</div>
+      </div>
+      <div class="method-radio"></div>
+    </div>
+
+    <div onclick="seleccionar(this,'personal')" class="method-card" data-method="personal">
+      <div class="method-icon" style="background:linear-gradient(135deg,#B8294A,#7A1B2E)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-linecap="round"/></svg>
+      </div>
+      <div class="method-info">
+        <div class="method-name">Billetera Personal Pay</div>
+        <div class="method-desc">Pagá desde tu app de Personal Pay</div>
+      </div>
+      <div class="method-radio"></div>
+    </div>
+
+    <div onclick="seleccionar(this,'transfer')" class="method-card" data-method="transfer">
+      <div class="method-icon" style="background:linear-gradient(135deg,#0F7B5A,#0a5a42)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <div class="method-info">
+        <div class="method-name">Transferencia bancaria</div>
+        <div class="method-desc">Homebanking · Ueno · Atlas · Continental · Itaú · GNB</div>
+      </div>
+      <div class="method-radio"></div>
+    </div>
+
+    <div onclick="seleccionar(this,'cash')" class="method-card" data-method="cash">
+      <div class="method-icon" style="background:linear-gradient(135deg,#5a4030,#3d2820)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="method-info">
+        <div class="method-name">Pago en efectivo</div>
+        <div class="method-desc">Aquí Pago · Pago Express · Wepa · Practipago</div>
+      </div>
+      <div class="method-radio"></div>
+    </div>
+
+    <div class="card-form" id="cardForm">
+      <h3 class="card-form-title">Datos de la tarjeta</h3>
+
+      <div class="field">
+        <label class="field-label">NÚMERO DE TARJETA</label>
+        <div class="card-num-wrap">
+          <input class="field-input mono" placeholder="0000 0000 0000 0000" id="cardNum" oninput="formatCardNum(this)"/>
+          <div class="card-logos">
+            <div class="card-logo visa">VISA</div>
+            <div class="card-logo mc"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">NOMBRE DEL TITULAR</label>
+        <input class="field-input" placeholder="MARIA GONZALEZ" style="text-transform:uppercase;letter-spacing:0.05em"/>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label">VENCIMIENTO</label>
+          <input class="field-input mono" placeholder="MM / AA" maxlength="7" oninput="formatExp(this)"/>
+        </div>
+        <div class="field">
+          <label class="field-label">CVV</label>
+          <input class="field-input mono" placeholder="123" maxlength="4"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">CUOTAS</label>
+        <select class="field-input" style="cursor:pointer">
+          <option>1 cuota de Gs 200.000 (sin interes)</option>
+          <option>3 cuotas de Gs 67.500 (sin interes)</option>
+          <option>6 cuotas de Gs 35.700 (8% interes)</option>
+          <option>12 cuotas de Gs 18.500 (15% interes)</option>
+        </select>
+      </div>
+
+      <label class="checkbox-row">
+        <div class="checkbox-box">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div class="checkbox-text">Recordar esta tarjeta para próximas compras</div>
+          <div class="checkbox-sub">Guardada de forma segura por Pagopar</div>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <aside class="summary-aside">
+    <div class="summary-card">
+      <div class="summary-section">
+        <h3>Tu pedido</h3>
+      </div>
+
+      <div class="summary-section">
+        <div class="product-row">
+          <div class="product-poster">
+            <div class="glow"></div>
+            <span style="position:relative">💎</span>
+          </div>
+          <div>
+            <div class="product-tag">FORMACIÓN PRINCIPAL</div>
+            <div class="product-name">Creando Mentes Millonarias</div>
+            <div class="product-meta">12 módulos · 47 clases · 8h 14m</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-section includes-section">
+        <div class="includes-label">INCLUYE</div>
+        <div class="includes-list">
+          <div class="includes-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F7B5A" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Acceso de por vida al curso
+          </div>
+          <div class="includes-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F7B5A" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Comunidad privada CMM
+          </div>
+          <div class="includes-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F7B5A" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Plantillas descargables
+          </div>
+          <div class="includes-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F7B5A" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Insignia de finalización
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-section">
+        <div class="coupon-toggle">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v4M20 12v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4M9 16h6"/></svg>
+          <span>¿Tenés un cupón de descuento?</span>
+        </div>
+      </div>
+
+      <div class="summary-section">
+        <div class="totals-row"><span>Subtotal</span><span style="font-weight:600;color:#2D1818">Gs 200.000</span></div>
+        <div class="totals-row"><span>IVA (incluido)</span><span>Gs 18.181</span></div>
+        <div class="totals-divider"></div>
+        <div class="total-block">
+          <div>
+            <div class="total-label">TOTAL A PAGAR</div>
+            <div class="total-amount">Gs 200.000</div>
+          </div>
+          <div class="cuotas-mini">
+            <div class="label">o 3 cuotas</div>
+            <div class="amt">Gs 67.500</div>
+          </div>
+        </div>
+
+        <button class="pay-button" onclick="pagar()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          PAGAR Gs 200.000
+        </button>
+
+        <div class="guarantee">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F7B5A" stroke-width="2" style="flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4" stroke-linecap="round"/></svg>
+          <div class="guarantee-text"><strong>Garantía de 7 días.</strong> Si no te gusta, te devolvemos el 100% sin preguntas.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-seals">
+      <div class="seal">
+        <div class="seal-icon" style="background:linear-gradient(135deg,#D4A356,#B88A35)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div>
+          <div class="seal-text-name">Procesado por Pagopar</div>
+          <div class="seal-text-desc">+1.500 empresas paraguayas confían</div>
+        </div>
+      </div>
+      <div class="seal">
+        <div class="seal-icon" style="background:linear-gradient(135deg,#0F7B5A,#0a5a42)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div>
+          <div class="seal-text-name">Acceso inmediato</div>
+          <div class="seal-text-desc">Te llega por mail apenas se procesa el pago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="support-card">
+      <div class="support-text">¿Problemas con el pago?</div>
+      <a href="https://wa.me/595981234567" class="support-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1s-.5-.1-.7.1-.8 1-1 1.2-.4.2-.7.1c-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.5.1-.2.2-.3.3-.5s0-.4 0-.5c-.1-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1 2.9 1.2 3.1c.1.2 2.1 3.2 5 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.8.3-1.4.2-1.5-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.7.4 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.8-3.1-.2-.3C4 14.7 3.5 13.4 3.5 12c0-4.7 3.8-8.5 8.5-8.5s8.5 3.8 8.5 8.5-3.8 8.5-8.5 8.5z"/></svg>
+        Escribinos por WhatsApp
+      </a>
+    </div>
+  </aside>
+
+</div>
+
+<footer class="footer">
+  Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
+</footer>
+
+<script>
+  function seleccionar(el, method){
+    document.querySelectorAll('.method-card').forEach(c => {
+      c.classList.remove('selected');
+      c.querySelector('.method-radio').innerHTML = '';
+    });
+    el.classList.add('selected');
+    el.querySelector('.method-radio').innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    document.getElementById('cardForm').style.display = method === 'tarjeta' ? 'block' : 'none';
+  }
+  function formatCardNum(input){
+    let v = input.value.replace(/\D/g, '').substring(0, 16);
+    let parts = [];
+    for(let i = 0; i < v.length; i += 4) parts.push(v.substring(i, i + 4));
+    input.value = parts.join(' ');
+  }
+  function formatExp(input){
+    let v = input.value.replace(/\D/g, '').substring(0, 4);
+    if(v.length >= 3) input.value = v.substring(0, 2) + ' / ' + v.substring(2);
+    else input.value = v;
+  }
+  function pagar(){
+    alert('Demo: cuando integremos Pagopar de verdad, aca se va a procesar el pago.\n\nPor ahora solo te muestra esta alerta.');
+  }
+</script>
+
+</body>
+</html>

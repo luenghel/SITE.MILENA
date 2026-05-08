@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1A0A12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Milena">
+<title>Embudos que escalan · Clase 8 · Milena Machado</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .breadcrumb-bar{padding:18px 32px;max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:12px;font-size:11.5px;color:rgba(255,245,240,0.55)}
+  .back-circle{width:32px;height:32px;border-radius:50%;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.15);color:#FFF5F0;display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;transition:all 0.25s}
+  .back-circle:hover{background:rgba(255,245,240,0.1);transform:translateX(-2px)}
+  .crumb-sep{color:rgba(255,245,240,0.3)}
+
+  .clase-layout{max-width:1400px;margin:0 auto;padding:0 32px 50px;display:grid;grid-template-columns:2.8fr 1fr;gap:24px}
+
+  /* VIDEO */
+  .video-wrap{position:relative;aspect-ratio:16/9;border-radius:14px;background:linear-gradient(135deg,#2D0A18,#4A0F1E,#1A0509);overflow:hidden;border:0.5px solid rgba(255,245,240,0.15);box-shadow:0 14px 40px rgba(0,0,0,0.4);cursor:pointer}
+  .video-glow-1{position:absolute;width:400px;height:400px;left:-100px;top:-100px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.5),transparent 70%);pointer-events:none}
+  .video-glow-2{position:absolute;width:280px;height:280px;right:-70px;bottom:-70px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.4),transparent 70%);pointer-events:none}
+  .play-circle{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:90px;height:90px;border-radius:50%;background:rgba(255,245,240,0.1);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:0.5px solid rgba(255,245,240,0.3);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 32px rgba(0,0,0,0.5);transition:all 0.3s}
+  .video-wrap:hover .play-circle{transform:translate(-50%,-50%) scale(1.08)}
+
+  .video-top-bar{position:absolute;top:16px;left:16px;right:16px;display:flex;align-items:center;justify-content:space-between;z-index:5}
+  .video-badge{padding:5px 11px;background:rgba(14,5,9,0.7);backdrop-filter:blur(8px);border-radius:7px;font-size:10.5px;color:#FFF5F0;letter-spacing:0.06em}
+
+  /* MINI SHARE */
+  .mini-share{display:flex;align-items:center;background:rgba(20,8,12,0.85);backdrop-filter:blur(20px) saturate(160%);border:0.5px solid rgba(212,163,86,0.4);border-radius:18px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.4);animation:slideRight 0.5s ease-out 5s both}
+  @keyframes slideRight{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+  .mini-share-btn{display:flex;align-items:center;gap:7px;padding:7px 12px 7px 10px;color:#FFF5F0;cursor:pointer;background:none;border:none;font-family:inherit}
+  .mini-share-text{font-size:10.5px;font-weight:500;letter-spacing:0.04em}
+  .mini-share-x{width:24px;height:28px;border-left:0.5px solid rgba(255,245,240,0.1);color:rgba(255,245,240,0.45);cursor:pointer;display:flex;align-items:center;justify-content:center;background:none;border-top:none;border-right:none;border-bottom:none}
+  .mini-share-x:hover{color:#FFF5F0}
+
+  .video-bottom{position:absolute;left:16px;right:16px;bottom:16px;z-index:5}
+  .progress-bar-track{height:3.5px;background:rgba(255,245,240,0.2);border-radius:2px;margin-bottom:11px;overflow:hidden}
+  .progress-bar-fill{width:42%;height:100%;background:linear-gradient(90deg,#FAC775,#D4A356);border-radius:2px}
+  .video-controls{display:flex;align-items:center;gap:12px;font-size:11px;color:#FFF5F0}
+  .video-controls .right{margin-left:auto;display:flex;gap:16px;align-items:center}
+
+  /* TÍTULO Y NAV */
+  .clase-info{margin-top:18px}
+  .clase-title{font-size:26px;font-weight:500;margin:0 0 6px;font-family:Georgia,serif;font-style:italic;letter-spacing:-0.015em}
+  .clase-desc{font-size:13.5px;color:rgba(255,245,240,0.7);line-height:1.55;margin:0}
+
+  .nav-classes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+  .nav-prev,.nav-next{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:13px;cursor:pointer;transition:all 0.25s;text-decoration:none;color:#FFF5F0}
+  .nav-prev{background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);text-align:left}
+  .nav-prev:hover{background:rgba(255,245,240,0.07);transform:translateX(-2px)}
+  .nav-next{background:linear-gradient(135deg,rgba(212,163,86,0.18),rgba(212,163,86,0.06));border:0.5px solid rgba(212,163,86,0.55);text-align:right;flex-direction:row;box-shadow:0 4px 16px rgba(212,163,86,0.12)}
+  .nav-next:hover{transform:translateX(2px) scale(1.02);box-shadow:0 8px 24px rgba(212,163,86,0.25)}
+  .nav-next .nav-circle{order:2}
+  .nav-next .nav-text{order:1;flex:1}
+  .nav-circle{width:40px;height:40px;border-radius:50%;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .nav-next .nav-circle{background:linear-gradient(135deg,#FAC775,#D4A356);border:none;box-shadow:0 4px 12px rgba(212,163,86,0.3)}
+  .nav-text{flex:1;min-width:0}
+  .nav-label{font-size:9.5px;letter-spacing:0.2em;font-weight:500;margin-bottom:3px}
+  .nav-prev .nav-label{color:rgba(255,245,240,0.55)}
+  .nav-next .nav-label{color:#FAC775}
+  .nav-class-name{font-size:14.5px;font-family:Georgia,serif;font-style:italic;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  .quick-actions{display:flex;gap:8px;margin-top:14px}
+  .qa-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:9px;color:rgba(255,245,240,0.85);font-size:11px;cursor:pointer;transition:all 0.25s}
+  .qa-btn:hover{background:rgba(255,245,240,0.06)}
+  .qa-btn.green{background:rgba(93,202,165,0.08);border-color:rgba(93,202,165,0.3);color:#9FE1CB}
+  .qa-btn.green:hover{background:rgba(93,202,165,0.14)}
+
+  /* COMENTARIOS */
+  .comments{height:fit-content}
+  .comments-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .comments-title{font-size:16px;font-weight:500;margin:0;color:rgba(255,245,240,0.9);font-family:Georgia,serif;font-style:italic}
+  .comments-count{font-size:11px;color:rgba(255,245,240,0.5)}
+
+  .comment-input-wrap{display:flex;gap:10px;margin-bottom:18px;padding-bottom:18px;border-bottom:0.5px solid rgba(255,245,240,0.06)}
+  .comment-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#7A1B2E,#E8B8C4);flex-shrink:0;border:0.5px solid rgba(255,245,240,0.15)}
+  .comment-input{flex:1;padding:8px 0;background:transparent;border:none;border-bottom:0.5px solid rgba(255,245,240,0.15);color:#FFF5F0;font-size:12px;outline:none;font-family:inherit}
+  .comment-input:focus{border-bottom-color:rgba(212,163,86,0.5)}
+
+  .comment-milena{margin-bottom:18px;padding-left:11px;border-left:1.5px solid #FAC775}
+  .comment-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .comment-mini-avatar{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#B8294A,#E8B8C4);border:1px solid #FAC775;flex-shrink:0}
+  .comment-name{font-size:11.5px;font-weight:500}
+  .prof-tag{font-size:9px;letter-spacing:0.1em;color:#FAC775;font-weight:500}
+  .comment-text{font-size:12px;line-height:1.5;color:rgba(255,245,240,0.85);margin:0 0 6px}
+  .timestamp-link{color:#FAC775;background:rgba(212,163,86,0.1);padding:0px 5px;border-radius:4px;font-size:11px;cursor:pointer}
+  .comment-actions{display:flex;align-items:center;gap:14px;font-size:10.5px;color:rgba(255,245,240,0.5)}
+  .ca-btn{display:flex;align-items:center;gap:4px;cursor:pointer;background:none;border:none;color:inherit;font-family:inherit;font-size:inherit}
+  .ca-btn.liked{color:#E8B8C4}
+
+  .comment-row{margin-bottom:18px}
+  .comment-mini-avatar-2{width:24px;height:24px;border-radius:50%;flex-shrink:0}
+  .comment-time{font-size:9.5px;color:rgba(255,245,240,0.45);margin-left:6px}
+  .comment-content{padding-left:32px}
+  .comment-content p{font-size:11.5px;line-height:1.5;color:rgba(255,245,240,0.82);margin:0 0 6px}
+
+  .show-more{width:100%;padding:9px;background:transparent;border:0.5px dashed rgba(255,245,240,0.18);border-radius:9px;color:rgba(255,245,240,0.6);font-size:11px;cursor:pointer;letter-spacing:0.04em;font-family:inherit;transition:all 0.25s}
+  .show-more:hover{background:rgba(255,245,240,0.04);color:#FFF5F0;border-color:rgba(212,163,86,0.4)}
+
+  @media (max-width:900px){
+    .breadcrumb-bar{padding:14px 16px}
+    .clase-layout{grid-template-columns:1fr;padding:0 16px 30px}
+    .clase-title{font-size:22px}
+    .nav-classes{grid-template-columns:1fr;gap:8px}
+    .quick-actions{flex-wrap:wrap}
+  }
+</style>
+</head>
+<body>
+
+<header class="main-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">M</div>
+      <div class="logo-text">MILENA<br>MACHADO</div>
+    </a>
+    <a href="index.html" class="nav-btn">INICIO</a>
+    <a href="cursos.html" class="nav-btn active">CURSOS</a>
+    <a href="blog.html" class="nav-btn">BLOG</a>
+    <a href="comunidad.html" class="nav-btn">COMUNIDAD</a>
+    <div style="margin-left:auto"><a href="login.html" class="btn-outline">ENTRAR</a></div>
+  </div>
+</header>
+
+<div class="breadcrumb-bar">
+  <a href="curso-detalle.html" class="back-circle">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </a>
+  <span class="serif-it" style="color:#E8B8C4">Creando Mentes Millonarias</span>
+  <span class="crumb-sep">/</span>
+  <span style="color:#FFF5F0">Clase 8 · Embudos que escalan</span>
+</div>
+
+<div class="clase-layout">
+
+  <!-- COLUMNA IZQUIERDA -->
+  <div>
+    <!-- VIDEO -->
+    <div class="video-wrap" onclick="togglePlay()">
+      <div class="video-glow-1"></div>
+      <div class="video-glow-2"></div>
+
+      <div class="play-circle" id="playCircle">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#FFF5F0"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+
+      <!-- Top: badge + mini share -->
+      <div class="video-top-bar">
+        <span class="video-badge">CLASE 8 · 18:42</span>
+        <div class="mini-share" id="miniShare">
+          <button class="mini-share-btn" onclick="event.stopPropagation();compartirJornada()">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="url(#dShare)" style="filter:drop-shadow(0 0 3px rgba(232,184,196,0.5))"><defs><linearGradient id="dShare" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#FAC775"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
+            <span class="mini-share-text">Compartí tu jornada</span>
+          </button>
+          <button class="mini-share-x" onclick="event.stopPropagation();cerrarShare()">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bottom controls -->
+      <div class="video-bottom" onclick="event.stopPropagation()">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill"></div>
+        </div>
+        <div class="video-controls">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFF5F0"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>
+          <span>7:48</span>
+          <span style="opacity:0.5">/</span>
+          <span style="opacity:0.7">18:42</span>
+          <div class="right">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke-linecap="round"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Título y descripción -->
+    <div class="clase-info">
+      <h2 class="clase-title">Embudos que escalan</h2>
+      <p class="clase-desc">El método de las <em style="color:#E8B8C4">3 capas de calor</em> para diseñar embudos de venta que convierten sin parecer agresivos.</p>
+    </div>
+
+    <!-- Navegación clases -->
+    <div class="nav-classes">
+      <a href="curso-detalle.html" class="nav-prev">
+        <div class="nav-circle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </div>
+        <div class="nav-text">
+          <div class="nav-label">CLASE ANTERIOR</div>
+          <div class="nav-class-name">Bienvenida al curso</div>
+        </div>
+      </a>
+
+      <a href="clase.html" class="nav-next">
+        <div class="nav-text">
+          <div class="nav-label">PRÓXIMA CLASE</div>
+          <div class="nav-class-name">Métricas que importan</div>
+        </div>
+        <div class="nav-circle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </a>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="quick-actions">
+      <button class="qa-btn" onclick="dar💎()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="url(#dQA)" style="filter:drop-shadow(0 0 4px rgba(232,184,196,0.4))"><defs><linearGradient id="dQA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#B8294A"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
+        287
+      </button>
+      <button class="qa-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        Guardar
+      </button>
+      <button class="qa-btn green">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Marcar como vista
+      </button>
+      <button class="qa-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Materiales
+      </button>
+    </div>
+  </div>
+
+  <!-- COLUMNA DERECHA: Comentarios -->
+  <div class="comments">
+    <div class="comments-header">
+      <h3 class="comments-title">Conversación</h3>
+      <span class="comments-count">48</span>
+    </div>
+
+    <div class="comment-input-wrap">
+      <div class="comment-avatar"></div>
+      <input class="comment-input" placeholder="Compartí lo que pensás..."/>
+    </div>
+
+    <!-- Comentario de Milena destacado -->
+    <div class="comment-milena">
+      <div class="comment-head">
+        <div class="comment-mini-avatar"></div>
+        <span class="comment-name">Milena</span>
+        <span class="prof-tag">PROFESORA</span>
+      </div>
+      <p class="comment-text">Si tienen dudas con la <em style="color:#E8B8C4">capa 2</em>, mírense de nuevo el <span class="timestamp-link">11:24</span> 💎</p>
+      <div class="comment-actions">
+        <button class="ca-btn liked">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="url(#d1)" style="filter:drop-shadow(0 0 3px rgba(232,184,196,0.4))"><defs><linearGradient id="d1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#B8294A"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
+          93
+        </button>
+        <button class="ca-btn">Responder</button>
+      </div>
+    </div>
+
+    <!-- Comentario común 1 -->
+    <div class="comment-row">
+      <div class="comment-head">
+        <div class="comment-mini-avatar-2" style="background:linear-gradient(135deg,#7A1B2E,#C97990)"></div>
+        <span class="comment-name">Carolina S.</span>
+        <span class="comment-time">hace 4 h</span>
+      </div>
+      <div class="comment-content">
+        <p>Esta clase me cambió la cabeza. Apliqué la primera capa con un cliente y respondió en 10 minutos 🤯</p>
+        <div class="comment-actions">
+          <button class="ca-btn liked">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="url(#d2)" style="filter:drop-shadow(0 0 3px rgba(232,184,196,0.4))"><defs><linearGradient id="d2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#B8294A"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
+            24
+          </button>
+          <button class="ca-btn">Responder</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comentario común 2 -->
+    <div class="comment-row">
+      <div class="comment-head">
+        <div class="comment-mini-avatar-2" style="background:linear-gradient(135deg,#4A0F1E,#B8294A)"></div>
+        <span class="comment-name">Diego R.</span>
+        <span class="comment-time">hace 6 h</span>
+      </div>
+      <div class="comment-content">
+        <p>Pregunta sobre el <span class="timestamp-link">11:24</span> ¿el filtro lo hacés vos o un asistente?</p>
+        <div class="comment-actions">
+          <button class="ca-btn">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="1.7"><path d="M6 3h12l4 6-10 13L2 9z" stroke-linejoin="round"/></svg>
+            8
+          </button>
+          <button class="ca-btn">Responder</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comentario común 3 -->
+    <div class="comment-row">
+      <div class="comment-head">
+        <div class="comment-mini-avatar-2" style="background:linear-gradient(135deg,#D4A356,#E8B8C4)"></div>
+        <span class="comment-name">Patricia M.</span>
+        <span class="comment-time">hace 1 d</span>
+      </div>
+      <div class="comment-content">
+        <p>Las plantillas son ORO puro 📋</p>
+        <div class="comment-actions">
+          <button class="ca-btn">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="1.7"><path d="M6 3h12l4 6-10 13L2 9z" stroke-linejoin="round"/></svg>
+            15
+          </button>
+          <button class="ca-btn">Responder</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="show-more">Ver 45 más</button>
+
+  </div>
+</div>
+
+<footer class="main-footer">
+  Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
+</footer>
+
+<script>
+  function togglePlay(){
+    const c = document.getElementById('playCircle');
+    c.style.opacity = c.style.opacity === '0' ? '1' : '0';
+  }
+  function compartirJornada(){
+    if(navigator.share){
+      navigator.share({title:'Clase de Milena Machado',text:'Estoy aprendiendo con CMM',url:window.location.href});
+    } else {
+      alert('Compartí esta clase con tu red para inspirar a otras!');
+    }
+  }
+  function cerrarShare(){
+    document.getElementById('miniShare').style.display = 'none';
+  }
+  // Esconder mini-share automáticamente a los 12 segundos
+  setTimeout(() => {
+    const ms = document.getElementById('miniShare');
+    if(ms) ms.style.transition = 'opacity 0.5s';
+    if(ms) ms.style.opacity = '0';
+    setTimeout(() => { if(ms) ms.style.display = 'none'; }, 500);
+  }, 12000);
+</script>
+
+
+</body>
+</html>

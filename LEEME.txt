@@ -1,0 +1,91 @@
+════════════════════════════════════════════════════════════
+  MILENA MACHADO · "Creando Mentes Millonarias"
+  Sitio completo conectado a Supabase
+════════════════════════════════════════════════════════════
+
+📁 ARCHIVOS DEL SITIO (15 archivos):
+
+   HTML:
+   1) index.html          → Página principal (Home)
+   2) login.html          → Login REAL conectado a Supabase ✨
+   3) cursos.html         → Catálogo de cursos
+   4) curso-detalle.html  → Detalle de un curso
+   5) clase.html          → Reproductor de clase
+   6) comunidad.html      → Feed de la comunidad
+   7) perfil.html         → Perfil con insignias
+   8) checkout.html       → Pantalla de pago (fondo blanco)
+   9) admin.html          → Panel admin (fundadora)
+   10) blog.html          → Blog público
+   11) articulo-1.html    → Artículo de ejemplo
+
+   ESTILOS Y CONFIG:
+   12) styles.css         → Estilos compartidos (NO BORRAR)
+   13) supabase-config.js → Conexión a Supabase ✨ NUEVO
+
+
+🎯 CÓMO PROBARLO:
+
+   1) Crear una carpeta nueva en tu computadora
+      (ej: "milena-site" en el Escritorio)
+
+   2) Bajá TODOS los 13 archivos
+      Ponelos TODOS juntos en esa carpeta
+
+   3) Doble click en index.html
+
+   4) ¡Probá el LOGIN REAL!
+      • Click en "ENTRAR" del menú
+      • Pestaña "REGISTRARSE"
+      • Llená nombre, email, contraseña (mín 6 caracteres)
+      • Click "CREAR MI CUENTA"
+      • Tenés que ver: "✓ Cuenta creada! Redirigiendo..."
+
+   5) Verificar en Supabase
+      • Andá a https://supabase.com/dashboard
+      • Click en proyecto "comunidad milena"
+      • Authentication → Users → vas a ver tu cuenta
+      • Table Editor → perfiles → vas a ver tu perfil
+
+
+✨ NUEVO: LOGIN FUNCIONAL
+
+   El login YA NO ES de mentira. Está conectado de verdad
+   a Supabase. Las alumnas pueden:
+   • Crear cuenta con email + contraseña
+   • Iniciar sesión
+   • Recuperar contraseña olvidada
+   • Cerrar sesión
+
+   La sesión queda guardada (no tienen que loguearse cada vez).
+
+
+⏳ PENDIENTE:
+
+   • Conectar las páginas privadas al login
+     (perfil, comunidad, clase, etc.)
+   • Pagos reales (Pagopar)
+   • Videos (Cloudflare Stream)
+   • Subir el sitio a Vercel
+   • Comprar dominio
+
+
+🚨 IMPORTANTE:
+
+   El archivo "supabase-config.js" tiene tus claves
+   de Supabase. NO LO COMPARTAS con nadie ni lo subas
+   a redes sociales o foros públicos.
+
+   Cuando subamos el sitio a Vercel queda público pero
+   las claves son seguras (anon key) y la base de datos
+   está protegida con políticas RLS.
+
+
+💡 NOTA PARA MILENA:
+
+   Si antes te aparecía el sitio CORROMPIDO al abrir
+   un archivo HTML, era porque te faltaba styles.css
+   en la misma carpeta. Asegurate de tener TODOS los
+   archivos juntos en la misma carpeta.
+
+
+════════════════════════════════════════════════════════════
