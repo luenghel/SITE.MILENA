@@ -387,7 +387,7 @@
         </div>
       </div>
 
-      <button class="compra-modal-cta" onclick="window.location.href='checkout.html'">
+      <button class="compra-modal-cta" onclick="window.location.href='checkout.html?curso=' + cursoId">
         <span id="modalBtnText">COMPRAR AHORA</span>
         <span class="compra-modal-cta-price" id="modalBtnPrice">· Gs 200.000</span>
       </button>
@@ -404,10 +404,57 @@
 </div>
 
 <script>
+// Catálogo de cursos
+const CURSOS = {
+  'cmm': {
+    titulo: 'Creando Mentes Millonarias',
+    titulo_breve: 'Creando Mentes<br>Millonarias',
+    categoria: 'FORMACIÓN PRINCIPAL',
+    precio: 200000,
+    incluye: ['12 módulos · 47 clases', 'Acceso de por vida', 'Comunidad privada CMM', 'Garantía de 7 días']
+  },
+  'stories': {
+    titulo: 'Stories que venden',
+    titulo_breve: 'Stories que<br>venden',
+    categoria: 'CONTENIDO',
+    precio: 480000,
+    incluye: ['8 módulos · 32 clases', 'Plantillas listas para usar', 'Acceso de por vida', 'Garantía de 7 días']
+  },
+  'certificacion': {
+    titulo: 'Certificación Social Media',
+    titulo_breve: 'Certificación<br>Social Media',
+    categoria: 'PREMIUM · CERTIFICADO',
+    precio: 1200000,
+    incluye: ['15 módulos · 24 horas', 'Certificado oficial al finalizar', 'Soporte 1 a 1 con Milena', 'Garantía de 7 días']
+  }
+};
+
+// Leer ID del curso de la URL
+const params = new URLSearchParams(window.location.search);
+const cursoId = params.get('id') || 'cmm';
+const cursoActual = CURSOS[cursoId] || CURSOS['cmm'];
+
+// Actualizar el modal con datos del curso correcto
+function aplicarDatosCurso() {
+  const posterCat = document.querySelector('.compra-modal-poster-cat');
+  const posterTitle = document.querySelector('.compra-modal-poster-title');
+  const includesList = document.querySelector('.compra-includes-list');
+  if (posterCat) posterCat.textContent = cursoActual.categoria;
+  if (posterTitle) posterTitle.innerHTML = cursoActual.titulo_breve;
+  if (includesList) {
+    includesList.innerHTML = cursoActual.incluye.map(item => `
+      <div class="compra-includes-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        ${item}
+      </div>
+    `).join('');
+  }
+}
+
 // Verificar si la alumna tiene este curso
 (function() {
-  const CURSO_TITULO = 'Creando Mentes Millonarias';
-  const CURSO_PRECIO = 200000;
+  const CURSO_TITULO = cursoActual.titulo;
+  const CURSO_PRECIO = cursoActual.precio;
 
   function mostrarModal(logueada) {
     const modal = document.getElementById('compraModal');
@@ -428,6 +475,7 @@
       loginLink.style.display = 'block';
     }
 
+    aplicarDatosCurso();
     modal.classList.add('show');
     // Bloquear scroll del body
     document.body.style.overflow = 'hidden';

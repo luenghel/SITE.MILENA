@@ -114,7 +114,7 @@
   <div class="section-row">
 
     <!-- COMPRADO -->
-    <a href="curso-detalle.html" class="poster-hover poster-card">
+    <a href="curso-detalle.html?id=cmm" class="poster-hover poster-card" data-curso="cmm">
       <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)">
         <div style="position:absolute;width:160px;height:160px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>
         <div style="position:absolute;width:140px;height:140px;right:-30px;bottom:-30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)"></div>
@@ -138,7 +138,7 @@
     </a>
 
     <!-- BLOQUEADO -->
-    <a href="checkout.html" class="poster-hover poster-card">
+    <a href="curso-detalle.html?id=stories" class="poster-hover poster-card" data-curso="stories">
       <div class="poster-shadow" style="background:linear-gradient(160deg,#5A0F2A 0%,#8B2244 50%,#2D0A18 100%)">
         <div style="position:absolute;width:160px;height:160px;right:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.5),transparent 70%)"></div>
         <div class="lock-overlay"></div>
@@ -160,7 +160,7 @@
     </a>
 
     <!-- BLOQUEADO PREMIUM -->
-    <a href="checkout.html" class="poster-hover poster-card">
+    <a href="curso-detalle.html?id=certificacion" class="poster-hover poster-card" data-curso="certificacion">
       <div class="poster-shadow" style="background:linear-gradient(160deg,#4A0F1E 0%,#7A1B2E 50%,#3D1208 100%)">
         <div style="position:absolute;width:160px;height:160px;left:-30px;bottom:-30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(212,163,86,0.5),transparent 70%)"></div>
         <div class="lock-overlay"></div>
@@ -265,18 +265,64 @@
     if (typeof sb !== 'undefined' && sb !== null) {
       clearInterval(checkAuth);
       const { data: { user } } = await sb.auth.getUser();
+
+      // Lógica del Club del Libro
       const badge = document.querySelector('[data-club-badge]');
       const btn = document.querySelector('[data-club-btn]');
       if (user) {
-        // Logueado: mostrar "INCLUIDO EN PLAN"
         if (badge) badge.style.display = '';
         if (btn) btn.textContent = 'VER PLAN ANUAL';
       } else {
-        // No logueado: ocultar el badge, cambiar botón a "INICIA SESIÓN"
         if (badge) badge.style.display = 'none';
         if (btn) btn.textContent = 'INICIÁ SESIÓN';
         const card = document.querySelector('[data-card-club]');
         if (card) card.setAttribute('href', 'login.html');
+      }
+
+      // Lógica del CMM (curso 1) - poner candado si NO está logueado o no compró
+      const cardCmm = document.querySelector('[data-curso="cmm"]');
+      if (cardCmm) {
+        let mostrarCandado = !user; // Por default si no está logueado, candado
+        
+        if (user) {
+          // Verificar si compró el CMM
+          const { data: cursoData } = await sb.from('cursos').select('id').eq('titulo', 'Creando Mentes Millonarias').single();
+          if (cursoData) {
+            const { data: compra } = await sb.from('compras').select('id').eq('usuario_id', user.id).eq('curso_id', cursoData.id).eq('estado', 'pagado').maybeSingle();
+            if (!compra) mostrarCandado = true;
+          }
+        }
+        
+        if (mostrarCandado) {
+          // Agregar lock-overlay y price-badge si no existe
+          const shadow = cardCmm.querySelector('.poster-shadow');
+          if (shadow && !shadow.querySelector('.lock-overlay')) {
+            const lock = document.createElement('div');
+            lock.className = 'lock-overlay';
+            shadow.insertBefore(lock, shadow.querySelector('.text-shadow-overlay'));
+          }
+          // Reemplazar check-icon por price-badge
+          const checkIcon = cardCmm.querySelector('.check-icon');
+          if (checkIcon) {
+            const priceBadge = document.createElement('div');
+            priceBadge.className = 'price-badge';
+            priceBadge.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Gs 200.000';
+            checkIcon.replaceWith(priceBadge);
+          }
+          // Ocultar progreso si existe
+          const progressTrack = cardCmm.querySelector('.progress-track');
+          const progressText = cardCmm.querySelector('.progress-text');
+          if (progressTrack) progressTrack.style.display = 'none';
+          if (progressText) progressText.style.display = 'none';
+          // Agregar botón DESBLOQUEAR
+          const inner = cardCmm.querySelector('.poster-card-inner');
+          if (inner && !inner.querySelector('.unlock-btn')) {
+            const btnUnlock = document.createElement('button');
+            btnUnlock.className = 'unlock-btn';
+            btnUnlock.textContent = 'DESBLOQUEAR';
+            inner.appendChild(btnUnlock);
+          }
+        }
       }
     }
   }, 50);
