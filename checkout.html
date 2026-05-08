@@ -513,5 +513,12 @@
   }
 </script>
 
+<script src="supabase-config.js"></script>
+<script src="header-dinamico.js"></script>
+<script>
+window.onSupabaseReady = async () => {
+  await requerirLogin();
+};
+</script>
 </body>
 </html>

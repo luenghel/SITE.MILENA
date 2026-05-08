@@ -693,5 +693,18 @@
   renderHashtags();
 </script>
 
+<script src="supabase-config.js"></script>
+<script src="header-dinamico.js"></script>
+<script>
+window.onSupabaseReady = async () => {
+  const user = await requerirLogin();
+  if (!user) return;
+  const perfil = await obtenerPerfil();
+  if (!perfil || (perfil.rol !== "admin" && perfil.rol !== "fundadora")) {
+    alert("Esta página es solo para administradoras.");
+    window.location.href = "index.html";
+  }
+};
+</script>
 </body>
 </html>
