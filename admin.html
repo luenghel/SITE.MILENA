@@ -696,15 +696,25 @@
 <script src="supabase-config.js"></script>
 <script src="header-dinamico.js"></script>
 <script>
-window.onSupabaseReady = async () => {
-  const user = await requerirLogin();
-  if (!user) return;
-  const perfil = await obtenerPerfil();
-  if (!perfil || (perfil.rol !== "admin" && perfil.rol !== "fundadora")) {
-    alert("Esta página es solo para administradoras.");
-    window.location.href = "index.html";
-  }
-};
+// Solo admin/fundadora puede ver esta página
+(function() {
+  const checkAdmin = setInterval(async () => {
+    if (typeof sb !== 'undefined' && sb !== null) {
+      clearInterval(checkAdmin);
+      const { data: { user } } = await sb.auth.getUser();
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      const { data: perfil } = await sb.from('perfiles').select('rol').eq('id', user.id).single();
+      if (!perfil || (perfil.rol !== 'admin' && perfil.rol !== 'fundadora')) {
+        alert('Esta página es solo para administradoras.');
+        window.location.href = 'index.html';
+      }
+    }
+  }, 100);
+})();
 </script>
+
 </body>
 </html>

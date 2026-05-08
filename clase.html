@@ -350,7 +350,20 @@
 
 
 <script src="supabase-config.js"></script>
-<script>window.onSupabaseReady = async () => { await requerirLogin(); };</script>
 <script src="header-dinamico.js"></script>
+<script>
+// Bloquear página si no está logueado
+(function() {
+  const checkLogin = setInterval(async () => {
+    if (typeof sb !== 'undefined' && sb !== null) {
+      clearInterval(checkLogin);
+      const { data: { user } } = await sb.auth.getUser();
+      if (!user) {
+        window.location.href = 'login.html';
+      }
+    }
+  }, 100);
+})();
+</script>
 </body>
 </html>
