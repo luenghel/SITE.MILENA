@@ -6,17 +6,22 @@
 const SUPABASE_URL = 'https://pdwooahpyustbqlrvlxz.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_3ED52aGMAAPuOTnFGRWM1Q_IHjmgmOp';
 
+// Cliente de Supabase (se inicializa cuando carga la librería)
+let sb = null;
+
 // Cargar Supabase desde CDN
 const supabaseScript = document.createElement('script');
 supabaseScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';
 document.head.appendChild(supabaseScript);
 
-let supabase;
-
 supabaseScript.onload = () => {
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   console.log('✅ Supabase conectado');
   if (window.onSupabaseReady) window.onSupabaseReady();
+};
+
+supabaseScript.onerror = () => {
+  console.error('❌ No se pudo cargar Supabase. Verificá tu conexión a internet o que estés sirviendo el sitio con un servidor local.');
 };
 
 // ═══════════════════════════════════════════════════════
@@ -25,7 +30,8 @@ supabaseScript.onload = () => {
 
 // REGISTRO de nueva alumna
 async function registrarse(email, password, nombre) {
-  const { data, error } = await supabase.auth.signUp({
+  if (!sb) return { exito: false, error: 'Supabase no está conectado todavía' };
+  const { data, error } = await sb.auth.signUp({
     email: email,
     password: password,
     options: {
@@ -38,7 +44,8 @@ async function registrarse(email, password, nombre) {
 
 // LOGIN con email y contraseña
 async function iniciarSesion(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({
+  if (!sb) return { exito: false, error: 'Supabase no está conectado todavía' };
+  const { data, error } = await sb.auth.signInWithPassword({
     email: email,
     password: password
   });
@@ -48,7 +55,8 @@ async function iniciarSesion(email, password) {
 
 // LOGOUT
 async function cerrarSesion() {
-  const { error } = await supabase.auth.signOut();
+  if (!sb) return { exito: false, error: 'Supabase no está conectado' };
+  const { error } = await sb.auth.signOut();
   if (error) return { exito: false, error: error.message };
   window.location.href = 'index.html';
   return { exito: true };
@@ -56,15 +64,17 @@ async function cerrarSesion() {
 
 // VERIFICAR si hay sesión activa
 async function obtenerUsuario() {
-  const { data: { user } } = await supabase.auth.getUser();
+  if (!sb) return null;
+  const { data: { user } } = await sb.auth.getUser();
   return user;
 }
 
 // OBTENER perfil completo desde la tabla perfiles
 async function obtenerPerfil() {
+  if (!sb) return null;
   const user = await obtenerUsuario();
   if (!user) return null;
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from('perfiles')
     .select('*')
     .eq('id', user.id)
@@ -75,7 +85,8 @@ async function obtenerPerfil() {
 
 // RECUPERAR contraseña por email
 async function recuperarPassword(email) {
-  const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+  if (!sb) return { exito: false, error: 'Supabase no está conectado' };
+  const { data, error } = await sb.auth.resetPasswordForEmail(email);
   if (error) return { exito: false, error: error.message };
   return { exito: true };
 }
