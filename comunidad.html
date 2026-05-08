@@ -354,31 +354,31 @@ body{visibility:hidden}
 
 <script>
   // ============================
-  // HASHTAGS DESDE LOCALSTORAGE
+  // HASHTAGS DESDE SUPABASE
   // ============================
-  const HASHTAGS_DEFAULT = [
-    'desafio30dias',
-    'mindset',
-    'primervimillon',
-    'pagopar',
-    'cobros',
-    'embudos',
-    'marketing',
-    'ventas',
-    'paraguay',
-    'instagram',
-    'stories',
-    'reels',
-    'comunidad',
-    'leccion'
-  ];
-
-  // Carga hashtags definidos por Milena en admin, o usa defaults
-  let hashtagsDisponibles = JSON.parse(localStorage.getItem('milena_hashtags') || 'null') || HASHTAGS_DEFAULT;
+  let hashtagsDisponibles = [];
   let hashtagsSeleccionados = [];
+
+  async function cargarHashtagsDisponibles() {
+    if (!sb) return;
+    const { data, error } = await sb
+      .from('hashtags')
+      .select('nombre')
+      .order('nombre', { ascending: true });
+    if (error) {
+      console.error('Error cargando hashtags:', error);
+      return;
+    }
+    hashtagsDisponibles = (data || []).map(h => h.nombre);
+    renderHashtags();
+  }
 
   function renderHashtags(){
     const container = document.getElementById('hashtagChips');
+    if (hashtagsDisponibles.length === 0) {
+      container.innerHTML = '<div style="font-size:11.5px;color:rgba(255,245,240,0.4);font-style:italic">No hay etiquetas disponibles todavía</div>';
+      return;
+    }
     container.innerHTML = hashtagsDisponibles.map(h => `
       <button class="hashtag-chip" data-tag="${h}" onclick="toggleHashtag(this)" type="button">#${h}</button>
     `).join('');
@@ -404,9 +404,8 @@ body{visibility:hidden}
     const hashtagsTexto = hashtagsSeleccionados.length > 0
       ? ' · con etiquetas: ' + hashtagsSeleccionados.map(h => '#' + h).join(', ')
       : '';
-    mostrarToast('✓ Publicado' + hashtagsTexto);
+    mostrarToast('✓ Publicado (demo)' + hashtagsTexto);
 
-    // Limpiar
     document.getElementById('composerText').value = '';
     hashtagsSeleccionados = [];
     document.querySelectorAll('.hashtag-chip.selected').forEach(c => c.classList.remove('selected'));
@@ -419,17 +418,13 @@ body{visibility:hidden}
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  // INIT
-  renderHashtags();
-
-  // Escuchar cambios de hashtags (si Milena los edita en otra pestaña)
-  window.addEventListener('storage', (e) => {
-    if(e.key === 'milena_hashtags'){
-      hashtagsDisponibles = JSON.parse(e.newValue) || HASHTAGS_DEFAULT;
-      hashtagsSeleccionados = [];
-      renderHashtags();
+  // Cargar hashtags cuando Supabase esté listo
+  const waitSupaCom = setInterval(() => {
+    if (typeof sb !== 'undefined' && sb !== null) {
+      clearInterval(waitSupaCom);
+      cargarHashtagsDisponibles();
     }
-  });
+  }, 100);
 </script>
 
 <script src="supabase-config.js"></script>

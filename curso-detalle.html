@@ -68,6 +68,113 @@
     .course-layout{grid-template-columns:1fr;padding:0 16px 30px;gap:18px}
     .course-poster{max-width:280px;margin:0 auto}
   }
+
+  /* MODAL DE COMPRA */
+  .compra-modal-backdrop{
+    position:fixed;inset:0;
+    background:rgba(14,5,9,0.85);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    z-index:9999;
+    display:none;
+    align-items:center;justify-content:center;
+    padding:20px;
+    animation:fadeIn 0.4s ease-out;
+  }
+  .compra-modal-backdrop.show{display:flex}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes slideUpBouncy{
+    0%{transform:translateY(40px) scale(0.92);opacity:0}
+    60%{transform:translateY(-8px) scale(1.02);opacity:1}
+    100%{transform:translateY(0) scale(1);opacity:1}
+  }
+
+  .compra-modal{
+    background:linear-gradient(180deg,#2D0A18 0%,#1A0509 100%);
+    border:0.5px solid rgba(212,163,86,0.4);
+    border-radius:22px;
+    width:100%;max-width:480px;
+    overflow:hidden;
+    animation:slideUpBouncy 0.5s cubic-bezier(0.34,1.4,0.64,1);
+    box-shadow:0 30px 80px rgba(0,0,0,0.7), 0 0 60px rgba(212,163,86,0.2);
+    position:relative;
+  }
+  .compra-modal::before{
+    content:'';position:absolute;
+    width:300px;height:300px;
+    left:-80px;top:-100px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 65%);
+    pointer-events:none;
+  }
+  .compra-modal::after{
+    content:'';position:absolute;
+    width:240px;height:240px;
+    right:-60px;bottom:-60px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(212,163,86,0.3),transparent 65%);
+    pointer-events:none;
+  }
+
+  .compra-modal-poster{
+    aspect-ratio:16/9;
+    background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%);
+    position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    border-bottom:0.5px solid rgba(255,245,240,0.08);
+  }
+  .compra-modal-poster .glow1{position:absolute;width:200px;height:200px;left:-40px;top:-40px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.5),transparent 70%)}
+  .compra-modal-poster .glow2{position:absolute;width:160px;height:160px;right:-30px;bottom:-30px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.4),transparent 70%)}
+  .compra-modal-poster-content{position:relative;text-align:center;z-index:2}
+  .compra-modal-poster-cat{font-size:11px;letter-spacing:0.22em;color:rgba(255,245,240,0.85);font-weight:600;margin-bottom:9px}
+  .compra-modal-poster-title{font-family:Georgia,serif;font-style:italic;font-size:30px;line-height:1.05;font-weight:500;letter-spacing:-0.02em;color:#FFF5F0;text-shadow:0 2px 12px rgba(0,0,0,0.5)}
+
+  .compra-modal-body{padding:30px 28px;position:relative;z-index:2}
+  .compra-modal-icon{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,rgba(212,163,86,0.25),rgba(212,163,86,0.08));border:0.5px solid rgba(212,163,86,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+  .compra-modal-title{font-size:24px;font-weight:500;text-align:center;margin:0 0 8px;font-family:Georgia,serif;letter-spacing:-0.015em}
+  .compra-modal-subtitle{font-size:13.5px;color:rgba(255,245,240,0.7);text-align:center;line-height:1.5;margin:0 0 22px}
+
+  .compra-includes{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:12px;padding:14px 16px;margin-bottom:22px}
+  .compra-includes-label{font-size:9.5px;letter-spacing:0.18em;color:#FAC775;font-weight:600;margin-bottom:9px}
+  .compra-includes-list{display:flex;flex-direction:column;gap:6px}
+  .compra-includes-item{display:flex;align-items:center;gap:9px;font-size:12.5px;color:rgba(255,245,240,0.88)}
+
+  .compra-modal-cta{
+    width:100%;padding:16px;
+    background:linear-gradient(135deg,#FAC775 0%,#E8B547 50%,#D4A356 100%);
+    color:#3D1208;
+    border:none;
+    border-radius:12px;
+    font-size:13px;font-weight:600;
+    letter-spacing:0.16em;
+    cursor:pointer;
+    box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.5),0 8px 24px rgba(212,163,86,0.35);
+    transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);
+    font-family:inherit;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+  }
+  .compra-modal-cta:hover{transform:translateY(-2px) scale(1.02);box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.5),0 12px 32px rgba(212,163,86,0.5)}
+
+  .compra-modal-cta-price{font-size:11px;letter-spacing:0.1em;opacity:0.8}
+
+  .compra-modal-link{display:block;text-align:center;margin-top:14px;font-size:13px;color:rgba(232,184,196,0.85);text-decoration:none;font-family:inherit;background:none;border:none;width:100%;cursor:pointer}
+  .compra-modal-link strong{color:#E8B8C4;font-weight:600}
+  .compra-modal-link:hover{color:#E8B8C4}
+
+  .compra-modal-back{
+    display:block;text-align:center;margin-top:16px;
+    font-size:11.5px;color:rgba(255,245,240,0.5);text-decoration:none;
+    background:none;border:none;width:100%;cursor:pointer;font-family:inherit;
+    letter-spacing:0.06em;
+  }
+  .compra-modal-back:hover{color:rgba(255,245,240,0.85)}
+
+  @media (max-width:520px){
+    .compra-modal{border-radius:18px}
+    .compra-modal-body{padding:24px 20px}
+    .compra-modal-title{font-size:20px}
+    .compra-modal-poster-title{font-size:24px}
+  }
+
 </style>
 </head>
 <body>
@@ -236,5 +343,140 @@
 
 <script src="supabase-config.js"></script>
 <script src="header-dinamico.js"></script>
+
+
+<!-- MODAL DE COMPRA -->
+<div class="compra-modal-backdrop" id="compraModal">
+  <div class="compra-modal">
+    <div class="compra-modal-poster">
+      <div class="glow1"></div>
+      <div class="glow2"></div>
+      <div class="compra-modal-poster-content">
+        <div class="compra-modal-poster-cat">FORMACIÓN PRINCIPAL</div>
+        <div class="compra-modal-poster-title">Creando Mentes<br>Millonarias</div>
+      </div>
+    </div>
+
+    <div class="compra-modal-body">
+      <div class="compra-modal-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      </div>
+
+      <h2 class="compra-modal-title serif">Adquirí <span class="serif-it gradtext" style="font-size:24px">este curso</span></h2>
+      <p class="compra-modal-subtitle" id="modalSubtitle">Empezá hoy mismo y transformá tu negocio.</p>
+
+      <div class="compra-includes">
+        <div class="compra-includes-label">QUÉ INCLUYE</div>
+        <div class="compra-includes-list">
+          <div class="compra-includes-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            12 módulos · 47 clases
+          </div>
+          <div class="compra-includes-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Acceso de por vida
+          </div>
+          <div class="compra-includes-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Comunidad privada CMM
+          </div>
+          <div class="compra-includes-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Garantía de 7 días
+          </div>
+        </div>
+      </div>
+
+      <button class="compra-modal-cta" onclick="window.location.href='checkout.html'">
+        <span id="modalBtnText">COMPRAR AHORA</span>
+        <span class="compra-modal-cta-price" id="modalBtnPrice">· Gs 200.000</span>
+      </button>
+
+      <button class="compra-modal-link" id="modalLoginLink" style="display:none" onclick="window.location.href='login.html'">
+        ¿Ya tenés cuenta? <strong>Iniciá sesión</strong>
+      </button>
+
+      <button class="compra-modal-back" onclick="window.location.href='cursos.html'">
+        ← Volver al catálogo
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Verificar si la alumna tiene este curso
+(function() {
+  const CURSO_TITULO = 'Creando Mentes Millonarias';
+  const CURSO_PRECIO = 200000;
+
+  function mostrarModal(logueada) {
+    const modal = document.getElementById('compraModal');
+    const subtitle = document.getElementById('modalSubtitle');
+    const btnText = document.getElementById('modalBtnText');
+    const btnPrice = document.getElementById('modalBtnPrice');
+    const loginLink = document.getElementById('modalLoginLink');
+
+    if (logueada) {
+      subtitle.textContent = 'Empezá hoy mismo y transformá tu negocio.';
+      btnText.textContent = 'COMPRAR AHORA';
+      btnPrice.textContent = '· Gs ' + CURSO_PRECIO.toLocaleString('es-PY');
+      loginLink.style.display = 'none';
+    } else {
+      subtitle.textContent = 'Crea tu cuenta y empezá tu camino con CMM.';
+      btnText.textContent = 'COMPRAR AHORA';
+      btnPrice.textContent = '· Gs ' + CURSO_PRECIO.toLocaleString('es-PY');
+      loginLink.style.display = 'block';
+    }
+
+    modal.classList.add('show');
+    // Bloquear scroll del body
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Esperar a que Supabase esté listo
+  const checkAccess = setInterval(async () => {
+    if (typeof sb !== 'undefined' && sb !== null) {
+      clearInterval(checkAccess);
+
+      const { data: { user } } = await sb.auth.getUser();
+
+      if (!user) {
+        // No logueada → mostrar modal con opción de iniciar sesión
+        mostrarModal(false);
+        return;
+      }
+
+      // Logueada → verificar si tiene este curso comprado
+      // Buscar el curso por título
+      const { data: cursoData } = await sb
+        .from('cursos')
+        .select('id')
+        .eq('titulo', CURSO_TITULO)
+        .single();
+
+      if (!cursoData) {
+        // El curso no existe en la base, no bloqueamos
+        return;
+      }
+
+      // Verificar si tiene compra
+      const { data: compra } = await sb
+        .from('compras')
+        .select('id, estado')
+        .eq('usuario_id', user.id)
+        .eq('curso_id', cursoData.id)
+        .eq('estado', 'pagado')
+        .maybeSingle();
+
+      if (!compra) {
+        // No compró → mostrar modal de compra
+        mostrarModal(true);
+      }
+      // Si tiene compra → no hacemos nada (ve la página normal)
+    }
+  }, 100);
+})();
+</script>
+
 </body>
 </html>
