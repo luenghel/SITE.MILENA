@@ -202,11 +202,11 @@
       </div>
     </a>
 
-    <a href="#" class="poster-hover poster-card">
+    <a href="#" class="poster-hover poster-card" data-card-club>
       <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#3D1208 100%)">
         <div class="lock-overlay"></div>
         <div class="text-shadow-overlay"></div>
-        <div class="price-badge" style="background:rgba(232,184,196,0.15);border-color:rgba(232,184,196,0.4);color:#E8B8C4">
+        <div class="price-badge" data-club-badge style="background:rgba(232,184,196,0.15);border-color:rgba(232,184,196,0.4);color:#E8B8C4;display:none">
           INCLUIDO EN PLAN
         </div>
         <div class="poster-card-inner">
@@ -216,7 +216,7 @@
             <span class="meta-dot" style="background:#5DCAA5"></span>
             1 libro al mes
           </div>
-          <button class="unlock-btn">VER PLAN ANUAL</button>
+          <button class="unlock-btn" data-club-btn>VER PLAN ANUAL</button>
         </div>
       </div>
     </a>
@@ -259,5 +259,28 @@
 
 <script src="supabase-config.js"></script>
 <script src="header-dinamico.js"></script>
+<script>
+(function(){
+  const checkAuth = setInterval(async () => {
+    if (typeof sb !== 'undefined' && sb !== null) {
+      clearInterval(checkAuth);
+      const { data: { user } } = await sb.auth.getUser();
+      const badge = document.querySelector('[data-club-badge]');
+      const btn = document.querySelector('[data-club-btn]');
+      if (user) {
+        // Logueado: mostrar "INCLUIDO EN PLAN"
+        if (badge) badge.style.display = '';
+        if (btn) btn.textContent = 'VER PLAN ANUAL';
+      } else {
+        // No logueado: ocultar el badge, cambiar botón a "INICIA SESIÓN"
+        if (badge) badge.style.display = 'none';
+        if (btn) btn.textContent = 'INICIÁ SESIÓN';
+        const card = document.querySelector('[data-card-club]');
+        if (card) card.setAttribute('href', 'login.html');
+      }
+    }
+  }, 50);
+})();
+</script>
 </body>
 </html>
