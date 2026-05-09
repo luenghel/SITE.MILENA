@@ -437,7 +437,7 @@ body{visibility:hidden}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-linecap="round"/></svg>
           Exportar reporte
         </button>
-        <button class="cta-gold btn-primary">
+        <button class="cta-gold btn-primary" onclick="cambiarTab('cursos'); setTimeout(()=>abrirModalCurso(),200)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
           NUEVO CURSO
         </button>
@@ -771,13 +771,13 @@ body{visibility:hidden}
 
           <div class="form-field">
             <label class="form-label">PRECIO ACTUAL (Gs)</label>
-            <input type="number" class="form-input" id="cursoPrecio" placeholder="200000" min="0">
+            <input type="text" class="form-input" id="cursoPrecio" placeholder="200.000" oninput="formatearPrecio(this)" inputmode="numeric">
             <div class="form-help">0 = gratis</div>
           </div>
 
           <div class="form-field">
             <label class="form-label">PRECIO ANTERIOR (Gs · opcional)</label>
-            <input type="number" class="form-input" id="cursoPrecioAnterior" placeholder="280000" min="0">
+            <input type="text" class="form-input" id="cursoPrecioAnterior" placeholder="280.000" oninput="formatearPrecio(this)" inputmode="numeric">
             <div class="form-help">Para mostrar tachado en oferta</div>
           </div>
 
@@ -1091,8 +1091,8 @@ body{visibility:hidden}
       document.getElementById('cursoSlug').value = c.slug || '';
       document.getElementById('cursoCategoria').value = c.categoria || 'FORMACIÓN';
       document.getElementById('cursoDescripcion').value = c.descripcion || '';
-      document.getElementById('cursoPrecio').value = c.precio_gs || 0;
-      document.getElementById('cursoPrecioAnterior').value = c.precio_anterior_gs || '';
+      document.getElementById('cursoPrecio').value = c.precio_gs ? c.precio_gs.toLocaleString('es-PY') : '';
+      document.getElementById('cursoPrecioAnterior').value = c.precio_anterior_gs ? c.precio_anterior_gs.toLocaleString('es-PY') : '';
       document.getElementById('cursoModulos').value = c.modulos_count || 0;
       document.getElementById('cursoClases').value = c.clases_count || 0;
       document.getElementById('cursoDuracion').value = c.duracion_minutos || 0;
@@ -1133,6 +1133,20 @@ body{visibility:hidden}
     }
   });
 
+  // Formatear precios con puntos cada 3 dígitos
+  function formatearPrecio(input) {
+    let valor = input.value.replace(/\./g, '').replace(/[^0-9]/g, '');
+    if (valor === '') { input.value = ''; return; }
+    valor = parseInt(valor);
+    input.value = valor.toLocaleString('es-PY');
+  }
+
+  // Limpiar puntos para obtener número
+  function limpiarPrecio(valor) {
+    if (!valor) return 0;
+    return parseInt(String(valor).replace(/\./g, '').replace(/[^0-9]/g, '')) || 0;
+  }
+
   async function guardarCurso() {
     if (!sb) return mostrarToast('Conectando, esperá un segundo', true);
 
@@ -1147,8 +1161,8 @@ body{visibility:hidden}
       slug: slug,
       categoria: document.getElementById('cursoCategoria').value,
       descripcion: document.getElementById('cursoDescripcion').value.trim(),
-      precio_gs: parseInt(document.getElementById('cursoPrecio').value) || 0,
-      precio_anterior_gs: parseInt(document.getElementById('cursoPrecioAnterior').value) || 0,
+      precio_gs: limpiarPrecio(document.getElementById('cursoPrecio').value),
+      precio_anterior_gs: limpiarPrecio(document.getElementById('cursoPrecioAnterior').value),
       modulos_count: parseInt(document.getElementById('cursoModulos').value) || 0,
       clases_count: parseInt(document.getElementById('cursoClases').value) || 0,
       duracion_minutos: parseInt(document.getElementById('cursoDuracion').value) || 0,
