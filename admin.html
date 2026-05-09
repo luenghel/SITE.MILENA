@@ -990,9 +990,7 @@ body{visibility:hidden}
   }
 
   async function eliminarHashtag(id, nombre){
-    if(!confirm('¿Eliminar la etiqueta #' + nombre + '?
-
-Las alumnas ya no podrán usarla en posts nuevos.')) return;
+    if(!confirm('¿Eliminar la etiqueta #' + nombre + '?\n\nLas alumnas ya no podrán usarla en posts nuevos.')) return;
     const { error } = await sb.from('hashtags').delete().eq('id', id);
     if (error) {
       mostrarToast('Error al eliminar: ' + error.message, true);
@@ -1207,28 +1205,6 @@ Las alumnas ya no podrán usarla en posts nuevos.')) return;
       cargarHashtags();
     }
   }, 100);
-    input.value = '';
-    mostrarToast('✓ Etiqueta #' + tag + ' agregada');
-  }
-
-  function eliminarHashtag(tag){
-    if(!confirm('¿Eliminar la etiqueta #' + tag + '?\n\nLas alumnas ya no podrán usarla en posts nuevos.')) return;
-    hashtags = hashtags.filter(h => h !== tag);
-    guardarHashtags();
-    renderHashtags();
-    mostrarToast('Etiqueta #' + tag + ' eliminada');
-  }
-
-  function mostrarToast(msg, isError){
-    const t = document.getElementById('toast');
-    document.getElementById('toastText').textContent = msg;
-    t.classList.toggle('error', !!isError);
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-  }
-
-  // INIT
-  renderHashtags();
 </script>
 
 <script src="supabase-config.js"></script>
