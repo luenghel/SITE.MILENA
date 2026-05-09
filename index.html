@@ -217,62 +217,8 @@
   </div>
   <div class="scroll-row" style="margin-left:-40px;margin-right:-40px;padding-left:40px;padding-right:40px">
     <div class="row-track">
-      <div class="poster-item">
-        <a href="curso-detalle.html" class="poster-hover poster">
-          <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)">
-            <div style="position:absolute;width:130px;height:130px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>
-            <div style="position:absolute;width:100px;height:100px;right:-15px;top:30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)"></div>
-            <div class="silhouette"></div>
-            <div class="scrim"></div>
-            <div class="poster-inner">
-              <div class="top-icon" style="background:rgba(14,5,9,0.55);border:0.5px solid rgba(255,245,240,0.22)">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="#FFF5F0"><path d="M8 5v14l11-7z"/></svg>
-              </div>
-              <div class="poster-cat">FORMACIÓN</div>
-              <div class="poster-title">Creando Mentes<br>Millonarias</div>
-              <div class="poster-meta"><span class="meta-dot" style="background:#5DCAA5"></span>12 mód · 8 h</div>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <div class="poster-item">
-        <a href="curso-detalle.html" class="poster-hover poster">
-          <div class="poster-shadow" style="background:linear-gradient(160deg,#5A0F2A 0%,#8B2244 50%,#2D0A18 100%)">
-            <div style="position:absolute;width:130px;height:130px;right:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.5),transparent 70%)"></div>
-            <div style="position:absolute;width:100px;height:100px;left:-20px;bottom:40px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(212,163,86,0.35),transparent 70%)"></div>
-            <div class="silhouette"></div>
-            <div class="scrim"></div>
-            <div class="poster-inner">
-              <div class="top-icon" style="background:rgba(14,5,9,0.55);border:0.5px solid rgba(255,245,240,0.22)">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="#FFF5F0"><path d="M8 5v14l11-7z"/></svg>
-              </div>
-              <div class="poster-cat">CONTENIDO</div>
-              <div class="poster-title">Stories que<br>venden</div>
-              <div class="poster-meta"><span class="meta-dot" style="background:#5DCAA5"></span>8 mód · 5 h</div>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <div class="poster-item">
-        <a href="curso-detalle.html" class="poster-hover poster">
-          <div class="poster-shadow" style="background:linear-gradient(160deg,#4A0F1E 0%,#7A1B2E 50%,#3D1208 100%)">
-            <div style="position:absolute;width:130px;height:130px;left:-30px;bottom:-30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(212,163,86,0.5),transparent 70%)"></div>
-            <div style="position:absolute;width:100px;height:100px;right:-20px;top:30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.4),transparent 70%)"></div>
-            <div class="silhouette"></div>
-            <div class="scrim"></div>
-            <div class="poster-inner">
-              <div class="top-icon" style="background:rgba(212,163,86,0.2);border:0.5px solid rgba(212,163,86,0.55)">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="#FAC775"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
-              </div>
-              <div class="poster-cat">PREMIUM</div>
-              <div class="poster-title">Certificación<br>Social Media</div>
-              <div class="poster-meta"><span class="meta-dot" style="background:#D4A356"></span>24 h · oficial</div>
-            </div>
-          </div>
-        </a>
-      </div>
+      <!-- Cards dinámicas desde Supabase -->
+      <div id="indexCursosDestacados" style="display:flex;gap:12px"></div>
     </div>
   </div>
 </section>
@@ -407,5 +353,78 @@
 
 <script src="supabase-config.js"></script>
 <script src="header-dinamico.js"></script>
+<script>
+(function(){
+  function crearPosterIndex(curso, user, comprasIds) {
+    const tieneCompra = comprasIds.includes(curso.id);
+    const esGratis = curso.precio_gs === 0;
+    const necesitaCandado = !esGratis && (!user || !tieneCompra);
+    const titulo = curso.titulo;
+    const tituloHTML = titulo.includes(' ') && titulo.length > 18
+      ? titulo.split(' ').slice(0, Math.ceil(titulo.split(' ').length/2)).join(' ') + '<br>' + titulo.split(' ').slice(Math.ceil(titulo.split(' ').length/2)).join(' ')
+      : titulo;
+    const gradient = curso.color_gradient || 'linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)';
+    const cat = curso.categoria || 'CURSO';
+    const meta = curso.modulos_count > 0
+      ? curso.modulos_count + ' mód · ' + Math.floor((curso.duracion_minutos||0)/60) + ' h'
+      : '';
+    const dotColor = esGratis ? '#5DCAA5' : '#D4A356';
+
+    const iconHTML = necesitaCandado
+      ? '<div class="top-icon" style="background:rgba(212,163,86,0.2);border:0.5px solid rgba(212,163,86,0.55)"><svg width="11" height="11" viewBox="0 0 24 24" fill="#FAC775"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#FAC775" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="#FAC775" stroke-width="2" fill="none" stroke-linecap="round"/></svg></div>'
+      : '<div class="top-icon" style="background:rgba(14,5,9,0.55);border:0.5px solid rgba(255,245,240,0.22)"><svg width="10" height="10" viewBox="0 0 24 24" fill="#FFF5F0"><path d="M8 5v14l11-7z"/></svg></div>';
+
+    return `
+      <div class="poster-item">
+        <a href="curso-detalle.html?id=${curso.slug}" class="poster-hover poster">
+          <div class="poster-shadow" style="background:${gradient}">
+            <div style="position:absolute;width:130px;height:130px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>
+            <div style="position:absolute;width:100px;height:100px;right:-15px;top:30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)"></div>
+            <div class="silhouette"></div>
+            <div class="scrim"></div>
+            <div class="poster-inner">
+              ${iconHTML}
+              <div class="poster-cat">${cat}</div>
+              <div class="poster-title">${tituloHTML}</div>
+              <div class="poster-meta"><span class="meta-dot" style="background:${dotColor}"></span>${meta}</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    `;
+  }
+
+  const checkAuthIndex = setInterval(async () => {
+    if (typeof sb !== 'undefined' && sb !== null) {
+      clearInterval(checkAuthIndex);
+      const { data: { user } } = await sb.auth.getUser();
+
+      // Cargar cursos destacados en home
+      const { data: cursos, error } = await sb
+        .from('cursos')
+        .select('*')
+        .eq('publicado', true)
+        .eq('destacado_home', true)
+        .order('orden', { ascending: true });
+
+      const container = document.getElementById('indexCursosDestacados');
+      if (!container) return;
+
+      if (error || !cursos || cursos.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      let comprasIds = [];
+      if (user) {
+        const { data: compras } = await sb.from('compras').select('curso_id').eq('usuario_id', user.id).eq('estado', 'pagado');
+        comprasIds = (compras || []).map(c => c.curso_id);
+      }
+
+      container.innerHTML = cursos.map(c => crearPosterIndex(c, user, comprasIds)).join('');
+    }
+  }, 50);
+})();
+</script>
 </body>
 </html>

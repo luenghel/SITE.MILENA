@@ -111,75 +111,11 @@
 
 <section class="courses-section">
   <h2 class="serif">Marketing Digital</h2>
-  <div class="section-row">
-
-    <!-- COMPRADO -->
-    <a href="curso-detalle.html?id=cmm" class="poster-hover poster-card" data-curso="cmm">
-      <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)">
-        <div style="position:absolute;width:160px;height:160px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>
-        <div style="position:absolute;width:140px;height:140px;right:-30px;bottom:-30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)"></div>
-        <div class="text-shadow-overlay"></div>
-        <div class="check-icon">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-        </div>
-        <div class="poster-card-inner">
-          <div class="poster-cat">FORMACIÓN</div>
-          <div class="poster-title">Creando Mentes<br>Millonarias</div>
-          <div class="poster-meta">
-            <span class="meta-dot" style="background:#5DCAA5"></span>
-            12 mód · 8 h
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill" style="width:65%"></div>
-          </div>
-          <div class="progress-text">65% completado</div>
-        </div>
-      </div>
-    </a>
-
-    <!-- BLOQUEADO -->
-    <a href="curso-detalle.html?id=stories" class="poster-hover poster-card" data-curso="stories">
-      <div class="poster-shadow" style="background:linear-gradient(160deg,#5A0F2A 0%,#8B2244 50%,#2D0A18 100%)">
-        <div style="position:absolute;width:160px;height:160px;right:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.5),transparent 70%)"></div>
-        <div class="lock-overlay"></div>
-        <div class="text-shadow-overlay"></div>
-        <div class="price-badge">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-          Gs 480.000
-        </div>
-        <div class="poster-card-inner">
-          <div class="poster-cat">CONTENIDO</div>
-          <div class="poster-title">Stories que<br>venden</div>
-          <div class="poster-meta">
-            <span class="meta-dot" style="background:#5DCAA5"></span>
-            8 mód · 5 h
-          </div>
-          <button class="unlock-btn">DESBLOQUEAR</button>
-        </div>
-      </div>
-    </a>
-
-    <!-- BLOQUEADO PREMIUM -->
-    <a href="curso-detalle.html?id=certificacion" class="poster-hover poster-card" data-curso="certificacion">
-      <div class="poster-shadow" style="background:linear-gradient(160deg,#4A0F1E 0%,#7A1B2E 50%,#3D1208 100%)">
-        <div style="position:absolute;width:160px;height:160px;left:-30px;bottom:-30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(212,163,86,0.5),transparent 70%)"></div>
-        <div class="lock-overlay"></div>
-        <div class="text-shadow-overlay"></div>
-        <div class="price-badge">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="#FAC775"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
-          Gs 1.200.000
-        </div>
-        <div class="poster-card-inner">
-          <div class="poster-cat gold">PREMIUM · CERTIFICADO</div>
-          <div class="poster-title">Certificación<br>Social Media</div>
-          <div class="poster-meta">
-            <span class="meta-dot" style="background:#D4A356"></span>
-            24 h · oficial
-          </div>
-          <button class="unlock-btn">DESBLOQUEAR</button>
-        </div>
-      </div>
-    </a>
+  <div class="section-row" id="cursosDinamicos">
+    <!-- Las cards se cargan acá desde Supabase -->
+    <div style="grid-column:1/-1;padding:40px;text-align:center;color:rgba(255,245,240,0.4);font-size:13px">
+      Cargando cursos...
+    </div>
   </div>
 
   <h2 class="serif" style="margin-top:32px">Acompañá más</h2>
@@ -261,12 +197,101 @@
 <script src="header-dinamico.js"></script>
 <script>
 (function(){
+  // Función para crear una card de curso
+  function crearCardCurso(curso, user, comprasIds) {
+    const tieneCompra = comprasIds.includes(curso.id);
+    const esGratis = curso.precio_gs === 0;
+    const necesitaCandado = !esGratis && (!user || !tieneCompra);
+    const precioFormateado = curso.precio_gs ? 'Gs ' + curso.precio_gs.toLocaleString('es-PY') : 'GRATIS';
+    const titulo = curso.titulo;
+    // Si tiene <br> en titulo no lo agregamos, sino lo separamos en 2 líneas si es largo
+    const tituloHTML = titulo.includes(' ') && titulo.length > 18
+      ? titulo.split(' ').slice(0, Math.ceil(titulo.split(' ').length/2)).join(' ') + '<br>' + titulo.split(' ').slice(Math.ceil(titulo.split(' ').length/2)).join(' ')
+      : titulo;
+
+    const gradient = curso.color_gradient || 'linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)';
+    const cat = curso.categoria || 'CURSO';
+    const meta = curso.modulos_count > 0
+      ? curso.modulos_count + ' mód · ' + Math.floor((curso.duracion_minutos||0)/60) + ' h'
+      : (curso.descripcion || '');
+
+    const link = necesitaCandado ? 'curso-detalle.html?id=' + curso.slug : 'curso-detalle.html?id=' + curso.slug;
+    const dotColor = esGratis ? '#5DCAA5' : '#D4A356';
+
+    const lockHTML = necesitaCandado ? `
+      <div class="lock-overlay"></div>
+      <div class="price-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        ${precioFormateado}
+      </div>` : '';
+
+    const checkIconHTML = !necesitaCandado ? `
+      <div class="check-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="#5DCAA5"><polyline points="20 6 9 17 4 12" stroke="#5DCAA5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </div>` : '';
+
+    const btnHTML = necesitaCandado ? `<button class="unlock-btn">DESBLOQUEAR</button>` : '';
+
+    return `
+      <a href="${link}" class="poster-hover poster-card" data-curso="${curso.slug}">
+        <div class="poster-shadow" style="background:${gradient}">
+          <div style="position:absolute;width:160px;height:160px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>
+          <div style="position:absolute;width:140px;height:140px;right:-30px;bottom:-30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)"></div>
+          <div class="text-shadow-overlay"></div>
+          ${lockHTML}
+          ${checkIconHTML}
+          <div class="poster-card-inner">
+            <div class="poster-cat">${cat}</div>
+            <div class="poster-title">${tituloHTML}</div>
+            <div class="poster-meta">
+              <span class="meta-dot" style="background:${dotColor}"></span>
+              ${meta}
+            </div>
+            ${btnHTML}
+          </div>
+        </div>
+      </a>
+    `;
+  }
+
   const checkAuth = setInterval(async () => {
     if (typeof sb !== 'undefined' && sb !== null) {
       clearInterval(checkAuth);
       const { data: { user } } = await sb.auth.getUser();
 
-      // Lógica del Club del Libro
+      // Cargar cursos publicados desde Supabase (solo los que NO son YouTube ni Club del Libro)
+      const { data: cursos, error } = await sb
+        .from('cursos')
+        .select('*')
+        .eq('publicado', true)
+        .not('slug', 'in', '("youtube","club")')
+        .order('orden', { ascending: true });
+
+      const container = document.getElementById('cursosDinamicos');
+
+      if (error) {
+        console.error('Error cargando cursos:', error);
+        if (container) container.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:#FF8090">Error al cargar cursos</div>';
+        return;
+      }
+
+      // Obtener IDs de cursos comprados por la usuaria
+      let comprasIds = [];
+      if (user) {
+        const { data: compras } = await sb.from('compras').select('curso_id').eq('usuario_id', user.id).eq('estado', 'pagado');
+        comprasIds = (compras || []).map(c => c.curso_id);
+      }
+
+      // Renderizar cards
+      if (container) {
+        if (!cursos || cursos.length === 0) {
+          container.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:rgba(255,245,240,0.4);font-size:13px">No hay cursos publicados todavía</div>';
+        } else {
+          container.innerHTML = cursos.map(c => crearCardCurso(c, user, comprasIds)).join('');
+        }
+      }
+
+      // Lógica del Club del Libro (sigue igual, sección estática)
       const badge = document.querySelector('[data-club-badge]');
       const btn = document.querySelector('[data-club-btn]');
       if (user) {
@@ -277,52 +302,6 @@
         if (btn) btn.textContent = 'INICIÁ SESIÓN';
         const card = document.querySelector('[data-card-club]');
         if (card) card.setAttribute('href', 'login.html');
-      }
-
-      // Lógica del CMM (curso 1) - poner candado si NO está logueado o no compró
-      const cardCmm = document.querySelector('[data-curso="cmm"]');
-      if (cardCmm) {
-        let mostrarCandado = !user; // Por default si no está logueado, candado
-        
-        if (user) {
-          // Verificar si compró el CMM
-          const { data: cursoData } = await sb.from('cursos').select('id').eq('titulo', 'Creando Mentes Millonarias').single();
-          if (cursoData) {
-            const { data: compra } = await sb.from('compras').select('id').eq('usuario_id', user.id).eq('curso_id', cursoData.id).eq('estado', 'pagado').maybeSingle();
-            if (!compra) mostrarCandado = true;
-          }
-        }
-        
-        if (mostrarCandado) {
-          // Agregar lock-overlay y price-badge si no existe
-          const shadow = cardCmm.querySelector('.poster-shadow');
-          if (shadow && !shadow.querySelector('.lock-overlay')) {
-            const lock = document.createElement('div');
-            lock.className = 'lock-overlay';
-            shadow.insertBefore(lock, shadow.querySelector('.text-shadow-overlay'));
-          }
-          // Reemplazar check-icon por price-badge
-          const checkIcon = cardCmm.querySelector('.check-icon');
-          if (checkIcon) {
-            const priceBadge = document.createElement('div');
-            priceBadge.className = 'price-badge';
-            priceBadge.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Gs 200.000';
-            checkIcon.replaceWith(priceBadge);
-          }
-          // Ocultar progreso si existe
-          const progressTrack = cardCmm.querySelector('.progress-track');
-          const progressText = cardCmm.querySelector('.progress-text');
-          if (progressTrack) progressTrack.style.display = 'none';
-          if (progressText) progressText.style.display = 'none';
-          // Agregar botón DESBLOQUEAR
-          const inner = cardCmm.querySelector('.poster-card-inner');
-          if (inner && !inner.querySelector('.unlock-btn')) {
-            const btnUnlock = document.createElement('button');
-            btnUnlock.className = 'unlock-btn';
-            btnUnlock.textContent = 'DESBLOQUEAR';
-            inner.appendChild(btnUnlock);
-          }
-        }
       }
     }
   }, 50);
