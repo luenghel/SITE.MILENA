@@ -178,12 +178,172 @@
     .header-title{font-size:26px}
     .hashtags-add-row{flex-direction:column}
   }
+
+  /* === SECCIÓN CURSOS === */
+  .cursos-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:14px;flex-wrap:wrap}
+  .cursos-filtros{display:flex;gap:6px;flex-wrap:wrap}
+  .filter-btn{padding:8px 14px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:18px;color:rgba(255,245,240,0.65);font-size:11.5px;cursor:pointer;font-family:inherit;transition:all 0.2s;letter-spacing:0.04em}
+  .filter-btn:hover{background:rgba(255,245,240,0.08);color:#FFF5F0}
+  .filter-btn.active{background:linear-gradient(135deg,rgba(212,163,86,0.18),rgba(212,163,86,0.05));border-color:rgba(212,163,86,0.45);color:#FAC775}
+
+  .cursos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+  .curso-card-admin{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:14px;overflow:hidden;cursor:pointer;transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);position:relative}
+  .curso-card-admin:hover{transform:translateY(-3px);border-color:rgba(212,163,86,0.4);box-shadow:0 12px 28px rgba(0,0,0,0.35)}
+  .curso-card-admin.borrador{opacity:0.65}
+  .curso-card-admin.borrador:hover{opacity:1}
+  .curso-card-poster{aspect-ratio:16/10;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .curso-card-poster .glow-1{position:absolute;width:140px;height:140px;left:-30px;top:-20px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.45),transparent 70%)}
+  .curso-card-poster .glow-2{position:absolute;width:120px;height:120px;right:-20px;bottom:-20px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.35),transparent 70%)}
+  .curso-card-poster-title{position:relative;font-family:Georgia,serif;font-style:italic;font-size:18px;line-height:1.05;color:#FFF5F0;text-align:center;padding:0 16px;text-shadow:0 2px 8px rgba(0,0,0,0.5)}
+  .curso-card-status{position:absolute;top:9px;right:9px;padding:3px 9px;border-radius:6px;font-size:9.5px;letter-spacing:0.12em;font-weight:600;backdrop-filter:blur(8px)}
+  .status-publicado{background:rgba(93,202,165,0.2);border:0.5px solid rgba(93,202,165,0.5);color:#9FE1CB}
+  .status-borrador{background:rgba(255,245,240,0.1);border:0.5px solid rgba(255,245,240,0.25);color:rgba(255,245,240,0.7)}
+  .curso-card-info{padding:14px 16px}
+  .curso-card-cat{font-size:9.5px;letter-spacing:0.18em;color:rgba(255,245,240,0.5);font-weight:600;margin-bottom:5px}
+  .curso-card-titulo{font-size:14px;font-weight:500;margin-bottom:9px;line-height:1.25}
+  .curso-card-meta{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .curso-card-precio{font-size:14px;color:#FAC775;font-weight:500;font-family:Georgia,serif}
+  .curso-card-precio.gratis{color:#9FE1CB}
+  .curso-card-stats{font-size:10.5px;color:rgba(255,245,240,0.55)}
+
+  .empty-cursos{padding:60px 20px;text-align:center;color:rgba(255,245,240,0.5);grid-column:1/-1}
+  .empty-cursos-icon{font-size:48px;margin-bottom:14px;opacity:0.5}
+
+  /* === MODAL EDITAR CURSO === */
+  .curso-modal-backdrop{position:fixed;inset:0;background:rgba(14,5,9,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s ease-out}
+  .curso-modal-backdrop.show{display:flex}
+  .curso-modal{background:linear-gradient(180deg,#2D0A18 0%,#1A0509 100%);border:0.5px solid rgba(212,163,86,0.4);border-radius:18px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;animation:slideUpBouncy 0.4s cubic-bezier(0.34,1.4,0.64,1);box-shadow:0 30px 80px rgba(0,0,0,0.7),0 0 60px rgba(212,163,86,0.15)}
+  @keyframes slideUpBouncy{0%{transform:translateY(40px) scale(0.94);opacity:0}60%{transform:translateY(-6px) scale(1.01);opacity:1}100%{transform:translateY(0) scale(1)}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+  .curso-modal-header{padding:22px 26px 16px;border-bottom:0.5px solid rgba(255,245,240,0.06);display:flex;justify-content:space-between;align-items:flex-start}
+  .curso-modal-titulo{font-size:20px;font-weight:500;font-family:Georgia,serif;margin:0}
+  .curso-modal-close{width:32px;height:32px;border-radius:50%;background:rgba(255,245,240,0.06);border:none;color:#FFF5F0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:all 0.2s}
+  .curso-modal-close:hover{background:rgba(255,245,240,0.12)}
+
+  .curso-modal-body{padding:22px 26px}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  .form-grid-full{grid-column:1/-1}
+  .form-field{display:flex;flex-direction:column;gap:6px}
+  .form-label{font-size:10px;letter-spacing:0.18em;color:rgba(255,245,240,0.55);font-weight:600}
+  .form-input,.form-textarea,.form-select{padding:11px 14px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.15);border-radius:9px;color:#FFF5F0;font-size:13.5px;outline:none;font-family:inherit;transition:border-color 0.2s}
+  .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:rgba(212,163,86,0.5)}
+  .form-textarea{min-height:80px;resize:vertical}
+  .form-input-prefix{position:relative}
+  .form-input-prefix .prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:rgba(255,245,240,0.5);font-size:13px;pointer-events:none}
+  .form-input-prefix .form-input{padding-left:40px}
+
+  .form-help{font-size:10.5px;color:rgba(255,245,240,0.45);margin-top:2px}
+
+  .toggle-row{display:flex;align-items:center;gap:14px;padding:14px;background:rgba(255,245,240,0.03);border-radius:10px;margin-bottom:14px}
+  .toggle-info{flex:1}
+  .toggle-label{font-size:13px;font-weight:500}
+  .toggle-help{font-size:11px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .toggle-switch{position:relative;width:42px;height:24px;background:rgba(255,245,240,0.15);border-radius:12px;cursor:pointer;transition:background 0.25s;flex-shrink:0}
+  .toggle-switch.on{background:linear-gradient(135deg,#5DCAA5,#9FE1CB)}
+  .toggle-switch::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;background:#FFF5F0;border-radius:50%;transition:left 0.25s;box-shadow:0 2px 4px rgba(0,0,0,0.3)}
+  .toggle-switch.on::after{left:20px}
+
+  .gradient-options{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
+  .gradient-option{width:36px;height:36px;border-radius:10px;cursor:pointer;border:2px solid transparent;transition:all 0.2s}
+  .gradient-option:hover{transform:scale(1.08)}
+  .gradient-option.selected{border-color:#FAC775;box-shadow:0 0 0 2px rgba(212,163,86,0.3)}
+
+  .curso-modal-footer{padding:18px 26px;border-top:0.5px solid rgba(255,245,240,0.06);display:flex;justify-content:space-between;gap:10px;align-items:center}
+  .btn-danger{background:rgba(255,59,71,0.12);border:0.5px solid rgba(255,59,71,0.4);color:#FF8090;padding:10px 16px;border-radius:9px;font-size:11.5px;font-weight:500;letter-spacing:0.06em;cursor:pointer;font-family:inherit;transition:all 0.2s}
+  .btn-danger:hover{background:rgba(255,59,71,0.2)}
+  .btn-save{padding:10px 22px;font-size:12px;font-weight:500;letter-spacing:0.1em;border-radius:9px}
+
+  @media (max-width:600px){
+    .form-grid{grid-template-columns:1fr}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
 .auth-splash{position:fixed;inset:0;background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);z-index:9999;display:flex;align-items:center;justify-content:center;visibility:visible}
 .auth-splash-spinner{width:40px;height:40px;border:2px solid rgba(212,163,86,0.2);border-top-color:#FAC775;border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* === SECCIÓN CURSOS === */
+  .cursos-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:14px;flex-wrap:wrap}
+  .cursos-filtros{display:flex;gap:6px;flex-wrap:wrap}
+  .filter-btn{padding:8px 14px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:18px;color:rgba(255,245,240,0.65);font-size:11.5px;cursor:pointer;font-family:inherit;transition:all 0.2s;letter-spacing:0.04em}
+  .filter-btn:hover{background:rgba(255,245,240,0.08);color:#FFF5F0}
+  .filter-btn.active{background:linear-gradient(135deg,rgba(212,163,86,0.18),rgba(212,163,86,0.05));border-color:rgba(212,163,86,0.45);color:#FAC775}
+
+  .cursos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+  .curso-card-admin{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:14px;overflow:hidden;cursor:pointer;transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);position:relative}
+  .curso-card-admin:hover{transform:translateY(-3px);border-color:rgba(212,163,86,0.4);box-shadow:0 12px 28px rgba(0,0,0,0.35)}
+  .curso-card-admin.borrador{opacity:0.65}
+  .curso-card-admin.borrador:hover{opacity:1}
+  .curso-card-poster{aspect-ratio:16/10;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .curso-card-poster .glow-1{position:absolute;width:140px;height:140px;left:-30px;top:-20px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.45),transparent 70%)}
+  .curso-card-poster .glow-2{position:absolute;width:120px;height:120px;right:-20px;bottom:-20px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.35),transparent 70%)}
+  .curso-card-poster-title{position:relative;font-family:Georgia,serif;font-style:italic;font-size:18px;line-height:1.05;color:#FFF5F0;text-align:center;padding:0 16px;text-shadow:0 2px 8px rgba(0,0,0,0.5)}
+  .curso-card-status{position:absolute;top:9px;right:9px;padding:3px 9px;border-radius:6px;font-size:9.5px;letter-spacing:0.12em;font-weight:600;backdrop-filter:blur(8px)}
+  .status-publicado{background:rgba(93,202,165,0.2);border:0.5px solid rgba(93,202,165,0.5);color:#9FE1CB}
+  .status-borrador{background:rgba(255,245,240,0.1);border:0.5px solid rgba(255,245,240,0.25);color:rgba(255,245,240,0.7)}
+  .curso-card-info{padding:14px 16px}
+  .curso-card-cat{font-size:9.5px;letter-spacing:0.18em;color:rgba(255,245,240,0.5);font-weight:600;margin-bottom:5px}
+  .curso-card-titulo{font-size:14px;font-weight:500;margin-bottom:9px;line-height:1.25}
+  .curso-card-meta{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .curso-card-precio{font-size:14px;color:#FAC775;font-weight:500;font-family:Georgia,serif}
+  .curso-card-precio.gratis{color:#9FE1CB}
+  .curso-card-stats{font-size:10.5px;color:rgba(255,245,240,0.55)}
+
+  .empty-cursos{padding:60px 20px;text-align:center;color:rgba(255,245,240,0.5);grid-column:1/-1}
+  .empty-cursos-icon{font-size:48px;margin-bottom:14px;opacity:0.5}
+
+  /* === MODAL EDITAR CURSO === */
+  .curso-modal-backdrop{position:fixed;inset:0;background:rgba(14,5,9,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s ease-out}
+  .curso-modal-backdrop.show{display:flex}
+  .curso-modal{background:linear-gradient(180deg,#2D0A18 0%,#1A0509 100%);border:0.5px solid rgba(212,163,86,0.4);border-radius:18px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;animation:slideUpBouncy 0.4s cubic-bezier(0.34,1.4,0.64,1);box-shadow:0 30px 80px rgba(0,0,0,0.7),0 0 60px rgba(212,163,86,0.15)}
+  @keyframes slideUpBouncy{0%{transform:translateY(40px) scale(0.94);opacity:0}60%{transform:translateY(-6px) scale(1.01);opacity:1}100%{transform:translateY(0) scale(1)}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+  .curso-modal-header{padding:22px 26px 16px;border-bottom:0.5px solid rgba(255,245,240,0.06);display:flex;justify-content:space-between;align-items:flex-start}
+  .curso-modal-titulo{font-size:20px;font-weight:500;font-family:Georgia,serif;margin:0}
+  .curso-modal-close{width:32px;height:32px;border-radius:50%;background:rgba(255,245,240,0.06);border:none;color:#FFF5F0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:all 0.2s}
+  .curso-modal-close:hover{background:rgba(255,245,240,0.12)}
+
+  .curso-modal-body{padding:22px 26px}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  .form-grid-full{grid-column:1/-1}
+  .form-field{display:flex;flex-direction:column;gap:6px}
+  .form-label{font-size:10px;letter-spacing:0.18em;color:rgba(255,245,240,0.55);font-weight:600}
+  .form-input,.form-textarea,.form-select{padding:11px 14px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.15);border-radius:9px;color:#FFF5F0;font-size:13.5px;outline:none;font-family:inherit;transition:border-color 0.2s}
+  .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:rgba(212,163,86,0.5)}
+  .form-textarea{min-height:80px;resize:vertical}
+  .form-input-prefix{position:relative}
+  .form-input-prefix .prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:rgba(255,245,240,0.5);font-size:13px;pointer-events:none}
+  .form-input-prefix .form-input{padding-left:40px}
+
+  .form-help{font-size:10.5px;color:rgba(255,245,240,0.45);margin-top:2px}
+
+  .toggle-row{display:flex;align-items:center;gap:14px;padding:14px;background:rgba(255,245,240,0.03);border-radius:10px;margin-bottom:14px}
+  .toggle-info{flex:1}
+  .toggle-label{font-size:13px;font-weight:500}
+  .toggle-help{font-size:11px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .toggle-switch{position:relative;width:42px;height:24px;background:rgba(255,245,240,0.15);border-radius:12px;cursor:pointer;transition:background 0.25s;flex-shrink:0}
+  .toggle-switch.on{background:linear-gradient(135deg,#5DCAA5,#9FE1CB)}
+  .toggle-switch::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;background:#FFF5F0;border-radius:50%;transition:left 0.25s;box-shadow:0 2px 4px rgba(0,0,0,0.3)}
+  .toggle-switch.on::after{left:20px}
+
+  .gradient-options{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
+  .gradient-option{width:36px;height:36px;border-radius:10px;cursor:pointer;border:2px solid transparent;transition:all 0.2s}
+  .gradient-option:hover{transform:scale(1.08)}
+  .gradient-option.selected{border-color:#FAC775;box-shadow:0 0 0 2px rgba(212,163,86,0.3)}
+
+  .curso-modal-footer{padding:18px 26px;border-top:0.5px solid rgba(255,245,240,0.06);display:flex;justify-content:space-between;gap:10px;align-items:center}
+  .btn-danger{background:rgba(255,59,71,0.12);border:0.5px solid rgba(255,59,71,0.4);color:#FF8090;padding:10px 16px;border-radius:9px;font-size:11.5px;font-weight:500;letter-spacing:0.06em;cursor:pointer;font-family:inherit;transition:all 0.2s}
+  .btn-danger:hover{background:rgba(255,59,71,0.2)}
+  .btn-save{padding:10px 22px;font-size:12px;font-weight:500;letter-spacing:0.1em;border-radius:9px}
+
+  @media (max-width:600px){
+    .form-grid{grid-template-columns:1fr}
+  }
+
 </style>
 </head>
 <body>
@@ -204,10 +364,10 @@ body{visibility:hidden}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       Dashboard
     </a>
-    <a href="#" class="sidebar-item">
+    <a href="#" onclick="cambiarTab('cursos')" class="sidebar-item" id="nav-cursos">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
       Cursos
-      <span class="sidebar-badge gold">7</span>
+      <span class="sidebar-badge gold" id="cursosCount">0</span>
     </a>
     <a href="#" class="sidebar-item">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
@@ -532,6 +692,155 @@ body{visibility:hidden}
   <!-- ============================ -->
   <!-- TAB: HASHTAGS / ETIQUETAS -->
   <!-- ============================ -->
+  <!-- ============================ -->
+  <!-- TAB: CURSOS -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-cursos">
+    <div class="header-bar">
+      <div>
+        <div class="header-meta">GESTOR DE CURSOS</div>
+        <h1 class="header-title">Tus <span class="serif-it gradtext" style="font-size:34px">cursos</span></h1>
+        <p class="header-sub">Creá, editá y publicá tus cursos. Solo los publicados aparecen en el sitio.</p>
+      </div>
+      <div class="header-actions">
+        <button class="cta-gold btn-primary" onclick="abrirModalCurso()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          NUEVO CURSO
+        </button>
+      </div>
+    </div>
+
+    <div class="cursos-toolbar">
+      <div class="cursos-filtros">
+        <button class="filter-btn active" onclick="filtrarCursos('todos', this)">Todos</button>
+        <button class="filter-btn" onclick="filtrarCursos('publicado', this)">Publicados</button>
+        <button class="filter-btn" onclick="filtrarCursos('borrador', this)">Borradores</button>
+      </div>
+    </div>
+
+    <div class="cursos-grid" id="cursosGrid"></div>
+  </div>
+
+  <!-- MODAL EDITAR/CREAR CURSO -->
+  <div class="curso-modal-backdrop" id="cursoModal">
+    <div class="curso-modal">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">EDITOR DE CURSO</div>
+          <h3 class="curso-modal-titulo serif" id="cursoModalTitulo">Nuevo curso</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarModalCurso()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <input type="hidden" id="cursoId">
+
+        <div class="form-grid">
+          <div class="form-field form-grid-full">
+            <label class="form-label">TÍTULO DEL CURSO</label>
+            <input type="text" class="form-input" id="cursoTitulo" placeholder="Creando Mentes Millonarias">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">SLUG (URL)</label>
+            <div class="form-input-prefix">
+              <span class="prefix">/</span>
+              <input type="text" class="form-input" id="cursoSlug" placeholder="cmm" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9-]/g,'')">
+            </div>
+            <div class="form-help">Solo letras minúsculas y guiones</div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">CATEGORÍA</label>
+            <select class="form-select" id="cursoCategoria">
+              <option value="FORMACIÓN">Formación</option>
+              <option value="CONTENIDO">Contenido</option>
+              <option value="PREMIUM">Premium</option>
+              <option value="EXCLUSIVO">Exclusivo</option>
+              <option value="CANAL">Canal</option>
+              <option value="GRATIS">Gratis</option>
+            </select>
+          </div>
+
+          <div class="form-field form-grid-full">
+            <label class="form-label">DESCRIPCIÓN BREVE</label>
+            <textarea class="form-textarea" id="cursoDescripcion" placeholder="Una frase corta que describa el curso"></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">PRECIO ACTUAL (Gs)</label>
+            <input type="number" class="form-input" id="cursoPrecio" placeholder="200000" min="0">
+            <div class="form-help">0 = gratis</div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">PRECIO ANTERIOR (Gs · opcional)</label>
+            <input type="number" class="form-input" id="cursoPrecioAnterior" placeholder="280000" min="0">
+            <div class="form-help">Para mostrar tachado en oferta</div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">MÓDULOS</label>
+            <input type="number" class="form-input" id="cursoModulos" placeholder="12" min="0">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">CLASES TOTALES</label>
+            <input type="number" class="form-input" id="cursoClases" placeholder="47" min="0">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">DURACIÓN (minutos)</label>
+            <input type="number" class="form-input" id="cursoDuracion" placeholder="494" min="0">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">ORDEN</label>
+            <input type="number" class="form-input" id="cursoOrden" placeholder="1" min="0">
+          </div>
+
+          <div class="form-field form-grid-full">
+            <label class="form-label">COLOR DE LA PORTADA</label>
+            <div class="gradient-options" id="gradientOptions">
+              <div class="gradient-option selected" data-gradient="linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)" style="background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)"></div>
+              <div class="gradient-option" data-gradient="linear-gradient(160deg,#5A0F2A 0%,#8B2244 50%,#2D0A18 100%)" style="background:linear-gradient(160deg,#5A0F2A 0%,#8B2244 50%,#2D0A18 100%)"></div>
+              <div class="gradient-option" data-gradient="linear-gradient(160deg,#4A0F1E 0%,#7A1B2E 50%,#3D1208 100%)" style="background:linear-gradient(160deg,#4A0F1E 0%,#7A1B2E 50%,#3D1208 100%)"></div>
+              <div class="gradient-option" data-gradient="linear-gradient(160deg,#3D0A1A 0%,#7A1B2E 60%,#1A0509 100%)" style="background:linear-gradient(160deg,#3D0A1A 0%,#7A1B2E 60%,#1A0509 100%)"></div>
+              <div class="gradient-option" data-gradient="linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#3D1208 100%)" style="background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#3D1208 100%)"></div>
+              <div class="gradient-option" data-gradient="linear-gradient(160deg,#3D1208 0%,#7A1B2E 50%,#2D0A18 100%)" style="background:linear-gradient(160deg,#3D1208 0%,#7A1B2E 50%,#2D0A18 100%)"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Publicar curso</div>
+            <div class="toggle-help">Si está activado, aparece en el catálogo del sitio</div>
+          </div>
+          <div class="toggle-switch" id="cursoPublicado" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Destacar en home</div>
+            <div class="toggle-help">Aparece en la página principal del sitio</div>
+          </div>
+          <div class="toggle-switch" id="cursoDestacado" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <button class="btn-danger" id="btnEliminarCurso" onclick="eliminarCurso()" style="display:none">ELIMINAR CURSO</button>
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarModalCurso()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="guardarCurso()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="tab-content" id="content-hashtags">
     <div class="header-bar">
       <div>
@@ -616,27 +925,24 @@ body{visibility:hidden}
   // ============================
   // HASHTAGS
   // ============================
-  const HASHTAGS_DEFAULT = [
-    'desafio30dias',
-    'mindset',
-    'primervimillon',
-    'pagopar',
-    'cobros',
-    'embudos',
-    'marketing',
-    'ventas',
-    'paraguay',
-    'instagram',
-    'stories',
-    'reels',
-    'comunidad',
-    'leccion'
-  ];
+  // ============================================
+  // HASHTAGS conectados a Supabase
+  // ============================================
+  let hashtags = [];
 
-  let hashtags = JSON.parse(localStorage.getItem('milena_hashtags') || 'null') || HASHTAGS_DEFAULT;
-
-  function guardarHashtags(){
-    localStorage.setItem('milena_hashtags', JSON.stringify(hashtags));
+  async function cargarHashtags() {
+    if (!sb) return;
+    const { data, error } = await sb
+      .from('hashtags')
+      .select('*')
+      .order('nombre', { ascending: true });
+    if (error) {
+      console.error('Error cargando hashtags:', error);
+      mostrarToast('Error al cargar etiquetas', true);
+      return;
+    }
+    hashtags = data || [];
+    renderHashtags();
   }
 
   function renderHashtags(){
@@ -646,8 +952,8 @@ body{visibility:hidden}
     } else {
       list.innerHTML = hashtags.map(h => `
         <div class="hashtag-tag">
-          #${h}
-          <button class="delete-x" onclick="eliminarHashtag('${h}')" title="Eliminar etiqueta">
+          #${h.nombre}
+          <button class="delete-x" onclick="eliminarHashtag('${h.id}','${h.nombre}')" title="Eliminar etiqueta">
             <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
           </button>
         </div>
@@ -658,24 +964,249 @@ body{visibility:hidden}
   }
 
   function limpiarInput(input){
-    // No permitir espacios, # ni mayúsculas
     input.value = input.value.toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '');
   }
 
-  function agregarHashtag(){
+  async function agregarHashtag(){
+    if (!sb) return mostrarToast('Conectando, esperá un segundo', true);
     const input = document.getElementById('newHashtag');
     const tag = input.value.trim().toLowerCase();
     if(!tag){
       mostrarToast('Escribí el nombre de la etiqueta', true);
       return;
     }
-    if(hashtags.includes(tag)){
+    if(hashtags.find(h => h.nombre === tag)){
       mostrarToast('Esa etiqueta ya existe', true);
       return;
     }
-    hashtags.push(tag);
-    guardarHashtags();
-    renderHashtags();
+    const { error } = await sb.from('hashtags').insert({ nombre: tag });
+    if (error) {
+      mostrarToast('Error al guardar: ' + error.message, true);
+      return;
+    }
+    input.value = '';
+    mostrarToast('✓ Etiqueta #' + tag + ' agregada');
+    await cargarHashtags();
+  }
+
+  async function eliminarHashtag(id, nombre){
+    if(!confirm('¿Eliminar la etiqueta #' + nombre + '?
+
+Las alumnas ya no podrán usarla en posts nuevos.')) return;
+    const { error } = await sb.from('hashtags').delete().eq('id', id);
+    if (error) {
+      mostrarToast('Error al eliminar: ' + error.message, true);
+      return;
+    }
+    mostrarToast('Etiqueta #' + nombre + ' eliminada');
+    await cargarHashtags();
+  }
+
+  function mostrarToast(msg, isError){
+    const t = document.getElementById('toast');
+    document.getElementById('toastText').textContent = msg;
+    t.classList.toggle('error', !!isError);
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  
+
+  // ============================
+  // GESTOR DE CURSOS
+  // ============================
+  let cursos = [];
+  let cursoEditando = null;
+  let gradientSeleccionado = 'linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)';
+  let filtroCursos = 'todos';
+
+  async function cargarCursos() {
+    if (!sb) return;
+    const { data, error } = await sb
+      .from('cursos')
+      .select('*')
+      .order('orden', { ascending: true });
+    if (error) {
+      console.error('Error cargando cursos:', error);
+      mostrarToast('Error al cargar cursos: ' + error.message, true);
+      return;
+    }
+    cursos = data || [];
+    renderCursos();
+    document.getElementById('cursosCount').textContent = cursos.length;
+  }
+
+  function renderCursos() {
+    const grid = document.getElementById('cursosGrid');
+    let cursosFiltrados = cursos;
+    if (filtroCursos === 'publicado') cursosFiltrados = cursos.filter(c => c.publicado);
+    if (filtroCursos === 'borrador') cursosFiltrados = cursos.filter(c => !c.publicado);
+
+    if (cursosFiltrados.length === 0) {
+      grid.innerHTML = `
+        <div class="empty-cursos">
+          <div class="empty-cursos-icon">📚</div>
+          <div style="font-size:14px;margin-bottom:6px">${filtroCursos === 'todos' ? 'Aún no tenés cursos' : 'No hay cursos en esta categoría'}</div>
+          <div style="font-size:12px;color:rgba(255,245,240,0.4)">Hacé click en "NUEVO CURSO" arriba para crear el primero</div>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = cursosFiltrados.map(c => `
+      <div class="curso-card-admin ${c.publicado ? '' : 'borrador'}" onclick="editarCurso('${c.id}')">
+        <div class="curso-card-poster" style="background:${c.color_gradient || 'linear-gradient(160deg,#2D0A18,#4A0F1E,#1A0509)'}">
+          <div class="glow-1"></div>
+          <div class="glow-2"></div>
+          <div class="curso-card-poster-title">${c.titulo}</div>
+          <div class="curso-card-status ${c.publicado ? 'status-publicado' : 'status-borrador'}">${c.publicado ? 'PUBLICADO' : 'BORRADOR'}</div>
+        </div>
+        <div class="curso-card-info">
+          <div class="curso-card-cat">${c.categoria || 'SIN CATEGORÍA'}</div>
+          <div class="curso-card-titulo">${c.titulo}</div>
+          <div class="curso-card-meta">
+            <span class="curso-card-precio ${c.precio_gs === 0 ? 'gratis' : ''}">${c.precio_gs === 0 ? 'GRATIS' : 'Gs ' + c.precio_gs.toLocaleString('es-PY')}</span>
+            <span class="curso-card-stats">${c.modulos_count || 0} mód · ${c.clases_count || 0} clases</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function filtrarCursos(filtro, btn) {
+    filtroCursos = filtro;
+    document.querySelectorAll('.cursos-filtros .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCursos();
+  }
+
+  function abrirModalCurso(id) {
+    cursoEditando = id || null;
+    document.getElementById('cursoId').value = id || '';
+    document.getElementById('cursoModalTitulo').textContent = id ? 'Editar curso' : 'Nuevo curso';
+    document.getElementById('btnEliminarCurso').style.display = id ? '' : 'none';
+
+    if (id) {
+      const c = cursos.find(x => x.id === id);
+      if (!c) return;
+      document.getElementById('cursoTitulo').value = c.titulo || '';
+      document.getElementById('cursoSlug').value = c.slug || '';
+      document.getElementById('cursoCategoria').value = c.categoria || 'FORMACIÓN';
+      document.getElementById('cursoDescripcion').value = c.descripcion || '';
+      document.getElementById('cursoPrecio').value = c.precio_gs || 0;
+      document.getElementById('cursoPrecioAnterior').value = c.precio_anterior_gs || '';
+      document.getElementById('cursoModulos').value = c.modulos_count || 0;
+      document.getElementById('cursoClases').value = c.clases_count || 0;
+      document.getElementById('cursoDuracion').value = c.duracion_minutos || 0;
+      document.getElementById('cursoOrden').value = c.orden || 0;
+      document.getElementById('cursoPublicado').classList.toggle('on', !!c.publicado);
+      document.getElementById('cursoDestacado').classList.toggle('on', !!c.destacado_home);
+      gradientSeleccionado = c.color_gradient || gradientSeleccionado;
+      document.querySelectorAll('.gradient-option').forEach(g => {
+        g.classList.toggle('selected', g.dataset.gradient === gradientSeleccionado);
+      });
+    } else {
+      // Limpiar para nuevo
+      ['cursoTitulo','cursoSlug','cursoDescripcion','cursoPrecio','cursoPrecioAnterior','cursoModulos','cursoClases','cursoDuracion','cursoOrden'].forEach(f => document.getElementById(f).value = '');
+      document.getElementById('cursoCategoria').value = 'FORMACIÓN';
+      document.getElementById('cursoPublicado').classList.remove('on');
+      document.getElementById('cursoDestacado').classList.remove('on');
+      gradientSeleccionado = 'linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)';
+      document.querySelectorAll('.gradient-option').forEach((g,i) => g.classList.toggle('selected', i === 0));
+    }
+
+    document.getElementById('cursoModal').classList.add('show');
+  }
+
+  function cerrarModalCurso() {
+    document.getElementById('cursoModal').classList.remove('show');
+  }
+
+  function editarCurso(id) {
+    abrirModalCurso(id);
+  }
+
+  // Click en gradiente
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('gradient-option')) {
+      document.querySelectorAll('.gradient-option').forEach(g => g.classList.remove('selected'));
+      e.target.classList.add('selected');
+      gradientSeleccionado = e.target.dataset.gradient;
+    }
+  });
+
+  async function guardarCurso() {
+    if (!sb) return mostrarToast('Conectando, esperá un segundo', true);
+
+    const titulo = document.getElementById('cursoTitulo').value.trim();
+    const slug = document.getElementById('cursoSlug').value.trim();
+
+    if (!titulo) return mostrarToast('Falta el título', true);
+    if (!slug) return mostrarToast('Falta el slug', true);
+
+    const datos = {
+      titulo: titulo,
+      slug: slug,
+      categoria: document.getElementById('cursoCategoria').value,
+      descripcion: document.getElementById('cursoDescripcion').value.trim(),
+      precio_gs: parseInt(document.getElementById('cursoPrecio').value) || 0,
+      precio_anterior_gs: parseInt(document.getElementById('cursoPrecioAnterior').value) || 0,
+      modulos_count: parseInt(document.getElementById('cursoModulos').value) || 0,
+      clases_count: parseInt(document.getElementById('cursoClases').value) || 0,
+      duracion_minutos: parseInt(document.getElementById('cursoDuracion').value) || 0,
+      orden: parseInt(document.getElementById('cursoOrden').value) || 0,
+      color_gradient: gradientSeleccionado,
+      publicado: document.getElementById('cursoPublicado').classList.contains('on'),
+      destacado_home: document.getElementById('cursoDestacado').classList.contains('on')
+    };
+
+    const id = document.getElementById('cursoId').value;
+    let result;
+    if (id) {
+      result = await sb.from('cursos').update(datos).eq('id', id);
+    } else {
+      result = await sb.from('cursos').insert(datos);
+    }
+
+    if (result.error) {
+      mostrarToast('Error: ' + result.error.message, true);
+      return;
+    }
+
+    mostrarToast(id ? '✓ Curso actualizado' : '✓ Curso creado');
+    cerrarModalCurso();
+    await cargarCursos();
+  }
+
+  async function eliminarCurso() {
+    const id = document.getElementById('cursoId').value;
+    if (!id) return;
+    const c = cursos.find(x => x.id === id);
+    if (!confirm(`¿Eliminar el curso "${c?.titulo}"?\n\nEsta acción no se puede deshacer.`)) return;
+
+    const { error } = await sb.from('cursos').delete().eq('id', id);
+    if (error) return mostrarToast('Error: ' + error.message, true);
+
+    mostrarToast('Curso eliminado');
+    cerrarModalCurso();
+    await cargarCursos();
+  }
+
+  // Cargar al iniciar
+  const waitSupaCursos = setInterval(() => {
+    if (typeof sb !== 'undefined' && sb !== null) {
+      clearInterval(waitSupaCursos);
+      cargarCursos();
+    }
+  }, 100);
+
+  // Cargar hashtags cuando Supabase esté listo
+  const waitSupa = setInterval(() => {
+    if (typeof sb !== 'undefined' && sb !== null) {
+      clearInterval(waitSupa);
+      cargarHashtags();
+    }
+  }, 100);
     input.value = '';
     mostrarToast('✓ Etiqueta #' + tag + ' agregada');
   }
