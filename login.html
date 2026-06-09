@@ -74,7 +74,7 @@
 </head>
 <body>
 
-<a href="index.html" class="back-btn">
+<a href="/index" class="back-btn">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
 </a>
 
@@ -181,7 +181,7 @@
     const user = await obtenerUsuario();
     if (user) {
       // Ya está logueado, redirigir
-      window.location.href = 'index.html';
+      window.location.href = '/';
     }
   };
 
@@ -221,7 +221,7 @@
 
     if (result.exito) {
       mostrarAlerta('✓ Bienvenida! Redirigiendo...', 'success');
-      setTimeout(() => { window.location.href = 'index.html'; }, 800);
+      setTimeout(() => { window.location.href = '/'; }, 800);
     } else {
       btn.disabled = false;
       btn.textContent = 'ENTRAR';
@@ -251,7 +251,7 @@
 
     if (result.exito) {
       mostrarAlerta('✓ Cuenta creada! Redirigiendo...', 'success');
-      setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+      setTimeout(() => { window.location.href = '/'; }, 1200);
     } else {
       btn.disabled = false;
       btn.textContent = 'CREAR MI CUENTA';

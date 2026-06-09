@@ -88,15 +88,15 @@ body{visibility:hidden}
 
 <header class="main-header">
   <div class="header-inner">
-    <a href="index.html" class="logo">
+    <a href="/index" class="logo">
       <div class="logo-box">M</div>
       <div class="logo-text">MILENA<br>MACHADO</div>
     </a>
-    <a href="index.html" class="nav-btn">INICIO</a>
-    <a href="cursos.html" class="nav-btn">CURSOS</a>
-    <a href="blog.html" class="nav-btn">BLOG</a>
-    <a href="comunidad.html" class="nav-btn">COMUNIDAD</a>
-    <div style="margin-left:auto"><a href="login.html" class="btn-outline">MI PERFIL</a></div>
+    <a href="/index" class="nav-btn">INICIO</a>
+    <a href="/cursos" class="nav-btn">CURSOS</a>
+    <a href="/blog" class="nav-btn">BLOG</a>
+    <a href="/comunidad" class="nav-btn">COMUNIDAD</a>
+    <div style="margin-left:auto"><a href="/login" class="btn-outline">MI PERFIL</a></div>
   </div>
 </header>
 
@@ -280,7 +280,7 @@ body{visibility:hidden}
       clearInterval(checkLogin);
       const { data: { user } } = await sb.auth.getUser();
       if (!user) {
-        window.location.replace('login.html');
+        window.location.replace('/login');
       } else {
         // Mostrar la página
         document.getElementById('auth-splash-style').remove();

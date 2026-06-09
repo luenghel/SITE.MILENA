@@ -85,7 +85,7 @@
       clearInterval(waitSupa);
 
       if (!hashPedido) {
-        mostrarResultado('error', 'Pedido no encontrado', 'No pudimos identificar tu pedido. Si pagaste, revisá tu email.', '<a href="index.html" class="cta-gold result-btn">VOLVER AL INICIO</a>');
+        mostrarResultado('error', 'Pedido no encontrado', 'No pudimos identificar tu pedido. Si pagaste, revisá tu email.', '<a href="/index" class="cta-gold result-btn">VOLVER AL INICIO</a>');
         return;
       }
 
@@ -97,7 +97,7 @@
         .maybeSingle();
 
       if (!compra) {
-        mostrarResultado('pending', 'Procesando...', 'Tu pago está siendo procesado. Puede tardar unos minutos. Te avisaremos por email cuando se confirme.', '<a href="index.html" class="cta-gold result-btn">VOLVER AL INICIO</a>');
+        mostrarResultado('pending', 'Procesando...', 'Tu pago está siendo procesado. Puede tardar unos minutos. Te avisaremos por email cuando se confirme.', '<a href="/index" class="cta-gold result-btn">VOLVER AL INICIO</a>');
         return;
       }
 
@@ -106,21 +106,21 @@
           'success',
           '¡Pago confirmado! 🎉',
           'Tu compra se realizó con éxito. Revisá tu email para acceder a tu curso.',
-          '<a href="cursos.html" class="cta-gold result-btn">VER MIS CURSOS</a><a href="index.html" class="result-btn result-btn-secondary">Ir al inicio</a>'
+          '<a href="/cursos" class="cta-gold result-btn">VER MIS CURSOS</a><a href="/index" class="result-btn result-btn-secondary">Ir al inicio</a>'
         );
       } else if (compra.estado === 'pendiente') {
         mostrarResultado(
           'pending',
           'Pago pendiente',
           'Tu pago todavía no se confirmó. Si elegiste pagar en boca de cobranza o transferencia, completá el pago. Te avisaremos por email.',
-          '<a href="index.html" class="cta-gold result-btn">VOLVER AL INICIO</a>'
+          '<a href="/index" class="cta-gold result-btn">VOLVER AL INICIO</a>'
         );
       } else {
         mostrarResultado(
           'error',
           'Pago no completado',
           'El pago fue cancelado o no se completó. Podés intentar de nuevo cuando quieras.',
-          '<a href="cursos.html" class="cta-gold result-btn">VOLVER AL CATÁLOGO</a>'
+          '<a href="/cursos" class="cta-gold result-btn">VOLVER AL CATÁLOGO</a>'
         );
       }
     }

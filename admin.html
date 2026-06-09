@@ -1230,13 +1230,13 @@ body{visibility:hidden}
       clearInterval(checkAdmin);
       const { data: { user } } = await sb.auth.getUser();
       if (!user) {
-        window.location.replace('login.html');
+        window.location.replace('/login');
         return;
       }
       const { data: perfil } = await sb.from('perfiles').select('rol').eq('id', user.id).single();
       if (!perfil || (perfil.rol !== 'admin' && perfil.rol !== 'fundadora')) {
         alert('Esta página es solo para administradoras.');
-        window.location.replace('index.html');
+        window.location.replace('/index');
         return;
       }
       // Mostrar la página

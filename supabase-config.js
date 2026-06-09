@@ -58,7 +58,7 @@ async function cerrarSesion() {
   if (!sb) return { exito: false, error: 'Supabase no está conectado' };
   const { error } = await sb.auth.signOut();
   if (error) return { exito: false, error: error.message };
-  window.location.href = 'index.html';
+  window.location.href = '/';
   return { exito: true };
 }
 
@@ -95,7 +95,7 @@ async function recuperarPassword(email) {
 async function requerirLogin() {
   const user = await obtenerUsuario();
   if (!user) {
-    window.location.href = 'login.html';
+    window.location.href = '/login';
     return null;
   }
   return user;
@@ -105,6 +105,6 @@ async function requerirLogin() {
 async function redirigirSiLogueado() {
   const user = await obtenerUsuario();
   if (user) {
-    window.location.href = 'index.html';
+    window.location.href = '/';
   }
 }
