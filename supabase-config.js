@@ -108,3 +108,41 @@ async function redirigirSiLogueado() {
     window.location.href = '/';
   }
 }
+
+
+// ═══════════════════════════════════════════════════════
+// SUBIR IMÁGENES AL STORAGE
+// ═══════════════════════════════════════════════════════
+
+// Subir una imagen al bucket "imagenes"
+async function subirImagen(archivo, carpeta) {
+  if (!sb) return { exito: false, error: 'Supabase no conectado' };
+  if (!archivo) return { exito: false, error: 'No hay archivo' };
+
+  // Generar nombre único
+  const ext = archivo.name.split('.').pop().toLowerCase();
+  const nombreUnico = `${carpeta || 'general'}/${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${ext}`;
+
+  const { data, error } = await sb.storage
+    .from('imagenes')
+    .upload(nombreUnico, archivo, {
+      cacheControl: '3600',
+      upsert: false
+    });
+
+  if (error) return { exito: false, error: error.message };
+
+  // Obtener URL pública
+  const { data: urlData } = sb.storage
+    .from('imagenes')
+    .getPublicUrl(nombreUnico);
+
+  return { exito: true, url: urlData.publicUrl, path: nombreUnico };
+}
+
+// Borrar una imagen del storage
+async function borrarImagen(path) {
+  if (!sb || !path) return { exito: false };
+  const { error } = await sb.storage.from('imagenes').remove([path]);
+  return { exito: !error, error: error?.message };
+}

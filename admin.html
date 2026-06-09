@@ -258,6 +258,49 @@
     .form-grid{grid-template-columns:1fr}
   }
 
+
+  /* === IMAGE UPLOADER === */
+  .image-uploader{border:2px dashed rgba(255,245,240,0.2);border-radius:11px;padding:20px;text-align:center;cursor:pointer;transition:all 0.25s;background:rgba(255,245,240,0.03);position:relative;overflow:hidden;min-height:120px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px}
+  .image-uploader:hover{border-color:rgba(212,163,86,0.5);background:rgba(255,245,240,0.05)}
+  .image-uploader.dragging{border-color:#FAC775;background:rgba(212,163,86,0.08)}
+  .image-uploader-icon{color:rgba(255,245,240,0.4);transition:color 0.25s}
+  .image-uploader:hover .image-uploader-icon{color:#FAC775}
+  .image-uploader-text{font-size:13px;color:rgba(255,245,240,0.7);font-weight:500}
+  .image-uploader-help{font-size:10.5px;color:rgba(255,245,240,0.4)}
+  .image-uploader input[type="file"]{display:none}
+  .image-uploader-preview{width:100%;aspect-ratio:16/9;border-radius:8px;background-size:cover;background-position:center;background-repeat:no-repeat;position:relative}
+  .image-uploader-preview .remove-img{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:50%;background:rgba(14,5,9,0.85);color:#FF8090;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;backdrop-filter:blur(8px)}
+  .image-uploader-preview .remove-img:hover{background:rgba(184,41,74,0.8);color:#FFF5F0}
+  .image-uploading{display:flex;align-items:center;gap:9px;font-size:12px;color:#FAC775}
+  .upload-spinner{width:14px;height:14px;border:2px solid rgba(212,163,86,0.2);border-top-color:#FAC775;border-radius:50%;animation:spin 0.7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* Galería múltiple */
+  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:12px}
+  .gallery-item{aspect-ratio:1;border-radius:9px;background-size:cover;background-position:center;position:relative;border:0.5px solid rgba(255,245,240,0.1)}
+  .gallery-item .remove-img{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;background:rgba(14,5,9,0.85);color:#FF8090;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}
+
+  /* === CARRUSELES ADMIN === */
+  .carrusel-tabs{display:flex;gap:8px;margin-bottom:24px;border-bottom:0.5px solid rgba(255,245,240,0.1);padding-bottom:14px}
+  .carrusel-tab-btn{padding:10px 18px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:10px;color:rgba(255,245,240,0.65);font-size:12px;cursor:pointer;font-family:inherit;font-weight:500;letter-spacing:0.06em;transition:all 0.2s}
+  .carrusel-tab-btn:hover{background:rgba(255,245,240,0.08);color:#FFF5F0}
+  .carrusel-tab-btn.active{background:linear-gradient(135deg,rgba(212,163,86,0.18),rgba(212,163,86,0.05));border-color:rgba(212,163,86,0.45);color:#FAC775}
+
+  .carruseles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:18px}
+  .carrusel-card{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.25s}
+  .carrusel-card:hover{border-color:rgba(212,163,86,0.4);transform:translateY(-2px)}
+  .carrusel-card-img{aspect-ratio:16/9;background-size:cover;background-position:center;background-color:rgba(255,245,240,0.04)}
+  .carrusel-card-info{padding:12px}
+  .carrusel-card-title{font-size:13px;font-weight:500;margin-bottom:4px}
+  .carrusel-card-meta{font-size:11px;color:rgba(255,245,240,0.5)}
+  .carrusel-card-actions{display:flex;gap:6px;margin-top:8px}
+  .carrusel-mini-btn{flex:1;padding:6px 10px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.12);border-radius:7px;color:rgba(255,245,240,0.8);font-size:11px;cursor:pointer;font-family:inherit;text-align:center;transition:all 0.2s}
+  .carrusel-mini-btn:hover{background:rgba(255,245,240,0.1)}
+  .carrusel-mini-btn.danger{color:#FF8090}
+  .carrusel-mini-btn.danger:hover{background:rgba(255,59,71,0.15)}
+
+  .empty-carruseles{padding:50px 20px;text-align:center;color:rgba(255,245,240,0.5);grid-column:1/-1}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -344,6 +387,49 @@ body{visibility:hidden}
     .form-grid{grid-template-columns:1fr}
   }
 
+
+  /* === IMAGE UPLOADER === */
+  .image-uploader{border:2px dashed rgba(255,245,240,0.2);border-radius:11px;padding:20px;text-align:center;cursor:pointer;transition:all 0.25s;background:rgba(255,245,240,0.03);position:relative;overflow:hidden;min-height:120px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px}
+  .image-uploader:hover{border-color:rgba(212,163,86,0.5);background:rgba(255,245,240,0.05)}
+  .image-uploader.dragging{border-color:#FAC775;background:rgba(212,163,86,0.08)}
+  .image-uploader-icon{color:rgba(255,245,240,0.4);transition:color 0.25s}
+  .image-uploader:hover .image-uploader-icon{color:#FAC775}
+  .image-uploader-text{font-size:13px;color:rgba(255,245,240,0.7);font-weight:500}
+  .image-uploader-help{font-size:10.5px;color:rgba(255,245,240,0.4)}
+  .image-uploader input[type="file"]{display:none}
+  .image-uploader-preview{width:100%;aspect-ratio:16/9;border-radius:8px;background-size:cover;background-position:center;background-repeat:no-repeat;position:relative}
+  .image-uploader-preview .remove-img{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:50%;background:rgba(14,5,9,0.85);color:#FF8090;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;backdrop-filter:blur(8px)}
+  .image-uploader-preview .remove-img:hover{background:rgba(184,41,74,0.8);color:#FFF5F0}
+  .image-uploading{display:flex;align-items:center;gap:9px;font-size:12px;color:#FAC775}
+  .upload-spinner{width:14px;height:14px;border:2px solid rgba(212,163,86,0.2);border-top-color:#FAC775;border-radius:50%;animation:spin 0.7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* Galería múltiple */
+  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:12px}
+  .gallery-item{aspect-ratio:1;border-radius:9px;background-size:cover;background-position:center;position:relative;border:0.5px solid rgba(255,245,240,0.1)}
+  .gallery-item .remove-img{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;background:rgba(14,5,9,0.85);color:#FF8090;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}
+
+  /* === CARRUSELES ADMIN === */
+  .carrusel-tabs{display:flex;gap:8px;margin-bottom:24px;border-bottom:0.5px solid rgba(255,245,240,0.1);padding-bottom:14px}
+  .carrusel-tab-btn{padding:10px 18px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:10px;color:rgba(255,245,240,0.65);font-size:12px;cursor:pointer;font-family:inherit;font-weight:500;letter-spacing:0.06em;transition:all 0.2s}
+  .carrusel-tab-btn:hover{background:rgba(255,245,240,0.08);color:#FFF5F0}
+  .carrusel-tab-btn.active{background:linear-gradient(135deg,rgba(212,163,86,0.18),rgba(212,163,86,0.05));border-color:rgba(212,163,86,0.45);color:#FAC775}
+
+  .carruseles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:18px}
+  .carrusel-card{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.25s}
+  .carrusel-card:hover{border-color:rgba(212,163,86,0.4);transform:translateY(-2px)}
+  .carrusel-card-img{aspect-ratio:16/9;background-size:cover;background-position:center;background-color:rgba(255,245,240,0.04)}
+  .carrusel-card-info{padding:12px}
+  .carrusel-card-title{font-size:13px;font-weight:500;margin-bottom:4px}
+  .carrusel-card-meta{font-size:11px;color:rgba(255,245,240,0.5)}
+  .carrusel-card-actions{display:flex;gap:6px;margin-top:8px}
+  .carrusel-mini-btn{flex:1;padding:6px 10px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.12);border-radius:7px;color:rgba(255,245,240,0.8);font-size:11px;cursor:pointer;font-family:inherit;text-align:center;transition:all 0.2s}
+  .carrusel-mini-btn:hover{background:rgba(255,245,240,0.1)}
+  .carrusel-mini-btn.danger{color:#FF8090}
+  .carrusel-mini-btn.danger:hover{background:rgba(255,59,71,0.15)}
+
+  .empty-carruseles{padding:50px 20px;text-align:center;color:rgba(255,245,240,0.5);grid-column:1/-1}
+
 </style>
 </head>
 <body>
@@ -386,6 +472,10 @@ body{visibility:hidden}
     <a href="#" onclick="cambiarTab('hashtags')" class="sidebar-item" id="nav-hashtags">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
       Etiquetas
+    </a>
+    <a href="#" onclick="cambiarTab('carruseles')" class="sidebar-item" id="nav-carruseles">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      Carruseles
     </a>
   </div>
 
@@ -769,6 +859,27 @@ body{visibility:hidden}
             <textarea class="form-textarea" id="cursoDescripcion" placeholder="Una frase corta que describa el curso"></textarea>
           </div>
 
+          <div class="form-field form-grid-full">
+            <label class="form-label">SLOGAN (aparece en el modal de compra)</label>
+            <input type="text" class="form-input" id="cursoSlogan" placeholder="Ej: Transformá tu negocio en 90 días">
+            <div class="form-help">Una frase motivadora sobre el objetivo del curso</div>
+          </div>
+
+          <div class="form-field form-grid-full">
+            <label class="form-label">FOTO DE PORTADA</label>
+            <div class="image-uploader" id="cursoFotoUploader" onclick="document.getElementById('cursoFotoInput').click()">
+              <div id="cursoFotoEmpty">
+                <svg class="image-uploader-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <div class="image-uploader-text">Clickeá o arrastrá una imagen acá</div>
+                <div class="image-uploader-help">JPG, PNG o WebP · máximo 5 MB</div>
+              </div>
+              <div id="cursoFotoPreview" style="display:none;width:100%"></div>
+              <input type="file" id="cursoFotoInput" accept="image/*" onchange="subirFotoCurso(event)">
+            </div>
+            <input type="hidden" id="cursoFotoUrl">
+            <input type="hidden" id="cursoFotoPath">
+          </div>
+
           <div class="form-field">
             <label class="form-label">PRECIO ACTUAL (Gs)</label>
             <input type="text" class="form-input" id="cursoPrecio" placeholder="200.000" oninput="formatearPrecio(this)" inputmode="numeric">
@@ -1091,6 +1202,7 @@ body{visibility:hidden}
       document.getElementById('cursoSlug').value = c.slug || '';
       document.getElementById('cursoCategoria').value = c.categoria || 'FORMACIÓN';
       document.getElementById('cursoDescripcion').value = c.descripcion || '';
+      document.getElementById('cursoSlogan').value = c.slogan || '';
       document.getElementById('cursoPrecio').value = c.precio_gs ? c.precio_gs.toLocaleString('es-PY') : '';
       document.getElementById('cursoPrecioAnterior').value = c.precio_anterior_gs ? c.precio_anterior_gs.toLocaleString('es-PY') : '';
       document.getElementById('cursoModulos').value = c.modulos_count || 0;
@@ -1103,14 +1215,31 @@ body{visibility:hidden}
       document.querySelectorAll('.gradient-option').forEach(g => {
         g.classList.toggle('selected', g.dataset.gradient === gradientSeleccionado);
       });
+      // Cargar foto si existe
+      if (c.foto_portada) {
+        document.getElementById('cursoFotoUrl').value = c.foto_portada;
+        document.getElementById('cursoFotoEmpty').style.display = 'none';
+        const preview = document.getElementById('cursoFotoPreview');
+        preview.style.display = 'block';
+        preview.innerHTML = `
+          <div class="image-uploader-preview" style="background-image:url('${c.foto_portada}')">
+            <button class="remove-img" onclick="event.stopPropagation();quitarFotoCurso()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        `;
+      } else {
+        quitarFotoCurso();
+      }
     } else {
       // Limpiar para nuevo
-      ['cursoTitulo','cursoSlug','cursoDescripcion','cursoPrecio','cursoPrecioAnterior','cursoModulos','cursoClases','cursoDuracion','cursoOrden'].forEach(f => document.getElementById(f).value = '');
+      ['cursoTitulo','cursoSlug','cursoDescripcion','cursoSlogan','cursoPrecio','cursoPrecioAnterior','cursoModulos','cursoClases','cursoDuracion','cursoOrden'].forEach(f => document.getElementById(f).value = '');
       document.getElementById('cursoCategoria').value = 'FORMACIÓN';
       document.getElementById('cursoPublicado').classList.remove('on');
       document.getElementById('cursoDestacado').classList.remove('on');
       gradientSeleccionado = 'linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)';
       document.querySelectorAll('.gradient-option').forEach((g,i) => g.classList.toggle('selected', i === 0));
+      quitarFotoCurso();
     }
 
     document.getElementById('cursoModal').classList.add('show');
@@ -1161,6 +1290,7 @@ body{visibility:hidden}
       slug: slug,
       categoria: document.getElementById('cursoCategoria').value,
       descripcion: document.getElementById('cursoDescripcion').value.trim(),
+      slogan: document.getElementById('cursoSlogan').value.trim(),
       precio_gs: limpiarPrecio(document.getElementById('cursoPrecio').value),
       precio_anterior_gs: limpiarPrecio(document.getElementById('cursoPrecioAnterior').value),
       modulos_count: parseInt(document.getElementById('cursoModulos').value) || 0,
@@ -1169,7 +1299,8 @@ body{visibility:hidden}
       orden: parseInt(document.getElementById('cursoOrden').value) || 0,
       color_gradient: gradientSeleccionado,
       publicado: document.getElementById('cursoPublicado').classList.contains('on'),
-      destacado_home: document.getElementById('cursoDestacado').classList.contains('on')
+      destacado_home: document.getElementById('cursoDestacado').classList.contains('on'),
+      foto_portada: document.getElementById('cursoFotoUrl').value || null
     };
 
     const id = document.getElementById('cursoId').value;
@@ -1204,11 +1335,220 @@ body{visibility:hidden}
     await cargarCursos();
   }
 
+  // ============================
+  // SUBIR FOTO DE CURSO
+  // ============================
+  async function subirFotoCurso(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const empty = document.getElementById('cursoFotoEmpty');
+    const preview = document.getElementById('cursoFotoPreview');
+
+    empty.innerHTML = '<div class="image-uploading"><div class="upload-spinner"></div> Subiendo...</div>';
+
+    const result = await subirImagen(file, 'cursos');
+
+    if (result.exito) {
+      document.getElementById('cursoFotoUrl').value = result.url;
+      document.getElementById('cursoFotoPath').value = result.path;
+      preview.style.display = 'block';
+      preview.innerHTML = `
+        <div class="image-uploader-preview" style="background-image:url('${result.url}')">
+          <button class="remove-img" onclick="event.stopPropagation();quitarFotoCurso()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      `;
+      empty.style.display = 'none';
+      mostrarToast('✓ Foto subida');
+    } else {
+      mostrarToast('Error: ' + result.error, true);
+      empty.innerHTML = `
+        <svg class="image-uploader-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <div class="image-uploader-text">Clickeá o arrastrá una imagen acá</div>
+        <div class="image-uploader-help">JPG, PNG o WebP · máximo 5 MB</div>
+      `;
+    }
+  }
+
+  function quitarFotoCurso() {
+    document.getElementById('cursoFotoUrl').value = '';
+    document.getElementById('cursoFotoPath').value = '';
+    document.getElementById('cursoFotoPreview').style.display = 'none';
+    const empty = document.getElementById('cursoFotoEmpty');
+    empty.style.display = '';
+    empty.innerHTML = `
+      <svg class="image-uploader-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      <div class="image-uploader-text">Clickeá o arrastrá una imagen acá</div>
+      <div class="image-uploader-help">JPG, PNG o WebP · máximo 5 MB</div>
+    `;
+    document.getElementById('cursoFotoInput').value = '';
+  }
+
+  // ============================
+  // GESTOR DE CARRUSELES
+  // ============================
+  let carruseles = [];
+  let tipoCarruselActual = 'home_principal';
+  let carruselEditando = null;
+  let fotoCarruselSubida = null;
+
+  async function cargarCarruseles() {
+    if (!sb) return;
+    const { data, error } = await sb
+      .from('carruseles')
+      .select('*')
+      .eq('tipo', tipoCarruselActual)
+      .order('orden', { ascending: true });
+    if (error) {
+      console.error('Error cargando carruseles:', error);
+      return;
+    }
+    carruseles = data || [];
+    renderCarruseles();
+  }
+
+  function renderCarruseles() {
+    const grid = document.getElementById('carruselesGrid');
+    if (carruseles.length === 0) {
+      grid.innerHTML = `
+        <div class="empty-carruseles">
+          <div style="font-size:48px;margin-bottom:14px;opacity:0.4">🖼️</div>
+          <div style="font-size:14px;margin-bottom:6px">No hay fotos en este carrusel</div>
+          <div style="font-size:12px;color:rgba(255,245,240,0.4)">Hacé click en "AGREGAR FOTO" para subir la primera</div>
+        </div>
+      `;
+      return;
+    }
+    grid.innerHTML = carruseles.map(c => `
+      <div class="carrusel-card" onclick="editarCarrusel('${c.id}')">
+        <div class="carrusel-card-img" style="background-image:url('${c.imagen_url}')"></div>
+        <div class="carrusel-card-info">
+          <div class="carrusel-card-title">${c.titulo || 'Sin título'}</div>
+          <div class="carrusel-card-meta">Orden: ${c.orden} · ${c.activo ? '✓ Activo' : '✗ Inactivo'}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function cambiarTipoCarrusel(tipo, btn) {
+    tipoCarruselActual = tipo;
+    document.querySelectorAll('.carrusel-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    cargarCarruseles();
+  }
+
+  function abrirModalCarrusel(id) {
+    carruselEditando = id || null;
+    document.getElementById('carruselId').value = id || '';
+    document.getElementById('carruselModalTitulo').textContent = id ? 'Editar foto' : 'Nueva foto';
+    document.getElementById('btnEliminarCarrusel').style.display = id ? '' : 'none';
+
+    if (id) {
+      const c = carruseles.find(x => x.id === id);
+      if (!c) return;
+      document.getElementById('carruselTitulo').value = c.titulo || '';
+      document.getElementById('carruselDescripcion').value = c.descripcion || '';
+      document.getElementById('carruselLink').value = c.link || '';
+      document.getElementById('carruselOrden').value = c.orden || 0;
+      document.getElementById('carruselFotoUrl').value = c.imagen_url;
+      document.getElementById('carruselActivo').classList.toggle('on', !!c.activo);
+      // Mostrar la foto actual
+      document.getElementById('carruselFotoEmpty').style.display = 'none';
+      const preview = document.getElementById('carruselFotoPreview');
+      preview.style.display = 'block';
+      preview.innerHTML = `<div class="image-uploader-preview" style="background-image:url('${c.imagen_url}')"></div>`;
+    } else {
+      ['carruselTitulo','carruselDescripcion','carruselLink','carruselOrden','carruselFotoUrl'].forEach(f => document.getElementById(f).value = '');
+      document.getElementById('carruselActivo').classList.add('on');
+      document.getElementById('carruselFotoEmpty').style.display = '';
+      document.getElementById('carruselFotoPreview').style.display = 'none';
+    }
+
+    document.getElementById('carruselModal').classList.add('show');
+  }
+
+  function cerrarModalCarrusel() {
+    document.getElementById('carruselModal').classList.remove('show');
+  }
+
+  function editarCarrusel(id) {
+    abrirModalCarrusel(id);
+  }
+
+  async function subirFotoCarrusel(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const empty = document.getElementById('carruselFotoEmpty');
+    const preview = document.getElementById('carruselFotoPreview');
+
+    empty.innerHTML = '<div class="image-uploading"><div class="upload-spinner"></div> Subiendo...</div>';
+
+    const result = await subirImagen(file, 'carruseles');
+
+    if (result.exito) {
+      document.getElementById('carruselFotoUrl').value = result.url;
+      preview.style.display = 'block';
+      preview.innerHTML = `<div class="image-uploader-preview" style="background-image:url('${result.url}')"></div>`;
+      empty.style.display = 'none';
+      mostrarToast('✓ Foto subida');
+    } else {
+      mostrarToast('Error: ' + result.error, true);
+    }
+  }
+
+  async function guardarCarrusel() {
+    if (!sb) return mostrarToast('Conectando...', true);
+
+    const url = document.getElementById('carruselFotoUrl').value;
+    if (!url) return mostrarToast('Subí una foto primero', true);
+
+    const datos = {
+      tipo: tipoCarruselActual,
+      imagen_url: url,
+      titulo: document.getElementById('carruselTitulo').value.trim() || null,
+      descripcion: document.getElementById('carruselDescripcion').value.trim() || null,
+      link: document.getElementById('carruselLink').value.trim() || null,
+      orden: parseInt(document.getElementById('carruselOrden').value) || 0,
+      activo: document.getElementById('carruselActivo').classList.contains('on')
+    };
+
+    const id = document.getElementById('carruselId').value;
+    let result;
+    if (id) {
+      result = await sb.from('carruseles').update(datos).eq('id', id);
+    } else {
+      result = await sb.from('carruseles').insert(datos);
+    }
+
+    if (result.error) return mostrarToast('Error: ' + result.error.message, true);
+
+    mostrarToast(id ? '✓ Foto actualizada' : '✓ Foto agregada');
+    cerrarModalCarrusel();
+    await cargarCarruseles();
+  }
+
+  async function eliminarCarrusel() {
+    const id = document.getElementById('carruselId').value;
+    if (!id) return;
+    if (!confirm('¿Eliminar esta foto del carrusel?')) return;
+
+    const { error } = await sb.from('carruseles').delete().eq('id', id);
+    if (error) return mostrarToast('Error: ' + error.message, true);
+
+    mostrarToast('Foto eliminada');
+    cerrarModalCarrusel();
+    await cargarCarruseles();
+  }
+
   // Cargar al iniciar
   const waitSupaCursos = setInterval(() => {
     if (typeof sb !== 'undefined' && sb !== null) {
       clearInterval(waitSupaCursos);
       cargarCursos();
+      cargarCarruseles();
     }
   }, 100);
 

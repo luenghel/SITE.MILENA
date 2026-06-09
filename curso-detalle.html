@@ -175,6 +175,51 @@
     .compra-modal-poster-title{font-size:24px}
   }
 
+
+  /* Slogan del curso en el modal */
+  .compra-modal-poster-slogan{
+    margin-top:14px;
+    padding:8px 16px;
+    background:rgba(255,245,240,0.12);
+    border:0.5px solid rgba(255,245,240,0.25);
+    border-radius:16px;
+    font-size:12px;
+    color:rgba(255,245,240,0.9);
+    font-style:italic;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    display:inline-block;
+    text-align:center;
+    line-height:1.4;
+    max-width:90%;
+  }
+  .compra-modal-poster-slogan.show{display:inline-block}
+
+  /* Botón X grande para cerrar */
+  .compra-modal-close-btn{
+    position:absolute;
+    top:14px;right:14px;
+    width:38px;height:38px;
+    border-radius:50%;
+    background:rgba(14,5,9,0.75);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border:0.5px solid rgba(255,245,240,0.25);
+    color:#FFF5F0;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:10;
+    transition:all 0.25s;
+    font-family:inherit;
+  }
+  .compra-modal-close-btn:hover{
+    background:rgba(184,41,74,0.8);
+    transform:rotate(90deg) scale(1.05);
+    border-color:rgba(255,245,240,0.5);
+  }
+
 </style>
 </head>
 <body>
@@ -354,9 +399,13 @@
       <div class="compra-modal-poster-content">
         <div class="compra-modal-poster-cat">FORMACIÓN PRINCIPAL</div>
         <div class="compra-modal-poster-title">Creando Mentes<br>Millonarias</div>
+        <div class="compra-modal-poster-slogan" style="display:none"></div>
       </div>
     </div>
 
+    <button class="compra-modal-close-btn" onclick="window.location.href='/cursos'" title="Cerrar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
     <div class="compra-modal-body">
       <div class="compra-modal-icon">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
@@ -435,12 +484,18 @@ const cursoId = params.get('id') || 'cmm';
 const cursoActual = CURSOS[cursoId] || CURSOS['cmm'];
 
 // Actualizar el modal con datos del curso correcto
-function aplicarDatosCurso() {
+function aplicarDatosCurso(slogan) {
   const posterCat = document.querySelector('.compra-modal-poster-cat');
   const posterTitle = document.querySelector('.compra-modal-poster-title');
+  const posterSlogan = document.querySelector('.compra-modal-poster-slogan');
   const includesList = document.querySelector('.compra-includes-list');
   if (posterCat) posterCat.textContent = cursoActual.categoria;
   if (posterTitle) posterTitle.innerHTML = cursoActual.titulo_breve;
+  if (posterSlogan && slogan) {
+    posterSlogan.textContent = slogan;
+    posterSlogan.classList.add('show');
+    posterSlogan.style.display = 'inline-block';
+  }
   if (includesList) {
     includesList.innerHTML = cursoActual.incluye.map(item => `
       <div class="compra-includes-item">
