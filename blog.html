@@ -462,11 +462,33 @@
   });
 
   // Newsletter
-  function suscribir(e){
+  async function suscribir(e){
     e.preventDefault();
-    const email = e.target.querySelector('input').value;
-    alert('¡Gracias por suscribirte! Te avisaremos cuando publiquemos un nuevo artículo. (Por ahora es solo demo - cuando conectemos Supabase guardamos los emails)');
-    e.target.reset();
+    const input = e.target.querySelector('input');
+    const btn = e.target.querySelector('button');
+    const email = input.value.trim();
+    if (!email) return;
+
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Suscribiendo...';
+
+    // Esperar Supabase y guardar
+    if (typeof sb !== 'undefined' && sb !== null) {
+      try {
+        const { error } = await sb.from('newsletter_suscriptores').insert({ email: email });
+        if (error) console.log('Newsletter:', error.message);
+      } catch(err) {
+        console.log('Newsletter:', err);
+      }
+    }
+
+    btn.textContent = '✓ ¡LISTO!';
+    setTimeout(() => {
+      input.value = '';
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }, 2500);
   }
 </script>
 

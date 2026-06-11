@@ -81,6 +81,37 @@
     .section-row{grid-template-columns:1fr;gap:14px}
     .poster-title{font-size:24px}
   }
+
+  /* MOBILE OPTIMIZADO */
+  @media (max-width: 768px) {
+    .header-inner {
+      padding: 14px 20px !important;
+    }
+    nav.main-nav {
+      display: none !important;
+    }
+    
+    section.courses-section {
+      padding: 30px 16px !important;
+    }
+    .section-row {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 10px !important;
+    }
+    .poster-card .poster-title {
+      font-size: 14px !important;
+    }
+    .poster-card .poster-shadow {
+      aspect-ratio: 3/4 !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .section-row {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
 </style>
 </head>
 <body>

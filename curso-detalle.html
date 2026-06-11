@@ -453,51 +453,78 @@
 </div>
 
 <script>
-// Catálogo de cursos
-const CURSOS = {
-  'cmm': {
-    titulo: 'Creando Mentes Millonarias',
-    titulo_breve: 'Creando Mentes<br>Millonarias',
-    categoria: 'FORMACIÓN PRINCIPAL',
-    precio: 200000,
-    incluye: ['12 módulos · 47 clases', 'Acceso de por vida', 'Comunidad privada CMM', 'Garantía de 7 días']
-  },
-  'stories': {
-    titulo: 'Stories que venden',
-    titulo_breve: 'Stories que<br>venden',
-    categoria: 'CONTENIDO',
-    precio: 480000,
-    incluye: ['8 módulos · 32 clases', 'Plantillas listas para usar', 'Acceso de por vida', 'Garantía de 7 días']
-  },
-  'certificacion': {
-    titulo: 'Certificación Social Media',
-    titulo_breve: 'Certificación<br>Social Media',
-    categoria: 'PREMIUM · CERTIFICADO',
-    precio: 1200000,
-    incluye: ['15 módulos · 24 horas', 'Certificado oficial al finalizar', 'Soporte 1 a 1 con Milena', 'Garantía de 7 días']
-  }
-};
+// ═══════════════════════════════════════════════════════════════════
+// MODAL DE COMPRA - LEE TODO DESDE SUPABASE
+// ═══════════════════════════════════════════════════════════════════
 
 // Leer ID del curso de la URL
 const params = new URLSearchParams(window.location.search);
 const cursoId = params.get('id') || 'cmm';
-const cursoActual = CURSOS[cursoId] || CURSOS['cmm'];
 
-// Actualizar el modal con datos del curso correcto
-function aplicarDatosCurso(slogan) {
+let cursoActual = null;
+
+// Actualizar todos los datos del modal con info del curso desde Supabase
+function aplicarDatosCurso(curso) {
+  if (!curso) return;
+  cursoActual = curso;
+
+  // Actualizar título de la página y breadcrumb
+  document.title = curso.titulo + ' · Milena Machado';
+  const breadcrumbTitle = document.querySelector('.breadcrumb-title');
+  if (breadcrumbTitle) breadcrumbTitle.textContent = curso.titulo;
+
+  // Modal: poster
   const posterCat = document.querySelector('.compra-modal-poster-cat');
   const posterTitle = document.querySelector('.compra-modal-poster-title');
   const posterSlogan = document.querySelector('.compra-modal-poster-slogan');
-  const includesList = document.querySelector('.compra-includes-list');
-  if (posterCat) posterCat.textContent = cursoActual.categoria;
-  if (posterTitle) posterTitle.innerHTML = cursoActual.titulo_breve;
+  const posterShadow = document.querySelector('.compra-modal-poster');
+
+  if (posterCat) posterCat.textContent = curso.categoria || 'CURSO';
+
+  if (posterTitle) {
+    // Dividir título en 2 líneas si es largo
+    const palabras = curso.titulo.split(' ');
+    if (palabras.length > 1 && curso.titulo.length > 14) {
+      const mitad = Math.ceil(palabras.length / 2);
+      posterTitle.innerHTML = palabras.slice(0, mitad).join(' ') + '<br>' + palabras.slice(mitad).join(' ');
+    } else {
+      posterTitle.textContent = curso.titulo;
+    }
+  }
+
+  // Aplicar el color del curso al poster
+  if (posterShadow && curso.color_gradient) {
+    posterShadow.style.background = curso.color_gradient;
+  }
+
+  // Slogan
+  const slogan = curso.slogan || curso.descripcion;
   if (posterSlogan && slogan) {
     posterSlogan.textContent = slogan;
     posterSlogan.classList.add('show');
     posterSlogan.style.display = 'inline-block';
+  } else if (posterSlogan) {
+    posterSlogan.style.display = 'none';
   }
+
+  // Lista de qué incluye
+  const includesList = document.querySelector('.compra-includes-list');
   if (includesList) {
-    includesList.innerHTML = cursoActual.incluye.map(item => `
+    const items = [];
+    if (curso.modulos_count > 0 || curso.clases_count > 0) {
+      let texto = '';
+      if (curso.modulos_count > 0) texto += curso.modulos_count + ' módulos';
+      if (curso.clases_count > 0) {
+        if (texto) texto += ' · ';
+        texto += curso.clases_count + ' clases';
+      }
+      items.push(texto);
+    }
+    items.push('Acceso de por vida');
+    items.push('Comunidad privada CMM');
+    items.push('Garantía de 7 días');
+
+    includesList.innerHTML = items.map(item => `
       <div class="compra-includes-item">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
         ${item}
@@ -506,79 +533,98 @@ function aplicarDatosCurso(slogan) {
   }
 }
 
-// Verificar si la alumna tiene este curso
-(function() {
-  const CURSO_TITULO = cursoActual.titulo;
-  const CURSO_PRECIO = cursoActual.precio;
+function mostrarModal(logueada) {
+  const modal = document.getElementById('compraModal');
+  const subtitle = document.getElementById('modalSubtitle');
+  const btnText = document.getElementById('modalBtnText');
+  const btnPrice = document.getElementById('modalBtnPrice');
+  const loginLink = document.getElementById('modalLoginLink');
+  const btn = document.querySelector('.compra-modal-cta');
 
-  function mostrarModal(logueada) {
-    const modal = document.getElementById('compraModal');
-    const subtitle = document.getElementById('modalSubtitle');
-    const btnText = document.getElementById('modalBtnText');
-    const btnPrice = document.getElementById('modalBtnPrice');
-    const loginLink = document.getElementById('modalLoginLink');
+  const precio = cursoActual?.precio_gs || 0;
+  const precioTxt = precio > 0 ? '· Gs ' + precio.toLocaleString('es-PY') : '';
 
-    if (logueada) {
-      subtitle.textContent = 'Empezá hoy mismo y transformá tu negocio.';
-      btnText.textContent = 'COMPRAR AHORA';
-      btnPrice.textContent = '· Gs ' + CURSO_PRECIO.toLocaleString('es-PY');
-      loginLink.style.display = 'none';
-    } else {
-      subtitle.textContent = 'Crea tu cuenta y empezá tu camino con CMM.';
-      btnText.textContent = 'COMPRAR AHORA';
-      btnPrice.textContent = '· Gs ' + CURSO_PRECIO.toLocaleString('es-PY');
-      loginLink.style.display = 'block';
-    }
-
-    aplicarDatosCurso();
-    modal.classList.add('show');
-    // Bloquear scroll del body
-    document.body.style.overflow = 'hidden';
+  if (logueada) {
+    subtitle.textContent = 'Empezá hoy mismo y transformá tu negocio.';
+    loginLink.style.display = 'none';
+  } else {
+    subtitle.textContent = 'Crea tu cuenta y empezá tu camino con ' + (cursoActual?.titulo || 'este curso') + '.';
+    loginLink.style.display = 'block';
   }
 
-  // Esperar a que Supabase esté listo
-  const checkAccess = setInterval(async () => {
-    if (typeof sb !== 'undefined' && sb !== null) {
-      clearInterval(checkAccess);
+  btnText.textContent = precio > 0 ? 'COMPRAR AHORA' : 'EMPEZAR GRATIS';
+  btnPrice.textContent = precioTxt;
 
-      const { data: { user } } = await sb.auth.getUser();
-
-      if (!user) {
-        // No logueada → mostrar modal con opción de iniciar sesión
-        mostrarModal(false);
-        return;
+  // Redirigir al checkout con el slug del curso correcto
+  if (btn) {
+    btn.onclick = function() {
+      if (precio > 0) {
+        window.location.href = '/checkout?curso=' + cursoId;
+      } else {
+        // Curso gratis - si está logueada va al curso, si no a registro
+        if (logueada) {
+          // Aquí podría ir a la primera clase del curso
+          window.location.href = '/checkout?curso=' + cursoId;
+        } else {
+          window.location.href = '/login?curso=' + cursoId;
+        }
       }
+    };
+  }
 
-      // Logueada → verificar si tiene este curso comprado
-      // Buscar el curso por título
-      const { data: cursoData } = await sb
-        .from('cursos')
-        .select('id')
-        .eq('titulo', CURSO_TITULO)
-        .single();
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
 
-      if (!cursoData) {
-        // El curso no existe en la base, no bloqueamos
-        return;
-      }
+// Esperar a que Supabase esté listo y cargar el curso
+const checkAccess = setInterval(async () => {
+  if (typeof sb !== 'undefined' && sb !== null) {
+    clearInterval(checkAccess);
 
-      // Verificar si tiene compra
-      const { data: compra } = await sb
-        .from('compras')
-        .select('id, estado')
-        .eq('usuario_id', user.id)
-        .eq('curso_id', cursoData.id)
-        .eq('estado', 'pagado')
-        .maybeSingle();
+    // Cargar datos del curso desde Supabase
+    const { data: curso, error } = await sb
+      .from('cursos')
+      .select('*')
+      .eq('slug', cursoId)
+      .maybeSingle();
 
-      if (!compra) {
-        // No compró → mostrar modal de compra
-        mostrarModal(true);
-      }
-      // Si tiene compra → no hacemos nada (ve la página normal)
+    if (error || !curso) {
+      console.error('No se encontró el curso:', cursoId, error);
+      // Si no encontramos el curso, mostrar mensaje básico
+      const modal = document.getElementById('compraModal');
+      const subtitle = document.getElementById('modalSubtitle');
+      if (subtitle) subtitle.textContent = 'Curso no encontrado. Volvé al catálogo.';
+      if (modal) modal.classList.add('show');
+      return;
     }
-  }, 100);
-})();
+
+    // Aplicar datos del curso al modal
+    aplicarDatosCurso(curso);
+
+    // Verificar acceso
+    const { data: { user } } = await sb.auth.getUser();
+
+    if (!user) {
+      // No logueada → mostrar modal
+      mostrarModal(false);
+      return;
+    }
+
+    // Logueada → verificar si compró
+    const { data: compra } = await sb
+      .from('compras')
+      .select('id, estado')
+      .eq('usuario_id', user.id)
+      .eq('curso_id', curso.id)
+      .eq('estado', 'pagado')
+      .maybeSingle();
+
+    if (!compra) {
+      mostrarModal(true);
+    }
+    // Si compró → no mostrar modal (ve la página normal)
+  }
+}, 100);
 </script>
 
 </body>
