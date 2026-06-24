@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Artículo · Milena Machado</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1A0A12">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  html,body{
+    background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);
+    color:#FFF5F0;
+    min-height:100vh;
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    line-height:1.6;
+  }
+  .serif{font-family:Georgia,serif;letter-spacing:-0.015em}
+  .serif-it{font-family:Georgia,serif;font-style:italic;font-weight:500}
+  .gradtext{background:linear-gradient(95deg,#B8294A,#E8B8C4,#FAC775,#D4A356,#E8B8C4,#B8294A);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic}
+  a{color:inherit;text-decoration:none}
+
+  header.main{background:rgba(14,5,9,0.85);backdrop-filter:blur(28px);border-bottom:0.5px solid rgba(255,245,240,0.08);padding:18px 32px;position:sticky;top:0;z-index:100}
+  .header-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+  .logo{display:flex;align-items:center;gap:11px}
+  .logo-box{width:38px;height:38px;border:0.5px solid rgba(255,245,240,0.55);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-size:19px;font-weight:500}
+  .logo-text{font-size:11px;line-height:1.15;letter-spacing:0.18em;font-weight:600}
+  .breadcrumb{max-width:800px;margin:0 auto;padding:24px 32px 0;font-size:13px;color:rgba(255,245,240,0.55)}
+  .breadcrumb a{color:rgba(255,245,240,0.55);transition:color 0.2s}
+  .breadcrumb a:hover{color:#FAC775}
+
+  .article-hero{max-width:800px;margin:0 auto;padding:30px 32px 40px}
+  .article-meta{display:flex;align-items:center;gap:10px;font-size:11px;color:rgba(255,245,240,0.6);margin-bottom:16px}
+  .article-cat{padding:4px 12px;border-radius:20px;font-weight:600;letter-spacing:0.1em;font-size:10px}
+  .article-cat.marketing{background:rgba(184,41,74,0.22);color:#E8B8C4;border:0.5px solid rgba(184,41,74,0.4)}
+  .article-cat.mentalidad{background:rgba(212,163,86,0.18);color:#FAC775;border:0.5px solid rgba(212,163,86,0.4)}
+  .article-cat.redes{background:rgba(232,184,196,0.18);color:#E8B8C4;border:0.5px solid rgba(232,184,196,0.4)}
+  .article-cat.paraguay{background:rgba(93,202,165,0.18);color:#9FE1CB;border:0.5px solid rgba(93,202,165,0.4)}
+  .article-cat.ventas{background:rgba(212,163,86,0.18);color:#FAC775;border:0.5px solid rgba(212,163,86,0.4)}
+  .article-cat.casos{background:rgba(184,41,74,0.22);color:#E8B8C4;border:0.5px solid rgba(184,41,74,0.4)}
+  .meta-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,245,240,0.4)}
+
+  .article-title{font-size:38px;font-weight:500;line-height:1.1;margin-bottom:18px}
+  .article-resumen{font-size:18px;color:rgba(255,245,240,0.8);line-height:1.5;font-style:italic;margin-bottom:24px}
+  .article-author-row{display:flex;align-items:center;gap:12px;padding-top:18px;border-top:0.5px solid rgba(255,245,240,0.1)}
+  .author-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7A1B2E,#B8294A);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-weight:500;font-size:18px;color:#FFF}
+  .author-info{font-size:13px}
+  .author-name{font-weight:500;color:#FFF5F0}
+  .author-date{color:rgba(255,245,240,0.55);font-size:12px}
+
+  .article-portada{max-width:800px;margin:0 auto;padding:0 32px 40px}
+  .article-portada-img{width:100%;aspect-ratio:16/9;border-radius:16px;background-size:cover;background-position:center;background-color:#2D0A18;border:0.5px solid rgba(255,245,240,0.06)}
+
+  .article-content{max-width:720px;margin:0 auto;padding:0 32px 80px;font-size:17px;line-height:1.75;color:rgba(255,245,240,0.92)}
+  .article-content p{margin-bottom:22px}
+  .article-content h2{font-family:Georgia,serif;font-size:28px;margin:36px 0 16px;font-weight:500;color:#FFF5F0;letter-spacing:-0.015em}
+  .article-content h3{font-family:Georgia,serif;font-size:22px;margin:30px 0 12px;font-weight:500;color:#FFF5F0;font-style:italic}
+  .article-content ul,.article-content ol{margin-bottom:22px;padding-left:24px}
+  .article-content li{margin-bottom:8px}
+  .article-content strong{color:#FAC775}
+  .article-content blockquote{border-left:3px solid #D4A356;padding-left:18px;margin:24px 0;font-style:italic;color:rgba(255,245,240,0.85)}
+  .article-content a{color:#FAC775;text-decoration:underline}
+
+  .article-cta{max-width:720px;margin:0 auto 60px;padding:32px;background:linear-gradient(135deg,rgba(212,163,86,0.12),rgba(184,41,74,0.08));border:0.5px solid rgba(212,163,86,0.3);border-radius:16px;text-align:center}
+  .article-cta-title{font-family:Georgia,serif;font-size:24px;font-weight:500;margin-bottom:8px}
+  .article-cta-desc{font-size:14px;color:rgba(255,245,240,0.75);margin-bottom:18px}
+  .article-cta-btn{display:inline-block;padding:13px 26px;background:linear-gradient(135deg,#FAC775,#E8B547,#D4A356);color:#3D1208;font-weight:500;border-radius:10px;font-size:12px;letter-spacing:0.12em;border:none;cursor:pointer}
+
+  .loading-state{max-width:800px;margin:0 auto;padding:80px 32px;text-align:center;color:rgba(255,245,240,0.5)}
+  .spinner{width:34px;height:34px;border:3px solid rgba(212,163,86,0.2);border-top-color:#FAC775;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  footer{padding:30px 32px;text-align:center;color:rgba(255,245,240,0.4);font-size:12px;border-top:0.5px solid rgba(255,245,240,0.06)}
+
+  @media (max-width:768px){
+    header.main{padding:14px 20px}
+    .breadcrumb,.article-hero,.article-portada,.article-content{padding-left:20px;padding-right:20px}
+    .article-title{font-size:26px}
+    .article-resumen{font-size:15px}
+    .article-content{font-size:15px;line-height:1.65}
+    .article-content h2{font-size:22px}
+    .article-content h3{font-size:18px}
+  }
+</style>
+</head>
+<body>
+
+<header class="main">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <div class="logo-box">M</div>
+      <div class="logo-text">MILENA<br>MACHADO</div>
+    </a>
+    <a href="/blog" style="font-size:12px;color:rgba(255,245,240,0.7);display:flex;align-items:center;gap:6px">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Volver al blog
+    </a>
+  </div>
+</header>
+
+<div class="breadcrumb">
+  <a href="/">Inicio</a> · <a href="/blog">Blog</a> · <span id="bcTitle">...</span>
+</div>
+
+<div id="loadingState" class="loading-state">
+  <div class="spinner"></div>
+  <div>Cargando artículo...</div>
+</div>
+
+<div id="errorState" class="loading-state" style="display:none">
+  <div style="font-size:48px;margin-bottom:14px;opacity:0.5">📭</div>
+  <h2 style="font-family:Georgia,serif;font-size:24px;margin-bottom:8px">Artículo no encontrado</h2>
+  <p style="font-size:14px;color:rgba(255,245,240,0.6);margin-bottom:20px">El artículo que buscás no existe o fue removido.</p>
+  <a href="/blog" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208;border-radius:10px;font-size:12px;font-weight:600;letter-spacing:0.12em">VER TODOS LOS ARTÍCULOS</a>
+</div>
+
+<article id="articleContent" style="display:none">
+  <section class="article-hero">
+    <div class="article-meta">
+      <span class="article-cat" id="artCat">MARKETING</span>
+      <span class="meta-dot"></span>
+      <span id="artTiempo">5 min de lectura</span>
+    </div>
+    <h1 class="article-title serif" id="artTitulo">...</h1>
+    <p class="article-resumen" id="artResumen"></p>
+    <div class="article-author-row">
+      <div class="author-avatar" id="artAvatar">M</div>
+      <div class="author-info">
+        <div class="author-name" id="artAutor">Milena Machado</div>
+        <div class="author-date" id="artFecha"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="article-portada">
+    <div class="article-portada-img" id="artPortada"></div>
+  </div>
+
+  <div class="article-content" id="artContenido"></div>
+
+  <div class="article-cta">
+    <div class="article-cta-title serif">¿Querés llevarlo a la práctica?</div>
+    <div class="article-cta-desc">Conocé el curso completo Creando Mentes Millonarias</div>
+    <a href="/cursos" class="article-cta-btn">VER CURSOS</a>
+  </div>
+</article>
+
+<footer>
+  Hecho con <span style="color:#B8294A">♥</span> por Milena Machado · Paraguay 2026
+</footer>
+
+<script src="supabase-config.js"></script>
+<script src="header-dinamico.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('id');
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function formatearFecha(fecha) {
+    if (!fecha) return '';
+    const d = new Date(fecha);
+    const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    return d.getDate() + ' de ' + meses[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function mostrarError() {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorState').style.display = '';
+  }
+
+  function getCategoriaColor(cat) {
+    const colores = ['marketing','mentalidad','redes','paraguay','ventas','casos'];
+    return colores.includes((cat||'').toLowerCase()) ? cat.toLowerCase() : 'marketing';
+  }
+
+  // Convertir saltos de línea simples en párrafos
+  function contenidoAHtml(texto) {
+    if (!texto) return '';
+    // Si ya tiene HTML, devolverlo tal cual
+    if (texto.includes('<p>') || texto.includes('<h2>') || texto.includes('<br>')) {
+      return texto;
+    }
+    // Convertir saltos dobles en párrafos
+    return texto.split(/\n\n+/).map(p => '<p>' + escapeHtml(p.trim()).replace(/\n/g, '<br>') + '</p>').join('');
+  }
+
+  async function cargarArticulo() {
+    if (!slug) {
+      mostrarError();
+      return;
+    }
+
+    const { data: articulo, error } = await sb
+      .from('articulos')
+      .select('*')
+      .eq('slug', slug)
+      .eq('publicado', true)
+      .maybeSingle();
+
+    if (error || !articulo) {
+      mostrarError();
+      return;
+    }
+
+    // Llenar datos
+    document.getElementById('pageTitle').textContent = articulo.titulo + ' · Milena Machado';
+    document.getElementById('bcTitle').textContent = articulo.titulo;
+    document.getElementById('artTitulo').textContent = articulo.titulo;
+    document.getElementById('artResumen').textContent = articulo.resumen || '';
+    document.getElementById('artCat').textContent = (articulo.categoria || 'MARKETING').toUpperCase();
+    document.getElementById('artCat').className = 'article-cat ' + getCategoriaColor(articulo.categoria);
+    document.getElementById('artTiempo').textContent = (articulo.tiempo_lectura || 5) + ' min de lectura';
+    document.getElementById('artAutor').textContent = articulo.autor || 'Milena Machado';
+    document.getElementById('artFecha').textContent = formatearFecha(articulo.publicado_en || articulo.creado_en);
+    document.getElementById('artContenido').innerHTML = contenidoAHtml(articulo.contenido);
+
+    if (articulo.imagen_portada) {
+      document.getElementById('artPortada').style.backgroundImage = "url('" + articulo.imagen_portada + "')";
+    } else {
+      document.querySelector('.article-portada').style.display = 'none';
+    }
+
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('articleContent').style.display = '';
+  }
+
+  const waitSupa = setInterval(() => {
+    if (typeof sb !== 'undefined' && sb !== null) {
+      clearInterval(waitSupa);
+      cargarArticulo();
+    }
+  }, 100);
+</script>
+
+</body>
+</html>

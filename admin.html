@@ -911,6 +911,10 @@ body{visibility:hidden}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
       Carruseles
     </a>
+    <a href="#" onclick="cambiarTab('articulos')" class="sidebar-item" id="nav-articulos">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Artículos
+    </a>
   </div>
 
   <div class="sidebar-section">
@@ -1443,6 +1447,138 @@ body{visibility:hidden}
         <span class="hashtags-count" id="hashtagsCount">14 etiquetas</span>
       </div>
       <div class="hashtags-list" id="hashtagsList"></div>
+    </div>
+  </div>
+
+
+  <!-- ============================ -->
+  <!-- TAB: ARTÍCULOS DEL BLOG -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-articulos">
+    <div class="header-bar">
+      <div>
+        <div class="header-meta">GESTOR DE BLOG</div>
+        <h1 class="header-title">Tus <span class="serif-it gradtext" style="font-size:34px">artículos</span></h1>
+        <p class="header-sub">Creá, editá y publicá artículos. Solo los publicados aparecen en el blog.</p>
+      </div>
+      <div class="header-actions">
+        <button class="cta-gold btn-primary" onclick="abrirModalArticulo()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          NUEVO ARTÍCULO
+        </button>
+      </div>
+    </div>
+
+    <div class="cursos-toolbar">
+      <div class="cursos-filtros">
+        <button class="filter-btn active" onclick="filtrarArticulos('todos', this)">Todos</button>
+        <button class="filter-btn" onclick="filtrarArticulos('publicado', this)">Publicados</button>
+        <button class="filter-btn" onclick="filtrarArticulos('borrador', this)">Borradores</button>
+      </div>
+    </div>
+
+    <div class="cursos-grid" id="articulosGrid"></div>
+  </div>
+
+  <!-- MODAL EDITAR/CREAR ARTÍCULO -->
+  <div class="curso-modal-backdrop" id="articuloModal">
+    <div class="curso-modal">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">EDITOR DE ARTÍCULO</div>
+          <h3 class="curso-modal-titulo serif" id="articuloModalTitulo">Nuevo artículo</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarModalArticulo()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="curso-modal-body">
+        <input type="hidden" id="articuloId">
+
+        <div class="form-grid">
+          <div class="form-field form-grid-full">
+            <label class="form-label">TÍTULO</label>
+            <input type="text" class="form-input" id="articuloTitulo" placeholder="Cómo conseguí mis primeras 100 alumnas...">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">SLUG (URL)</label>
+            <div class="form-input-prefix">
+              <span class="prefix">/</span>
+              <input type="text" class="form-input" id="articuloSlug" placeholder="mi-primer-articulo" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9-]/g,'')">
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">CATEGORÍA</label>
+            <select class="form-select" id="articuloCategoria">
+              <option value="marketing">Marketing</option>
+              <option value="mentalidad">Mentalidad</option>
+              <option value="redes">Redes sociales</option>
+              <option value="paraguay">Paraguay</option>
+              <option value="ventas">Ventas</option>
+              <option value="casos">Casos reales</option>
+            </select>
+          </div>
+
+          <div class="form-field form-grid-full">
+            <label class="form-label">RESUMEN BREVE</label>
+            <textarea class="form-textarea" id="articuloResumen" placeholder="Una frase corta que invite a leer"></textarea>
+          </div>
+
+          <div class="form-field form-grid-full">
+            <label class="form-label">CONTENIDO COMPLETO</label>
+            <textarea class="form-textarea" id="articuloContenido" placeholder="Escribí el artículo acá. Doble salto de línea = párrafo nuevo." style="min-height:200px"></textarea>
+            <div class="form-help">Tip: doble Enter para separar párrafos. Soporta HTML básico (h2, h3, ul, li, strong, blockquote)</div>
+          </div>
+
+          <div class="form-field form-grid-full">
+            <label class="form-label">IMAGEN DE PORTADA</label>
+            <div class="image-uploader" id="articuloFotoUploader" onclick="document.getElementById('articuloFotoInput').click()">
+              <div id="articuloFotoEmpty">
+                <svg class="image-uploader-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <div class="image-uploader-text">Clickeá para subir foto</div>
+              </div>
+              <div id="articuloFotoPreview" style="display:none;width:100%"></div>
+              <input type="file" id="articuloFotoInput" accept="image/*" onchange="subirFotoArticulo(event)">
+            </div>
+            <input type="hidden" id="articuloFotoUrl">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">AUTOR</label>
+            <input type="text" class="form-input" id="articuloAutor" value="Milena Machado">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">TIEMPO DE LECTURA (min)</label>
+            <input type="number" class="form-input" id="articuloTiempo" placeholder="5" min="1">
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Publicar artículo</div>
+            <div class="toggle-help">Si está activado, aparece en el blog público</div>
+          </div>
+          <div class="toggle-switch" id="articuloPublicado" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Destacar como featured</div>
+            <div class="toggle-help">Aparece arriba del blog como destacado</div>
+          </div>
+          <div class="toggle-switch" id="articuloDestacado" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+      <div class="curso-modal-footer">
+        <button class="btn-danger" id="btnEliminarArticulo" onclick="eliminarArticulo()" style="display:none">ELIMINAR</button>
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarModalArticulo()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="guardarArticulo()">GUARDAR</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1994,12 +2130,198 @@ body{visibility:hidden}
     await cargarCarruseles();
   }
 
+  // ============================
+  // GESTOR DE ARTÍCULOS
+  // ============================
+  let articulos = [];
+  let filtroArticulos = 'todos';
+
+  async function cargarArticulos() {
+    if (!sb) return;
+    const { data, error } = await sb
+      .from('articulos')
+      .select('*')
+      .order('creado_en', { ascending: false });
+    if (error) {
+      console.error('Error cargando articulos:', error);
+      return;
+    }
+    articulos = data || [];
+    renderArticulos();
+  }
+
+  function renderArticulos() {
+    const grid = document.getElementById('articulosGrid');
+    let lista = articulos;
+    if (filtroArticulos === 'publicado') lista = articulos.filter(a => a.publicado);
+    if (filtroArticulos === 'borrador') lista = articulos.filter(a => !a.publicado);
+
+    if (lista.length === 0) {
+      grid.innerHTML = `
+        <div class="empty-cursos">
+          <div class="empty-cursos-icon">📝</div>
+          <div style="font-size:14px;margin-bottom:6px">${filtroArticulos === 'todos' ? 'Aún no tenés artículos' : 'No hay artículos en esta categoría'}</div>
+          <div style="font-size:12px;color:rgba(255,245,240,0.4)">Hacé click en "NUEVO ARTÍCULO" arriba</div>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = lista.map(a => {
+      const bg = a.imagen_portada 
+        ? `background-image:url('${a.imagen_portada}');background-size:cover;background-position:center`
+        : 'background:linear-gradient(160deg,#2D0A18,#4A0F1E,#1A0509)';
+      return `
+        <div class="curso-card-admin ${a.publicado ? '' : 'borrador'}" onclick="editarArticulo('${a.id}')">
+          <div class="curso-card-poster" style="${bg}">
+            <div class="curso-card-poster-title">${a.titulo}</div>
+            <div class="curso-card-status ${a.publicado ? 'status-publicado' : 'status-borrador'}">${a.publicado ? 'PUBLICADO' : 'BORRADOR'}</div>
+          </div>
+          <div class="curso-card-info">
+            <div class="curso-card-cat">${(a.categoria || 'SIN CATEGORÍA').toUpperCase()}</div>
+            <div class="curso-card-titulo">${a.titulo}</div>
+            <div class="curso-card-meta">
+              <span class="curso-card-stats">${a.tiempo_lectura || 5} min · ${a.autor || 'Milena'}</span>
+              ${a.destacado ? '<span style="color:#FAC775;font-size:10px">⭐ FEATURED</span>' : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function filtrarArticulos(filtro, btn) {
+    filtroArticulos = filtro;
+    document.querySelectorAll('#content-articulos .cursos-filtros .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderArticulos();
+  }
+
+  function abrirModalArticulo(id) {
+    document.getElementById('articuloId').value = id || '';
+    document.getElementById('articuloModalTitulo').textContent = id ? 'Editar artículo' : 'Nuevo artículo';
+    document.getElementById('btnEliminarArticulo').style.display = id ? '' : 'none';
+
+    if (id) {
+      const a = articulos.find(x => x.id === id);
+      if (!a) return;
+      document.getElementById('articuloTitulo').value = a.titulo || '';
+      document.getElementById('articuloSlug').value = a.slug || '';
+      document.getElementById('articuloCategoria').value = a.categoria || 'marketing';
+      document.getElementById('articuloResumen').value = a.resumen || '';
+      document.getElementById('articuloContenido').value = a.contenido || '';
+      document.getElementById('articuloAutor').value = a.autor || 'Milena Machado';
+      document.getElementById('articuloTiempo').value = a.tiempo_lectura || 5;
+      document.getElementById('articuloPublicado').classList.toggle('on', !!a.publicado);
+      document.getElementById('articuloDestacado').classList.toggle('on', !!a.destacado);
+      document.getElementById('articuloFotoUrl').value = a.imagen_portada || '';
+      if (a.imagen_portada) {
+        document.getElementById('articuloFotoEmpty').style.display = 'none';
+        const preview = document.getElementById('articuloFotoPreview');
+        preview.style.display = 'block';
+        preview.innerHTML = `<div class="image-uploader-preview" style="background-image:url('${a.imagen_portada}')"></div>`;
+      } else {
+        document.getElementById('articuloFotoEmpty').style.display = '';
+        document.getElementById('articuloFotoPreview').style.display = 'none';
+      }
+    } else {
+      ['articuloTitulo','articuloSlug','articuloResumen','articuloContenido','articuloFotoUrl'].forEach(f => document.getElementById(f).value = '');
+      document.getElementById('articuloCategoria').value = 'marketing';
+      document.getElementById('articuloAutor').value = 'Milena Machado';
+      document.getElementById('articuloTiempo').value = 5;
+      document.getElementById('articuloPublicado').classList.remove('on');
+      document.getElementById('articuloDestacado').classList.remove('on');
+      document.getElementById('articuloFotoEmpty').style.display = '';
+      document.getElementById('articuloFotoPreview').style.display = 'none';
+    }
+
+    document.getElementById('articuloModal').classList.add('show');
+  }
+
+  function cerrarModalArticulo() {
+    document.getElementById('articuloModal').classList.remove('show');
+  }
+
+  function editarArticulo(id) {
+    abrirModalArticulo(id);
+  }
+
+  async function subirFotoArticulo(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const empty = document.getElementById('articuloFotoEmpty');
+    const preview = document.getElementById('articuloFotoPreview');
+    empty.innerHTML = '<div class="image-uploading"><div class="upload-spinner"></div> Subiendo...</div>';
+    const result = await subirImagen(file, 'articulos');
+    if (result.exito) {
+      document.getElementById('articuloFotoUrl').value = result.url;
+      preview.style.display = 'block';
+      preview.innerHTML = `<div class="image-uploader-preview" style="background-image:url('${result.url}')"></div>`;
+      empty.style.display = 'none';
+      mostrarToast('✓ Foto subida');
+    } else {
+      mostrarToast('Error: ' + result.error, true);
+    }
+  }
+
+  async function guardarArticulo() {
+    if (!sb) return mostrarToast('Conectando...', true);
+
+    const titulo = document.getElementById('articuloTitulo').value.trim();
+    const slug = document.getElementById('articuloSlug').value.trim();
+    if (!titulo) return mostrarToast('Falta el título', true);
+    if (!slug) return mostrarToast('Falta el slug', true);
+
+    const publicado = document.getElementById('articuloPublicado').classList.contains('on');
+    const datos = {
+      titulo: titulo,
+      slug: slug,
+      categoria: document.getElementById('articuloCategoria').value,
+      resumen: document.getElementById('articuloResumen').value.trim(),
+      contenido: document.getElementById('articuloContenido').value,
+      autor: document.getElementById('articuloAutor').value.trim() || 'Milena Machado',
+      tiempo_lectura: parseInt(document.getElementById('articuloTiempo').value) || 5,
+      imagen_portada: document.getElementById('articuloFotoUrl').value || null,
+      publicado: publicado,
+      destacado: document.getElementById('articuloDestacado').classList.contains('on'),
+      actualizado_en: new Date().toISOString()
+    };
+
+    const id = document.getElementById('articuloId').value;
+    if (publicado && !id) datos.publicado_en = new Date().toISOString();
+
+    let result;
+    if (id) {
+      result = await sb.from('articulos').update(datos).eq('id', id);
+    } else {
+      result = await sb.from('articulos').insert(datos);
+    }
+
+    if (result.error) return mostrarToast('Error: ' + result.error.message, true);
+
+    mostrarToast(id ? '✓ Artículo actualizado' : '✓ Artículo creado');
+    cerrarModalArticulo();
+    await cargarArticulos();
+  }
+
+  async function eliminarArticulo() {
+    const id = document.getElementById('articuloId').value;
+    if (!id) return;
+    if (!confirm('¿Eliminar este artículo? No se puede deshacer.')) return;
+    const { error } = await sb.from('articulos').delete().eq('id', id);
+    if (error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast('Artículo eliminado');
+    cerrarModalArticulo();
+    await cargarArticulos();
+  }
+
   // Cargar al iniciar
   const waitSupaCursos = setInterval(() => {
     if (typeof sb !== 'undefined' && sb !== null) {
       clearInterval(waitSupaCursos);
       cargarCursos();
       cargarCarruseles();
+      cargarArticulos();
     }
   }, 100);
 

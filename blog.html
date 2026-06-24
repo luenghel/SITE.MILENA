@@ -221,188 +221,20 @@
   </div>
 </section>
 
-<!-- ARTÍCULO DESTACADO -->
-<section class="featured">
-  <a href="/articulo-1" style="text-decoration:none;color:inherit">
-    <div class="featured-card">
-      <div class="featured-image">
-        <div class="featured-bg-1"></div>
-        <div class="featured-bg-2"></div>
-        <div class="featured-emoji">📈</div>
-        <span class="featured-badge">⭐ DESTACADO</span>
-      </div>
-      <div class="featured-content">
-        <div class="article-meta">
-          <span class="article-cat marketing">MARKETING</span>
-          <span class="meta-dot"></span>
-          <span class="meta-time">12 min de lectura</span>
-        </div>
-        <h2 class="featured-title serif-it">Cómo conseguí mis primeras 100 alumnas <span style="color:#E8B8C4">vendiendo en Asunción</span> sin pagar publicidad</h2>
-        <p class="featured-desc">Te cuento paso a paso lo que hice durante 4 meses para escalar mi marca personal en Paraguay. Sin trucos, sin atajos, solo método.</p>
-        <div class="featured-author">
-          <div class="author-avatar"></div>
-          <div class="author-info">
-            <div class="author-name">Milena Machado</div>
-            <div class="author-date">12 abril 2026</div>
-          </div>
-          <div class="featured-cta">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Leer artículo
-          </div>
-        </div>
-      </div>
-    </div>
-  </a>
+<!-- ARTÍCULO DESTACADO (dinámico) -->
+<section class="featured" id="articuloDestacadoSection" style="display:none">
+  <div id="articuloDestacadoContent"></div>
 </section>
 
-<!-- GRID DE ARTÍCULOS -->
+<!-- GRID DE ARTÍCULOS (dinámico) -->
 <section class="articles-grid">
   <h2 class="section-title serif">Últimos artículos</h2>
-
   <div class="grid" id="articlesGrid">
-
-    <!-- Card 1 -->
-    <a href="#" class="article-card" data-cat="redes" data-title="errores stories engagement">
-      <div class="card-image" style="background:linear-gradient(135deg,#5A0F2A,#8B2244,#2D0A18)">
-        <div style="position:absolute;width:200px;height:200px;right:-50px;top:-50px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.45),transparent 65%)"></div>
-        <div style="position:absolute;width:140px;height:140px;left:-30px;bottom:-30px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.4),transparent 65%)"></div>
-        <div class="emoji">📱</div>
-      </div>
-      <div class="card-content">
-        <div class="article-meta">
-          <span class="article-cat redes">REDES SOCIALES</span>
-          <span class="meta-dot"></span>
-          <span class="meta-time">8 min</span>
-        </div>
-        <h3 class="card-title serif-it">7 errores que cometés en tus stories y te están haciendo perder ventas</h3>
-        <p class="card-desc">Después de revisar 200+ cuentas paraguayas, identifiqué patrones que matan el engagement. Te los cuento todos.</p>
-        <div class="card-footer">
-          <span>Milena Machado</span>
-          <span>·</span>
-          <span>5 abr</span>
-        </div>
-      </div>
-    </a>
-
-    <!-- Card 2 -->
-    <a href="#" class="article-card" data-cat="mentalidad" data-title="precios mentalidad cobrar">
-      <div class="card-image" style="background:linear-gradient(135deg,#3D1208,#7A1B2E,#1A0509)">
-        <div style="position:absolute;width:180px;height:180px;left:-40px;top:-40px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.5),transparent 65%)"></div>
-        <div style="position:absolute;width:160px;height:160px;right:-40px;bottom:-40px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.5),transparent 65%)"></div>
-        <div class="emoji">💎</div>
-      </div>
-      <div class="card-content">
-        <div class="article-meta">
-          <span class="article-cat mentalidad">MENTALIDAD</span>
-          <span class="meta-dot"></span>
-          <span class="meta-time">6 min</span>
-        </div>
-        <h3 class="card-title serif-it">¿Por qué cobrás barato? La mentalidad que te frena para subir tus precios</h3>
-        <p class="card-desc">El precio bajo no es estrategia, es miedo. Te explico cómo identificar las creencias que te están saboteando.</p>
-        <div class="card-footer">
-          <span>Milena Machado</span>
-          <span>·</span>
-          <span>28 mar</span>
-        </div>
-      </div>
-    </a>
-
-    <!-- Card 3 -->
-    <a href="#" class="article-card" data-cat="paraguay" data-title="metodos cobro online paraguay pagopar bancard">
-      <div class="card-image" style="background:linear-gradient(135deg,#2D0A18,#4A0F1E,#3D1208)">
-        <div style="position:absolute;width:200px;height:200px;right:-50px;bottom:-50px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.4),transparent 65%)"></div>
-        <div style="position:absolute;width:140px;height:140px;left:-30px;top:-30px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.35),transparent 65%)"></div>
-        <div class="emoji">🇵🇾</div>
-      </div>
-      <div class="card-content">
-        <div class="article-meta">
-          <span class="article-cat paraguay">PARAGUAY</span>
-          <span class="meta-dot"></span>
-          <span class="meta-time">10 min</span>
-        </div>
-        <h3 class="card-title serif-it">Los 5 métodos de cobro online en Paraguay y cuál te conviene según tu negocio</h3>
-        <p class="card-desc">Pagopar, Bancard, Tigo Money... ¿cuál usar? Comparativa real de comisiones, facilidad y experiencia.</p>
-        <div class="card-footer">
-          <span>Milena Machado</span>
-          <span>·</span>
-          <span>22 mar</span>
-        </div>
-      </div>
-    </a>
-
-    <!-- Card 4 -->
-    <a href="#" class="article-card" data-cat="marketing" data-title="embudo ventas paraguay">
-      <div class="card-image" style="background:linear-gradient(135deg,#5A0F2A,#7A1B2E,#3D1208)">
-        <div style="position:absolute;width:200px;height:200px;left:-40px;top:-40px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.5),transparent 65%)"></div>
-        <div style="position:absolute;width:160px;height:160px;right:-40px;bottom:-40px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.4),transparent 65%)"></div>
-        <div class="emoji">📊</div>
-      </div>
-      <div class="card-content">
-        <div class="article-meta">
-          <span class="article-cat marketing">MARKETING</span>
-          <span class="meta-dot"></span>
-          <span class="meta-time">9 min</span>
-        </div>
-        <h3 class="card-title serif-it">Cómo armar un embudo de ventas desde cero (con ejemplos paraguayos)</h3>
-        <p class="card-desc">El método paso a paso para diseñar tu primer embudo. Con plantilla descargable.</p>
-        <div class="card-footer">
-          <span>Milena Machado</span>
-          <span>·</span>
-          <span>15 mar</span>
-        </div>
-      </div>
-    </a>
-
-    <!-- Card 5 -->
-    <a href="#" class="article-card" data-cat="casos" data-title="caso real carolina facturo">
-      <div class="card-image" style="background:linear-gradient(135deg,#3D0A1A,#4A0F1E,#1A0509)">
-        <div style="position:absolute;width:170px;height:170px;right:-30px;top:-30px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.5),transparent 65%)"></div>
-        <div style="position:absolute;width:150px;height:150px;left:-20px;bottom:-20px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.45),transparent 65%)"></div>
-        <div class="emoji">✨</div>
-      </div>
-      <div class="card-content">
-        <div class="article-meta">
-          <span class="article-cat casos">CASOS REALES</span>
-          <span class="meta-dot"></span>
-          <span class="meta-time">7 min</span>
-        </div>
-        <h3 class="card-title serif-it">Carolina facturó Gs 8M en su primer mes: cómo lo hizo paso a paso</h3>
-        <p class="card-desc">Entrevista con una de las alumnas top de CMM. Te cuenta exactamente cómo aplicó el método.</p>
-        <div class="card-footer">
-          <span>Milena Machado</span>
-          <span>·</span>
-          <span>8 mar</span>
-        </div>
-      </div>
-    </a>
-
-    <!-- Card 6 -->
-    <a href="#" class="article-card" data-cat="ventas" data-title="script whatsapp ventas premium">
-      <div class="card-image" style="background:linear-gradient(135deg,#4A0F1E,#7A1B2E,#2D0A18)">
-        <div style="position:absolute;width:180px;height:180px;left:-40px;bottom:-40px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 65%)"></div>
-        <div style="position:absolute;width:140px;height:140px;right:-30px;top:-30px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.4),transparent 65%)"></div>
-        <div class="emoji">💰</div>
-      </div>
-      <div class="card-content">
-        <div class="article-meta">
-          <span class="article-cat ventas">VENTAS</span>
-          <span class="meta-dot"></span>
-          <span class="meta-time">11 min</span>
-        </div>
-        <h3 class="card-title serif-it">El script de WhatsApp que uso para cerrar ventas premium (lo regalo)</h3>
-        <p class="card-desc">Después de 3 años perfeccionándolo, comparto el flujo exacto que me funciona para cerrar Gs 1M+.</p>
-        <div class="card-footer">
-          <span>Milena Machado</span>
-          <span>·</span>
-          <span>1 mar</span>
-        </div>
-      </div>
-    </a>
-
-  </div>
-
-  <div class="load-more-wrap">
-    <button class="load-more">CARGAR MÁS ARTÍCULOS</button>
+    <!-- Las cards se cargan desde Supabase -->
+    <div id="emptyArticles" style="grid-column:1/-1;padding:60px 20px;text-align:center;color:rgba(255,245,240,0.5)">
+      <div style="font-size:48px;margin-bottom:14px;opacity:0.4">📝</div>
+      <div style="font-size:14px">Cargando artículos...</div>
+    </div>
   </div>
 </section>
 
@@ -429,38 +261,202 @@
 </footer>
 
 <script>
-  // Búsqueda en vivo
-  function filterArticles(){
-    const q = document.getElementById('searchInput').value.toLowerCase();
-    const cards = document.querySelectorAll('#articlesGrid .article-card');
-    cards.forEach(card => {
-      const title = card.dataset.title || '';
-      const cardText = card.innerText.toLowerCase();
-      const matches = title.includes(q) || cardText.includes(q);
-      card.style.display = matches ? '' : 'none';
+  // ═══════════════════════════════════════════════════════════
+  // BLOG DINÁMICO - Carga artículos desde Supabase
+  // ═══════════════════════════════════════════════════════════
+  
+  let articulosCache = [];
+  let categoriaActiva = 'todos';
+  let busquedaActual = '';
+  
+  function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+  
+  function formatearFecha(fecha) {
+    if (!fecha) return '';
+    const d = new Date(fecha);
+    const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    return d.getDate() + ' ' + meses[d.getMonth()];
+  }
+  
+  function getCategoriaColor(cat) {
+    const colores = {
+      'marketing': 'marketing',
+      'mentalidad': 'mentalidad',
+      'redes': 'redes',
+      'paraguay': 'paraguay',
+      'ventas': 'ventas',
+      'casos': 'casos'
+    };
+    return colores[cat?.toLowerCase()] || 'marketing';
+  }
+  
+  function renderArticuloDestacado(articulo) {
+    const section = document.getElementById('articuloDestacadoSection');
+    const cont = document.getElementById('articuloDestacadoContent');
+    if (!articulo) {
+      section.style.display = 'none';
+      return;
+    }
+    const cat = escapeHtml(articulo.categoria || 'MARKETING').toUpperCase();
+    const catClass = getCategoriaColor(articulo.categoria);
+    cont.innerHTML = `
+      <a href="/articulo?id=${escapeHtml(articulo.slug)}" style="text-decoration:none;color:inherit">
+        <div class="featured-card">
+          <div class="featured-image" style="${articulo.imagen_portada ? `background:url('${escapeHtml(articulo.imagen_portada)}') center/cover` : ''}">
+            ${!articulo.imagen_portada ? `
+              <div class="featured-bg-1"></div>
+              <div class="featured-bg-2"></div>
+              <div class="featured-emoji">📈</div>
+            ` : ''}
+            <span class="featured-badge">⭐ DESTACADO</span>
+          </div>
+          <div class="featured-content">
+            <div class="article-meta">
+              <span class="article-cat ${catClass}">${cat}</span>
+              <span class="meta-dot"></span>
+              <span class="meta-time">${articulo.tiempo_lectura || 5} min de lectura</span>
+            </div>
+            <h2 class="featured-title serif-it">${escapeHtml(articulo.titulo)}</h2>
+            <p class="featured-desc">${escapeHtml(articulo.resumen || '')}</p>
+            <div class="featured-author">
+              <div class="author-avatar"></div>
+              <div class="author-info">
+                <div class="author-name">${escapeHtml(articulo.autor || 'Milena Machado')}</div>
+                <div class="author-date">${formatearFecha(articulo.publicado_en || articulo.creado_en)}</div>
+              </div>
+              <div class="featured-cta">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Leer artículo
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    `;
+    section.style.display = '';
+  }
+  
+  function renderArticulos(articulos) {
+    const grid = document.getElementById('articlesGrid');
+    
+    // Filtrar
+    let filtrados = articulos;
+    if (categoriaActiva !== 'todos') {
+      filtrados = filtrados.filter(a => (a.categoria || '').toLowerCase() === categoriaActiva);
+    }
+    if (busquedaActual) {
+      const q = busquedaActual.toLowerCase();
+      filtrados = filtrados.filter(a => 
+        (a.titulo || '').toLowerCase().includes(q) ||
+        (a.resumen || '').toLowerCase().includes(q) ||
+        (a.categoria || '').toLowerCase().includes(q)
+      );
+    }
+    
+    if (filtrados.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column:1/-1;padding:60px 20px;text-align:center;color:rgba(255,245,240,0.5)">
+          <div style="font-size:48px;margin-bottom:14px;opacity:0.4">🔍</div>
+          <div style="font-size:14px;margin-bottom:6px">${articulos.length === 0 ? 'No hay artículos publicados todavía' : 'No se encontraron artículos'}</div>
+          <div style="font-size:12px;color:rgba(255,245,240,0.4)">${articulos.length === 0 ? 'Pronto estaremos publicando contenido nuevo' : 'Probá con otro término o categoría'}</div>
+        </div>
+      `;
+      return;
+    }
+    
+    grid.innerHTML = filtrados.map(a => {
+      const cat = escapeHtml(a.categoria || 'MARKETING').toUpperCase();
+      const catClass = getCategoriaColor(a.categoria);
+      const portada = a.imagen_portada 
+        ? `<div class="article-img" style="background:url('${escapeHtml(a.imagen_portada)}') center/cover"></div>`
+        : `<div class="article-img"><div class="img-emoji">📊</div></div>`;
+      return `
+        <a href="/articulo?id=${escapeHtml(a.slug)}" class="article-card">
+          ${portada}
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="article-cat ${catClass}">${cat}</span>
+              <span class="meta-dot"></span>
+              <span class="meta-time">${a.tiempo_lectura || 5} min</span>
+            </div>
+            <h3 class="article-title serif">${escapeHtml(a.titulo)}</h3>
+            <p class="article-excerpt">${escapeHtml(a.resumen || '')}</p>
+            <div class="article-footer">
+              <span>${escapeHtml(a.autor || 'Milena Machado')}</span>
+              <span>·</span>
+              <span>${formatearFecha(a.publicado_en || a.creado_en)}</span>
+            </div>
+          </div>
+        </a>
+      `;
+    }).join('');
+  }
+  
+  async function cargarArticulos() {
+    if (typeof sb === 'undefined' || !sb) return;
+    
+    const { data, error } = await sb
+      .from('articulos')
+      .select('*')
+      .eq('publicado', true)
+      .order('publicado_en', { ascending: false, nullsFirst: false });
+    
+    if (error) {
+      console.error('Error cargando articulos:', error);
+      return;
+    }
+    
+    articulosCache = data || [];
+    
+    // El destacado es el primero marcado como destacado
+    const destacado = articulosCache.find(a => a.destacado);
+    if (destacado) {
+      renderArticuloDestacado(destacado);
+    } else {
+      document.getElementById('articuloDestacadoSection').style.display = 'none';
+    }
+    
+    // Resto en el grid (excluyendo el destacado si está)
+    const otros = articulosCache.filter(a => !destacado || a.id !== destacado.id);
+    renderArticulos(otros);
+  }
+  
+  // Búsqueda
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', e => {
+      busquedaActual = e.target.value.trim();
+      const destacado = articulosCache.find(a => a.destacado);
+      const otros = articulosCache.filter(a => !destacado || a.id !== destacado.id);
+      renderArticulos(otros);
     });
   }
-
-  // Filtros por categoría (chips)
-  document.querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', e => {
-      e.preventDefault();
-      document.querySelectorAll('.chip').forEach(c => {
-        c.classList.remove('chip-active');
-        c.classList.add('chip-quiet');
-      });
-      chip.classList.remove('chip-quiet');
-      chip.classList.add('chip-active');
-
-      const cat = chip.getAttribute('href').replace('#','');
-      const cards = document.querySelectorAll('#articlesGrid .article-card');
-      cards.forEach(card => {
-        if(!cat || cat === '' || cat === 'todos') card.style.display = '';
-        else card.style.display = card.dataset.cat === cat ? '' : 'none';
-      });
+  
+  // Filtros de categoría
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      categoriaActiva = chip.dataset.filter || 'todos';
+      const destacado = articulosCache.find(a => a.destacado);
+      const otros = articulosCache.filter(a => !destacado || a.id !== destacado.id);
+      renderArticulos(otros);
     });
   });
-
+  
+  // Esperar Supabase
+  const waitSupaBlog = setInterval(() => {
+    if (typeof sb !== 'undefined' && sb !== null) {
+      clearInterval(waitSupaBlog);
+      cargarArticulos();
+    }
+  }, 100);
+  
   // Newsletter
   async function suscribir(e){
     e.preventDefault();
