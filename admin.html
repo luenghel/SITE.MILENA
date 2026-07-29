@@ -584,6 +584,12 @@
     .mod-metrics{margin-left:0;width:100%;margin-top:8px}
   }
 
+
+  /* Opciones de select legibles en fondo oscuro */
+  select option, select optgroup{background:#2D0A18;color:#FFF5F0}
+  .rol-select option{background:#2D0A18;color:#FFF5F0;padding:8px}
+  .form-select option{background:#2D0A18;color:#FFF5F0}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -2875,6 +2881,22 @@ body{visibility:hidden}
 </script>
 
 <script src="supabase-config.js"></script>
+<script>
+// Revelado inmediato: si el caché dice que hay sesión, mostramos la página
+// al instante y verificamos en segundo plano. Adiós a la espera.
+(function(){
+  try{
+    var cache = localStorage.getItem('cmm_sesion');
+    if(cache && JSON.parse(cache).id){
+      document.getElementById('auth-splash-style')?.remove();
+      document.addEventListener('DOMContentLoaded', function(){
+        document.getElementById('authSplash')?.remove();
+      });
+      document.getElementById('authSplash')?.remove();
+    }
+  }catch(e){}
+})();
+</script>
 <script src="header-dinamico.js"></script>
 <script>
 (function() {

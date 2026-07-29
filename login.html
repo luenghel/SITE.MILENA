@@ -306,6 +306,7 @@ async function hacerLogin(){
     return mostrarAlerta(traducirError(error.message));
   }
 
+  await refrescarCacheSesion();
   mostrarAlerta('✓ Entrando...', 'success');
   window.location.href = '/index';
 }
@@ -335,6 +336,16 @@ async function hacerRegistro(){
 
   // Si Supabase devuelve sesión directa, es que la confirmación está apagada
   if(data.session){
+    // Aseguramos que el perfil exista con el nombre puesto
+    if(data.user){
+      await sb.from('perfiles').upsert({
+        id: data.user.id,
+        email: email,
+        nombre: nombre,
+        rol: 'alumna'
+      }, { onConflict: 'id' });
+    }
+    await refrescarCacheSesion();
     mostrarAlerta('✓ Cuenta creada. Entrando...', 'success');
     window.location.href = '/index';
     return;
@@ -429,6 +440,7 @@ async function verificarCodigo(){
     await sb.from('perfiles').update({ nombre: nombrePendiente }).eq('id', resultado.data.user.id);
   }
 
+  await refrescarCacheSesion();
   mostrarAlerta('✓ ¡Email verificado! Entrando...', 'success');
   setTimeout(() => { window.location.href = '/index'; }, 700);
 }

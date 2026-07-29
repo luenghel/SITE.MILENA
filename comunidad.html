@@ -237,6 +237,22 @@ body{visibility:hidden}
 </div>
 
 <script src="supabase-config.js"></script>
+<script>
+// Revelado inmediato: si el caché dice que hay sesión, mostramos la página
+// al instante y verificamos en segundo plano. Adiós a la espera.
+(function(){
+  try{
+    var cache = localStorage.getItem('cmm_sesion');
+    if(cache && JSON.parse(cache).id){
+      document.getElementById('auth-splash-style')?.remove();
+      document.addEventListener('DOMContentLoaded', function(){
+        document.getElementById('authSplash')?.remove();
+      });
+      document.getElementById('authSplash')?.remove();
+    }
+  }catch(e){}
+})();
+</script>
 <script src="header-dinamico.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════════

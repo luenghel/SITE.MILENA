@@ -24,6 +24,53 @@ supabaseScript.onerror = () => {
   console.error('❌ No se pudo cargar Supabase. Verificá tu conexión a internet o que estés sirviendo el sitio con un servidor local.');
 };
 
+
+// ═══════════════════════════════════════════════════════
+// CACHÉ DE SESIÓN  (elimina el parpadeo "ENTRAR → avatar")
+// Guarda nombre/rol/avatar para pintar el header al instante,
+// sin esperar a que cargue Supabase desde el CDN.
+// ═══════════════════════════════════════════════════════
+
+const CACHE_SESION = 'cmm_sesion';
+
+function guardarCacheSesion(datos) {
+  try { localStorage.setItem(CACHE_SESION, JSON.stringify(datos)); } catch(e){}
+}
+
+function leerCacheSesion() {
+  try {
+    const raw = localStorage.getItem(CACHE_SESION);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e){ return null; }
+}
+
+function limpiarCacheSesion() {
+  try { localStorage.removeItem(CACHE_SESION); } catch(e){}
+}
+
+// Refresca el caché con los datos reales del perfil
+async function refrescarCacheSesion() {
+  if (!sb) return null;
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) { limpiarCacheSesion(); return null; }
+
+  const { data: perfil } = await sb
+    .from('perfiles')
+    .select('nombre, email, rol, avatar_url')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  const datos = {
+    id: user.id,
+    email: perfil?.email || user.email,
+    nombre: perfil?.nombre || user.email.split('@')[0],
+    rol: perfil?.rol || 'alumna',
+    avatar_url: perfil?.avatar_url || null
+  };
+  guardarCacheSesion(datos);
+  return datos;
+}
+
 // ═══════════════════════════════════════════════════════
 // FUNCIONES DE AUTENTICACIÓN
 // ═══════════════════════════════════════════════════════
@@ -55,6 +102,7 @@ async function iniciarSesion(email, password) {
 
 // LOGOUT
 async function cerrarSesion() {
+  limpiarCacheSesion();
   if (!sb) return { exito: false, error: 'Supabase no está conectado' };
   const { error } = await sb.auth.signOut();
   if (error) return { exito: false, error: error.message };
