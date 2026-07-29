@@ -293,9 +293,14 @@ async function hacerLogin(){
     // Si no confirmó el email, lo mandamos a la pantalla de código
     if((error.message || '').toLowerCase().includes('email not confirmed')){
       emailPendiente = email;
-      await enviarCodigoDeNuevo(true);
-      irAPantallaCodigo(email);
-      mostrarAlerta('Te faltaba verificar tu email. Te mandamos un código nuevo.', 'info');
+      const seEnvio = await enviarCodigoDeNuevo(true);
+      if(seEnvio){
+        irAPantallaCodigo(email);
+        arrancarCooldown(60);
+        mostrarAlerta('Te faltaba verificar tu email. Te mandamos un código nuevo.', 'info');
+      } else {
+        mostrarAlerta('Tu cuenta existe pero falta verificar el email, y el envío de emails todavía no está configurado. Avisale al equipo para que lo active.', 'info');
+      }
       return;
     }
     return mostrarAlerta(traducirError(error.message));
@@ -481,11 +486,20 @@ async function recuperarContrasena(){
 }
 
 // ─── Si ya está logueada, la sacamos de acá ────────────────────────
+let yaRedirigi = false;
 const waitSupaLogin = setInterval(async () => {
   if(typeof sb === 'undefined' || sb === null) return;
   clearInterval(waitSupaLogin);
-  const { data: { user } } = await sb.auth.getUser();
-  if(user) window.location.replace('/index');
+  try {
+    const { data: { user }, error } = await sb.auth.getUser();
+    if(user && !yaRedirigi){
+      yaRedirigi = true;
+      window.location.replace('/index');
+    }
+  } catch(e){
+    // Si la sesión guardada está rota, la limpiamos y dejamos entrar de nuevo
+    await sb.auth.signOut();
+  }
 }, 50);
 </script>
 

@@ -85,7 +85,7 @@
   .post-actions{display:flex;align-items:center;gap:8px;padding-top:10px;border-top:0.5px solid rgba(255,245,240,0.06)}
   .pa-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;background:transparent;border:none;color:rgba(255,245,240,0.65);font-size:12px;cursor:pointer;border-radius:7px;font-family:inherit;transition:all 0.2s}
   .pa-btn:hover{background:rgba(255,245,240,0.05);color:#FFF5F0}
-  .pa-btn.liked{color:#E8B8C4}
+  .pa-btn.liked{color:#FAC775}
 
   /* Comentarios */
   .comments-box{margin-top:12px;padding-top:12px;border-top:0.5px solid rgba(255,245,240,0.06);display:none}
@@ -571,7 +571,7 @@ function renderFeed(){
 
         <div class="post-actions">
           <button class="pa-btn ${yoDiLike ? 'liked' : ''}" onclick="toggleLike('${p.id}')">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="${yoDiLike ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8"><path d="M6 3l6 8 6-8M12 11v10" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 21l-5-5h10l-5 5z"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="${yoDiLike ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M2 9h20M9.5 3 8 9l4 13M14.5 3 16 9l-4 13"/></svg>
             <span id="likes-${p.id}">${nLikes}</span>
           </button>
           <button class="pa-btn" onclick="toggleComentarios('${p.id}')">
@@ -739,7 +739,19 @@ const waitSupaCom = setInterval(async () => {
     .eq('id', user.id)
     .maybeSingle();
 
-  perfilActual = perfil || { id: user.id, email: user.email, nombre: user.email.split('@')[0], rol: 'alumna' };
+  // Si por algún motivo no se creó el perfil, lo creamos ahora
+  if(!perfil){
+    const nombreAuto = user.user_metadata?.nombre || user.email.split('@')[0];
+    await sb.from('perfiles').upsert({
+      id: user.id,
+      email: user.email,
+      nombre: nombreAuto,
+      rol: 'alumna'
+    });
+    perfil = { id: user.id, email: user.email, nombre: nombreAuto, rol: 'alumna' };
+  }
+
+  perfilActual = perfil;
   perfilesCache[user.id] = perfilActual;
   esAdmin = ['admin','fundadora'].includes(perfilActual.rol);
 
