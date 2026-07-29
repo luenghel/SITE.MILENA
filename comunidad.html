@@ -25,35 +25,31 @@
   .search-input{padding:10px 14px 10px 38px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:22px;color:#FFF5F0;font-size:13px;outline:none;width:200px;font-family:inherit}
   .search-input:focus{border-color:rgba(212,163,86,0.5)}
 
-  /* Composer */
-  .composer{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:14px;padding:18px;margin-bottom:24px}
-  .composer-row{display:flex;gap:12px;align-items:flex-start}
-  .avatar-circle{border-radius:50%;flex-shrink:0;border:0.5px solid rgba(255,245,240,0.15);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-weight:500;color:#FFF5F0}
-  .composer-avatar{width:42px;height:42px;font-size:17px}
-  .composer-input{flex:1;padding:14px 16px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:10px;color:#FFF5F0;font-size:14px;outline:none;font-family:inherit;min-height:48px;resize:vertical}
+  /* Composer minimalista */
+  .composer{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:14px;padding:14px;margin-bottom:20px}
+  .composer-row{display:flex;gap:11px;align-items:flex-start}
+  .avatar-circle{border-radius:50%;flex-shrink:0;border:0.5px solid rgba(255,245,240,0.15);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-weight:500;color:#FFF5F0;background-size:cover;background-position:center}
+  .composer-avatar{width:40px;height:40px;font-size:16px}
+  .composer-input{flex:1;padding:11px 14px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:10px;color:#FFF5F0;font-size:14px;outline:none;font-family:inherit;min-height:44px;max-height:220px;resize:none;overflow-y:auto;line-height:1.5}
   .composer-input:focus{border-color:rgba(212,163,86,0.5)}
+  .composer-input::placeholder{color:rgba(255,245,240,0.4)}
 
-  .composer-extra{margin-top:14px;padding-left:54px}
-  .extra-label{font-size:10.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.5);font-weight:500;margin-bottom:9px}
-  .cat-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-  .cat-chip{padding:6px 12px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.14);border-radius:16px;font-size:11.5px;color:rgba(255,245,240,0.7);cursor:pointer;font-family:inherit;transition:all 0.22s}
-  .cat-chip.selected{background:linear-gradient(135deg,rgba(184,41,74,0.25),rgba(184,41,74,0.08));border-color:rgba(232,184,196,0.6);color:#E8B8C4}
-
-  .hashtag-chips{display:flex;gap:6px;flex-wrap:wrap}
-  .hashtag-chip{padding:7px 13px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.15);border-radius:18px;font-size:12px;color:rgba(255,245,240,0.75);cursor:pointer;transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);font-family:inherit;user-select:none}
-  .hashtag-chip:hover{transform:translateY(-1px);background:rgba(255,245,240,0.08);color:#FFF5F0}
-  .hashtag-chip.selected{background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.08));border-color:#FAC775;color:#FAC775;box-shadow:0 0 0 0.5px rgba(212,163,86,0.3),0 4px 12px rgba(212,163,86,0.15)}
-
-  .composer-preview{margin-top:12px;position:relative;border-radius:10px;overflow:hidden;max-width:280px}
+  .composer-preview{margin-top:11px;margin-left:51px;position:relative;border-radius:10px;overflow:hidden;max-width:220px}
   .composer-preview img{width:100%;display:block}
-  .composer-preview button{position:absolute;top:7px;right:7px;width:28px;height:28px;border-radius:50%;background:rgba(14,5,9,0.85);border:none;color:#FF8090;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .composer-preview button{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;background:rgba(14,5,9,0.85);border:none;color:#FF8090;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
-  .composer-tools{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:0.5px solid rgba(255,245,240,0.06);padding-left:54px;flex-wrap:wrap;gap:10px}
-  .composer-tools-left{display:flex;gap:6px;align-items:center}
-  .tool-btn{padding:8px 12px;background:transparent;border:0.5px solid rgba(255,245,240,0.12);border-radius:8px;color:rgba(255,245,240,0.65);font-size:11.5px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.25s;font-family:inherit}
-  .tool-btn:hover{background:rgba(255,245,240,0.04);color:#FFF5F0}
-  .post-btn{padding:9px 22px;font-size:11.5px;font-weight:500;border-radius:9px;letter-spacing:0.1em;border:none;cursor:pointer}
+  .composer-bar{display:flex;align-items:center;gap:7px;margin-top:11px;margin-left:51px;flex-wrap:wrap}
+  .cbtn{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);border-radius:20px;color:rgba(255,245,240,0.72);font-size:12px;cursor:pointer;font-family:inherit;transition:all 0.2s;white-space:nowrap}
+  .cbtn:hover{background:rgba(255,245,240,0.09);color:#FFF5F0}
+  .cbtn.activo{background:linear-gradient(135deg,rgba(212,163,86,0.18),rgba(212,163,86,0.05));border-color:rgba(212,163,86,0.5);color:#FAC775}
+  .cbtn-arrow{transition:transform 0.25s}
+  .cbtn.abierto .cbtn-arrow{transform:rotate(180deg)}
+  .post-btn{margin-left:auto;padding:9px 20px;font-size:11.5px;font-weight:500;border-radius:20px;letter-spacing:0.1em;border:none;cursor:pointer}
   .post-btn:disabled{opacity:0.5;cursor:not-allowed}
+
+  .composer-opciones{max-height:0;overflow:hidden;transition:max-height 0.3s ease,margin 0.3s ease,opacity 0.25s;opacity:0;margin-left:51px}
+  .composer-opciones.abierto{max-height:400px;opacity:1;margin-top:14px;padding-top:13px;border-top:0.5px solid rgba(255,245,240,0.07)}
+  .opc-label{font-size:9.5px;letter-spacing:0.18em;color:rgba(255,245,240,0.45);font-weight:600;margin-bottom:8px}
 
   /* Posts */
   .post{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:14px;padding:18px;margin-bottom:14px;transition:border-color 0.25s}
@@ -119,11 +115,20 @@
     .feed-layout{padding:0 16px 30px}
     .search-input{width:100%}
     .search-wrap{width:100%}
-    .composer-tools{padding-left:0}
-    .composer-extra{padding-left:0}
+    .composer-bar{margin-left:0}
+    .composer-opciones{margin-left:0}
+    .composer-preview{margin-left:0}
     .filters-chips{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
     .toast{left:16px;right:16px;bottom:16px;justify-content:center}
   }
+
+  /* cmm-mobile-nav-fix: en celular solo logo + foto + 3 puntitos */
+  @media (max-width:900px){
+    .main-header .nav-btn{display:none !important}
+    header.main .nav-btn{display:none !important}
+    nav.main-nav{display:none !important}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -180,11 +185,37 @@ body{visibility:hidden}
   <div class="composer">
     <div class="composer-row">
       <div class="avatar-circle composer-avatar" id="miAvatar">·</div>
-      <textarea class="composer-input" placeholder="¿Qué querés compartir hoy con la comunidad?" id="composerText"></textarea>
+      <textarea class="composer-input" placeholder="¿Qué querés compartir hoy?" id="composerText" rows="1"></textarea>
     </div>
 
-    <div class="composer-extra">
-      <div class="extra-label">CATEGORÍA</div>
+    <!-- Vista previa de la foto -->
+    <div class="composer-preview" id="composerPreview" style="display:none">
+      <img id="composerPreviewImg" alt="">
+      <button type="button" onclick="quitarFotoPost()" aria-label="Quitar foto">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Barra compacta -->
+    <div class="composer-bar">
+      <button class="cbtn" type="button" onclick="document.getElementById('postFotoInput').click()" id="btnFoto">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span id="fotoBtnText">Foto</span>
+      </button>
+      <input type="file" id="postFotoInput" accept="image/*" style="display:none" onchange="subirFotoPost(event)">
+
+      <button class="cbtn" type="button" onclick="toggleOpciones()" id="btnOpciones">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.6 13.4 12 22l-9-9V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor"/></svg>
+        <span id="opcionesTxt">Etiquetar</span>
+        <svg class="cbtn-arrow" id="opcArrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+
+      <button class="cta-gold post-btn" id="btnPublicar" onclick="publicar()">PUBLICAR</button>
+    </div>
+
+    <!-- Opciones plegables -->
+    <div class="composer-opciones" id="composerOpciones">
+      <div class="opc-label">CATEGORÍA</div>
       <div class="cat-chips" id="catChips">
         <button class="cat-chip selected" data-cat="general" onclick="elegirCategoria(this)" type="button">General</button>
         <button class="cat-chip" data-cat="consejos" onclick="elegirCategoria(this)" type="button">💡 Consejo</button>
@@ -194,26 +225,8 @@ body{visibility:hidden}
         <button class="cat-chip" data-cat="anuncios" onclick="elegirCategoria(this)" type="button" id="chipAnuncio" style="display:none">📌 Anuncio</button>
       </div>
 
-      <div class="extra-label">ETIQUETAS</div>
+      <div class="opc-label" style="margin-top:14px">ETIQUETAS</div>
       <div class="hashtag-chips" id="hashtagChips"></div>
-
-      <div class="composer-preview" id="composerPreview" style="display:none">
-        <img id="composerPreviewImg" alt="">
-        <button type="button" onclick="quitarFotoPost()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="composer-tools">
-      <div class="composer-tools-left">
-        <button class="tool-btn" type="button" onclick="document.getElementById('postFotoInput').click()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-          <span id="fotoBtnText">Foto</span>
-        </button>
-        <input type="file" id="postFotoInput" accept="image/*" style="display:none" onchange="subirFotoPost(event)">
-      </div>
-      <button class="cta-gold post-btn" id="btnPublicar" onclick="publicar()">PUBLICAR</button>
     </div>
   </div>
 
@@ -331,11 +344,50 @@ function mostrarToast(msg, esError){
 }
 
 // ─── Composer ──────────────────────────────────────────────────────
+function toggleOpciones(){
+  const panel = document.getElementById('composerOpciones');
+  const btn = document.getElementById('btnOpciones');
+  const abierto = panel.classList.toggle('abierto');
+  btn.classList.toggle('abierto', abierto);
+}
+
+// Muestra en el botón lo que hay elegido, para no tener que abrir el panel
+function actualizarResumenOpciones(){
+  const btn = document.getElementById('btnOpciones');
+  const txt = document.getElementById('opcionesTxt');
+  const nombres = {
+    general: 'Etiquetar',
+    consejos: '💡 Consejo',
+    avances: '🚀 Avance',
+    preguntas: '❓ Pregunta',
+    logros: '🏆 Logro',
+    anuncios: '📌 Anuncio'
+  };
+  let etiqueta = nombres[categoriaPost] || 'Etiquetar';
+  if(hashtagsSeleccionados.length){
+    etiqueta = (categoriaPost === 'general' ? '' : etiqueta + ' · ') + hashtagsSeleccionados.length + ' etiq.';
+  }
+  txt.textContent = etiqueta;
+  const hayAlgo = categoriaPost !== 'general' || hashtagsSeleccionados.length > 0;
+  btn.classList.toggle('activo', hayAlgo);
+}
+
 function elegirCategoria(el){
   document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   categoriaPost = el.dataset.cat;
+  actualizarResumenOpciones();
 }
+
+// El campo de texto crece solo a medida que escribís
+(function(){
+  const ta = document.getElementById('composerText');
+  if(!ta) return;
+  ta.addEventListener('input', function(){
+    ta.style.height = 'auto';
+    ta.style.height = Math.min(ta.scrollHeight, 220) + 'px';
+  });
+})();
 
 async function cargarHashtagsDisponibles(){
   const { data } = await sb.from('hashtags').select('nombre').order('nombre', { ascending: true });
@@ -359,6 +411,7 @@ function toggleHashtag(el){
     hashtagsSeleccionados.push(tag);
     el.classList.add('selected');
   }
+  actualizarResumenOpciones();
 }
 
 async function subirFotoPost(event){
@@ -375,6 +428,8 @@ async function subirFotoPost(event){
     fotoPostUrl = r.url;
     document.getElementById('composerPreviewImg').src = r.url;
     document.getElementById('composerPreview').style.display = 'block';
+    document.getElementById('btnFoto').classList.add('activo');
+    document.getElementById('fotoBtnText').textContent = 'Foto lista';
   } else {
     mostrarToast('No se pudo subir: ' + r.error, true);
   }
@@ -385,6 +440,8 @@ function quitarFotoPost(){
   fotoPostUrl = null;
   document.getElementById('composerPreview').style.display = 'none';
   document.getElementById('composerPreviewImg').src = '';
+  document.getElementById('btnFoto').classList.remove('activo');
+  document.getElementById('fotoBtnText').textContent = 'Foto';
 }
 
 async function publicar(){
@@ -415,9 +472,16 @@ async function publicar(){
   }
 
   // Limpiar composer
-  document.getElementById('composerText').value = '';
+  const ta = document.getElementById('composerText');
+  ta.value = '';
+  ta.style.height = 'auto';
   hashtagsSeleccionados = [];
   document.querySelectorAll('.hashtag-chip.selected').forEach(c => c.classList.remove('selected'));
+  categoriaPost = 'general';
+  document.querySelectorAll('.cat-chip').forEach(x => x.classList.toggle('selected', x.dataset.cat === 'general'));
+  document.getElementById('composerOpciones').classList.remove('abierto');
+  document.getElementById('btnOpciones').classList.remove('abierto');
+  actualizarResumenOpciones();
   quitarFotoPost();
   mostrarToast('✓ Publicado en la comunidad');
 

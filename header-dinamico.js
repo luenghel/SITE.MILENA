@@ -84,12 +84,18 @@
       .cmm-panel-close{position:absolute;top:calc(16px + env(safe-area-inset-top,0px));right:16px;width:34px;height:34px;border-radius:50%;background:rgba(255,245,240,0.07);border:none;color:#FFF5F0;cursor:pointer;display:flex;align-items:center;justify-content:center}
       .cmm-panel-foot{padding:16px 20px calc(20px + env(safe-area-inset-bottom,0px));border-top:0.5px solid rgba(255,245,240,0.08)}
 
+      /* ── CELULAR: logo + foto + 3 puntitos, nada más ── */
       @media (max-width:900px){
-        .cmm-burger{display:flex}
+        .cmm-burger{display:flex;width:38px;height:38px;border-radius:11px}
         .cmm-user-name{display:none}
-        .cmm-user-btn{padding:6px;max-width:none}
+        .cmm-user-btn{padding:0;max-width:none;background:none;border:none;border-radius:50%}
+        .cmm-user-btn:hover{background:none}
+        .cmm-user-btn svg{display:none}
+        .cmm-user-av{width:36px;height:36px;border:1.5px solid rgba(212,163,86,0.55)}
         .cmm-drop{display:none !important}
+        .cmm-acciones{display:flex;align-items:center;gap:9px;margin-left:auto}
       }
+      .cmm-acciones{display:flex;align-items:center;gap:12px;margin-left:auto}
     `;
     document.head.appendChild(st);
   }
@@ -218,16 +224,36 @@
     document.body.appendChild(panel);
   }
 
-  function agregarBurger() {
+  // Deja el avatar y los 3 puntitos juntos, alineados a la derecha
+  function agruparAcciones() {
     const header = document.querySelector('.header-inner');
-    if (!header || header.querySelector('.cmm-burger')) return;
+    if (!header) return null;
+    let caja = header.querySelector('.cmm-acciones');
+    if (!caja) {
+      caja = document.createElement('div');
+      caja.className = 'cmm-acciones';
+      header.appendChild(caja);
+    }
+    // Mover adentro el bloque de usuario (o el botón ENTRAR)
+    const usuario = header.querySelector('.cmm-user-wrap') || header.querySelector('a[href="/login"].btn-outline');
+    if (usuario && usuario.parentElement !== caja) {
+      const cont = usuario.parentElement;
+      caja.insertBefore(usuario, caja.firstChild);
+      if (cont && cont !== header && cont !== caja && cont.children.length === 0) cont.remove();
+    }
+    return caja;
+  }
+
+  function agregarBurger() {
+    const caja = agruparAcciones();
+    if (!caja || caja.querySelector('.cmm-burger')) return;
     const b = document.createElement('button');
     b.className = 'cmm-burger';
     b.type = 'button';
     b.setAttribute('aria-label', 'Menú');
-    b.innerHTML = '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+    b.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="19" r="1.9"/></svg>';
     b.setAttribute('data-cmm-burger', '');
-    header.appendChild(b);
+    caja.appendChild(b);
   }
 
   function abrirPanel() {
@@ -257,7 +283,8 @@
     const toggle = e.target.closest('[data-cmm-toggle]');
     if (toggle) {
       e.stopPropagation();
-      if (window.innerWidth <= 900) { abrirPanel(); return; }
+      // En celular la foto es un atajo a "Mi perfil"; el menú son los 3 puntitos
+      if (window.innerWidth <= 900) { window.location.href = '/perfil'; return; }
       const drop = toggle.parentElement.querySelector('.cmm-drop');
       const abierto = drop.classList.contains('show');
       document.querySelectorAll('.cmm-drop').forEach(d => d.classList.remove('show'));

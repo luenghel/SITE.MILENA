@@ -127,6 +127,14 @@
   .crop-ok{background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208}
   .crop-ok:disabled{opacity:0.6;cursor:not-allowed}
 
+
+  /* cmm-mobile-nav-fix: en celular solo logo + foto + 3 puntitos */
+  @media (max-width:900px){
+    .main-header .nav-btn{display:none !important}
+    header.main .nav-btn{display:none !important}
+    nav.main-nav{display:none !important}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
