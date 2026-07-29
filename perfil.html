@@ -89,6 +89,10 @@
   .edit-label{font-size:10.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.55);font-weight:600;display:block;margin-bottom:6px}
   .edit-input{width:100%;padding:12px 14px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.15);border-radius:9px;color:#FFF5F0;font-size:14px;outline:none;font-family:inherit}
   .edit-input:focus{border-color:rgba(212,163,86,0.5)}
+  .genero-chips{display:flex;gap:7px;flex-wrap:wrap}
+  .genero-chip{padding:9px 15px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.16);border-radius:18px;color:rgba(255,245,240,0.75);font-size:12px;cursor:pointer;font-family:inherit;transition:all 0.22s;white-space:nowrap}
+  .genero-chip:hover{background:rgba(255,245,240,0.09);color:#FFF5F0}
+  .genero-chip.selected{background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.06));border-color:#FAC775;color:#FAC775}
   .edit-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
   .edit-cancel{padding:10px 18px;background:transparent;border:0.5px solid rgba(255,245,240,0.2);border-radius:9px;color:#FFF5F0;font-size:12px;cursor:pointer;font-family:inherit}
   .edit-save{padding:10px 22px;background:linear-gradient(135deg,#FAC775,#D4A356);border:none;border-radius:9px;color:#3D1208;font-size:12px;font-weight:600;letter-spacing:0.08em;cursor:pointer;font-family:inherit}
@@ -256,7 +260,17 @@ body{visibility:hidden}
     </div>
     <div class="edit-field">
       <label class="edit-label">SOBRE VOS (opcional)</label>
-      <input class="edit-input" id="editBio" placeholder="Emprendedora · Asunción">
+      <input class="edit-input" id="editBio" placeholder="Emprendedor · Asunción">
+    </div>
+
+    <div class="edit-field">
+      <label class="edit-label">CÓMO QUERÉS QUE TE NOMBREMOS</label>
+      <div class="genero-chips">
+        <button class="genero-chip" data-g="f" onclick="elegirGenero(this)" type="button">Femenino</button>
+        <button class="genero-chip" data-g="m" onclick="elegirGenero(this)" type="button">Masculino</button>
+        <button class="genero-chip" data-g="x" onclick="elegirGenero(this)" type="button">Prefiero no decir</button>
+      </div>
+      <div style="font-size:11px;color:rgba(255,245,240,0.45);margin-top:7px">Lo usamos solo para escribir bien tu rol (fundador / fundadora, etc.)</div>
     </div>
     <div class="edit-actions">
       <button class="edit-cancel" onclick="cerrarEditar()">Cancelar</button>
@@ -521,9 +535,20 @@ async function confirmarCrop(){
   mostrarToast('✓ Foto actualizada');
 }
 
+let generoElegido = 'x';
+
+function elegirGenero(el){
+  document.querySelectorAll('.genero-chip').forEach(x => x.classList.remove('selected'));
+  el.classList.add('selected');
+  generoElegido = el.dataset.g;
+}
+
 function abrirEditar(){
   document.getElementById('editNombre').value = perfilActual.nombre || '';
   document.getElementById('editBio').value = perfilActual.bio || '';
+  generoElegido = perfilActual.genero || 'x';
+  document.querySelectorAll('.genero-chip').forEach(x =>
+    x.classList.toggle('selected', x.dataset.g === generoElegido));
   document.getElementById('editBackdrop').classList.add('show');
 }
 function cerrarEditar(){ document.getElementById('editBackdrop').classList.remove('show'); }
@@ -532,10 +557,15 @@ async function guardarPerfil(){
   const nombre = document.getElementById('editNombre').value.trim();
   const bio = document.getElementById('editBio').value.trim();
   if(!nombre) return mostrarToast('Poné tu nombre', true);
-  const { error } = await sb.from('perfiles').update({ nombre: nombre, bio: bio || null }).eq('id', usuarioActual.id);
+  const { error } = await sb.from('perfiles').update({
+    nombre: nombre,
+    bio: bio || null,
+    genero: generoElegido
+  }).eq('id', usuarioActual.id);
   if(error) return mostrarToast('Error: ' + error.message, true);
   perfilActual.nombre = nombre;
   perfilActual.bio = bio;
+  perfilActual.genero = generoElegido;
   document.getElementById('pfNombre').textContent = nombre;
   pintarAvatar();
   if(typeof refrescarCacheSesion === 'function') await refrescarCacheSesion();
@@ -646,7 +676,7 @@ const waitSupaPerfil = setInterval(async () => {
 
   const { data: perfil } = await sb
     .from('perfiles')
-    .select('id, nombre, email, rol, avatar_url, bio')
+    .select('id, nombre, email, rol, avatar_url, bio, genero')
     .eq('id', user.id)
     .maybeSingle();
 

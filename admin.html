@@ -590,6 +590,61 @@
   .rol-select option{background:#2D0A18;color:#FFF5F0;padding:8px}
   .form-select option{background:#2D0A18;color:#FFF5F0}
 
+
+  .mod-post.denunciado{border-color:rgba(255,59,71,0.5);background:linear-gradient(135deg,rgba(255,59,71,0.07),transparent)}
+  .mod-post.oculto{opacity:0.55}
+  .den-badge{padding:3px 9px;border-radius:6px;font-size:9.5px;font-weight:600;letter-spacing:0.08em;background:rgba(255,59,71,0.18);border:0.5px solid rgba(255,59,71,0.5);color:#FF8090}
+  .den-lista{margin-top:10px;padding:11px 13px;background:rgba(255,59,71,0.06);border:0.5px solid rgba(255,59,71,0.22);border-radius:10px;font-size:12px;color:rgba(255,245,240,0.75);line-height:1.5}
+  .den-lista strong{color:#FF8090}
+
+
+  .den-fila{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:0.5px solid rgba(255,59,71,0.15);font-size:11.5px;line-height:1.5}
+  .den-fila:last-of-type{border-bottom:none}
+  .den-quien{color:#FF8090;font-weight:600}
+  .den-decision{display:flex;gap:8px;margin-top:11px;padding-top:11px;border-top:0.5px solid rgba(255,59,71,0.2);flex-wrap:wrap}
+  .mod-btn.verde{color:#9FE1CB;border-color:rgba(93,202,165,0.4)}
+  .mod-btn.verde:hover{background:rgba(93,202,165,0.15)}
+
+  .revision-pill{padding:3px 9px;border-radius:6px;font-size:9.5px;font-weight:600;letter-spacing:0.08em;background:rgba(212,163,86,0.16);border:0.5px solid rgba(212,163,86,0.5);color:#FAC775}
+
+  /* Métricas de participación */
+  .metricas-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:7px}
+  .metrica{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:rgba(255,245,240,0.6);white-space:nowrap}
+  .metrica.alerta{color:#FF8090}
+
+  .ficha-backdrop{position:fixed;inset:0;background:rgba(8,3,6,0.9);backdrop-filter:blur(10px);z-index:9500;display:none;align-items:center;justify-content:center;padding:18px}
+  .ficha-backdrop.show{display:flex}
+  .ficha{background:linear-gradient(180deg,#2D0A18,#1A0509);border:0.5px solid rgba(212,163,86,0.4);border-radius:18px;width:100%;max-width:440px;padding:26px;max-height:90vh;overflow-y:auto}
+  .ficha-head{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+  .ficha-av{width:56px;height:56px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-size:24px;color:#FFF5F0;background-size:cover;background-position:center}
+  .ficha-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+  .ficha-stat{background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.08);border-radius:11px;padding:13px;text-align:center}
+  .ficha-num{font-size:22px;font-weight:500;font-family:Georgia,serif;margin-bottom:3px}
+  .ficha-lbl{font-size:9.5px;letter-spacing:0.14em;color:rgba(255,245,240,0.5);font-weight:600}
+  .ficha-acciones{display:flex;flex-direction:column;gap:8px}
+
+
+  .den-item{padding:9px 0;border-bottom:0.5px solid rgba(255,59,71,0.15)}
+  .den-item:last-child{border-bottom:none;padding-bottom:0}
+  .den-item-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+  .den-grav{padding:2px 8px;border-radius:5px;font-size:9px;font-weight:700;letter-spacing:0.08em}
+  .den-grav.critica{background:rgba(255,59,71,0.25);color:#FF8090;border:0.5px solid rgba(255,59,71,0.5)}
+  .den-grav.alta{background:rgba(212,163,86,0.2);color:#FAC775;border:0.5px solid rgba(212,163,86,0.5)}
+  .den-grav.normal{background:rgba(255,245,240,0.08);color:rgba(255,245,240,0.65);border:0.5px solid rgba(255,245,240,0.18)}
+  .den-item-det{font-size:11.5px;color:rgba(255,245,240,0.6);font-style:italic;margin-bottom:4px}
+  .den-item-quien{font-size:11px;color:rgba(255,245,240,0.55);display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+  .den-item-quien strong{color:#FFF5F0}
+  .den-alerta{color:#FAC775;font-size:10.5px}
+
+  .mod-post.pendiente{border-color:rgba(212,163,86,0.5);background:linear-gradient(135deg,rgba(212,163,86,0.06),transparent)}
+  .enlace-badge{padding:3px 9px;border-radius:6px;font-size:9.5px;font-weight:600;letter-spacing:0.08em;background:rgba(212,163,86,0.18);border:0.5px solid rgba(212,163,86,0.5);color:#FAC775}
+
+
+  .part-grid{display:flex;gap:10px;flex-wrap:wrap}
+  .den-chip{padding:3px 8px;border-radius:6px;font-size:10px;font-weight:600;letter-spacing:0.04em;background:rgba(255,245,240,0.07);border:0.5px solid rgba(255,245,240,0.16);color:rgba(255,245,240,0.7);white-space:nowrap}
+  .den-chip.alerta{background:rgba(212,163,86,0.18);border-color:rgba(212,163,86,0.5);color:#FAC775}
+  .den-chip.recibidas{background:rgba(255,59,71,0.14);border-color:rgba(255,59,71,0.4);color:#FF8090}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1678,6 +1733,8 @@ body{visibility:hidden}
         <button class="filter-btn" onclick="filtrarAlumnas('compradoras', this)">Con compras</button>
         <button class="filter-btn" onclick="filtrarAlumnas('activas', this)">Activas en comunidad</button>
         <button class="filter-btn" onclick="filtrarAlumnas('equipo', this)">Equipo</button>
+        <button class="filter-btn" onclick="filtrarAlumnas('bloqueadas', this)">🚫 Bloqueadas</button>
+        <button class="filter-btn" onclick="filtrarAlumnas('denunciantes', this)">⚠️ Denuncian mucho</button>
       </div>
     </div>
 
@@ -1688,7 +1745,8 @@ body{visibility:hidden}
             <th>ALUMNA</th>
             <th>ROL</th>
             <th>CURSOS</th>
-            <th>COMUNIDAD</th>
+            <th>PARTICIPACIÓN</th>
+            <th>🚩</th>
             <th>REGISTRO</th>
           </tr>
         </thead>
@@ -1731,14 +1789,16 @@ body{visibility:hidden}
         <div class="stat-label">ME GUSTA</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="modActivos">0</div>
-        <div class="stat-label">PARTICIPANDO</div>
+        <div class="stat-value" id="modDenuncias" style="color:#FF8090">0</div>
+        <div class="stat-label">🚩 DENUNCIAS</div>
       </div>
     </div>
 
     <div class="cursos-toolbar">
       <div class="cursos-filtros">
         <button class="filter-btn active" onclick="filtrarMod('todos', this)">Todos</button>
+        <button class="filter-btn" onclick="filtrarMod('denunciados', this)" id="btnFiltroDenuncias">🚩 Denunciados</button>
+        <button class="filter-btn" onclick="filtrarMod('pendientes', this)">🔗 Esperan aprobación</button>
         <button class="filter-btn" onclick="filtrarMod('fijados', this)">📌 Fijados</button>
         <button class="filter-btn" onclick="filtrarMod('preguntas', this)">❓ Preguntas</button>
         <button class="filter-btn" onclick="filtrarMod('logros', this)">🏆 Logros</button>
@@ -2517,15 +2577,24 @@ body{visibility:hidden}
   async function cargarAlumnas(){
     if(!sb) return;
 
-    const { data: perfiles, error } = await sb
-      .from('perfiles')
-      .select('id, nombre, email, rol, avatar_url, creado_en')
+    // Intentamos la vista de métricas; si no existe, usamos perfiles
+    let { data: perfiles, error } = await sb
+      .from('metricas_miembros')
+      .select('*')
       .order('creado_en', { ascending: false });
+
+    if(error){
+      const r = await sb.from('perfiles')
+        .select('id, nombre, email, rol, avatar_url, creado_en, genero, bloqueado')
+        .order('creado_en', { ascending: false });
+      perfiles = r.data;
+      error = r.error;
+    }
 
     if(error){
       console.error('Error cargando alumnas:', error);
       document.getElementById('alumnasBody').innerHTML =
-        '<tr><td colspan="5" style="padding:40px;text-align:center;color:#FF8090">Error: ' + esc(error.message) + '</td></tr>';
+        '<tr><td colspan="6" style="padding:40px;text-align:center;color:#FF8090">Error: ' + esc(error.message) + '</td></tr>';
       return;
     }
 
@@ -2554,9 +2623,13 @@ body{visibility:hidden}
     });
 
     alumnas.forEach(a => {
-      a._compras = comprasPorUsuario[a.id] || 0;
-      a._posts = postsPorUsuario[a.id] || 0;
-      a._comentarios = comPorUsuario[a.id] || 0;
+      a._compras     = a.cursos_comprados   ?? comprasPorUsuario[a.id] ?? 0;
+      a._posts       = a.posts              ?? postsPorUsuario[a.id]   ?? 0;
+      a._comentarios = a.comentarios        ?? comPorUsuario[a.id]     ?? 0;
+      a._likesDados  = a.likes_dados        ?? 0;
+      a._likesRecib  = a.likes_recibidos    ?? 0;
+      a._denHechas   = a.denuncias_hechas   ?? 0;
+      a._denRecib    = a.denuncias_recibidas ?? 0;
     });
 
     document.getElementById('alumnasCount').textContent = alumnas.length;
@@ -2567,6 +2640,8 @@ body{visibility:hidden}
     if(filtroAlumnas === 'compradoras' && a._compras === 0) return false;
     if(filtroAlumnas === 'activas' && (a._posts + a._comentarios) === 0) return false;
     if(filtroAlumnas === 'equipo' && !['admin','fundadora'].includes(a.rol)) return false;
+    if(filtroAlumnas === 'bloqueadas' && !a.bloqueado) return false;
+    if(filtroAlumnas === 'denunciantes' && (a._denHechas || 0) < 3) return false;
     if(buscaAlumnas){
       const q = buscaAlumnas.toLowerCase();
       const n = (a.nombre || '').toLowerCase();
@@ -2591,10 +2666,20 @@ body{visibility:hidden}
       return '<span class="rol-pill rol-' + esc(a.rol || 'alumna') + '">' + esc((a.rol || 'alumna').toUpperCase()) + '</span>' +
              '<div style="font-size:10px;color:rgba(255,245,240,0.4);margin-top:4px">sos vos</div>';
     }
+    const g = a.genero || 'x';
+    const etiquetas = {
+      alumna: g === 'm' ? 'Alumno' : 'Alumna',
+      admin: 'Equipo',
+      fundadora: g === 'm' ? 'Fundador' : (g === 'f' ? 'Fundadora' : 'Fundación')
+    };
     const roles = ['alumna','admin','fundadora'];
-    return '<select class="rol-select" onchange="cambiarRol(\'' + a.id + '\', this.value, this)">' +
-      roles.map(r => '<option value="' + r + '"' + ((a.rol || 'alumna') === r ? ' selected' : '') + '>' + r + '</option>').join('') +
+    let html = '<select class="rol-select" onchange="cambiarRol(\'' + a.id + '\', this.value, this)">' +
+      roles.map(r => '<option value="' + r + '"' + ((a.rol || 'alumna') === r ? ' selected' : '') + '>' + etiquetas[r] + '</option>').join('') +
       '</select>';
+    if(a.bloqueado){
+      html += '<div style="margin-top:6px"><button class="mod-btn danger" style="padding:5px 10px;font-size:10.5px" onclick="desbloquear(\'' + a.id + '\')">🚫 Bloqueado · desbloquear</button></div>';
+    }
+    return html;
   }
 
   function renderAlumnas(){
@@ -2605,7 +2690,7 @@ body{visibility:hidden}
     if(lista.length === 0){
       const vacio = alumnas.length === 0;
       const msg = vacio ? 'Todavía no hay nadie registrado' : 'No encontramos ninguna alumna con ese filtro';
-      body.innerHTML = '<tr><td colspan="5" style="padding:50px;text-align:center;color:rgba(255,245,240,0.5)">' +
+      body.innerHTML = '<tr><td colspan="6" style="padding:50px;text-align:center;color:rgba(255,245,240,0.5)">' +
         '<div style="font-size:40px;opacity:0.4;margin-bottom:10px">' + (vacio ? '👥' : '🔍') + '</div>' + msg + '</td></tr>';
       cards.innerHTML = '<div style="padding:50px 20px;text-align:center;color:rgba(255,245,240,0.5)">' +
         '<div style="font-size:40px;opacity:0.4;margin-bottom:10px">' + (vacio ? '👥' : '🔍') + '</div>' + msg + '</div>';
@@ -2623,7 +2708,13 @@ body{visibility:hidden}
         '<td>' + (a._compras > 0
             ? '<span style="color:#9FE1CB;font-weight:500">' + a._compras + '</span>'
             : '<span style="color:rgba(255,245,240,0.35)">0</span>') + '</td>' +
-        '<td><span class="mini-stat">' + a._posts + ' posts · ' + a._comentarios + ' com.</span></td>' +
+        '<td><div class="part-grid">' +
+            '<span class="mini-stat" title="Publicaciones">✏️ ' + a._posts + '</span>' +
+            '<span class="mini-stat" title="Comentarios">💬 ' + a._comentarios + '</span>' +
+            '<span class="mini-stat" title="Diamantes que dio">💎 ' + a._likesDados + '</span>' +
+            '<span class="mini-stat" title="Diamantes recibidos">⭐ ' + a._likesRecib + '</span>' +
+          '</div></td>' +
+        '<td>' + insigniaDenuncias(a) + '</td>' +
         '<td style="color:rgba(255,245,240,0.55);font-size:12px;white-space:nowrap">' + fechaCorta(a.creado_en) + '</td>' +
       '</tr>';
     }).join('');
@@ -2637,12 +2728,37 @@ body{visibility:hidden}
           '<div class="al-email">' + esc(a.email || '') + '</div></div></div>' +
         '<div style="margin-bottom:10px">' + selectorRol(a) + '</div>' +
         '<div class="alumna-card-stats">' +
-          '<span class="mini-stat">🎓 ' + a._compras + ' cursos</span>' +
-          '<span class="mini-stat">✏️ ' + a._posts + ' posts</span>' +
+          '<span class="mini-stat">🎓 ' + a._compras + '</span>' +
+          '<span class="mini-stat">✏️ ' + a._posts + '</span>' +
           '<span class="mini-stat">💬 ' + a._comentarios + '</span>' +
-          '<span class="mini-stat">📅 ' + fechaCorta(a.creado_en) + '</span>' +
-        '</div></div>';
+          '<span class="mini-stat">💎 ' + a._likesDados + '</span>' +
+          '<span class="mini-stat">⭐ ' + a._likesRecib + '</span>' +
+        '</div>' +
+        (a._denHechas > 0 || a._denRecib > 0
+          ? '<div style="margin-top:9px">' + insigniaDenuncias(a) + '</div>'
+          : '') +
+        '<div style="margin-top:8px;font-size:11px;color:rgba(255,245,240,0.4)">Registro: ' + fechaCorta(a.creado_en) + '</div>' +
+        '</div>';
     }).join('');
+  }
+
+  // Muestra si esta persona denuncia mucho o si la denuncian mucho
+  function insigniaDenuncias(a){
+    const hechas = a._denHechas || 0;
+    const recib = a._denRecib || 0;
+    if(hechas === 0 && recib === 0){
+      return '<span style="color:rgba(255,245,240,0.28);font-size:12px">—</span>';
+    }
+    let html = '';
+    if(hechas > 0){
+      const abusiva = hechas >= 5;
+      html += '<span class="den-chip ' + (abusiva ? 'alerta' : '') + '" title="Denuncias que hizo">' +
+              (abusiva ? '⚠️ ' : '') + 'hizo ' + hechas + '</span>';
+    }
+    if(recib > 0){
+      html += '<span class="den-chip recibidas" title="Denuncias que recibió">recibió ' + recib + '</span>';
+    }
+    return '<div style="display:flex;gap:4px;flex-wrap:wrap">' + html + '</div>';
   }
 
   function filtrarAlumnas(f, btn){
@@ -2650,6 +2766,13 @@ body{visibility:hidden}
     document.querySelectorAll('#content-alumnas .filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     renderAlumnas();
+  }
+
+  async function desbloquear(id){
+    const { error } = await sb.from('perfiles').update({ bloqueado: false }).eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast('✓ Miembro desbloqueado');
+    await cargarAlumnas();
   }
 
   async function cambiarRol(id, nuevoRol, sel){
@@ -2675,6 +2798,8 @@ body{visibility:hidden}
   let modPerfiles = {};
   let modComentarios = {};
   let modLikes = {};
+  let modDenuncias = {};
+  let denunciasPorPersona = {};
   let filtroMod = 'todos';
 
   async function cargarModeracion(){
@@ -2700,7 +2825,7 @@ body{visibility:hidden}
     if(modPosts.length === 0){
       document.getElementById('modTotalComentarios').textContent = '0';
       document.getElementById('modTotalLikes').textContent = '0';
-      document.getElementById('modActivos').textContent = '0';
+      document.getElementById('modDenuncias').textContent = '0';
       renderModeracion();
       return;
     }
@@ -2717,6 +2842,30 @@ body{visibility:hidden}
     const { data: likes } = await sb.from('likes').select('post_id').in('post_id', idsPost);
     (likes || []).forEach(l => { modLikes[l.post_id] = (modLikes[l.post_id] || 0) + 1; });
 
+    // Denuncias (con quién las hizo)
+    modDenuncias = {};
+    const { data: dens } = await sb.from('denuncias').select('*').in('post_id', idsPost).eq('estado','pendiente');
+
+    // Perfiles de quienes denunciaron (para ver si actúan de buena fe)
+    const idsDenunciantes = [...new Set((dens || []).map(d => d.denunciante_id).filter(Boolean))].filter(id => !modPerfiles[id]);
+    if(idsDenunciantes.length){
+      const { data: perfD } = await sb.from('perfiles').select('id, nombre, email, rol, avatar_url').in('id', idsDenunciantes);
+      (perfD || []).forEach(p => { modPerfiles[p.id] = p; });
+    }
+
+    // Cuántas denuncias hizo cada uno en total
+    const { data: todasDen } = await sb.from('denuncias').select('denunciante_id');
+    denunciasPorPersona = {};
+    (todasDen || []).forEach(d => {
+      if(d.denunciante_id) denunciasPorPersona[d.denunciante_id] = (denunciasPorPersona[d.denunciante_id] || 0) + 1;
+    });
+
+    (dens || []).forEach(d => {
+      if(!modDenuncias[d.post_id]) modDenuncias[d.post_id] = [];
+      modDenuncias[d.post_id].push(d);
+    });
+    document.getElementById('modDenuncias').textContent = (dens || []).length;
+
     modComentarios = {};
     const { data: coms } = await sb.from('comentarios').select('*').in('post_id', idsPost).order('creado_en', { ascending: true });
     const idsCom = [...new Set((coms || []).map(x => x.usuario_id).filter(Boolean))].filter(id => !modPerfiles[id]);
@@ -2731,7 +2880,6 @@ body{visibility:hidden}
 
     document.getElementById('modTotalComentarios').textContent = (coms || []).length;
     document.getElementById('modTotalLikes').textContent = (likes || []).length;
-    document.getElementById('modActivos').textContent = idsUser.length;
 
     renderModeracion();
   }
@@ -2743,6 +2891,8 @@ body{visibility:hidden}
   }
 
   function modVisible(p){
+    if(filtroMod === 'denunciados') return (modDenuncias[p.id] || []).length > 0;
+    if(filtroMod === 'pendientes') return !!p.pendiente_aprobacion;
     if(filtroMod === 'fijados') return !!p.fijado;
     if(filtroMod === 'preguntas') return p.categoria === 'preguntas';
     if(filtroMod === 'logros') return p.categoria === 'logros';
@@ -2752,7 +2902,12 @@ body{visibility:hidden}
 
   function renderModeracion(){
     const cont = document.getElementById('modPosts');
-    const lista = modPosts.filter(modVisible);
+    const lista = modPosts.filter(modVisible).sort((a,b) => {
+      const da = (modDenuncias[a.id] || []).length;
+      const db = (modDenuncias[b.id] || []).length;
+      if(da !== db) return db - da;
+      return 0;
+    });
 
     if(lista.length === 0){
       const vacio = modPosts.length === 0;
@@ -2775,7 +2930,14 @@ body{visibility:hidden}
         ? "background-image:url('" + esc(perf.avatar_url) + "')"
         : 'background:' + colorDe(modNombre(uid));
 
-      return '<div class="mod-post ' + (p.fijado ? 'fijado' : '') + '">' +
+      const denuncias = modDenuncias[p.id] || [];
+      const motivos = {
+        desnudez:'Contenido sexual o desnudez', violencia:'Violencia o agresión',
+        spam:'Spam o publicidad', estafa:'Estafa o engaño',
+        odio:'Discurso de odio', otro:'Otro motivo'
+      };
+
+      return '<div class="mod-post ' + (p.fijado ? 'fijado ' : '') + (denuncias.length ? 'denunciado ' : '') + (p.pendiente_aprobacion ? 'pendiente ' : '') + (p.oculto ? 'oculto' : '') + '">' +
         '<div class="mod-post-head">' +
           '<div class="al-avatar" style="' + av + '">' + (perf.avatar_url ? '' : inicialDe(modNombre(uid))) + '</div>' +
           '<div style="flex:1;min-width:0">' +
@@ -2783,6 +2945,9 @@ body{visibility:hidden}
               '<span class="al-nombre">' + nombre + '</span>' +
               (esEquipo ? '<span class="rol-pill rol-fundadora">💎 EQUIPO</span>' : '') +
               (p.fijado ? '<span class="rol-pill rol-admin">📌 FIJADO</span>' : '') +
+              (denuncias.length ? '<span class="den-badge">🚩 ' + denuncias.length + ' DENUNCIA' + (denuncias.length===1?'':'S') + '</span>' : '') +
+              (p.oculto ? '<span class="rol-pill rol-alumna">🙈 OCULTO</span>' : '') +
+              (p.pendiente_aprobacion ? '<span class="enlace-badge">🔗 ESPERA APROBACIÓN</span>' : '') +
             '</div>' +
             '<div style="font-size:11px;color:rgba(255,245,240,0.5);margin-top:2px">' +
               tiempoRel(p.creado_en) +
@@ -2792,10 +2957,34 @@ body{visibility:hidden}
         '</div>' +
         (p.contenido ? '<div class="mod-post-body">' + esc(p.contenido) + '</div>' : '') +
         (p.imagen_url ? '<img class="mod-post-img" src="' + esc(p.imagen_url) + '" alt="" loading="lazy">' : '') +
+        (denuncias.length
+          ? '<div class="den-lista"><strong>🚩 Denunciado por:</strong>' +
+            denuncias.map(function(d){
+              const dn = esc(modNombre(d.denunciante_id));
+              return '<div class="den-fila">' +
+                '<div style="flex:1">' +
+                  '<span class="den-quien">' + dn + '</span> · ' + tiempoRel(d.creado_en) + '<br>' +
+                  '<span style="color:rgba(255,245,240,0.85)">' + (motivos[d.motivo] || esc(d.motivo)) + '</span>' +
+                  (d.detalle ? '<br><em style="color:rgba(255,245,240,0.6)">"' + esc(d.detalle) + '"</em>' : '') +
+                '</div>' +
+                '<button class="mod-btn danger" style="padding:5px 9px;font-size:10px;flex-shrink:0" onclick="modBloquear(\'' + d.denunciante_id + '\', true)">Bloquear a ' + dn.split(' ')[0] + '</button>' +
+              '</div>';
+            }).join('') +
+            '<div class="den-decision">' +
+              '<button class="mod-btn verde" onclick="modAprobar(\'' + p.id + '\')">✓ Es válido · volver a mostrar</button>' +
+              '<button class="mod-btn danger" onclick="modConfirmar(\'' + p.id + '\')">✕ La denuncia tiene razón</button>' +
+            '</div>' +
+            '</div>'
+          : '') +
         '<div class="mod-post-foot">' +
           '<button class="mod-btn gold" onclick="modFijar(\'' + p.id + '\', ' + (!p.fijado) + ')">' +
             (p.fijado ? 'Quitar de fijados' : '📌 Fijar arriba') + '</button>' +
           (coms.length ? '<button class="mod-btn" onclick="modVerComentarios(\'' + p.id + '\')">Ver ' + coms.length + ' comentario' + (coms.length===1?'':'s') + '</button>' : '') +
+          (p.pendiente_aprobacion
+            ? '<button class="mod-btn gold" onclick="modAprobar(\'' + p.id + '\')">✓ Aprobar publicación</button>'
+            : '') +
+          '<button class="mod-btn" onclick="modOcultar(\'' + p.id + '\', ' + (!p.oculto) + ')">' + (p.oculto ? '✓ Restaurar publicación' : '🙈 Ocultar') + '</button>' +
+          '<button class="mod-btn danger" onclick="modBloquear(\'' + uid + '\')">Bloquear autor</button>' +
           '<button class="mod-btn danger" onclick="modBorrarPost(\'' + p.id + '\')">Eliminar</button>' +
           '<div class="mod-metrics">' +
             '<span>❤️ ' + nLikes + '</span>' +
@@ -2833,6 +3022,59 @@ body{visibility:hidden}
     if(error) return mostrarToast('Error: ' + error.message, true);
     mostrarToast(valor ? '📌 Publicación fijada' : 'Publicación desfijada');
     await cargarModeracion();
+  }
+
+  async function modAprobar(id){
+    const { error } = await sb.from('posts').update({ pendiente_aprobacion: false }).eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast('✓ Publicación aprobada y visible');
+    await cargarModeracion();
+  }
+
+  async function modOcultar(id, valor){
+    const { error } = await sb.from('posts').update({ oculto: valor, motivo_ocultado: valor ? 'oculto_por_admin' : null }).eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast(valor ? '🙈 Publicación oculta de la comunidad' : 'Publicación visible de nuevo');
+    await cargarModeracion();
+  }
+
+  async function modAprobar(postId){
+    const { error } = await sb.rpc('aprobar_post', { p_post_id: postId });
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast('✓ Publicación aprobada y visible de nuevo');
+    await cargarModeracion();
+    await cargarAlumnas();
+  }
+
+  async function modConfirmar(postId){
+    if(!confirm('¿Confirmar la denuncia?\n\nLa publicación queda oculta y el autor sigue en revisión.')) return;
+    const { error } = await sb.rpc('confirmar_denuncia', { p_post_id: postId });
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast('Denuncia confirmada. La publicación queda oculta.');
+    await cargarModeracion();
+    await cargarAlumnas();
+  }
+
+  async function modLiberar(usuarioId){
+    const { error } = await sb.rpc('liberar_autor', { p_usuario_id: usuarioId });
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast('✓ Miembro liberado, ya puede publicar');
+    await cargarAlumnas();
+    await cargarModeracion();
+  }
+
+  async function modBloquear(usuarioId, esDenunciante){
+    if(!usuarioId) return;
+    const p = modPerfiles[usuarioId];
+    const nombre = p?.nombre || 'esta persona';
+    const msg = esDenunciante
+      ? '¿Bloquear a ' + nombre + ' por denuncias de mala fe?\n\nNo va a poder publicar, comentar ni denunciar.'
+      : '¿Bloquear a ' + nombre + '?\n\nNo va a poder publicar ni comentar. Sus posts siguen visibles.';
+    if(!confirm(msg)) return;
+    const { error } = await sb.from('perfiles').update({ bloqueado: true }).eq('id', usuarioId);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast('Miembro bloqueado');
+    await cargarAlumnas();
   }
 
   async function modBorrarPost(id){

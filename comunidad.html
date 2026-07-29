@@ -50,6 +50,53 @@
   .composer-opciones{max-height:0;overflow:hidden;transition:max-height 0.3s ease,margin 0.3s ease,opacity 0.25s;opacity:0;margin-left:51px}
   .composer-opciones.abierto{max-height:400px;opacity:1;margin-top:14px;padding-top:13px;border-top:0.5px solid rgba(255,245,240,0.07)}
   .opc-label{font-size:9.5px;letter-spacing:0.18em;color:rgba(255,245,240,0.45);font-weight:600;margin-bottom:8px}
+  /* Botones de categoría y etiquetas */
+  .cat-chips{display:flex;gap:6px;flex-wrap:wrap}
+  .cat-chip{
+    padding:8px 14px;
+    background:rgba(255,245,240,0.05);
+    border:0.5px solid rgba(255,245,240,0.16);
+    border-radius:18px;
+    font-size:12px;
+    color:rgba(255,245,240,0.75);
+    cursor:pointer;
+    font-family:inherit;
+    transition:all 0.22s cubic-bezier(0.34,1.4,0.64,1);
+    white-space:nowrap;
+    user-select:none;
+    line-height:1;
+  }
+  .cat-chip:hover{transform:translateY(-1px);background:rgba(255,245,240,0.09);color:#FFF5F0}
+  .cat-chip.selected{
+    background:linear-gradient(135deg,rgba(184,41,74,0.3),rgba(184,41,74,0.1));
+    border-color:rgba(232,184,196,0.65);
+    color:#E8B8C4;
+    box-shadow:0 3px 12px rgba(184,41,74,0.2);
+  }
+
+  .hashtag-chips{display:flex;gap:6px;flex-wrap:wrap}
+  .hashtag-chip{
+    padding:8px 14px;
+    background:rgba(255,245,240,0.05);
+    border:0.5px solid rgba(255,245,240,0.16);
+    border-radius:18px;
+    font-size:12px;
+    color:rgba(255,245,240,0.75);
+    cursor:pointer;
+    font-family:inherit;
+    transition:all 0.22s cubic-bezier(0.34,1.4,0.64,1);
+    white-space:nowrap;
+    user-select:none;
+    line-height:1;
+  }
+  .hashtag-chip:hover{transform:translateY(-1px);background:rgba(255,245,240,0.09);color:#FFF5F0}
+  .hashtag-chip.selected{
+    background:linear-gradient(135deg,rgba(212,163,86,0.22),rgba(212,163,86,0.07));
+    border-color:#FAC775;
+    color:#FAC775;
+    box-shadow:0 3px 12px rgba(212,163,86,0.18);
+  }
+
 
   /* Posts */
   .post{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:14px;padding:18px;margin-bottom:14px;transition:border-color 0.25s}
@@ -129,6 +176,51 @@
     nav.main-nav{display:none !important}
   }
 
+
+  .pa-reportar{margin-left:auto;opacity:0.45;transition:opacity 0.2s}
+  .pa-reportar:hover{opacity:1;color:#FF8090}
+
+  .den-backdrop{position:fixed;inset:0;background:rgba(8,3,6,0.9);backdrop-filter:blur(10px);z-index:9000;display:none;align-items:center;justify-content:center;padding:18px}
+  .den-backdrop.show{display:flex}
+  .den-modal{background:linear-gradient(180deg,#2D0A18,#1A0509);border:0.5px solid rgba(255,59,71,0.35);border-radius:18px;width:100%;max-width:400px;padding:24px}
+  .den-title{font-family:Georgia,serif;font-size:19px;font-weight:500;margin:0 0 6px;text-align:center}
+  .den-help{font-size:12.5px;color:rgba(255,245,240,0.6);text-align:center;margin-bottom:18px;line-height:1.45}
+  .den-motivos{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+  .den-motivo{padding:12px 14px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.14);border-radius:11px;color:rgba(255,245,240,0.85);font-size:13px;cursor:pointer;font-family:inherit;text-align:left;transition:all 0.2s}
+  .den-motivo:hover{background:rgba(255,245,240,0.08)}
+  .den-motivo.selected{background:rgba(255,59,71,0.14);border-color:rgba(255,59,71,0.5);color:#FF8090}
+  .den-detalle{width:100%;padding:11px 13px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.14);border-radius:10px;color:#FFF5F0;font-size:13px;outline:none;font-family:inherit;min-height:64px;resize:vertical;margin-bottom:16px}
+  .den-actions{display:flex;gap:10px}
+  .den-actions button{flex:1;padding:13px;border-radius:11px;font-size:12px;font-weight:600;letter-spacing:0.08em;cursor:pointer;font-family:inherit;border:none}
+  .den-cancel{background:transparent;border:0.5px solid rgba(255,245,240,0.2) !important;color:#FFF5F0}
+  .den-ok{background:linear-gradient(135deg,#FF8090,#C8203A);color:#FFF5F0}
+
+  .reglas-box{background:rgba(212,163,86,0.07);border:0.5px solid rgba(212,163,86,0.28);border-radius:12px;padding:13px 15px;margin-bottom:18px;font-size:12.5px;color:rgba(255,245,240,0.72);line-height:1.55;display:flex;gap:11px;align-items:flex-start}
+  .reglas-box strong{color:#FAC775;font-weight:600}
+  .reglas-cerrar{background:none;border:none;color:rgba(255,245,240,0.4);cursor:pointer;font-size:17px;line-height:1;padding:0;flex-shrink:0;font-family:inherit}
+
+  .bloqueado-box{background:rgba(255,59,71,0.1);border:0.5px solid rgba(255,59,71,0.4);border-radius:12px;padding:16px;margin-bottom:18px;font-size:13px;color:#FF8090;text-align:center;line-height:1.5}
+
+
+  .den-motivos{max-height:46vh;overflow-y:auto}
+  .den-motivo{display:flex;flex-direction:column;gap:3px;align-items:flex-start}
+  .den-m-txt{font-size:13px}
+  .den-m-tag{font-size:10px;letter-spacing:0.06em;opacity:0.75}
+  .den-motivo.grave .den-m-tag{color:#FF8090}
+  .den-motivo.media .den-m-tag{color:#FAC775}
+  .den-aviso{background:rgba(255,59,71,0.08);border:0.5px solid rgba(255,59,71,0.28);border-radius:10px;padding:11px 13px;font-size:11.5px;color:rgba(255,245,240,0.7);line-height:1.5;margin-bottom:14px}
+  .den-aviso strong{color:#FF8090}
+
+  /* Aviso de enlace */
+  .enlace-aviso{margin-top:11px;margin-left:51px;padding:11px 13px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.3);border-radius:10px;font-size:12px;color:rgba(255,245,240,0.75);line-height:1.5;display:none;gap:9px;align-items:flex-start}
+  .enlace-aviso.show{display:flex}
+  .enlace-aviso strong{color:#FAC775}
+
+  /* Estado del post propio */
+  .post-estado{margin-top:10px;padding:9px 12px;border-radius:9px;font-size:11.5px;line-height:1.45;display:flex;gap:8px;align-items:flex-start}
+  .post-estado.revision{background:rgba(212,163,86,0.1);border:0.5px solid rgba(212,163,86,0.32);color:#FAC775}
+  .post-estado.oculto{background:rgba(255,59,71,0.1);border:0.5px solid rgba(255,59,71,0.35);color:#FF8090}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -181,6 +273,16 @@ body{visibility:hidden}
     </div>
   </div>
 
+  <!-- REGLAS -->
+  <div class="reglas-box" id="reglasBox">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    <div style="flex:1">
+      <strong>Espacio seguro.</strong> Nada de contenido sexual, violento ni agresivo.
+      Si ves algo que no corresponde, tocá la banderita del post y lo revisamos.
+    </div>
+    <button class="reglas-cerrar" onclick="cerrarReglas()" type="button" aria-label="Cerrar">×</button>
+  </div>
+
   <!-- COMPOSER -->
   <div class="composer">
     <div class="composer-row">
@@ -194,6 +296,12 @@ body{visibility:hidden}
       <button type="button" onclick="quitarFotoPost()" aria-label="Quitar foto">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
+    </div>
+
+    <!-- Aviso de enlace detectado -->
+    <div class="enlace-aviso" id="enlaceAviso">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>
+      <div><strong>Detectamos un enlace.</strong> Por seguridad de la comunidad, un moderador va a revisar tu publicación antes de que se vea.</div>
     </div>
 
     <!-- Barra compacta -->
@@ -243,6 +351,65 @@ body{visibility:hidden}
 <footer class="main-footer">
   Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
 </footer>
+
+<div class="den-backdrop" id="denBackdrop">
+  <div class="den-modal">
+    <h3 class="den-title serif">Denunciar publicación</h3>
+    <p class="den-help">La revisa el equipo de Milena.</p>
+    <div class="den-aviso">
+      <strong>Usá esto con responsabilidad.</strong> Las denuncias graves ocultan la publicación de inmediato.
+      Denunciar de mala fe puede costarte el acceso a la comunidad.
+    </div>
+    <div class="den-motivos" id="denMotivos">
+      <button class="den-motivo grave" data-m="sexual" onclick="elegirMotivo(this)" type="button">
+        <span class="den-m-txt">Desnudez o contenido sexual</span>
+        <span class="den-m-tag">Se oculta al instante</span>
+      </button>
+      <button class="den-motivo grave" data-m="violencia" onclick="elegirMotivo(this)" type="button">
+        <span class="den-m-txt">Violencia o contenido gráfico</span>
+        <span class="den-m-tag">Se oculta al instante</span>
+      </button>
+      <button class="den-motivo grave" data-m="odio" onclick="elegirMotivo(this)" type="button">
+        <span class="den-m-txt">Discurso de odio o discriminación</span>
+        <span class="den-m-tag">Se oculta al instante</span>
+      </button>
+      <button class="den-motivo media" data-m="menores" onclick="elegirMotivo(this)" type="button">
+        <span class="den-m-txt">Involucra a un menor de edad</span>
+        <span class="den-m-tag">Revisión urgente</span>
+      </button>
+      <button class="den-motivo media" data-m="acoso" onclick="elegirMotivo(this)" type="button">
+        <span class="den-m-txt">Acoso o bullying</span>
+        <span class="den-m-tag">Revisión urgente</span>
+      </button>
+      <button class="den-motivo media" data-m="autolesion" onclick="elegirMotivo(this)" type="button">
+        <span class="den-m-txt">Suicidio o autolesión</span>
+        <span class="den-m-tag">Revisión urgente</span>
+      </button>
+      <button class="den-motivo media" data-m="fraude" onclick="elegirMotivo(this)" type="button">
+        <span class="den-m-txt">Estafa o fraude</span>
+        <span class="den-m-tag">Revisión urgente</span>
+      </button>
+      <button class="den-motivo media" data-m="ilegal" onclick="elegirMotivo(this)" type="button">
+        <span class="den-m-txt">Venta de productos ilegales</span>
+        <span class="den-m-tag">Revisión urgente</span>
+      </button>
+      <button class="den-motivo" data-m="spam" onclick="elegirMotivo(this)" type="button">
+        <span class="den-m-txt">Spam o publicidad no deseada</span>
+      </button>
+      <button class="den-motivo" data-m="falsa" onclick="elegirMotivo(this)" type="button">
+        <span class="den-m-txt">Información falsa</span>
+      </button>
+      <button class="den-motivo" data-m="otro" onclick="elegirMotivo(this)" type="button">
+        <span class="den-m-txt">Otro motivo</span>
+      </button>
+    </div>
+    <textarea class="den-detalle" id="denDetalle" placeholder="Contanos más (opcional)"></textarea>
+    <div class="den-actions">
+      <button class="den-cancel" onclick="cerrarDenuncia()" type="button">CANCELAR</button>
+      <button class="den-ok" id="btnDenunciar" onclick="enviarDenuncia()" type="button">DENUNCIAR</button>
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -386,6 +553,7 @@ function elegirCategoria(el){
   ta.addEventListener('input', function(){
     ta.style.height = 'auto';
     ta.style.height = Math.min(ta.scrollHeight, 220) + 'px';
+    revisarEnlaceEnVivo();
   });
 })();
 
@@ -455,12 +623,16 @@ async function publicar(){
   btn.disabled = true;
   btn.textContent = 'PUBLICANDO...';
 
+  const conEnlace = tieneEnlace(texto);
+
   const { error } = await sb.from('posts').insert({
     usuario_id: usuarioActual.id,
     contenido: texto,
     categoria: categoriaPost,
     hashtags: hashtagsSeleccionados.length ? hashtagsSeleccionados : null,
-    imagen_url: fotoPostUrl
+    imagen_url: fotoPostUrl,
+    tiene_enlace: conEnlace,
+    pendiente_aprobacion: conEnlace
   });
 
   btn.disabled = false;
@@ -483,7 +655,10 @@ async function publicar(){
   document.getElementById('btnOpciones').classList.remove('abierto');
   actualizarResumenOpciones();
   quitarFotoPost();
-  mostrarToast('✓ Publicado en la comunidad');
+  document.getElementById('enlaceAviso')?.classList.remove('show');
+  mostrarToast(conEnlace
+    ? '⏳ Tu publicación tiene un enlace y quedó esperando aprobación'
+    : '✓ Publicado en la comunidad');
 
   await cargarFeed();
 }
@@ -519,7 +694,7 @@ async function cargarFeed(){
   if(idsUsuario.length){
     const { data: perfiles } = await sb
       .from('perfiles')
-      .select('id, nombre, email, rol, avatar_url')
+      .select('id, nombre, email, rol, avatar_url, genero')
       .in('id', idsUsuario);
     (perfiles || []).forEach(p => { perfilesCache[p.id] = p; });
   }
@@ -546,7 +721,7 @@ async function cargarFeed(){
   if(idsComentaristas.length){
     const { data: perfilesC } = await sb
       .from('perfiles')
-      .select('id, nombre, email, rol, avatar_url')
+      .select('id, nombre, email, rol, avatar_url, genero')
       .in('id', idsComentaristas);
     (perfilesC || []).forEach(p => { perfilesCache[p.id] = p; });
   }
@@ -567,6 +742,20 @@ function nombreDe(usuarioId){
 
 function rolDe(usuarioId){
   return perfilesCache[usuarioId]?.rol || 'alumna';
+}
+
+// "FUNDADORA" / "FUNDADOR" / "FUNDACIÓN" según cómo eligió que la nombren
+function etiquetaRol(usuarioId){
+  const p = perfilesCache[usuarioId];
+  if(!p) return '';
+  const g = p.genero || 'x';
+  if(p.rol === 'fundadora'){
+    if(g === 'm') return 'FUNDADOR';
+    if(g === 'f') return 'FUNDADORA';
+    return 'FUNDACIÓN';
+  }
+  if(p.rol === 'admin') return 'EQUIPO';
+  return '';
 }
 
 function avatarHtml(usuarioId, clase){
@@ -625,7 +814,7 @@ function renderFeed(){
           <div class="post-author-info">
             <div class="post-author-row">
               <span class="post-author-name">${nombre}</span>
-              ${esFund ? '<span class="role-tag">💎 FUNDADORA</span>' : ''}
+              ${esFund ? '<span class="role-tag">💎 ' + etiquetaRol(p.usuario_id) + '</span>' : ''}
               ${p.fijado ? '<span class="pinned-tag">📌 FIJADO</span>' : ''}
             </div>
             <div class="post-meta">
@@ -648,11 +837,24 @@ function renderFeed(){
         ${p.contenido ? `<p class="post-body">${resaltarHashtags(p.contenido)}</p>` : ''}
         ${tags ? `<p class="post-body" style="margin-top:-8px">${tags}</p>` : ''}
         ${p.imagen_url ? `<img class="post-image" src="${escapeHtml(p.imagen_url)}" alt="" loading="lazy">` : ''}
+        ${p.pendiente_aprobacion && p.usuario_id === usuarioActual.id ? `
+          <div class="post-estado revision">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>
+            <div>Esperando aprobación. Solo vos podés verla hasta que un moderador la revise.</div>
+          </div>` : ''}
+        ${p.oculto && p.usuario_id === usuarioActual.id ? `
+          <div class="post-estado oculto">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" style="flex-shrink:0;margin-top:1px"><path d="M17.9 17.9A10.1 10.1 0 0 1 12 20C5 20 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9M9.9 4.2A9.1 9.1 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.2 3.2"/><line x1="2" y1="2" x2="22" y2="22" stroke-linecap="round"/></svg>
+            <div>Esta publicación fue ocultada tras una denuncia. El equipo la está revisando.</div>
+          </div>` : ''}
 
         <div class="post-actions">
           <button class="pa-btn ${yoDiLike ? 'liked' : ''}" onclick="toggleLike('${p.id}')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="${yoDiLike ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M2 9h20M9.5 3 8 9l4 13M14.5 3 16 9l-4 13"/></svg>
             <span id="likes-${p.id}">${nLikes}</span>
+          </button>
+          <button class="pa-btn pa-reportar" onclick="abrirDenuncia('${p.id}')" title="Denunciar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
           </button>
           <button class="pa-btn" onclick="toggleComentarios('${p.id}')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-5.1A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -739,15 +941,23 @@ async function comentar(postId){
   if(!texto) return;
   input.value = '';
 
+  const comEnlace = tieneEnlace(texto);
+
   const { error } = await sb.from('comentarios').insert({
     post_id: postId,
     usuario_id: usuarioActual.id,
-    contenido: texto
+    contenido: texto,
+    tiene_enlace: comEnlace,
+    pendiente_aprobacion: comEnlace
   });
 
   if(error){
     mostrarToast('No se pudo comentar: ' + error.message, true);
     return;
+  }
+
+  if(comEnlace){
+    mostrarToast('⏳ Tu comentario tiene un enlace. Un moderador lo va a revisar antes de publicarlo.');
   }
 
   if(!comentariosPorPost[postId]) comentariosPorPost[postId] = [];
@@ -800,6 +1010,88 @@ document.getElementById('buscarPosts').addEventListener('input', e => {
   renderFeed();
 });
 
+
+
+// ═══ DETECCIÓN DE ENLACES ═══
+const RE_ENLACE = /(https?:\/\/[^\s]+)|(www\.[^\s]+)|([a-z0-9-]+\.(com|net|org|io|co|py|br|ar|me|app|link|shop|store|info|biz|xyz|ly|gl|tk)(\/[^\s]*)?)/i;
+
+function tieneEnlace(texto){
+  return RE_ENLACE.test(texto || '');
+}
+
+function revisarEnlaceEnVivo(){
+  const txt = document.getElementById('composerText').value;
+  const aviso = document.getElementById('enlaceAviso');
+  if(!aviso) return;
+  aviso.classList.toggle('show', tieneEnlace(txt));
+}
+
+// ═══ DENUNCIAS ═══
+let postDenunciado = null;
+let motivoDenuncia = null;
+
+function abrirDenuncia(postId){
+  postDenunciado = postId;
+  motivoDenuncia = null;
+  document.querySelectorAll('.den-motivo').forEach(x => x.classList.remove('selected'));
+  document.getElementById('denDetalle').value = '';
+  document.getElementById('denBackdrop').classList.add('show');
+}
+
+function cerrarDenuncia(){
+  document.getElementById('denBackdrop').classList.remove('show');
+  postDenunciado = null;
+}
+
+function elegirMotivo(el){
+  document.querySelectorAll('.den-motivo').forEach(x => x.classList.remove('selected'));
+  el.classList.add('selected');
+  motivoDenuncia = el.dataset.m;
+}
+
+async function enviarDenuncia(){
+  if(!motivoDenuncia) return mostrarToast('Elegí un motivo', true);
+  const btn = document.getElementById('btnDenunciar');
+  btn.disabled = true;
+  btn.textContent = 'ENVIANDO...';
+
+  const { error } = await sb.from('denuncias').insert({
+    post_id: postDenunciado,
+    denunciante_id: usuarioActual.id,
+    motivo: motivoDenuncia,
+    detalle: document.getElementById('denDetalle').value.trim() || null
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'DENUNCIAR';
+
+  if(error){
+    if(String(error.message).includes('duplicate')){
+      cerrarDenuncia();
+      return mostrarToast('Ya habías denunciado esta publicación');
+    }
+    return mostrarToast('Error: ' + error.message, true);
+  }
+
+  cerrarDenuncia();
+  mostrarToast('✓ Gracias. El equipo va a revisarlo.');
+}
+
+// ═══ REGLAS ═══
+function cerrarReglas(){
+  document.getElementById('reglasBox').style.display = 'none';
+  try { localStorage.setItem('cmm_reglas_vistas', '1'); } catch(e){}
+}
+
+(function(){
+  try {
+    if(localStorage.getItem('cmm_reglas_vistas') === '1'){
+      const b = document.getElementById('reglasBox');
+      if(b) b.style.display = 'none';
+    }
+  } catch(e){}
+})();
+
 // ─── Init ──────────────────────────────────────────────────────────
 const waitSupaCom = setInterval(async () => {
   if(typeof sb === 'undefined' || sb === null) return;
@@ -815,7 +1107,7 @@ const waitSupaCom = setInterval(async () => {
 
   const { data: perfil } = await sb
     .from('perfiles')
-    .select('id, nombre, email, rol, avatar_url')
+    .select('id, nombre, email, rol, avatar_url, genero, bloqueado')
     .eq('id', user.id)
     .maybeSingle();
 
@@ -836,6 +1128,14 @@ const waitSupaCom = setInterval(async () => {
   esAdmin = ['admin','fundadora'].includes(perfilActual.rol);
 
   if(esAdmin) document.getElementById('chipAnuncio').style.display = '';
+
+  // Miembro bloqueado: no puede publicar
+  if(perfilActual.bloqueado){
+    const comp = document.querySelector('.composer');
+    if(comp){
+      comp.innerHTML = '<div class="bloqueado-box">Tu cuenta está temporalmente suspendida para publicar en la comunidad.<br>Si creés que es un error, escribinos.</div>';
+    }
+  }
 
   // Avatar del composer
   const mi = document.getElementById('miAvatar');
