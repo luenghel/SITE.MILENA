@@ -645,6 +645,23 @@
   .den-chip.alerta{background:rgba(212,163,86,0.18);border-color:rgba(212,163,86,0.5);color:#FAC775}
   .den-chip.recibidas{background:rgba(255,59,71,0.14);border-color:rgba(255,59,71,0.4);color:#FF8090}
 
+
+  .kpi-value{font-size:30px;font-weight:500;font-family:Georgia,serif;line-height:1;letter-spacing:-0.02em;position:relative}
+  .kpi-sub{font-size:11px;color:rgba(255,245,240,0.45);margin-top:7px;position:relative}
+  .kpi-card.alerta{background:linear-gradient(135deg,rgba(255,59,71,0.14),rgba(255,59,71,0.02));border-color:rgba(255,59,71,0.45)}
+  .kpi-card.alerta .kpi-value{color:#FF8090}
+  .kpi-card.alerta .kpi-sub{color:#FF8090}
+
+  @media (max-width:900px){
+    .kpi-grid{grid-template-columns:1fr 1fr !important;gap:10px !important}
+    .kpi-card{padding:15px !important}
+    .kpi-value{font-size:24px}
+    .kpi-label{font-size:9.5px !important;letter-spacing:0.14em}
+  }
+  @media (max-width:420px){
+    .kpi-grid{grid-template-columns:1fr !important}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1037,6 +1054,11 @@ body{visibility:hidden}
     <a href="#" onclick="cambiarTab('carruseles')" class="sidebar-item" id="nav-carruseles">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
       Carruseles
+    </a>
+    <a href="#" onclick="cambiarTab('newsletter')" class="sidebar-item" id="nav-newsletter">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+      Newsletter
+      <span class="sidebar-badge dim" id="newsCount">0</span>
     </a>
     <a href="#" onclick="cambiarTab('articulos')" class="sidebar-item" id="nav-articulos">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
@@ -1775,22 +1797,38 @@ body{visibility:hidden}
       </div>
     </div>
 
-    <div class="stats-grid" style="margin-bottom:22px">
-      <div class="stat-card">
-        <div class="stat-value" id="modTotalPosts">0</div>
-        <div class="stat-label">PUBLICACIONES</div>
+    <div class="kpi-grid" style="margin-bottom:24px">
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">PUBLICACIONES</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.4)" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="kpi-value" id="modTotalPosts">0</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-value" id="modTotalComentarios">0</div>
-        <div class="stat-label">COMENTARIOS</div>
+
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">COMENTARIOS</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.4)" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-5.1A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="kpi-value" id="modTotalComentarios">0</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-value" id="modTotalLikes">0</div>
-        <div class="stat-label">ME GUSTA</div>
+
+      <div class="kpi-card featured">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.7)">DIAMANTES</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.7" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M2 9h20"/></svg>
+        </div>
+        <div class="kpi-value" id="modTotalLikes" style="color:#FAC775">0</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-value" id="modDenuncias" style="color:#FF8090">0</div>
-        <div class="stat-label">🚩 DENUNCIAS</div>
+
+      <div class="kpi-card" id="kpiDenuncias">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">DENUNCIAS</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF8090" stroke-width="1.8" stroke-linecap="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        </div>
+        <div class="kpi-value" id="modDenuncias">0</div>
+        <div class="kpi-sub" id="kpiDenSub">Nada por revisar</div>
       </div>
     </div>
 
@@ -1807,6 +1845,78 @@ body{visibility:hidden}
     </div>
 
     <div id="modPosts"></div>
+  </div>
+
+  <!-- ============================ -->
+  <!-- TAB: NEWSLETTER -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-newsletter">
+    <div class="header-bar">
+      <div>
+        <div class="header-meta">LISTA DE CORREO</div>
+        <h1 class="header-title">Tu <span class="serif-it gradtext" style="font-size:34px">newsletter</span></h1>
+        <p class="header-sub">Quiénes se suscribieron desde el sitio y desde el blog.</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn-secondary" onclick="exportarSuscriptores()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Descargar lista (CSV)
+        </button>
+      </div>
+    </div>
+
+    <div class="kpi-grid" style="margin-bottom:24px">
+      <div class="kpi-card featured">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.7)">SUSCRIPTORES</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+        </div>
+        <div class="kpi-value" id="newsTotal" style="color:#FAC775">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">ESTA SEMANA</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.4)" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="kpi-value" id="newsSemana">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">ARTÍCULOS PUBLICADOS</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.4)" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="kpi-value" id="newsArticulos">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">ENVÍOS AUTOMÁTICOS</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.4)" stroke-width="1.8"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </div>
+        <div class="kpi-value" id="newsEstado" style="font-size:15px;font-family:inherit">—</div>
+        <div class="kpi-sub" id="newsEstadoSub">Verificando…</div>
+      </div>
+    </div>
+
+    <div class="buscar-wrap" style="margin-bottom:16px;max-width:320px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
+      <input class="al-buscar" id="buscarNews" placeholder="Buscar un email">
+    </div>
+
+    <div class="tabla-wrap">
+      <table class="tabla-alumnas">
+        <thead>
+          <tr>
+            <th>EMAIL</th>
+            <th>¿TIENE CUENTA?</th>
+            <th>SUSCRITO</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="newsBody"></tbody>
+      </table>
+    </div>
+
+    <div class="alumnas-cards" id="newsCards"></div>
   </div>
 
 </main>
@@ -2826,6 +2936,7 @@ body{visibility:hidden}
       document.getElementById('modTotalComentarios').textContent = '0';
       document.getElementById('modTotalLikes').textContent = '0';
       document.getElementById('modDenuncias').textContent = '0';
+      document.getElementById('kpiDenuncias')?.classList.remove('alerta');
       renderModeracion();
       return;
     }
@@ -2864,7 +2975,12 @@ body{visibility:hidden}
       if(!modDenuncias[d.post_id]) modDenuncias[d.post_id] = [];
       modDenuncias[d.post_id].push(d);
     });
-    document.getElementById('modDenuncias').textContent = (dens || []).length;
+    const nDen = (dens || []).length;
+    document.getElementById('modDenuncias').textContent = nDen;
+    document.getElementById('kpiDenuncias').classList.toggle('alerta', nDen > 0);
+    document.getElementById('kpiDenSub').textContent = nDen > 0
+      ? (nDen === 1 ? 'Necesita tu revisión' : 'Necesitan tu revisión')
+      : 'Nada por revisar';
 
     modComentarios = {};
     const { data: coms } = await sb.from('comentarios').select('*').in('post_id', idsPost).order('creado_en', { ascending: true });
@@ -3099,6 +3215,130 @@ body{visibility:hidden}
     renderAlumnas();
   });
 
+  // ============================
+  // NEWSLETTER
+  // ============================
+  let suscriptores = [];
+  let buscaNews = '';
+
+  async function cargarNewsletter(){
+    if(!sb) return;
+
+    const { data, error } = await sb
+      .from('newsletter_suscriptores')
+      .select('*')
+      .order('suscrito_en', { ascending: false });
+
+    if(error){
+      document.getElementById('newsBody').innerHTML =
+        '<tr><td colspan="4" style="padding:40px;text-align:center;color:#FF8090">Error: ' + esc(error.message) + '</td></tr>';
+      return;
+    }
+
+    suscriptores = data || [];
+
+    // ¿Cuáles ya tienen cuenta en el sitio?
+    const emailsConCuenta = new Set(alumnas.map(a => (a.email || '').toLowerCase()));
+    suscriptores.forEach(s => {
+      s._tieneCuenta = emailsConCuenta.has((s.email || '').toLowerCase());
+    });
+
+    const hace7 = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    const nuevos = suscriptores.filter(s => new Date(s.suscrito_en).getTime() > hace7).length;
+
+    document.getElementById('newsCount').textContent = suscriptores.length;
+    document.getElementById('newsTotal').textContent = suscriptores.length;
+    document.getElementById('newsSemana').textContent = nuevos;
+    document.getElementById('newsArticulos').textContent = articulos.filter(a => a.publicado).length;
+
+    // Estado del envío automático
+    const est = document.getElementById('newsEstado');
+    const sub = document.getElementById('newsEstadoSub');
+    est.textContent = 'Sin configurar';
+    est.style.color = 'rgba(255,245,240,0.6)';
+    sub.textContent = 'Falta conectar el servicio de email';
+
+    renderNewsletter();
+  }
+
+  function renderNewsletter(){
+    const body = document.getElementById('newsBody');
+    const cards = document.getElementById('newsCards');
+
+    let lista = suscriptores;
+    if(buscaNews){
+      const q = buscaNews.toLowerCase();
+      lista = lista.filter(s => (s.email || '').toLowerCase().includes(q));
+    }
+
+    if(lista.length === 0){
+      const vacio = suscriptores.length === 0;
+      const msg = vacio ? 'Todavía nadie se suscribió' : 'No encontramos ese email';
+      const extra = vacio ? '<div style="font-size:12px;color:rgba(255,245,240,0.4);margin-top:6px">Los formularios del home y del blog cargan acá</div>' : '';
+      body.innerHTML = '<tr><td colspan="4" style="padding:50px;text-align:center;color:rgba(255,245,240,0.5)">' +
+        '<div style="font-size:40px;opacity:0.4;margin-bottom:10px">' + (vacio ? '📩' : '🔍') + '</div>' + msg + extra + '</td></tr>';
+      cards.innerHTML = '<div style="padding:50px 20px;text-align:center;color:rgba(255,245,240,0.5)">' +
+        '<div style="font-size:40px;opacity:0.4;margin-bottom:10px">' + (vacio ? '📩' : '🔍') + '</div>' + msg + '</div>';
+      return;
+    }
+
+    body.innerHTML = lista.map(s =>
+      '<tr>' +
+        '<td style="word-break:break-all">' + esc(s.email) + '</td>' +
+        '<td>' + (s._tieneCuenta
+            ? '<span class="rol-pill rol-admin">✓ REGISTRADA</span>'
+            : '<span class="rol-pill rol-alumna">solo newsletter</span>') + '</td>' +
+        '<td style="color:rgba(255,245,240,0.55);font-size:12px;white-space:nowrap">' + fechaCorta(s.suscrito_en) + '</td>' +
+        '<td><button class="mod-btn danger" style="padding:5px 10px;font-size:10.5px" onclick="borrarSuscriptor(\'' + s.id + '\')">Quitar</button></td>' +
+      '</tr>'
+    ).join('');
+
+    cards.innerHTML = lista.map(s =>
+      '<div class="alumna-card">' +
+        '<div style="font-size:13.5px;word-break:break-all;margin-bottom:8px">' + esc(s.email) + '</div>' +
+        '<div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">' +
+          (s._tieneCuenta
+            ? '<span class="rol-pill rol-admin">✓ REGISTRADA</span>'
+            : '<span class="rol-pill rol-alumna">solo newsletter</span>') +
+          '<span class="mini-stat">📅 ' + fechaCorta(s.suscrito_en) + '</span>' +
+          '<button class="mod-btn danger" style="padding:5px 10px;font-size:10.5px;margin-left:auto" onclick="borrarSuscriptor(\'' + s.id + '\')">Quitar</button>' +
+        '</div>' +
+      '</div>'
+    ).join('');
+  }
+
+  async function borrarSuscriptor(id){
+    if(!confirm('¿Quitar este email de la lista?')) return;
+    const { error } = await sb.from('newsletter_suscriptores').delete().eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast('Email quitado de la lista');
+    await cargarNewsletter();
+  }
+
+  function exportarSuscriptores(){
+    if(suscriptores.length === 0) return mostrarToast('La lista está vacía', true);
+    const filas = [['email','tiene_cuenta','suscrito_en']];
+    suscriptores.forEach(s => filas.push([
+      s.email,
+      s._tieneCuenta ? 'si' : 'no',
+      new Date(s.suscrito_en).toISOString().slice(0,10)
+    ]));
+    const csv = filas.map(f => f.map(x => '"' + String(x).replace(/"/g,'""') + '"').join(',')).join('\n');
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'suscriptores-cmm-' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+    mostrarToast('✓ Lista descargada');
+  }
+
+  document.getElementById('buscarNews')?.addEventListener('input', e => {
+    buscaNews = e.target.value.trim();
+    renderNewsletter();
+  });
+
   // Cargar al iniciar
   const waitSupaCursos = setInterval(async () => {
     if (typeof sb !== 'undefined' && sb !== null) {
@@ -3107,9 +3347,10 @@ body{visibility:hidden}
       yoSoyId = user?.id || null;
       cargarCursos();
       cargarCarruseles();
-      cargarArticulos();
-      cargarAlumnas();
+      await cargarAlumnas();
+      await cargarArticulos();
       cargarModeracion();
+      cargarNewsletter();
     }
   }, 100);
 
