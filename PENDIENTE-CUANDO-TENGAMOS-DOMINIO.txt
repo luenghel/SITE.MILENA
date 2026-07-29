@@ -1,0 +1,185 @@
+═══════════════════════════════════════════════════════════════════
+  CUANDO COMPRES EL DOMINIO — HACER ESTO
+  Milena Machado · Creando Mentes Millonarias
+═══════════════════════════════════════════════════════════════════
+
+Todo el código ya está escrito y subido. Lo único que falta es
+configuración. Son 6 pasos y no hay que tocar nada de programación.
+
+Tiempo estimado: 30 a 45 minutos (más la espera del DNS).
+
+
+───────────────────────────────────────────────────────────────────
+PASO 1 · COMPRAR EL DOMINIO
+───────────────────────────────────────────────────────────────────
+
+Recomendado: Cloudflare (lo vende al costo, sin sorpresas de precio
+en la renovación) o Namecheap.
+
+Ejemplo: milenamachado.com   →  entre US$ 10 y 15 por año
+
+Si lo comprás en Cloudflare, el DNS ya te queda en el mismo lugar y
+el paso 3 se hace mucho más fácil.
+
+
+───────────────────────────────────────────────────────────────────
+PASO 2 · CONECTAR EL DOMINIO A VERCEL
+───────────────────────────────────────────────────────────────────
+
+  1. Entrar a vercel.com → proyecto site-milena
+  2. Settings → Domains → Add
+  3. Escribir el dominio (ej: milenamachado.com)
+  4. Vercel muestra los registros DNS que hay que cargar
+  5. Cargarlos donde compraste el dominio
+  6. Esperar a que Vercel lo marque en verde
+
+Desde ese momento el sitio también responde en el dominio propio.
+
+
+───────────────────────────────────────────────────────────────────
+PASO 3 · VERIFICAR EL DOMINIO EN RESEND
+───────────────────────────────────────────────────────────────────
+
+  1. Entrar a resend.com → Domains → Add Domain
+  2. Escribir el dominio (o mejor un subdominio: mail.milenamachado.com)
+  3. Resend muestra 3 registros DNS (DKIM, SPF y uno de MX)
+  4. Cargarlos igual que en el paso 2
+  5. Volver a Resend → Verify
+     (puede tardar de unos minutos a algunas horas)
+  6. Cuando quede en verde, ya se puede enviar a cualquier persona
+
+  ⚠️ Usar un subdominio (mail.tudominio.com) es lo más prolijo:
+     aísla la reputación de envío del correo normal.
+
+
+───────────────────────────────────────────────────────────────────
+PASO 4 · CARGAR LOS SECRETS EN SUPABASE
+───────────────────────────────────────────────────────────────────
+
+  Ir a:
+  supabase.com/dashboard/project/pdwooahpyustbqlrvlxz/settings/functions
+
+  Agregar estos 2 secrets:
+
+    RESEND_API_KEY    →  la clave de Resend (empieza con re_)
+    EMAIL_REMITENTE   →  Milena Machado <hola@milenamachado.com>
+
+  El formato del remitente es importante: nombre + email entre <>.
+
+
+───────────────────────────────────────────────────────────────────
+PASO 5 · CREAR LA EDGE FUNCTION
+───────────────────────────────────────────────────────────────────
+
+  1. Ir a Edge Functions → Deploy a new function → Via Editor
+  2. Nombre EXACTO:  enviar-newsletter
+  3. Borrar todo el código de ejemplo
+  4. Pegar el contenido completo del archivo:
+
+         EDGE-FUNCTION-newsletter.ts
+
+  5. ⚠️ Antes de desplegar, buscar esta línea (cerca del inicio):
+
+         const SITIO = 'https://site-milena.vercel.app'
+
+     y cambiarla por el dominio nuevo:
+
+         const SITIO = 'https://milenamachado.com'
+
+  6. Deploy
+  7. Settings de la función → Verify JWT → DESACTIVAR → Save
+
+  ⚠️ Si el nombre no queda exactamente "enviar-newsletter", avisar:
+     hay que cambiar una línea en el admin.
+
+
+───────────────────────────────────────────────────────────────────
+PASO 6 · ACTIVAR LA VERIFICACIÓN POR EMAIL AL REGISTRARSE
+───────────────────────────────────────────────────────────────────
+
+  Esto es lo que quedó apagado porque no había servicio de email.
+
+  A) SMTP
+     supabase.com/dashboard/project/pdwooahpyustbqlrvlxz/settings/auth
+     → SMTP Settings → Enable Custom SMTP
+
+        Sender email  :  hola@milenamachado.com
+        Sender name   :  Milena Machado
+        Host          :  smtp.resend.com
+        Port          :  587
+        Username      :  resend          (así, literal)
+        Password      :  la API key de Resend
+
+  B) Confirm email → ACTIVAR
+
+  C) Rate Limits → subir los emails de auth a 100 por hora
+
+  D) Plantilla del código de 6 dígitos
+     supabase.com/dashboard/project/pdwooahpyustbqlrvlxz/auth/templates
+     → pestaña "Confirm signup"
+     → pegar la plantilla que ya se preparó (la del código dorado)
+     → lo esencial es que tenga {{ .Token }}
+
+
+═══════════════════════════════════════════════════════════════════
+  CÓMO SABER QUE QUEDÓ TODO BIEN
+═══════════════════════════════════════════════════════════════════
+
+  ✓ /admin → Newsletter → la tarjeta "ENVÍOS AUTOMÁTICOS"
+    tiene que decir "Activo" en verde.
+
+  ✓ /admin → Artículos → abrir un artículo publicado
+    → el recuadro dorado de abajo tiene que decir
+      "Se manda a X personas..." con el botón 📨 ENVIAR habilitado.
+
+  ✓ Registrarse con un email cualquiera (no el tuyo)
+    → tiene que llegar el código de 6 dígitos a la bandeja principal,
+      no a spam.
+
+
+═══════════════════════════════════════════════════════════════════
+  SQL QUE HAY QUE CORRER (se puede hacer desde ya)
+═══════════════════════════════════════════════════════════════════
+
+  SQL-ENVIOS-NEWSLETTER.sql
+
+  Crea la tabla que guarda el registro de envíos y evita que un
+  mismo artículo se mande dos veces.
+
+
+═══════════════════════════════════════════════════════════════════
+  CÓMO FUNCIONA EL ENVÍO (una vez configurado)
+═══════════════════════════════════════════════════════════════════
+
+  1. Escribís el artículo en /admin → Artículos
+  2. Activás "Publicar artículo" y guardás
+  3. Volvés a abrirlo → abajo aparece el recuadro dorado
+  4. Tocás 📨 ENVIAR → pide confirmación mostrando a cuántas personas
+  5. Cada suscriptor recibe un email con:
+       · la imagen de portada del artículo
+       · la categoría y el tiempo de lectura
+       · el título
+       · el resumen
+       · el botón VER MATERIAL COMPLETO
+       · el enlace para darse de baja
+  6. Queda registrado. Si intentás mandarlo otra vez, avisa que ya
+     se envió.
+
+  El envío es manual a propósito: un email mandado no se puede
+  corregir, así que conviene revisar el título y el resumen antes.
+
+
+═══════════════════════════════════════════════════════════════════
+  LÍMITES DEL PLAN GRATUITO DE RESEND
+═══════════════════════════════════════════════════════════════════
+
+  · 100 emails por día
+  · 3.000 emails por mes
+
+  Alcanza para unos 100 suscriptores con un envío diario, o para
+  3.000 suscriptores con un envío mensual.
+
+  Cuando la lista crezca, se puede pasar a un plan pago o cambiar
+  de proveedor sin tocar el código del sitio.
+
+═══════════════════════════════════════════════════════════════════

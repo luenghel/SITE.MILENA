@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baja del newsletter · Milena Machado</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body{display:flex;min-height:100vh;align-items:center;justify-content:center;padding:30px 20px}
+  .baja-glow{position:fixed;width:420px;height:420px;left:-140px;top:-120px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.28),transparent 65%);pointer-events:none}
+  .baja-card{position:relative;z-index:1;width:100%;max-width:430px;background:linear-gradient(180deg,rgba(45,10,24,0.7),rgba(26,5,9,0.7));border:0.5px solid rgba(255,245,240,0.1);border-radius:20px;padding:38px 30px;text-align:center;backdrop-filter:blur(16px)}
+  .baja-icon{width:66px;height:66px;border-radius:50%;background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.05));border:0.5px solid rgba(212,163,86,0.45);display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+  .baja-title{font-size:23px;font-weight:500;font-family:Georgia,serif;margin:0 0 10px}
+  .baja-txt{font-size:14px;color:rgba(255,245,240,0.7);line-height:1.55;margin:0 0 26px}
+  .baja-mail{color:#FAC775;word-break:break-all}
+  .baja-btn{width:100%;padding:15px;border-radius:12px;border:none;font-size:12.5px;font-weight:600;letter-spacing:0.12em;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#FF8090,#C8203A);color:#FFF5F0}
+  .baja-btn:disabled{opacity:0.6;cursor:not-allowed}
+  .baja-link{display:block;margin-top:14px;font-size:12.5px;color:rgba(255,245,240,0.55);text-decoration:none}
+  .baja-link:hover{color:#FFF5F0}
+</style>
+</head>
+<body>
+
+<div class="baja-glow"></div>
+
+<div class="baja-card">
+  <div id="estadoInicial">
+    <div class="baja-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+    </div>
+    <h1 class="baja-title">¿Querés dejar de recibir el newsletter?</h1>
+    <p class="baja-txt">Vamos a dar de baja a <span class="baja-mail" id="emailTxt">tu email</span>.<br>Podés volver a suscribirte cuando quieras.</p>
+    <button class="baja-btn" id="btnBaja" onclick="darDeBaja()">SÍ, DARME DE BAJA</button>
+    <a href="/index" class="baja-link">Mejor no, volver al sitio</a>
+  </div>
+
+  <div id="estadoListo" style="display:none">
+    <div class="baja-icon" style="background:linear-gradient(135deg,rgba(93,202,165,0.2),rgba(93,202,165,0.05));border-color:rgba(93,202,165,0.5)">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h1 class="baja-title">Listo</h1>
+    <p class="baja-txt">No vas a recibir más correos del newsletter.<br>Gracias por haber estado.</p>
+    <a href="/index" class="baja-link" style="display:inline-block;padding:14px 28px;background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208;border-radius:12px;font-size:12px;font-weight:600;letter-spacing:0.12em">VOLVER AL SITIO</a>
+  </div>
+
+  <div id="estadoError" style="display:none">
+    <div class="baja-icon" style="background:rgba(255,59,71,0.14);border-color:rgba(255,59,71,0.45)">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF8090" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+    </div>
+    <h1 class="baja-title">No pudimos procesarlo</h1>
+    <p class="baja-txt" id="errorTxt">Probá de nuevo o escribinos.</p>
+    <a href="/index" class="baja-link">Volver al sitio</a>
+  </div>
+</div>
+
+<script src="supabase-config.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const email = (params.get('email') || '').trim();
+
+  if(email){
+    document.getElementById('emailTxt').textContent = email;
+  }
+
+  function mostrar(id){
+    ['estadoInicial','estadoListo','estadoError'].forEach(x => {
+      document.getElementById(x).style.display = (x === id) ? 'block' : 'none';
+    });
+  }
+
+  async function darDeBaja(){
+    if(!email){
+      document.getElementById('errorTxt').textContent = 'El enlace no trae ningún email. Usá el enlace del correo que recibiste.';
+      return mostrar('estadoError');
+    }
+
+    const btn = document.getElementById('btnBaja');
+    btn.disabled = true;
+    btn.textContent = 'PROCESANDO...';
+
+    const { error } = await sb
+      .from('newsletter_suscriptores')
+      .update({ activo: false })
+      .eq('email', email);
+
+    if(error){
+      document.getElementById('errorTxt').textContent = error.message;
+      return mostrar('estadoError');
+    }
+
+    mostrar('estadoListo');
+  }
+
+  if(!email){
+    const wait = setInterval(() => {
+      if(typeof sb === 'undefined' || sb === null) return;
+      clearInterval(wait);
+      document.getElementById('errorTxt').textContent = 'El enlace no trae ningún email. Usá el enlace que aparece al pie del correo.';
+      mostrar('estadoError');
+    }, 50);
+  }
+</script>
+
+</body>
+</html>

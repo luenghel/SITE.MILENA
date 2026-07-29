@@ -662,6 +662,21 @@
     .kpi-grid{grid-template-columns:1fr !important}
   }
 
+
+  .envio-zona{margin:0 26px 4px;padding:14px 16px;background:rgba(212,163,86,0.07);border:0.5px solid rgba(212,163,86,0.3);border-radius:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .envio-info{display:flex;gap:11px;align-items:flex-start;flex:1;min-width:200px}
+  .envio-titulo{font-size:13px;font-weight:500;color:#FFF5F0}
+  .envio-sub{font-size:11.5px;color:rgba(255,245,240,0.55);margin-top:2px;line-height:1.45}
+  .envio-btn{padding:11px 20px;border-radius:10px;border:none;background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208;font-size:11.5px;font-weight:600;letter-spacing:0.1em;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .envio-btn:disabled{opacity:0.45;cursor:not-allowed;background:rgba(255,245,240,0.1);color:rgba(255,245,240,0.5)}
+  .envio-zona.enviado{background:rgba(93,202,165,0.08);border-color:rgba(93,202,165,0.35)}
+  .envio-zona.bloqueada{background:rgba(255,245,240,0.03);border-color:rgba(255,245,240,0.12)}
+
+  @media (max-width:600px){
+    .envio-zona{margin:0 20px 4px;flex-direction:column;align-items:stretch}
+    .envio-btn{width:100%}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1721,6 +1736,17 @@ body{visibility:hidden}
           <div class="toggle-switch" id="articuloDestacado" onclick="this.classList.toggle('on')"></div>
         </div>
       </div>
+      <div class="envio-zona" id="envioZona" style="display:none">
+        <div class="envio-info">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+          <div>
+            <div class="envio-titulo" id="envioTitulo">Enviar a los suscriptores</div>
+            <div class="envio-sub" id="envioSub">—</div>
+          </div>
+        </div>
+        <button class="envio-btn" id="btnEnviarNews" onclick="enviarArticuloNewsletter()">📨 ENVIAR</button>
+      </div>
+
       <div class="curso-modal-footer">
         <button class="btn-danger" id="btnEliminarArticulo" onclick="eliminarArticulo()" style="display:none">ELIMINAR</button>
         <div style="margin-left:auto;display:flex;gap:10px">
@@ -3216,6 +3242,157 @@ body{visibility:hidden}
   });
 
   // ============================
+  // ENVÍO DEL NEWSLETTER
+  // ============================
+  let enviosHechos = {};
+  let emailConfigurado = false;
+
+  async function cargarEnvios(){
+    if(!sb) return;
+    const { data } = await sb.from('envios_newsletter').select('*');
+    enviosHechos = {};
+    (data || []).forEach(e => { if(e.articulo_id) enviosHechos[e.articulo_id] = e; });
+  }
+
+  // Preguntamos a la Edge Function si ya están cargados los secrets
+  async function verificarEmailConfigurado(){
+    try {
+      const r = await fetch(SUPABASE_URL + '/functions/v1/enviar-newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+          'apikey': SUPABASE_ANON_KEY
+        },
+        body: JSON.stringify({})   // sin articulo_id: solo queremos ver si responde
+      });
+      const d = await r.json().catch(() => ({}));
+      // Si se queja del articulo_id, quiere decir que los secrets están OK
+      emailConfigurado = !String(d.error || '').includes('RESEND_API_KEY');
+    } catch(e){
+      emailConfigurado = false;
+    }
+
+    const est = document.getElementById('newsEstado');
+    const sub = document.getElementById('newsEstadoSub');
+    if(!est) return;
+    if(emailConfigurado){
+      est.textContent = 'Activo';
+      est.style.color = '#9FE1CB';
+      sub.textContent = 'Podés enviar artículos por email';
+    } else {
+      est.textContent = 'Sin configurar';
+      est.style.color = 'rgba(255,245,240,0.6)';
+      sub.textContent = 'Falta el dominio y la clave de Resend';
+    }
+  }
+
+  // Estado del recuadro de envío dentro del editor de artículos
+  function pintarZonaEnvio(articuloId){
+    const zona = document.getElementById('envioZona');
+    const titulo = document.getElementById('envioTitulo');
+    const sub = document.getElementById('envioSub');
+    const btn = document.getElementById('btnEnviarNews');
+    if(!zona) return;
+
+    // Solo para artículos ya guardados
+    if(!articuloId){
+      zona.style.display = 'none';
+      return;
+    }
+    zona.style.display = 'flex';
+    zona.className = 'envio-zona';
+
+    const art = articulos.find(a => a.id === articuloId);
+    const envio = enviosHechos[articuloId];
+    const nSubs = suscriptores.length;
+
+    if(envio){
+      zona.classList.add('enviado');
+      titulo.textContent = '✓ Ya enviado';
+      sub.textContent = 'Se mandó a ' + envio.destinatarios + ' persona' + (envio.destinatarios === 1 ? '' : 's') +
+                        ' el ' + fechaCorta(envio.enviado_en);
+      btn.disabled = true;
+      btn.textContent = 'ENVIADO';
+      return;
+    }
+
+    if(!emailConfigurado){
+      zona.classList.add('bloqueada');
+      titulo.textContent = 'Envío por email no disponible todavía';
+      sub.textContent = 'Falta comprar el dominio y conectar Resend. Cuando esté, este botón se activa solo.';
+      btn.disabled = true;
+      btn.textContent = 'NO DISPONIBLE';
+      return;
+    }
+
+    if(!art || !art.publicado){
+      zona.classList.add('bloqueada');
+      titulo.textContent = 'Publicá el artículo primero';
+      sub.textContent = 'Solo se pueden enviar artículos publicados, no borradores.';
+      btn.disabled = true;
+      btn.textContent = 'ENVIAR';
+      return;
+    }
+
+    if(nSubs === 0){
+      zona.classList.add('bloqueada');
+      titulo.textContent = 'No hay suscriptores todavía';
+      sub.textContent = 'Cuando alguien se suscriba al newsletter vas a poder enviar.';
+      btn.disabled = true;
+      btn.textContent = 'ENVIAR';
+      return;
+    }
+
+    titulo.textContent = 'Enviar a los suscriptores';
+    sub.textContent = 'Se manda a ' + nSubs + ' persona' + (nSubs === 1 ? '' : 's') +
+                      ' con el resumen y el botón "Ver material completo". No se puede deshacer.';
+    btn.disabled = false;
+    btn.textContent = '📨 ENVIAR';
+  }
+
+  async function enviarArticuloNewsletter(){
+    const id = document.getElementById('articuloId').value;
+    if(!id) return;
+
+    const art = articulos.find(a => a.id === id);
+    const nSubs = suscriptores.length;
+
+    if(!confirm('¿Enviar "' + (art?.titulo || '') + '" a ' + nSubs + ' suscriptor' + (nSubs === 1 ? '' : 'es') + '?\n\nUn email enviado no se puede corregir. Revisá el título y el resumen antes de seguir.')) return;
+
+    const btn = document.getElementById('btnEnviarNews');
+    btn.disabled = true;
+    btn.textContent = 'ENVIANDO...';
+
+    try {
+      const r = await fetch(SUPABASE_URL + '/functions/v1/enviar-newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+          'apikey': SUPABASE_ANON_KEY
+        },
+        body: JSON.stringify({ articulo_id: id })
+      });
+      const d = await r.json();
+
+      if(d.exito){
+        mostrarToast('✓ Enviado a ' + d.enviados + ' persona' + (d.enviados === 1 ? '' : 's'));
+        await cargarEnvios();
+        pintarZonaEnvio(id);
+      } else {
+        mostrarToast('No se pudo enviar: ' + (d.error || 'error desconocido'), true);
+        btn.disabled = false;
+        btn.textContent = '📨 ENVIAR';
+      }
+    } catch(e){
+      mostrarToast('Error de conexión: ' + e.message, true);
+      btn.disabled = false;
+      btn.textContent = '📨 ENVIAR';
+    }
+  }
+
+  // ============================
   // NEWSLETTER
   // ============================
   let suscriptores = [];
@@ -3350,7 +3527,9 @@ body{visibility:hidden}
       await cargarAlumnas();
       await cargarArticulos();
       cargarModeracion();
-      cargarNewsletter();
+      await cargarEnvios();
+      await cargarNewsletter();
+      verificarEmailConfigurado();
     }
   }, 100);
 
