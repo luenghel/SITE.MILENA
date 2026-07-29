@@ -126,28 +126,7 @@
   .community-desc{font-size:16px;color:rgba(255,245,240,0.78);line-height:1.5;margin-top:20px;max-width:540px}
   .community-cta{margin-top:36px;padding:18px 42px;font-size:13.5px;font-weight:500;border-radius:14px;letter-spacing:0.2em;display:inline-flex;align-items:center;gap:10px}
 
-  @media (max-width:900px){
-    .hero{min-height:auto}
-    .hero-inner{padding:30px 20px 20px;flex-direction:column;gap:0}
-    .hero-visual{display:none}
-    .hero-title{font-size:38px}
-    .hero-title .que{font-size:30px}
-    .hero-title .vende{font-size:62px}
-    .hero-tags{gap:14px;font-size:11px;flex-wrap:wrap}
-    .hero-cta{width:100%;padding:18px 0;font-size:12.5px}
-    section.row-section{padding:24px 16px 0}
-    .section-title{font-size:18px}
-    .row-track{padding:0 16px}
-    section.community{padding:32px 16px 8px}
-    .community-card{padding:32px 24px}
-    .community-title{font-size:26px}
-    .community-desc{font-size:13px}
-    .community-cta{padding:14px 28px;font-size:12px}
-    .main-header{padding:14px 16px}
-    .header-inner{gap:10px;flex-wrap:wrap}
-    .nav-btn{padding:8px 12px;font-size:11px}
-    .btn-outline{padding:9px 18px;font-size:11px}
-  }
+  
 
   /* SEGUIMIENTO COMPLETO */
   section.seguimiento-section{max-width:1400px;padding:60px 40px 20px;margin:0 auto}
@@ -179,29 +158,83 @@
   .newsletter-success.show{display:block;animation:fadeIn 0.4s}
   @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 
-  @media (max-width:768px){
-    section.seguimiento-section,section.newsletter-section{padding:32px 16px 8px}
-    .seguimiento-card,.newsletter-card{padding:32px 24px}
-    .seguimiento-title{font-size:26px}
-    .newsletter-title{font-size:24px}
-    .newsletter-form{flex-direction:column}
-    .newsletter-btn{width:100%}
+
+  /* ═══ CARRUSEL DE FONDO DEL HERO ═══ */
+  .hero-carrusel{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    overflow:hidden;
+    pointer-events:none;
+  }
+  .hero-slide{
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center right;
+    opacity:0;
+    transition:opacity 1.6s ease-in-out;
+    transform:scale(1.04);
+
+    /* La foto se desvanece hacia la izquierda:
+       casi invisible detrás del texto, más presente a la derecha */
+    -webkit-mask-image:linear-gradient(100deg,
+      transparent 0%,
+      transparent 18%,
+      rgba(0,0,0,0.22) 38%,
+      rgba(0,0,0,0.6) 62%,
+      rgba(0,0,0,0.92) 82%,
+      #000 100%);
+    mask-image:linear-gradient(100deg,
+      transparent 0%,
+      transparent 18%,
+      rgba(0,0,0,0.22) 38%,
+      rgba(0,0,0,0.6) 62%,
+      rgba(0,0,0,0.92) 82%,
+      #000 100%);
+  }
+  .hero-slide.activa{
+    opacity:0.52;   /* con la máscara queda ~30% de promedio */
+    animation:heroZoom 9s ease-out forwards;
+  }
+  @keyframes heroZoom{
+    from{transform:scale(1.04)}
+    to{transform:scale(1.11)}
   }
 
+  /* Velo para que el texto siempre se lea */
+  .hero-carrusel::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(100deg, rgba(14,5,9,0.75) 0%, rgba(14,5,9,0.35) 40%, rgba(14,5,9,0) 70%),
+      linear-gradient(0deg, rgba(14,5,9,0.6) 0%, rgba(14,5,9,0) 40%);
+  }
 
-  /* CARRUSEL PRINCIPAL DEL HOME */
-  section.carrusel-principal{max-width:1400px;padding:24px 40px 0;margin:0 auto;display:none}
-  section.carrusel-principal.activo{display:block}
-  .carrusel-track-wrapper{overflow:hidden;position:relative;border-radius:16px}
-  .carrusel-track{display:flex;gap:14px;transition:transform 0.5s cubic-bezier(0.34,1.4,0.64,1)}
-  .carrusel-slide{flex:0 0 100%;aspect-ratio:21/9;border-radius:16px;background-size:cover;background-position:center;position:relative;overflow:hidden;cursor:pointer}
-  .carrusel-slide-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(14,5,9,0.85),rgba(14,5,9,0.2) 50%,transparent);display:flex;align-items:flex-end;padding:30px}
-  .carrusel-slide-content{color:#FFF5F0;max-width:600px}
-  .carrusel-slide-title{font-family:Georgia,serif;font-size:32px;font-weight:500;margin-bottom:6px;letter-spacing:-0.015em}
-  .carrusel-slide-desc{font-size:14px;color:rgba(255,245,240,0.85);line-height:1.4}
-  .carrusel-dots{display:flex;justify-content:center;gap:7px;margin-top:14px}
-  .carrusel-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,245,240,0.25);cursor:pointer;transition:all 0.25s}
-  .carrusel-dot.active{background:#FAC775;width:24px;border-radius:4px}
+  /* El contenido del hero siempre por encima */
+  .hero-inner{position:relative;z-index:2}
+  .hero-gradient,.hero-glow-1,.hero-glow-2,.hero-glow-3{z-index:1}
+
+  /* Puntitos discretos abajo a la derecha */
+  .hero-dots{
+    position:absolute;
+    bottom:26px;
+    right:40px;
+    z-index:3;
+    display:none;
+    gap:7px;
+  }
+  .hero-dots.activo{display:flex}
+  .hero-dot{
+    width:7px;height:7px;
+    border-radius:50%;
+    background:rgba(255,245,240,0.28);
+    cursor:pointer;
+    transition:all 0.3s;
+  }
+  .hero-dot:hover{background:rgba(255,245,240,0.5)}
+  .hero-dot.active{background:#FAC775;width:22px;border-radius:4px}
 
   /* CARRUSEL VERTICAL CHICO */
   section.carrusel-vertical-section{max-width:1400px;padding:50px 40px 20px;margin:0 auto;display:none}
@@ -216,114 +249,168 @@
   .vertical-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(14,5,9,0.9),rgba(14,5,9,0.1) 60%,transparent);display:flex;align-items:flex-end;padding:14px}
   .vertical-card-title{font-family:Georgia,serif;font-style:italic;font-size:15px;font-weight:500;color:#FFF5F0;line-height:1.15}
 
-  @media (max-width:768px){
-    section.carrusel-principal{padding:16px 16px 0}
-    .carrusel-slide{aspect-ratio:16/10}
-    .carrusel-slide-title{font-size:20px}
-    section.carrusel-vertical-section{padding:32px 16px 8px}
-    .vertical-scroll{padding:6px 0 14px 0;margin:0 -16px;padding-left:16px;padding-right:16px}
-  }
+  
 
 
   /* MOBILE OPTIMIZADO */
-  @media (max-width: 768px) {
-    .hero {
-      padding: 60px 20px 40px !important;
-    }
-    .hero-title {
-      font-size: 38px !important;
-      line-height: 1 !important;
-    }
-    .hero-title .serif-it,
-    .hero-title .gradtext {
-      font-size: 38px !important;
-    }
-    .hero-desc {
-      font-size: 14px !important;
-    }
-    .hero-cta {
-      flex-direction: column !important;
-      gap: 10px !important;
-      width: 100%;
-    }
-    .hero-cta button {
-      width: 100%;
-    }
-    
-    .header-inner {
-      padding: 14px 20px !important;
-    }
-    .logo-text {
-      font-size: 11px !important;
-    }
-    nav.main-nav {
-      display: none !important;
-    }
-    
-    section.row-section {
-      padding: 30px 16px 10px !important;
-    }
-    .section-title {
-      font-size: 22px !important;
-    }
-    
-    .poster {
-      width: 160px !important;
-    }
-    
-    .community {
-      padding: 40px 20px !important;
-    }
-    .community-title {
-      font-size: 26px !important;
-    }
-  }
+  
 
 
   /* cmm-mobile-nav-fix: en celular solo logo + foto + 3 puntitos */
-  @media (max-width:900px){
-    .main-header .nav-btn{display:none !important}
-    header.main .nav-btn{display:none !important}
-    nav.main-nav{display:none !important}
-  }
+  
 
 
   /* ═══ CELULAR: más contraste, como en la computadora ═══ */
-  @media (max-width:768px){
-    .hero{
-      padding:44px 20px 34px !important;
-      background:radial-gradient(ellipse at 50% 0%, rgba(122,27,46,0.28), transparent 62%);
-    }
-    .hero-title{
-      font-size:36px !important;
-      color:#FFF5F0;
-      text-shadow:0 2px 20px rgba(0,0,0,0.5);
-    }
-    .hero-title .serif-it, .hero-title .gradtext{font-size:36px !important}
-    .hero-desc{color:rgba(255,245,240,0.82) !important;font-size:14.5px !important}
+  
 
-    section.row-section{padding:26px 16px 8px !important}
-    .section-title{font-size:21px !important;color:#FFF5F0}
 
-    /* Tarjetas más definidas */
-    .poster-shadow{
-      box-shadow:0 10px 26px rgba(0,0,0,0.55) !important;
-      border:0.5px solid rgba(255,245,240,0.12);
-    }
-    .poster-title{text-shadow:0 2px 10px rgba(0,0,0,0.7)}
 
-    /* Bloques con borde visible */
-    .community, .seguimiento-card, .newsletter-card{
-      border:0.5px solid rgba(255,245,240,0.14) !important;
-      box-shadow:0 8px 28px rgba(0,0,0,0.4);
-    }
+/* ═══════════════════════════════════════════════════════════════
+   CELULAR — mismo diseño que la computadora, a escala
+   (un solo bloque, para que nada se pise)
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width:900px){
 
-    .main-footer{
-      background:#0E0509;
-      border-top:0.5px solid rgba(255,245,240,0.1);
-    }
+  /* ── HEADER ── */
+  .main-header{
+    padding:12px 16px;
+    padding-top:calc(12px + var(--safe-top,0px));
+    background:rgba(14,5,9,0.96);
+    border-bottom:0.5px solid rgba(212,163,86,0.18);
+    box-shadow:0 2px 20px rgba(0,0,0,0.45);
   }
+  .header-inner{gap:10px;justify-content:space-between;flex-wrap:nowrap}
+  .nav-btn{display:none}
+  .logo-box{width:38px;height:38px;font-size:19px}
+  .logo-text{font-size:11px;letter-spacing:0.16em}
 
+  /* ── HERO: se mantiene el visual, apilado ── */
+  .hero{min-height:auto}
+  .hero-inner{
+    padding:38px 20px 34px;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:0;
+  }
+  .hero-content{max-width:100%;width:100%;position:relative;z-index:2}
+
+  /* Los círculos pasan a ser un halo detrás del texto */
+  .hero-visual{
+    display:block;
+    position:absolute;
+    top:-40px;right:-70px;
+    width:280px;height:280px;
+    flex:none;
+    z-index:0;
+    opacity:0.75;
+    pointer-events:none;
+  }
+  .hero-circle-1{width:260px;height:260px;top:0;right:0}
+  .hero-circle-2{width:150px;height:150px;top:70px;right:60px}
+
+  .hero-badge{font-size:10px;padding:4px 10px;margin-bottom:14px}
+  .hero-title{font-size:44px}
+  .vende-row{gap:14px}
+  .que{font-size:34px}
+  .vende{font-size:74px}
+  .hero-desc{font-size:15.5px;margin-top:16px;max-width:100%;color:rgba(255,245,240,0.85)}
+  .hero-tags{gap:14px;font-size:10.5px;margin-top:22px;flex-wrap:wrap}
+  .hero-cta{width:100%;margin-top:26px;padding:17px 20px;font-size:12.5px;letter-spacing:0.16em}
+
+  /* Carrusel de fondo en celular: el velo tapa desde abajo,
+     así el texto se lee sobre la parte oscura */
+  .hero-slide{
+    background-position:center;
+    -webkit-mask-image:linear-gradient(175deg,
+      transparent 0%,
+      rgba(0,0,0,0.2) 28%,
+      rgba(0,0,0,0.65) 55%,
+      #000 100%);
+    mask-image:linear-gradient(175deg,
+      transparent 0%,
+      rgba(0,0,0,0.2) 28%,
+      rgba(0,0,0,0.65) 55%,
+      #000 100%);
+  }
+  .hero-slide.activa{opacity:0.55}
+  .hero-carrusel::after{
+    background:linear-gradient(180deg,
+      rgba(14,5,9,0.7) 0%,
+      rgba(14,5,9,0.35) 45%,
+      rgba(14,5,9,0.15) 100%);
+  }
+  .hero-dots{bottom:16px;right:20px}
+  .hero-dot{width:6px;height:6px}
+  .hero-dot.active{width:18px}
+
+  /* ── FILAS DE CURSOS: mismo formato que escritorio ── */
+  section.row-section{padding:30px 0 8px}
+  .section-header{padding:0 16px}
+  .section-title{font-size:22px}
+  .row-track{padding:0 16px;gap:12px}
+  .poster{width:172px}
+  .poster-shadow{
+    box-shadow:0 10px 26px rgba(0,0,0,0.5);
+    border:0.5px solid rgba(255,245,240,0.12);
+  }
+  .poster-title{text-shadow:0 2px 10px rgba(0,0,0,0.7)}
+
+  /* ── CARRUSELES ── */
+  section.carrusel-principal{padding:16px 16px 0}
+  .carrusel-slide{aspect-ratio:16/10}
+  .carrusel-slide-overlay{padding:20px}
+  .carrusel-slide-title{font-size:22px}
+  .carrusel-slide-desc{font-size:13px}
+  section.carrusel-vertical-section{padding:34px 16px 10px}
+  .vertical-title{font-size:22px}
+  .vertical-card{flex:0 0 152px}
+
+  /* ── BLOQUES GRANDES ── */
+  section.community,
+  section.seguimiento-section,
+  section.newsletter-section{padding:30px 16px 8px}
+  .community-card,
+  .seguimiento-card,
+  .newsletter-card{
+    padding:34px 24px;
+    border:0.5px solid rgba(255,245,240,0.14);
+    box-shadow:0 8px 28px rgba(0,0,0,0.4);
+  }
+  .community-title{font-size:28px}
+  .community-title .serif-it{font-size:28px}
+  .community-desc{font-size:14px}
+  .community-cta{padding:15px 30px;font-size:12px;width:100%}
+
+  .seguimiento-title{font-size:28px}
+  .seguimiento-title .serif-it,
+  .seguimiento-title .gradtext{font-size:28px}
+  .seguimiento-desc{font-size:14px}
+  .seguimiento-cta{width:100%;justify-content:center;padding:16px 20px}
+
+  .newsletter-title{font-size:26px}
+  .newsletter-title .serif-it,
+  .newsletter-title .gradtext{font-size:26px}
+  .newsletter-desc{font-size:13.5px}
+  .newsletter-form{flex-direction:column;gap:9px}
+  .newsletter-btn{width:100%;padding:15px}
+
+  /* ── PIE ── */
+  .main-footer{
+    background:#0E0509;
+    border-top:0.5px solid rgba(255,245,240,0.1);
+    padding:26px 20px calc(26px + var(--safe-bot,0px));
+    margin-top:30px;
+  }
+}
+
+/* Pantallas muy chicas */
+@media (max-width:400px){
+  .hero-title{font-size:38px}
+  .que{font-size:29px}
+  .vende{font-size:62px}
+  .poster{width:152px}
+  .vertical-card{flex:0 0 136px}
+}
 </style>
 </head>
 <body>
@@ -356,15 +443,9 @@
   </div>
 </header>
 
-<!-- CARRUSEL PRINCIPAL (4-5 fotos) -->
-<section class="carrusel-principal" id="carruselPrincipal">
-  <div class="carrusel-track-wrapper">
-    <div class="carrusel-track" id="carruselPrincipalTrack"></div>
-  </div>
-  <div class="carrusel-dots" id="carruselPrincipalDots"></div>
-</section>
-
 <section class="hero">
+  <!-- Carrusel de fondo, al 30% -->
+  <div class="hero-carrusel" id="heroCarrusel"></div>
   <div class="hero-gradient"></div>
   <div class="hero-glow-1"></div>
   <div class="hero-glow-2"></div>
@@ -393,6 +474,7 @@
       <div class="hero-circle-2"></div>
     </div>
   </div>
+  <div class="hero-dots" id="heroDots"></div>
 </section>
 
 <section class="row-section">
@@ -611,13 +693,12 @@
     if (principal && principal.length > 0) {
       principalSlides = principal;
       renderCarruselPrincipal();
-      document.getElementById('carruselPrincipal').classList.add('activo');
       // Auto-play
       if (principal.length > 1) {
         principalInterval = setInterval(() => {
           principalSlideIndex = (principalSlideIndex + 1) % principal.length;
           actualizarCarruselPrincipal();
-        }, 5000);
+        }, 7000);
       }
     }
 
@@ -634,37 +715,6 @@
       document.getElementById('carruselVerticalSection').classList.add('activo');
     }
   }
-
-  function renderCarruselPrincipal() {
-    const track = document.getElementById('carruselPrincipalTrack');
-    const dots = document.getElementById('carruselPrincipalDots');
-    track.innerHTML = principalSlides.map(s => {
-      const link = s.link || '#';
-      const titulo = s.titulo ? `<div class="carrusel-slide-title">${s.titulo}</div>` : '';
-      const desc = s.descripcion ? `<div class="carrusel-slide-desc">${s.descripcion}</div>` : '';
-      const overlay = (s.titulo || s.descripcion) ? `<div class="carrusel-slide-overlay"><div class="carrusel-slide-content">${titulo}${desc}</div></div>` : '';
-      return `<a href="${link}" class="carrusel-slide" style="background-image:url('${s.imagen_url}')">${overlay}</a>`;
-    }).join('');
-    dots.innerHTML = principalSlides.map((_, i) => `<div class="carrusel-dot ${i===0?'active':''}" onclick="irASlide(${i})"></div>`).join('');
-  }
-
-  function actualizarCarruselPrincipal() {
-    const track = document.getElementById('carruselPrincipalTrack');
-    if (track) track.style.transform = `translateX(-${principalSlideIndex * 100}%)`;
-    document.querySelectorAll('.carrusel-dot').forEach((d,i) => d.classList.toggle('active', i === principalSlideIndex));
-  }
-
-  window.irASlide = function(i) {
-    principalSlideIndex = i;
-    actualizarCarruselPrincipal();
-    if (principalInterval) {
-      clearInterval(principalInterval);
-      principalInterval = setInterval(() => {
-        principalSlideIndex = (principalSlideIndex + 1) % principalSlides.length;
-        actualizarCarruselPrincipal();
-      }, 5000);
-    }
-  };
 
   function renderCarruselVertical(slides) {
     const scroll = document.getElementById('carruselVerticalScroll');
@@ -767,4 +817,44 @@
 })();
 </script>
 </body>
-</html>
+</html>  function renderCarruselPrincipal(){
+    const cap = document.getElementById('heroCarrusel');
+    const dots = document.getElementById('heroDots');
+    if(!cap) return;
+
+    cap.innerHTML = principalSlides.map((s, i) =>
+      `<div class="hero-slide ${i === 0 ? 'activa' : ''}" style="background-image:url('${s.imagen_url}')"></div>`
+    ).join('');
+
+    if(principalSlides.length > 1){
+      dots.innerHTML = principalSlides.map((_, i) =>
+        `<div class="hero-dot ${i === 0 ? 'active' : ''}" onclick="irASlide(${i})"></div>`
+      ).join('');
+      dots.classList.add('activo');
+    } else {
+      dots.classList.remove('activo');
+    }
+  }
+
+  function actualizarCarruselPrincipal(){
+    document.querySelectorAll('.hero-slide').forEach((el, i) => {
+      el.classList.toggle('activa', i === principalSlideIndex);
+    });
+    document.querySelectorAll('.hero-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === principalSlideIndex);
+    });
+  }
+
+  window.irASlide = function(i){
+    principalSlideIndex = i;
+    actualizarCarruselPrincipal();
+    if(principalInterval){
+      clearInterval(principalInterval);
+      principalInterval = setInterval(() => {
+        principalSlideIndex = (principalSlideIndex + 1) % principalSlides.length;
+        actualizarCarruselPrincipal();
+      }, 7000);
+    }
+  };
+
+
