@@ -677,6 +677,34 @@
     .envio-btn{width:100%}
   }
 
+
+  .dash-seccion{font-size:10px;letter-spacing:0.22em;color:rgba(255,245,240,0.4);font-weight:600;margin:26px 0 12px}
+  .dash-seccion:first-of-type{margin-top:0}
+
+  .dash-cols{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-top:26px}
+
+  .atajos{display:flex;flex-direction:column;gap:7px}
+  .atajo{display:flex;align-items:center;gap:11px;padding:13px 14px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.1);border-radius:11px;color:rgba(255,245,240,0.85);font-size:13px;cursor:pointer;font-family:inherit;text-align:left;transition:all 0.2s;text-decoration:none}
+  .atajo:hover{background:rgba(255,245,240,0.08);border-color:rgba(212,163,86,0.4);transform:translateX(2px)}
+  .atajo-ico{font-size:17px;flex-shrink:0}
+
+  .venta-fila{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:0.5px solid rgba(255,245,240,0.05)}
+  .venta-fila:last-child{border-bottom:none}
+  .venta-monto{margin-left:auto;font-family:Georgia,serif;font-size:14px;color:#FAC775;white-space:nowrap}
+
+  .est-pill{padding:4px 10px;border-radius:14px;font-size:10px;letter-spacing:0.08em;font-weight:600;white-space:nowrap}
+  .est-pagado{background:rgba(93,202,165,0.18);border:0.5px solid rgba(93,202,165,0.5);color:#9FE1CB}
+  .est-pendiente{background:rgba(212,163,86,0.16);border:0.5px solid rgba(212,163,86,0.45);color:#FAC775}
+  .est-cancelado{background:rgba(255,59,71,0.14);border:0.5px solid rgba(255,59,71,0.4);color:#FF8090}
+
+  .vacio-suave{padding:40px 20px;text-align:center;color:rgba(255,245,240,0.45);font-size:13px}
+  .vacio-suave .ico{font-size:38px;opacity:0.35;margin-bottom:10px}
+
+  @media (max-width:900px){
+    .dash-cols{grid-template-columns:1fr}
+    .dash-seccion{margin:20px 0 10px}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1053,9 +1081,10 @@ body{visibility:hidden}
       Alumnas
       <span class="sidebar-badge dim" id="alumnasCount">0</span>
     </a>
-    <a href="#" class="sidebar-item">
+    <a href="#" onclick="cambiarTab('ventas')" class="sidebar-item" id="nav-ventas">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       Ventas
+      <span class="sidebar-badge dim" id="ventasCount">0</span>
     </a>
     <a href="#" onclick="cambiarTab('moderacion')" class="sidebar-item" id="nav-moderacion">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="14" rx="2"/></svg>
@@ -1082,18 +1111,21 @@ body{visibility:hidden}
   </div>
 
   <div class="sidebar-section">
-    <span class="sidebar-section-title">CONTENIDO</span>
-    <a href="#" class="sidebar-item">
+    <span class="sidebar-section-title">EL SITIO</span>
+    <a href="/index" target="_blank" class="sidebar-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Ver el sitio
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto;opacity:0.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>
+    </a>
+    <a href="/blog" target="_blank" class="sidebar-item">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      Blog
+      Ver el blog
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto;opacity:0.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>
     </a>
-    <a href="#" class="sidebar-item">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      Insignias
-    </a>
-    <a href="#" class="sidebar-item">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      Lives programados
+    <a href="/comunidad" target="_blank" class="sidebar-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="14" rx="2"/></svg>
+      Ver la comunidad
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto;opacity:0.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>
     </a>
   </div>
 
@@ -1112,6 +1144,11 @@ body{visibility:hidden}
   </div>
 </aside>
 
+<button class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="Abrir menú">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="19" r="1.9"/></svg>
+</button>
+<div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
+
 <main class="admin-main">
 
   <!-- ============================ -->
@@ -1120,262 +1157,163 @@ body{visibility:hidden}
   <div class="tab-content active" id="content-dashboard">
     <div class="header-bar">
       <div>
-        <div class="header-meta">PANEL ADMIN</div>
-        <h1 class="header-title">Hola, <span class="serif-it gradtext" style="font-size:34px">Milena</span> ✨</h1>
-        <p class="header-sub">Esto es lo que está pasando hoy en tu plataforma</p>
+        <div class="header-meta">PANEL GENERAL</div>
+        <h1 class="header-title">Hola, <span class="serif-it gradtext" style="font-size:34px" id="dashNombre">Milena</span></h1>
+        <p class="header-sub" id="dashResumen">Cargando los números del sitio...</p>
       </div>
       <div class="header-actions">
-        <button class="btn-secondary">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-linecap="round"/></svg>
-          Exportar reporte
-        </button>
-        <button class="cta-gold btn-primary" onclick="cambiarTab('cursos'); setTimeout(()=>abrirModalCurso(),200)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-          NUEVO CURSO
+        <button class="btn-secondary" onclick="refrescarDashboard()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+          Actualizar
         </button>
       </div>
     </div>
 
-    <div class="period-filters">
-      <span class="chip chip-quiet">Hoy</span>
-      <span class="chip chip-quiet">7 días</span>
-      <span class="chip chip-active">Este mes</span>
-      <span class="chip chip-quiet">3 meses</span>
-      <span class="chip chip-quiet">Año</span>
-    </div>
-
+    <!-- ── VENTAS ── -->
+    <div class="dash-seccion">VENTAS</div>
     <div class="kpi-grid">
       <div class="kpi-card featured">
         <div class="kpi-head">
-          <span class="kpi-label">INGRESOS DEL MES</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="#FAC775"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+          <span class="kpi-label" style="color:rgba(255,245,240,0.7)">INGRESOS TOTALES</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         </div>
-        <div class="kpi-value">Gs 18.4M</div>
-        <div class="kpi-trend"><span class="trend-up">+24%</span><span class="trend-text">vs mes anterior</span></div>
+        <div class="kpi-value" id="dashIngresos">Gs 0</div>
+        <div class="kpi-sub" id="dashIngresosMes">Sin ventas todavía</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-head">
-          <span class="kpi-label">VENTAS</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.55)" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">VENTAS PAGADAS</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
         </div>
-        <div class="kpi-value">87</div>
-        <div class="kpi-trend"><span class="trend-up">+12</span><span class="trend-text">esta semana</span></div>
+        <div class="kpi-value" id="dashVentas">0</div>
+        <div class="kpi-sub" id="dashVentasSub">—</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-head">
-          <span class="kpi-label">ALUMNAS ACTIVAS</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.55)" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">PENDIENTES</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>
         </div>
-        <div class="kpi-value">1.247</div>
-        <div class="kpi-trend"><span class="trend-up">+47</span><span class="trend-text">este mes</span></div>
+        <div class="kpi-value" id="dashPendientes">0</div>
+        <div class="kpi-sub">Iniciaron el pago y no lo completaron</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-head">
-          <span class="kpi-label">CONCLUSIÓN</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.55)" stroke-width="1.8" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">TICKET PROMEDIO</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><path d="M20.6 13.4 12 22l-9-9V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor"/></svg>
         </div>
-        <div class="kpi-value">62%</div>
-        <div class="kpi-trend"><span class="trend-down">-3%</span><span class="trend-text">vs mes anterior</span></div>
+        <div class="kpi-value" id="dashTicket">Gs 0</div>
+        <div class="kpi-sub">Promedio por compra</div>
       </div>
     </div>
 
-    <div class="chart-row">
+    <!-- ── PERSONAS ── -->
+    <div class="dash-seccion">PERSONAS</div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">REGISTRADAS</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        </div>
+        <div class="kpi-value" id="dashRegistradas">0</div>
+        <div class="kpi-sub" id="dashRegistradasSub">—</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">CON ALGÚN CURSO</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>
+        </div>
+        <div class="kpi-value" id="dashCompradoras">0</div>
+        <div class="kpi-sub" id="dashConversion">—</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">SUSCRIPTORES</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+        </div>
+        <div class="kpi-value" id="dashSubs">0</div>
+        <div class="kpi-sub">Lista del newsletter</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">ACTIVAS EN COMUNIDAD</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><rect x="2" y="4" width="20" height="14" rx="2"/></svg>
+        </div>
+        <div class="kpi-value" id="dashActivas">0</div>
+        <div class="kpi-sub">Publicaron o comentaron</div>
+      </div>
+    </div>
+
+    <!-- ── CONTENIDO ── -->
+    <div class="dash-seccion">CONTENIDO Y COMUNIDAD</div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">CURSOS PUBLICADOS</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="kpi-value" id="dashCursos">0</div>
+        <div class="kpi-sub" id="dashCursosSub">—</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">ARTÍCULOS</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="kpi-value" id="dashArticulos">0</div>
+        <div class="kpi-sub" id="dashArticulosSub">—</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">PUBLICACIONES</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-5.1A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="kpi-value" id="dashPosts">0</div>
+        <div class="kpi-sub" id="dashPostsSub">—</div>
+      </div>
+      <div class="kpi-card" id="dashCardDenuncias">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">POR REVISAR</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF8090" stroke-width="1.8" stroke-linecap="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        </div>
+        <div class="kpi-value" id="dashPorRevisar">0</div>
+        <div class="kpi-sub" id="dashPorRevisarSub">Nada pendiente</div>
+      </div>
+    </div>
+
+    <!-- ── ÚLTIMAS VENTAS + ATAJOS ── -->
+    <div class="dash-cols">
       <div class="chart-card">
         <div class="chart-head">
           <div>
-            <h3 class="chart-title">Ingresos por día</h3>
-            <p class="chart-subtitle">Últimos 30 días en Gs</p>
+            <h3 class="chart-title">Últimas ventas</h3>
+            <p class="chart-subtitle">Las 6 compras más recientes</p>
           </div>
-          <span class="chart-toggle">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 12 15 18 9"/></svg>
-            Mes
-          </span>
+          <button class="chart-toggle" onclick="cambiarTab('ventas')" style="cursor:pointer">Ver todas</button>
         </div>
-        <svg viewBox="0 0 600 220" width="100%" height="220" style="overflow:visible">
-          <defs>
-            <linearGradient id="gradFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#FAC775" stop-opacity="0.35"/>
-              <stop offset="1" stop-color="#FAC775" stop-opacity="0"/>
-            </linearGradient>
-            <linearGradient id="gradLine" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#B8294A"/>
-              <stop offset="0.5" stop-color="#FAC775"/>
-              <stop offset="1" stop-color="#D4A356"/>
-            </linearGradient>
-          </defs>
-          <line x1="0" y1="20" x2="600" y2="20" stroke="rgba(255,245,240,0.05)" stroke-dasharray="2 4"/>
-          <line x1="0" y1="80" x2="600" y2="80" stroke="rgba(255,245,240,0.05)" stroke-dasharray="2 4"/>
-          <line x1="0" y1="140" x2="600" y2="140" stroke="rgba(255,245,240,0.05)" stroke-dasharray="2 4"/>
-          <line x1="0" y1="200" x2="600" y2="200" stroke="rgba(255,245,240,0.08)"/>
-          <text x="0" y="24" fill="rgba(255,245,240,0.4)" font-size="10">2.5M</text>
-          <text x="0" y="84" fill="rgba(255,245,240,0.4)" font-size="10">1.5M</text>
-          <text x="0" y="144" fill="rgba(255,245,240,0.4)" font-size="10">500K</text>
-          <path d="M 30 170 Q 70 150, 110 145 T 200 100 T 290 80 T 380 60 T 470 50 T 570 30 L 570 200 L 30 200 Z" fill="url(#gradFill)"/>
-          <path d="M 30 170 Q 70 150, 110 145 T 200 100 T 290 80 T 380 60 T 470 50 T 570 30" stroke="url(#gradLine)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <circle cx="290" cy="80" r="3" fill="#FAC775"/>
-          <circle cx="470" cy="50" r="3" fill="#FAC775"/>
-          <circle cx="570" cy="30" r="4" fill="#FFF5F0" stroke="#FAC775" stroke-width="2"/>
-          <text x="30" y="218" fill="rgba(255,245,240,0.4)" font-size="10">1 abr</text>
-          <text x="200" y="218" fill="rgba(255,245,240,0.4)" font-size="10">10 abr</text>
-          <text x="380" y="218" fill="rgba(255,245,240,0.4)" font-size="10">20 abr</text>
-          <text x="540" y="218" fill="rgba(255,245,240,0.4)" font-size="10">28 abr</text>
-        </svg>
+        <div id="dashUltimasVentas"></div>
       </div>
 
       <div class="chart-card">
-        <h3 class="chart-title" style="margin-bottom:14px">Cursos más vendidos</h3>
-        <div class="top-courses-list">
-          <div class="top-course-row">
-            <div class="top-course-poster" style="background:linear-gradient(135deg,#2D0A18,#7A1B2E)">💎</div>
-            <div class="top-course-info">
-              <div class="top-course-title">Creando Mentes Millonarias</div>
-              <div class="top-course-meta">42 ventas · Gs 8.4M</div>
-            </div>
-            <div class="top-course-rank">#1</div>
-          </div>
-          <div class="top-course-row">
-            <div class="top-course-poster" style="background:linear-gradient(135deg,#5A0F2A,#8B2244)">📱</div>
-            <div class="top-course-info">
-              <div class="top-course-title">Stories que venden</div>
-              <div class="top-course-meta">28 ventas · Gs 5.6M</div>
-            </div>
-            <div class="top-course-rank">#2</div>
-          </div>
-          <div class="top-course-row">
-            <div class="top-course-poster" style="background:linear-gradient(135deg,#4A0F1E,#7A1B2E)">🏆</div>
-            <div class="top-course-info">
-              <div class="top-course-title">Certificación Social Media</div>
-              <div class="top-course-meta">17 ventas · Gs 4.4M</div>
-            </div>
-            <div class="top-course-rank">#3</div>
-          </div>
-          <div class="top-course-row">
-            <div class="top-course-poster" style="background:linear-gradient(135deg,#3D1208,#5A0F2A)">📚</div>
-            <div class="top-course-info">
-              <div class="top-course-title">Club del Libro</div>
-              <div class="top-course-meta" style="color:rgba(255,245,240,0.55)">solo suscripción</div>
-            </div>
-            <div class="top-course-rank">#4</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bottom-row">
-      <div class="sales-card">
-        <div class="sales-head">
-          <h3 class="chart-title">Últimas ventas</h3>
-          <a href="#" class="ver-todas">VER TODAS →</a>
-        </div>
-        <table class="sales-table">
-          <thead>
-            <tr>
-              <th>CLIENTA</th>
-              <th>CURSO</th>
-              <th class="amount">MONTO</th>
-              <th>ESTADO</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <div class="client-cell">
-                  <div class="client-avatar-small" style="background:linear-gradient(135deg,#7A1B2E,#C97990)"></div>
-                  <div>
-                    <div class="client-name">Carolina S.</div>
-                    <div class="client-time">hace 12 min</div>
-                  </div>
-                </div>
-              </td>
-              <td style="color:rgba(255,245,240,0.85)">Creando Mentes Millonarias</td>
-              <td class="amount">Gs 200.000</td>
-              <td><span class="status-pill status-paid"><span class="status-dot status-dot-paid"></span>Pagado</span></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="client-cell">
-                  <div class="client-avatar-small" style="background:linear-gradient(135deg,#4A0F1E,#B8294A)"></div>
-                  <div>
-                    <div class="client-name">Diego R.</div>
-                    <div class="client-time">hace 1 h</div>
-                  </div>
-                </div>
-              </td>
-              <td style="color:rgba(255,245,240,0.85)">Stories que venden</td>
-              <td class="amount">Gs 480.000</td>
-              <td><span class="status-pill status-pending"><span class="status-dot status-dot-pending"></span>Pendiente</span></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="client-cell">
-                  <div class="client-avatar-small" style="background:linear-gradient(135deg,#D4A356,#E8B8C4)"></div>
-                  <div>
-                    <div class="client-name">Patricia M.</div>
-                    <div class="client-time">hace 3 h</div>
-                  </div>
-                </div>
-              </td>
-              <td style="color:rgba(255,245,240,0.85)">Certificación SM</td>
-              <td class="amount">Gs 1.200.000</td>
-              <td><span class="status-pill status-paid"><span class="status-dot status-dot-paid"></span>Pagado</span></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="client-cell">
-                  <div class="client-avatar-small" style="background:linear-gradient(135deg,#5A0F2A,#E8B8C4)"></div>
-                  <div>
-                    <div class="client-name">Andrea L.</div>
-                    <div class="client-time">hace 5 h</div>
-                  </div>
-                </div>
-              </td>
-              <td style="color:rgba(255,245,240,0.85)">Plan Anual CMM</td>
-              <td class="amount">Gs 1.500.000</td>
-              <td><span class="status-pill status-paid"><span class="status-dot status-dot-paid"></span>Pagado</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="activity-card">
-        <h3 class="chart-title" style="margin-bottom:14px">Actividad de la comunidad</h3>
-        <div class="activity-list">
-          <div class="activity-row">
-            <div class="activity-icon" style="background:rgba(184,41,74,0.15);border:0.5px solid rgba(184,41,74,0.4)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8B8C4" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            </div>
-            <div>
-              <div class="activity-text"><strong>23 nuevas conversaciones</strong> hoy</div>
-              <div class="activity-sub">Tema más activo: <strong>#embudos</strong></div>
-            </div>
-          </div>
-          <div class="activity-row">
-            <div class="activity-icon" style="background:rgba(212,163,86,0.15);border:0.5px solid rgba(212,163,86,0.4)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="#FAC775"><path d="M6 3h12l4 6-10 13L2 9z"/></svg>
-            </div>
-            <div>
-              <div class="activity-text">Repartiste <strong>847 💎 esta semana</strong></div>
-              <div class="activity-sub">+18% vs semana anterior</div>
-            </div>
-          </div>
-          <div class="activity-row">
-            <div class="activity-icon" style="background:rgba(93,202,165,0.15);border:0.5px solid rgba(93,202,165,0.4)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9FE1CB" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            </div>
-            <div>
-              <div class="activity-text"><strong>14 alumnas</strong> ganaron insignias</div>
-              <div class="activity-sub">Más popular: "Mente CMM"</div>
-            </div>
-          </div>
-          <div class="activity-row">
-            <div class="activity-icon" style="background:rgba(255,59,71,0.12);border:0.5px solid rgba(255,59,71,0.35)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FF8090" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            </div>
-            <div>
-              <div class="activity-text"><strong>3 reportes pendientes</strong></div>
-              <div class="activity-sub">Posts marcados como inapropiados</div>
-            </div>
-          </div>
+        <h3 class="chart-title" style="margin-bottom:14px">Accesos rápidos</h3>
+        <div class="atajos">
+          <button class="atajo" onclick="cambiarTab('cursos'); setTimeout(()=>abrirModalCurso(),200)">
+            <span class="atajo-ico">🎓</span><span>Crear un curso</span>
+          </button>
+          <button class="atajo" onclick="cambiarTab('articulos'); setTimeout(()=>abrirModalArticulo(),200)">
+            <span class="atajo-ico">✍️</span><span>Escribir un artículo</span>
+          </button>
+          <button class="atajo" onclick="cambiarTab('carruseles')">
+            <span class="atajo-ico">🖼️</span><span>Cambiar el carrusel del inicio</span>
+          </button>
+          <button class="atajo" onclick="cambiarTab('moderacion')">
+            <span class="atajo-ico">🚩</span><span>Revisar la comunidad</span>
+          </button>
+          <button class="atajo" onclick="cambiarTab('alumnas')">
+            <span class="atajo-ico">👥</span><span>Ver las alumnas</span>
+          </button>
+          <a class="atajo" href="/index" target="_blank">
+            <span class="atajo-ico">🌐</span><span>Abrir el sitio</span>
+          </a>
         </div>
       </div>
     </div>
@@ -1943,6 +1881,179 @@ body{visibility:hidden}
     </div>
 
     <div class="alumnas-cards" id="newsCards"></div>
+  </div>
+
+  <!-- ============================ -->
+  <!-- TAB: VENTAS -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-ventas">
+    <div class="header-bar">
+      <div>
+        <div class="header-meta">HISTORIAL</div>
+        <h1 class="header-title">Tus <span class="serif-it gradtext" style="font-size:34px">ventas</span></h1>
+        <p class="header-sub">Todas las compras que pasaron por el sitio.</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn-secondary" onclick="exportarVentas()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Descargar (CSV)
+        </button>
+      </div>
+    </div>
+
+    <div class="kpi-grid" style="margin-bottom:24px">
+      <div class="kpi-card featured">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.7)">COBRADO</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="kpi-value" id="venIngresos" style="color:#FAC775">Gs 0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">PAGADAS</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9FE1CB" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="kpi-value" id="venPagadas">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">PENDIENTES</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="kpi-value" id="venPendientes">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label" style="color:rgba(255,245,240,0.55)">CANCELADAS</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+        </div>
+        <div class="kpi-value" id="venCanceladas">0</div>
+      </div>
+    </div>
+
+    <div class="cursos-toolbar">
+      <div class="cursos-filtros">
+        <button class="filter-btn active" onclick="filtrarVentas('todas', this)">Todas</button>
+        <button class="filter-btn" onclick="filtrarVentas('pagado', this)">✓ Pagadas</button>
+        <button class="filter-btn" onclick="filtrarVentas('pendiente', this)">⏳ Pendientes</button>
+        <button class="filter-btn" onclick="filtrarVentas('cancelado', this)">✕ Canceladas</button>
+      </div>
+    </div>
+
+    <div class="tabla-wrap">
+      <table class="tabla-alumnas">
+        <thead>
+          <tr>
+            <th>ALUMNA</th>
+            <th>CURSO</th>
+            <th>MONTO</th>
+            <th>ESTADO</th>
+            <th>FECHA</th>
+          </tr>
+        </thead>
+        <tbody id="ventasBody"></tbody>
+      </table>
+    </div>
+
+    <div class="alumnas-cards" id="ventasCards"></div>
+  </div>
+
+  <!-- ============================ -->
+  <!-- TAB: CARRUSELES -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-carruseles">
+    <div class="header-bar">
+      <div>
+        <div class="header-meta">GESTOR DE CARRUSELES</div>
+        <h1 class="header-title">Carruseles <span class="serif-it gradtext" style="font-size:34px">del inicio</span></h1>
+        <p class="header-sub">Las fotos que aparecen en la página principal del sitio.</p>
+      </div>
+      <div class="header-actions">
+        <button class="cta-gold btn-primary" onclick="abrirModalCarrusel()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          AGREGAR FOTO
+        </button>
+      </div>
+    </div>
+
+    <div class="carrusel-tabs">
+      <button class="carrusel-tab-btn active" onclick="cambiarTipoCarrusel('home_principal', this)">Carrusel principal (arriba, ancho)</button>
+      <button class="carrusel-tab-btn" onclick="cambiarTipoCarrusel('home_vertical', this)">Carrusel vertical (chico)</button>
+    </div>
+
+    <div class="carruseles-grid" id="carruselesGrid"></div>
+  </div>
+
+  <!-- MODAL CARRUSEL -->
+  <div class="curso-modal-backdrop" id="carruselModal">
+    <div class="curso-modal">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">EDITOR DE CARRUSEL</div>
+          <h3 class="curso-modal-titulo serif" id="carruselModalTitulo">Nueva foto</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarModalCarrusel()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <input type="hidden" id="carruselId">
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">FOTO</label>
+          <div class="image-uploader" id="carruselFotoUploader" onclick="document.getElementById('carruselFotoInput').click()">
+            <div id="carruselFotoEmpty">
+              <svg class="image-uploader-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="image-uploader-text">Clickeá para subir una foto</div>
+              <div class="image-uploader-help">Para el principal conviene horizontal · para el vertical, parada</div>
+            </div>
+            <div id="carruselFotoPreview" style="display:none;width:100%"></div>
+            <input type="file" id="carruselFotoInput" accept="image/*" onchange="subirFotoCarrusel(event)">
+          </div>
+          <input type="hidden" id="carruselFotoUrl">
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">TÍTULO (opcional)</label>
+          <input type="text" class="form-input" id="carruselTitulo" placeholder="Se muestra sobre la foto">
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">DESCRIPCIÓN (opcional)</label>
+          <textarea class="form-textarea" id="carruselDescripcion" placeholder="Texto debajo del título"></textarea>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">ADÓNDE LLEVA AL TOCARLA (opcional)</label>
+          <input type="text" class="form-input" id="carruselLink" placeholder="/cursos">
+          <div class="form-help">Ejemplos: /cursos · /comunidad · /blog</div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">ORDEN</label>
+          <input type="number" class="form-input" id="carruselOrden" placeholder="1" min="0">
+          <div class="form-help">Número más chico = aparece primero</div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Activa</div>
+            <div class="toggle-help">Si está apagada, no se muestra en el sitio</div>
+          </div>
+          <div class="toggle-switch on" id="carruselActivo" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <button class="btn-danger" id="btnEliminarCarrusel" onclick="eliminarCarrusel()" style="display:none">ELIMINAR</button>
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarModalCarrusel()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="guardarCarrusel()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
   </div>
 
 </main>
@@ -3393,6 +3504,246 @@ body{visibility:hidden}
   }
 
   // ============================
+  // VENTAS
+  // ============================
+  let ventas = [];
+  let filtroVentas = 'todas';
+
+  function gs(n){
+    return 'Gs ' + (Number(n) || 0).toLocaleString('es-PY');
+  }
+
+  async function cargarVentas(){
+    if(!sb) return;
+
+    const { data, error } = await sb
+      .from('compras')
+      .select('*, cursos(titulo, slug)')
+      .order('creado_en', { ascending: false });
+
+    if(error){
+      // Puede que la columna de fecha se llame distinto
+      const r = await sb.from('compras').select('*, cursos(titulo, slug)');
+      ventas = r.data || [];
+    } else {
+      ventas = data || [];
+    }
+
+    // Nombres de las compradoras
+    const idsC = [...new Set(ventas.map(v => v.usuario_id).filter(Boolean))];
+    let perfC = {};
+    if(idsC.length){
+      const { data: pp } = await sb.from('perfiles').select('id, nombre, email, avatar_url').in('id', idsC);
+      (pp || []).forEach(p => { perfC[p.id] = p; });
+    }
+    ventas.forEach(v => { v._persona = perfC[v.usuario_id] || null; });
+
+    const pagadas = ventas.filter(v => v.estado === 'pagado');
+    const pend = ventas.filter(v => v.estado === 'pendiente');
+    const canc = ventas.filter(v => v.estado === 'cancelado');
+    const total = pagadas.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
+
+    document.getElementById('ventasCount').textContent = pagadas.length;
+    document.getElementById('venIngresos').textContent = gs(total);
+    document.getElementById('venPagadas').textContent = pagadas.length;
+    document.getElementById('venPendientes').textContent = pend.length;
+    document.getElementById('venCanceladas').textContent = canc.length;
+
+    renderVentas();
+  }
+
+  function nombreCompradora(v){
+    if(v._persona) return v._persona.nombre || (v._persona.email || '').split('@')[0];
+    return 'Sin cuenta asociada';
+  }
+
+  function pillEstado(e){
+    const t = { pagado: '✓ PAGADO', pendiente: '⏳ PENDIENTE', cancelado: '✕ CANCELADO' };
+    return '<span class="est-pill est-' + esc(e || 'pendiente') + '">' + (t[e] || (e || '').toUpperCase()) + '</span>';
+  }
+
+  function renderVentas(){
+    const body = document.getElementById('ventasBody');
+    const cards = document.getElementById('ventasCards');
+    let lista = ventas;
+    if(filtroVentas !== 'todas') lista = ventas.filter(v => v.estado === filtroVentas);
+
+    if(lista.length === 0){
+      const vacio = ventas.length === 0;
+      const msg = vacio ? 'Todavía no hubo ninguna venta' : 'No hay ventas con ese filtro';
+      const extra = vacio
+        ? '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">Cuando alguien compre un curso va a aparecer acá</div>'
+        : '';
+      const html = '<div class="vacio-suave"><div class="ico">💳</div>' + msg + extra + '</div>';
+      body.innerHTML = '<tr><td colspan="5" style="padding:0">' + html + '</td></tr>';
+      cards.innerHTML = html;
+      return;
+    }
+
+    body.innerHTML = lista.map(v =>
+      '<tr>' +
+        '<td>' + esc(nombreCompradora(v)) +
+          (v._persona ? '<div class="al-email">' + esc(v._persona.email || '') + '</div>' : '') + '</td>' +
+        '<td>' + esc(v.cursos?.titulo || '—') + '</td>' +
+        '<td style="font-family:Georgia,serif;color:#FAC775;white-space:nowrap">' + gs(v.monto_gs) + '</td>' +
+        '<td>' + pillEstado(v.estado) + '</td>' +
+        '<td style="color:rgba(255,245,240,0.55);font-size:12px;white-space:nowrap">' + fechaCorta(v.creado_en || v.pagado_en) + '</td>' +
+      '</tr>'
+    ).join('');
+
+    cards.innerHTML = lista.map(v =>
+      '<div class="alumna-card">' +
+        '<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:9px">' +
+          '<div style="min-width:0"><div class="al-nombre">' + esc(nombreCompradora(v)) + '</div>' +
+          '<div class="al-email">' + esc(v.cursos?.titulo || '—') + '</div></div>' +
+          '<div style="font-family:Georgia,serif;color:#FAC775;white-space:nowrap">' + gs(v.monto_gs) + '</div>' +
+        '</div>' +
+        '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">' +
+          pillEstado(v.estado) +
+          '<span class="mini-stat">📅 ' + fechaCorta(v.creado_en || v.pagado_en) + '</span>' +
+        '</div>' +
+      '</div>'
+    ).join('');
+  }
+
+  function filtrarVentas(f, btn){
+    filtroVentas = f;
+    document.querySelectorAll('#content-ventas .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderVentas();
+  }
+
+  function exportarVentas(){
+    if(ventas.length === 0) return mostrarToast('Todavía no hay ventas', true);
+    const filas = [['alumna','email','curso','monto_gs','estado','fecha']];
+    ventas.forEach(v => filas.push([
+      nombreCompradora(v),
+      v._persona?.email || '',
+      v.cursos?.titulo || '',
+      v.monto_gs || 0,
+      v.estado || '',
+      (v.creado_en || v.pagado_en || '').toString().slice(0,10)
+    ]));
+    const csv = filas.map(f => f.map(x => '"' + String(x).replace(/"/g,'""') + '"').join(',')).join('\n');
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ventas-cmm-' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+    mostrarToast('✓ Descargado');
+  }
+
+  // ============================
+  // DASHBOARD CON DATOS REALES
+  // ============================
+  async function cargarDashboard(){
+    if(!sb) return;
+
+    const pagadas = ventas.filter(v => v.estado === 'pagado');
+    const pend = ventas.filter(v => v.estado === 'pendiente');
+    const total = pagadas.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
+
+    // Ingresos de este mes
+    const ahora = new Date();
+    const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1).getTime();
+    const delMes = pagadas.filter(v => new Date(v.pagado_en || v.creado_en).getTime() >= inicioMes);
+    const totalMes = delMes.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
+
+    document.getElementById('dashIngresos').textContent = gs(total);
+    document.getElementById('dashIngresosMes').textContent = total > 0
+      ? gs(totalMes) + ' este mes'
+      : 'Sin ventas todavía';
+    document.getElementById('dashVentas').textContent = pagadas.length;
+    document.getElementById('dashVentasSub').textContent = pagadas.length > 0
+      ? delMes.length + ' este mes'
+      : 'Todavía ninguna';
+    document.getElementById('dashPendientes').textContent = pend.length;
+    document.getElementById('dashTicket').textContent = pagadas.length
+      ? gs(Math.round(total / pagadas.length))
+      : 'Gs 0';
+
+    // Personas
+    const nAlumnas = alumnas.length;
+    const hace30 = Date.now() - 30 * 24 * 60 * 60 * 1000;
+    const nuevas = alumnas.filter(a => new Date(a.creado_en).getTime() > hace30).length;
+    const compradoras = alumnas.filter(a => (a._compras || 0) > 0).length;
+    const activas = alumnas.filter(a => (a._posts || 0) + (a._comentarios || 0) > 0).length;
+
+    document.getElementById('dashRegistradas').textContent = nAlumnas;
+    document.getElementById('dashRegistradasSub').textContent = nuevas > 0
+      ? '+' + nuevas + ' en los últimos 30 días'
+      : 'Sin registros nuevos este mes';
+    document.getElementById('dashCompradoras').textContent = compradoras;
+    document.getElementById('dashConversion').textContent = nAlumnas > 0
+      ? Math.round((compradoras / nAlumnas) * 100) + '% de las registradas'
+      : '—';
+    document.getElementById('dashSubs').textContent = suscriptores.length;
+    document.getElementById('dashActivas').textContent = activas;
+
+    // Contenido
+    const cursosPub = cursos.filter(x => x.publicado).length;
+    const artPub = articulos.filter(a => a.publicado).length;
+    document.getElementById('dashCursos').textContent = cursosPub;
+    document.getElementById('dashCursosSub').textContent = (cursos.length - cursosPub) + ' en borrador';
+    document.getElementById('dashArticulos').textContent = artPub;
+    document.getElementById('dashArticulosSub').textContent = (articulos.length - artPub) + ' en borrador';
+    document.getElementById('dashPosts').textContent = modPosts.length;
+
+    const nComents = Object.values(modComentarios).reduce((s, arr) => s + arr.length, 0);
+    document.getElementById('dashPostsSub').textContent = nComents + ' comentario' + (nComents === 1 ? '' : 's');
+
+    // Por revisar: denuncias + publicaciones esperando aprobación
+    const nDen = Object.values(modDenuncias).reduce((s, arr) => s + arr.length, 0);
+    const nPend = modPosts.filter(p => p.pendiente_aprobacion).length;
+    const porRevisar = nDen + nPend;
+    document.getElementById('dashPorRevisar').textContent = porRevisar;
+    document.getElementById('dashCardDenuncias').classList.toggle('alerta', porRevisar > 0);
+    document.getElementById('dashPorRevisarSub').textContent = porRevisar > 0
+      ? nDen + ' denuncia(s) · ' + nPend + ' con enlace'
+      : 'Nada pendiente';
+
+    // Saludo
+    const yo = alumnas.find(a => a.id === yoSoyId);
+    if(yo) document.getElementById('dashNombre').textContent = (yo.nombre || 'vos').split(' ')[0];
+    document.getElementById('dashResumen').textContent = total > 0
+      ? 'Llevás ' + gs(total) + ' cobrados y ' + nAlumnas + ' persona' + (nAlumnas === 1 ? '' : 's') + ' registrada' + (nAlumnas === 1 ? '' : 's') + '.'
+      : 'Todavía no hubo ventas. Acá vas a ver los números cuando empiecen a llegar.';
+
+    // Últimas ventas
+    const cont = document.getElementById('dashUltimasVentas');
+    const ultimas = ventas.slice(0, 6);
+    if(ultimas.length === 0){
+      cont.innerHTML = '<div class="vacio-suave"><div class="ico">💳</div>Todavía no hubo ventas' +
+        '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">Cuando alguien compre, aparece acá</div></div>';
+    } else {
+      cont.innerHTML = ultimas.map(v =>
+        '<div class="venta-fila">' +
+          '<div style="min-width:0;flex:1">' +
+            '<div style="font-size:13px;font-weight:500">' + esc(nombreCompradora(v)) + '</div>' +
+            '<div style="font-size:11.5px;color:rgba(255,245,240,0.5)">' + esc(v.cursos?.titulo || '—') + ' · ' + fechaCorta(v.creado_en || v.pagado_en) + '</div>' +
+          '</div>' +
+          pillEstado(v.estado) +
+          '<span class="venta-monto">' + gs(v.monto_gs) + '</span>' +
+        '</div>'
+      ).join('');
+    }
+  }
+
+  async function refrescarDashboard(){
+    mostrarToast('Actualizando...');
+    await cargarCursos();
+    await cargarAlumnas();
+    await cargarArticulos();
+    await cargarVentas();
+    await cargarNewsletter();
+    await cargarModeracion();
+    await cargarDashboard();
+    mostrarToast('✓ Datos actualizados');
+  }
+
+  // ============================
   // NEWSLETTER
   // ============================
   let suscriptores = [];
@@ -3522,13 +3873,15 @@ body{visibility:hidden}
       clearInterval(waitSupaCursos);
       const { data: { user } } = await sb.auth.getUser();
       yoSoyId = user?.id || null;
-      cargarCursos();
+      await cargarCursos();
       cargarCarruseles();
       await cargarAlumnas();
       await cargarArticulos();
-      cargarModeracion();
+      await cargarVentas();
+      await cargarModeracion();
       await cargarEnvios();
       await cargarNewsletter();
+      await cargarDashboard();
       verificarEmailConfigurado();
     }
   }, 100);
