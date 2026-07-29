@@ -518,6 +518,72 @@
     }
   }
 
+
+  /* === ALUMNAS === */
+  .tabla-wrap{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:14px;overflow:hidden}
+  .tabla-alumnas{width:100%;border-collapse:collapse}
+  .tabla-alumnas th{text-align:left;padding:13px 16px;font-size:10px;letter-spacing:0.16em;color:rgba(255,245,240,0.5);font-weight:600;border-bottom:0.5px solid rgba(255,245,240,0.08);white-space:nowrap}
+  .tabla-alumnas td{padding:13px 16px;font-size:13px;border-bottom:0.5px solid rgba(255,245,240,0.05);vertical-align:middle}
+  .tabla-alumnas tr:last-child td{border-bottom:none}
+  .tabla-alumnas tbody tr{transition:background 0.18s}
+  .tabla-alumnas tbody tr:hover{background:rgba(255,245,240,0.03)}
+
+  .al-user{display:flex;align-items:center;gap:11px;min-width:0}
+  .al-avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-size:15px;color:#FFF5F0;background-size:cover;background-position:center}
+  .al-nombre{font-weight:500;font-size:13.5px}
+  .al-email{font-size:11.5px;color:rgba(255,245,240,0.5);word-break:break-all}
+
+  .rol-pill{padding:4px 11px;border-radius:14px;font-size:10px;letter-spacing:0.1em;font-weight:600;white-space:nowrap}
+  .rol-alumna{background:rgba(255,245,240,0.07);border:0.5px solid rgba(255,245,240,0.18);color:rgba(255,245,240,0.75)}
+  .rol-admin{background:rgba(232,184,196,0.16);border:0.5px solid rgba(232,184,196,0.45);color:#E8B8C4}
+  .rol-fundadora{background:rgba(212,163,86,0.18);border:0.5px solid rgba(212,163,86,0.5);color:#FAC775}
+
+  .rol-select{padding:7px 10px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.15);border-radius:8px;color:#FFF5F0;font-size:11.5px;font-family:inherit;outline:none;cursor:pointer}
+  .rol-select:focus{border-color:rgba(212,163,86,0.5)}
+
+  .al-buscar{padding:11px 15px 11px 38px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.14);border-radius:22px;color:#FFF5F0;font-size:13px;outline:none;font-family:inherit;width:260px}
+  .al-buscar:focus{border-color:rgba(212,163,86,0.5)}
+  .buscar-wrap{position:relative}
+  .buscar-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none}
+
+  .mini-stat{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:rgba(255,245,240,0.6)}
+
+  /* Tarjetas de alumnas en celular */
+  .alumnas-cards{display:none}
+  .alumna-card{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:13px;padding:15px;margin-bottom:11px}
+  .alumna-card-top{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+  .alumna-card-stats{display:flex;gap:14px;flex-wrap:wrap;padding-top:11px;border-top:0.5px solid rgba(255,245,240,0.06)}
+
+  /* === MODERACIÓN === */
+  .mod-post{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:13px;padding:16px;margin-bottom:12px}
+  .mod-post.fijado{border-color:rgba(212,163,86,0.4);background:linear-gradient(135deg,rgba(212,163,86,0.05),transparent)}
+  .mod-post-head{display:flex;align-items:center;gap:11px;margin-bottom:11px}
+  .mod-post-body{font-size:13.5px;line-height:1.55;color:rgba(255,245,240,0.85);white-space:pre-wrap;word-wrap:break-word;margin-bottom:11px}
+  .mod-post-img{max-width:180px;border-radius:9px;margin-bottom:11px;display:block}
+  .mod-post-foot{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding-top:11px;border-top:0.5px solid rgba(255,245,240,0.06)}
+  .mod-btn{padding:7px 13px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);border-radius:8px;color:rgba(255,245,240,0.8);font-size:11.5px;cursor:pointer;font-family:inherit;transition:all 0.2s}
+  .mod-btn:hover{background:rgba(255,245,240,0.1);color:#FFF5F0}
+  .mod-btn.gold{color:#FAC775;border-color:rgba(212,163,86,0.4)}
+  .mod-btn.gold:hover{background:rgba(212,163,86,0.15)}
+  .mod-btn.danger{color:#FF8090;border-color:rgba(255,59,71,0.3)}
+  .mod-btn.danger:hover{background:rgba(255,59,71,0.15)}
+  .mod-metrics{margin-left:auto;display:flex;gap:14px;font-size:11.5px;color:rgba(255,245,240,0.55)}
+
+  .mod-comentarios{margin-top:12px;padding-top:12px;border-top:0.5px solid rgba(255,245,240,0.06);display:none}
+  .mod-comentarios.show{display:block}
+  .mod-com{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-bottom:0.5px solid rgba(255,245,240,0.04)}
+  .mod-com:last-child{border-bottom:none}
+  .mod-com-txt{flex:1;font-size:12.5px;color:rgba(255,245,240,0.8);line-height:1.45}
+  .mod-com-autor{font-size:11.5px;color:#FAC775;font-weight:500}
+
+  @media (max-width:900px){
+    .tabla-wrap{display:none}
+    .alumnas-cards{display:block}
+    .al-buscar{width:100%}
+    .buscar-wrap{width:100%}
+    .mod-metrics{margin-left:0;width:100%;margin-top:8px}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -889,19 +955,19 @@ body{visibility:hidden}
       Cursos
       <span class="sidebar-badge gold" id="cursosCount">0</span>
     </a>
-    <a href="#" class="sidebar-item">
+    <a href="#" onclick="cambiarTab('alumnas')" class="sidebar-item" id="nav-alumnas">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
       Alumnas
-      <span class="sidebar-badge dim">1.247</span>
+      <span class="sidebar-badge dim" id="alumnasCount">0</span>
     </a>
     <a href="#" class="sidebar-item">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       Ventas
     </a>
-    <a href="#" class="sidebar-item">
+    <a href="#" onclick="cambiarTab('moderacion')" class="sidebar-item" id="nav-moderacion">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="14" rx="2"/></svg>
       Comunidad
-      <span class="sidebar-dot"></span>
+      <span class="sidebar-badge dim" id="postsCount">0</span>
     </a>
     <a href="#" onclick="cambiarTab('hashtags')" class="sidebar-item" id="nav-hashtags">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
@@ -1580,6 +1646,101 @@ body{visibility:hidden}
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- ============================ -->
+  <!-- TAB: ALUMNAS -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-alumnas">
+    <div class="header-bar">
+      <div>
+        <div class="header-meta">MIEMBROS DE LA COMUNIDAD</div>
+        <h1 class="header-title">Tus <span class="serif-it gradtext" style="font-size:34px">alumnas</span></h1>
+        <p class="header-sub">Todas las personas registradas en el sitio.</p>
+      </div>
+      <div class="header-actions">
+        <div class="buscar-wrap">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
+          <input class="al-buscar" id="buscarAlumnas" placeholder="Buscar por nombre o email">
+        </div>
+      </div>
+    </div>
+
+    <div class="cursos-toolbar">
+      <div class="cursos-filtros">
+        <button class="filter-btn active" onclick="filtrarAlumnas('todas', this)">Todas</button>
+        <button class="filter-btn" onclick="filtrarAlumnas('compradoras', this)">Con compras</button>
+        <button class="filter-btn" onclick="filtrarAlumnas('activas', this)">Activas en comunidad</button>
+        <button class="filter-btn" onclick="filtrarAlumnas('equipo', this)">Equipo</button>
+      </div>
+    </div>
+
+    <div class="tabla-wrap">
+      <table class="tabla-alumnas">
+        <thead>
+          <tr>
+            <th>ALUMNA</th>
+            <th>ROL</th>
+            <th>CURSOS</th>
+            <th>COMUNIDAD</th>
+            <th>REGISTRO</th>
+          </tr>
+        </thead>
+        <tbody id="alumnasBody"></tbody>
+      </table>
+    </div>
+
+    <div class="alumnas-cards" id="alumnasCards"></div>
+  </div>
+
+  <!-- ============================ -->
+  <!-- TAB: MODERACIÓN DE COMUNIDAD -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-moderacion">
+    <div class="header-bar">
+      <div>
+        <div class="header-meta">MODERACIÓN</div>
+        <h1 class="header-title">La <span class="serif-it gradtext" style="font-size:34px">comunidad</span></h1>
+        <p class="header-sub">Revisá, fijá o eliminá publicaciones sin salir del panel.</p>
+      </div>
+      <div class="header-actions">
+        <a href="/comunidad" target="_blank" class="btn-secondary" style="display:inline-flex;align-items:center;gap:7px;text-decoration:none">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>
+          Ver la comunidad
+        </a>
+      </div>
+    </div>
+
+    <div class="stats-grid" style="margin-bottom:22px">
+      <div class="stat-card">
+        <div class="stat-value" id="modTotalPosts">0</div>
+        <div class="stat-label">PUBLICACIONES</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="modTotalComentarios">0</div>
+        <div class="stat-label">COMENTARIOS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="modTotalLikes">0</div>
+        <div class="stat-label">ME GUSTA</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="modActivos">0</div>
+        <div class="stat-label">PARTICIPANDO</div>
+      </div>
+    </div>
+
+    <div class="cursos-toolbar">
+      <div class="cursos-filtros">
+        <button class="filter-btn active" onclick="filtrarMod('todos', this)">Todos</button>
+        <button class="filter-btn" onclick="filtrarMod('fijados', this)">📌 Fijados</button>
+        <button class="filter-btn" onclick="filtrarMod('preguntas', this)">❓ Preguntas</button>
+        <button class="filter-btn" onclick="filtrarMod('logros', this)">🏆 Logros</button>
+        <button class="filter-btn" onclick="filtrarMod('con_foto', this)">🖼️ Con foto</button>
+      </div>
+    </div>
+
+    <div id="modPosts"></div>
   </div>
 
 </main>
@@ -2315,13 +2476,392 @@ body{visibility:hidden}
     await cargarArticulos();
   }
 
+  // ============================
+  // ALUMNAS / MIEMBROS
+  // ============================
+  let alumnas = [];
+  let filtroAlumnas = 'todas';
+  let buscaAlumnas = '';
+  let yoSoyId = null;
+
+  function inicialDe(n){ return (n || 'A').trim().charAt(0).toUpperCase(); }
+  function colorDe(nombre){
+    const p = ['linear-gradient(135deg,#7A1B2E,#E8B8C4)','linear-gradient(135deg,#4A0F1E,#B8294A)','linear-gradient(135deg,#D4A356,#E8B8C4)','linear-gradient(135deg,#7A1B2E,#C97990)','linear-gradient(135deg,#B8294A,#FAC775)'];
+    let h = 0; const s = nombre || 'x';
+    for(let i=0;i<s.length;i++) h = (h + s.charCodeAt(i)) % p.length;
+    return p[h];
+  }
+  function esc(t){ if(!t) return ''; const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+  function fechaCorta(f){
+    if(!f) return '—';
+    const d = new Date(f);
+    const m = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    return d.getDate() + ' ' + m[d.getMonth()] + ' ' + d.getFullYear();
+  }
+  function tiempoRel(f){
+    if(!f) return '';
+    const seg = Math.floor((Date.now() - new Date(f).getTime())/1000);
+    if(seg < 60) return 'recién';
+    const min = Math.floor(seg/60); if(min < 60) return 'hace ' + min + ' min';
+    const hr = Math.floor(min/60); if(hr < 24) return 'hace ' + hr + ' h';
+    const d = Math.floor(hr/24); if(d < 7) return 'hace ' + d + (d===1?' día':' días');
+    return fechaCorta(f);
+  }
+
+  async function cargarAlumnas(){
+    if(!sb) return;
+
+    const { data: perfiles, error } = await sb
+      .from('perfiles')
+      .select('id, nombre, email, rol, avatar_url, creado_en')
+      .order('creado_en', { ascending: false });
+
+    if(error){
+      console.error('Error cargando alumnas:', error);
+      document.getElementById('alumnasBody').innerHTML =
+        '<tr><td colspan="5" style="padding:40px;text-align:center;color:#FF8090">Error: ' + esc(error.message) + '</td></tr>';
+      return;
+    }
+
+    alumnas = perfiles || [];
+
+    // Compras por usuaria
+    const { data: compras } = await sb.from('compras').select('usuario_id, estado');
+    const comprasPorUsuario = {};
+    (compras || []).forEach(x => {
+      if(x.estado === 'pagado' && x.usuario_id){
+        comprasPorUsuario[x.usuario_id] = (comprasPorUsuario[x.usuario_id] || 0) + 1;
+      }
+    });
+
+    // Posts y comentarios por usuaria
+    const { data: postsAll } = await sb.from('posts').select('usuario_id');
+    const postsPorUsuario = {};
+    (postsAll || []).forEach(p => {
+      if(p.usuario_id) postsPorUsuario[p.usuario_id] = (postsPorUsuario[p.usuario_id] || 0) + 1;
+    });
+
+    const { data: comAll } = await sb.from('comentarios').select('usuario_id');
+    const comPorUsuario = {};
+    (comAll || []).forEach(x => {
+      if(x.usuario_id) comPorUsuario[x.usuario_id] = (comPorUsuario[x.usuario_id] || 0) + 1;
+    });
+
+    alumnas.forEach(a => {
+      a._compras = comprasPorUsuario[a.id] || 0;
+      a._posts = postsPorUsuario[a.id] || 0;
+      a._comentarios = comPorUsuario[a.id] || 0;
+    });
+
+    document.getElementById('alumnasCount').textContent = alumnas.length;
+    renderAlumnas();
+  }
+
+  function alumnaVisible(a){
+    if(filtroAlumnas === 'compradoras' && a._compras === 0) return false;
+    if(filtroAlumnas === 'activas' && (a._posts + a._comentarios) === 0) return false;
+    if(filtroAlumnas === 'equipo' && !['admin','fundadora'].includes(a.rol)) return false;
+    if(buscaAlumnas){
+      const q = buscaAlumnas.toLowerCase();
+      const n = (a.nombre || '').toLowerCase();
+      const e = (a.email || '').toLowerCase();
+      if(!n.includes(q) && !e.includes(q)) return false;
+    }
+    return true;
+  }
+
+  function avatarAlumna(a, size){
+    const nombre = a.nombre || (a.email || 'A').split('@')[0];
+    const st = a.avatar_url
+      ? "background-image:url('" + esc(a.avatar_url) + "')"
+      : 'background:' + colorDe(nombre);
+    const extra = size ? 'width:' + size + 'px;height:' + size + 'px;' : '';
+    return '<div class="al-avatar" style="' + extra + st + '">' + (a.avatar_url ? '' : inicialDe(nombre)) + '</div>';
+  }
+
+  function selectorRol(a){
+    const bloqueado = a.id === yoSoyId;
+    if(bloqueado){
+      return '<span class="rol-pill rol-' + esc(a.rol || 'alumna') + '">' + esc((a.rol || 'alumna').toUpperCase()) + '</span>' +
+             '<div style="font-size:10px;color:rgba(255,245,240,0.4);margin-top:4px">sos vos</div>';
+    }
+    const roles = ['alumna','admin','fundadora'];
+    return '<select class="rol-select" onchange="cambiarRol(\'' + a.id + '\', this.value, this)">' +
+      roles.map(r => '<option value="' + r + '"' + ((a.rol || 'alumna') === r ? ' selected' : '') + '>' + r + '</option>').join('') +
+      '</select>';
+  }
+
+  function renderAlumnas(){
+    const lista = alumnas.filter(alumnaVisible);
+    const body = document.getElementById('alumnasBody');
+    const cards = document.getElementById('alumnasCards');
+
+    if(lista.length === 0){
+      const vacio = alumnas.length === 0;
+      const msg = vacio ? 'Todavía no hay nadie registrado' : 'No encontramos ninguna alumna con ese filtro';
+      body.innerHTML = '<tr><td colspan="5" style="padding:50px;text-align:center;color:rgba(255,245,240,0.5)">' +
+        '<div style="font-size:40px;opacity:0.4;margin-bottom:10px">' + (vacio ? '👥' : '🔍') + '</div>' + msg + '</td></tr>';
+      cards.innerHTML = '<div style="padding:50px 20px;text-align:center;color:rgba(255,245,240,0.5)">' +
+        '<div style="font-size:40px;opacity:0.4;margin-bottom:10px">' + (vacio ? '👥' : '🔍') + '</div>' + msg + '</div>';
+      return;
+    }
+
+    // Tabla (escritorio)
+    body.innerHTML = lista.map(a => {
+      const nombre = esc(a.nombre || (a.email || '').split('@')[0] || 'Sin nombre');
+      return '<tr>' +
+        '<td><div class="al-user">' + avatarAlumna(a) +
+          '<div style="min-width:0"><div class="al-nombre">' + nombre + '</div>' +
+          '<div class="al-email">' + esc(a.email || '') + '</div></div></div></td>' +
+        '<td>' + selectorRol(a) + '</td>' +
+        '<td>' + (a._compras > 0
+            ? '<span style="color:#9FE1CB;font-weight:500">' + a._compras + '</span>'
+            : '<span style="color:rgba(255,245,240,0.35)">0</span>') + '</td>' +
+        '<td><span class="mini-stat">' + a._posts + ' posts · ' + a._comentarios + ' com.</span></td>' +
+        '<td style="color:rgba(255,245,240,0.55);font-size:12px;white-space:nowrap">' + fechaCorta(a.creado_en) + '</td>' +
+      '</tr>';
+    }).join('');
+
+    // Tarjetas (celular)
+    cards.innerHTML = lista.map(a => {
+      const nombre = esc(a.nombre || (a.email || '').split('@')[0] || 'Sin nombre');
+      return '<div class="alumna-card">' +
+        '<div class="alumna-card-top">' + avatarAlumna(a, 42) +
+          '<div style="flex:1;min-width:0"><div class="al-nombre">' + nombre + '</div>' +
+          '<div class="al-email">' + esc(a.email || '') + '</div></div></div>' +
+        '<div style="margin-bottom:10px">' + selectorRol(a) + '</div>' +
+        '<div class="alumna-card-stats">' +
+          '<span class="mini-stat">🎓 ' + a._compras + ' cursos</span>' +
+          '<span class="mini-stat">✏️ ' + a._posts + ' posts</span>' +
+          '<span class="mini-stat">💬 ' + a._comentarios + '</span>' +
+          '<span class="mini-stat">📅 ' + fechaCorta(a.creado_en) + '</span>' +
+        '</div></div>';
+    }).join('');
+  }
+
+  function filtrarAlumnas(f, btn){
+    filtroAlumnas = f;
+    document.querySelectorAll('#content-alumnas .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderAlumnas();
+  }
+
+  async function cambiarRol(id, nuevoRol, sel){
+    const a = alumnas.find(x => x.id === id);
+    const nombre = a?.nombre || a?.email || 'esta persona';
+    if(!confirm('¿Cambiar el rol de ' + nombre + ' a "' + nuevoRol + '"?\n\nLos roles admin y fundadora dan acceso completo al panel.')){
+      sel.value = a?.rol || 'alumna';
+      return;
+    }
+    const { error } = await sb.from('perfiles').update({ rol: nuevoRol }).eq('id', id);
+    if(error){
+      sel.value = a?.rol || 'alumna';
+      return mostrarToast('Error: ' + error.message, true);
+    }
+    if(a) a.rol = nuevoRol;
+    mostrarToast('✓ Rol actualizado a ' + nuevoRol);
+  }
+
+  // ============================
+  // MODERACIÓN DE LA COMUNIDAD
+  // ============================
+  let modPosts = [];
+  let modPerfiles = {};
+  let modComentarios = {};
+  let modLikes = {};
+  let filtroMod = 'todos';
+
+  async function cargarModeracion(){
+    if(!sb) return;
+
+    const { data: posts, error } = await sb
+      .from('posts')
+      .select('*')
+      .order('fijado', { ascending: false })
+      .order('creado_en', { ascending: false })
+      .limit(100);
+
+    if(error){
+      document.getElementById('modPosts').innerHTML =
+        '<div style="padding:40px;text-align:center;color:#FF8090">Error: ' + esc(error.message) + '</div>';
+      return;
+    }
+
+    modPosts = posts || [];
+    document.getElementById('postsCount').textContent = modPosts.length;
+    document.getElementById('modTotalPosts').textContent = modPosts.length;
+
+    if(modPosts.length === 0){
+      document.getElementById('modTotalComentarios').textContent = '0';
+      document.getElementById('modTotalLikes').textContent = '0';
+      document.getElementById('modActivos').textContent = '0';
+      renderModeracion();
+      return;
+    }
+
+    const idsPost = modPosts.map(p => p.id);
+    const idsUser = [...new Set(modPosts.map(p => p.usuario_id).filter(Boolean))];
+
+    if(idsUser.length){
+      const { data: perf } = await sb.from('perfiles').select('id, nombre, email, rol, avatar_url').in('id', idsUser);
+      (perf || []).forEach(p => { modPerfiles[p.id] = p; });
+    }
+
+    modLikes = {};
+    const { data: likes } = await sb.from('likes').select('post_id').in('post_id', idsPost);
+    (likes || []).forEach(l => { modLikes[l.post_id] = (modLikes[l.post_id] || 0) + 1; });
+
+    modComentarios = {};
+    const { data: coms } = await sb.from('comentarios').select('*').in('post_id', idsPost).order('creado_en', { ascending: true });
+    const idsCom = [...new Set((coms || []).map(x => x.usuario_id).filter(Boolean))].filter(id => !modPerfiles[id]);
+    if(idsCom.length){
+      const { data: perf2 } = await sb.from('perfiles').select('id, nombre, email, rol, avatar_url').in('id', idsCom);
+      (perf2 || []).forEach(p => { modPerfiles[p.id] = p; });
+    }
+    (coms || []).forEach(x => {
+      if(!modComentarios[x.post_id]) modComentarios[x.post_id] = [];
+      modComentarios[x.post_id].push(x);
+    });
+
+    document.getElementById('modTotalComentarios').textContent = (coms || []).length;
+    document.getElementById('modTotalLikes').textContent = (likes || []).length;
+    document.getElementById('modActivos').textContent = idsUser.length;
+
+    renderModeracion();
+  }
+
+  function modNombre(uid){
+    const p = modPerfiles[uid];
+    if(!p) return 'Miembro';
+    return p.nombre || (p.email ? p.email.split('@')[0] : 'Miembro');
+  }
+
+  function modVisible(p){
+    if(filtroMod === 'fijados') return !!p.fijado;
+    if(filtroMod === 'preguntas') return p.categoria === 'preguntas';
+    if(filtroMod === 'logros') return p.categoria === 'logros';
+    if(filtroMod === 'con_foto') return !!p.imagen_url;
+    return true;
+  }
+
+  function renderModeracion(){
+    const cont = document.getElementById('modPosts');
+    const lista = modPosts.filter(modVisible);
+
+    if(lista.length === 0){
+      const vacio = modPosts.length === 0;
+      cont.innerHTML = '<div style="padding:55px 20px;text-align:center;color:rgba(255,245,240,0.5)">' +
+        '<div style="font-size:44px;opacity:0.4;margin-bottom:12px">' + (vacio ? '💬' : '🔍') + '</div>' +
+        '<div style="font-size:14.5px;margin-bottom:6px">' + (vacio ? 'Todavía no hay publicaciones' : 'Nada con ese filtro') + '</div>' +
+        (vacio ? '<div style="font-size:12.5px;color:rgba(255,245,240,0.4)">Cuando alguien publique en la comunidad, aparece acá</div>' : '') +
+        '</div>';
+      return;
+    }
+
+    cont.innerHTML = lista.map(p => {
+      const uid = p.usuario_id;
+      const perf = modPerfiles[uid] || {};
+      const nombre = esc(modNombre(uid));
+      const esEquipo = ['admin','fundadora'].includes(perf.rol);
+      const nLikes = modLikes[p.id] || 0;
+      const coms = modComentarios[p.id] || [];
+      const av = perf.avatar_url
+        ? "background-image:url('" + esc(perf.avatar_url) + "')"
+        : 'background:' + colorDe(modNombre(uid));
+
+      return '<div class="mod-post ' + (p.fijado ? 'fijado' : '') + '">' +
+        '<div class="mod-post-head">' +
+          '<div class="al-avatar" style="' + av + '">' + (perf.avatar_url ? '' : inicialDe(modNombre(uid))) + '</div>' +
+          '<div style="flex:1;min-width:0">' +
+            '<div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">' +
+              '<span class="al-nombre">' + nombre + '</span>' +
+              (esEquipo ? '<span class="rol-pill rol-fundadora">💎 EQUIPO</span>' : '') +
+              (p.fijado ? '<span class="rol-pill rol-admin">📌 FIJADO</span>' : '') +
+            '</div>' +
+            '<div style="font-size:11px;color:rgba(255,245,240,0.5);margin-top:2px">' +
+              tiempoRel(p.creado_en) +
+              (p.categoria && p.categoria !== 'general' ? ' · ' + esc(p.categoria) : '') +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        (p.contenido ? '<div class="mod-post-body">' + esc(p.contenido) + '</div>' : '') +
+        (p.imagen_url ? '<img class="mod-post-img" src="' + esc(p.imagen_url) + '" alt="" loading="lazy">' : '') +
+        '<div class="mod-post-foot">' +
+          '<button class="mod-btn gold" onclick="modFijar(\'' + p.id + '\', ' + (!p.fijado) + ')">' +
+            (p.fijado ? 'Quitar de fijados' : '📌 Fijar arriba') + '</button>' +
+          (coms.length ? '<button class="mod-btn" onclick="modVerComentarios(\'' + p.id + '\')">Ver ' + coms.length + ' comentario' + (coms.length===1?'':'s') + '</button>' : '') +
+          '<button class="mod-btn danger" onclick="modBorrarPost(\'' + p.id + '\')">Eliminar</button>' +
+          '<div class="mod-metrics">' +
+            '<span>❤️ ' + nLikes + '</span>' +
+            '<span>💬 ' + coms.length + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="mod-comentarios" id="modcom-' + p.id + '">' +
+          coms.map(x =>
+            '<div class="mod-com">' +
+              '<div class="mod-com-txt">' +
+                '<div class="mod-com-autor">' + esc(modNombre(x.usuario_id)) + ' · ' + tiempoRel(x.creado_en) + '</div>' +
+                esc(x.contenido) +
+              '</div>' +
+              '<button class="mod-btn danger" style="padding:5px 9px;font-size:10.5px" onclick="modBorrarComentario(\'' + x.id + '\')">Borrar</button>' +
+            '</div>'
+          ).join('') +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function filtrarMod(f, btn){
+    filtroMod = f;
+    document.querySelectorAll('#content-moderacion .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderModeracion();
+  }
+
+  function modVerComentarios(id){
+    document.getElementById('modcom-' + id).classList.toggle('show');
+  }
+
+  async function modFijar(id, valor){
+    const { error } = await sb.from('posts').update({ fijado: valor }).eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast(valor ? '📌 Publicación fijada' : 'Publicación desfijada');
+    await cargarModeracion();
+  }
+
+  async function modBorrarPost(id){
+    if(!confirm('¿Eliminar esta publicación?\n\nSe borran también sus comentarios y me gusta. No se puede deshacer.')) return;
+    const { error } = await sb.from('posts').delete().eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast('Publicación eliminada');
+    await cargarModeracion();
+  }
+
+  async function modBorrarComentario(id){
+    if(!confirm('¿Eliminar este comentario?')) return;
+    const { error } = await sb.from('comentarios').delete().eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast('Comentario eliminado');
+    await cargarModeracion();
+  }
+
+  // Buscador de alumnas
+  document.getElementById('buscarAlumnas')?.addEventListener('input', e => {
+    buscaAlumnas = e.target.value.trim();
+    renderAlumnas();
+  });
+
   // Cargar al iniciar
-  const waitSupaCursos = setInterval(() => {
+  const waitSupaCursos = setInterval(async () => {
     if (typeof sb !== 'undefined' && sb !== null) {
       clearInterval(waitSupaCursos);
+      const { data: { user } } = await sb.auth.getUser();
+      yoSoyId = user?.id || null;
       cargarCursos();
       cargarCarruseles();
       cargarArticulos();
+      cargarAlumnas();
+      cargarModeracion();
     }
   }, 100);
 
