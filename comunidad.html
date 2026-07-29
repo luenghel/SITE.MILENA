@@ -18,6 +18,9 @@
 
   .filters-bar{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap;padding-bottom:14px;border-bottom:0.5px solid rgba(255,245,240,0.06)}
   .filters-chips{display:flex;gap:7px;flex-wrap:wrap;flex:1}
+  .fchip{padding:7px 13px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.14);border-radius:18px;font-size:12px;color:rgba(255,245,240,0.7);cursor:pointer;font-family:inherit;transition:all 0.22s;white-space:nowrap}
+  .fchip:hover{background:rgba(255,245,240,0.08);color:#FFF5F0}
+  .fchip.active{background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.06));border-color:rgba(212,163,86,0.6);color:#FAC775}
   .search-wrap{position:relative}
   .search-input{padding:10px 14px 10px 38px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:22px;color:#FFF5F0;font-size:13px;outline:none;width:200px;font-family:inherit}
   .search-input:focus{border-color:rgba(212,163,86,0.5)}
@@ -25,40 +28,31 @@
   /* Composer */
   .composer{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:14px;padding:18px;margin-bottom:24px}
   .composer-row{display:flex;gap:12px;align-items:flex-start}
-  .composer-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7A1B2E,#E8B8C4);flex-shrink:0;border:0.5px solid rgba(255,245,240,0.15)}
+  .avatar-circle{border-radius:50%;flex-shrink:0;border:0.5px solid rgba(255,245,240,0.15);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-weight:500;color:#FFF5F0}
+  .composer-avatar{width:42px;height:42px;font-size:17px}
   .composer-input{flex:1;padding:14px 16px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:10px;color:#FFF5F0;font-size:14px;outline:none;font-family:inherit;min-height:48px;resize:vertical}
   .composer-input:focus{border-color:rgba(212,163,86,0.5)}
 
-  /* HASHTAGS clickeables */
-  .hashtag-section{margin-top:14px;padding-left:54px}
-  .hashtag-label{font-size:10.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.5);font-weight:500;margin-bottom:9px;display:flex;align-items:center;gap:7px}
-  .hashtag-info{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:rgba(255,245,240,0.08);font-size:9px;color:rgba(255,245,240,0.6);cursor:help}
+  .composer-extra{margin-top:14px;padding-left:54px}
+  .extra-label{font-size:10.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.5);font-weight:500;margin-bottom:9px}
+  .cat-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .cat-chip{padding:6px 12px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.14);border-radius:16px;font-size:11.5px;color:rgba(255,245,240,0.7);cursor:pointer;font-family:inherit;transition:all 0.22s}
+  .cat-chip.selected{background:linear-gradient(135deg,rgba(184,41,74,0.25),rgba(184,41,74,0.08));border-color:rgba(232,184,196,0.6);color:#E8B8C4}
+
   .hashtag-chips{display:flex;gap:6px;flex-wrap:wrap}
-  .hashtag-chip{
-    padding:7px 13px;
-    background:rgba(255,245,240,0.04);
-    border:0.5px solid rgba(255,245,240,0.15);
-    border-radius:18px;
-    font-size:12px;
-    color:rgba(255,245,240,0.75);
-    cursor:pointer;
-    transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);
-    font-family:inherit;
-    user-select:none;
-  }
+  .hashtag-chip{padding:7px 13px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.15);border-radius:18px;font-size:12px;color:rgba(255,245,240,0.75);cursor:pointer;transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);font-family:inherit;user-select:none}
   .hashtag-chip:hover{transform:translateY(-1px);background:rgba(255,245,240,0.08);color:#FFF5F0}
-  .hashtag-chip.selected{
-    background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.08));
-    border-color:#FAC775;
-    color:#FAC775;
-    box-shadow:0 0 0 0.5px rgba(212,163,86,0.3),0 4px 12px rgba(212,163,86,0.15);
-  }
+  .hashtag-chip.selected{background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.08));border-color:#FAC775;color:#FAC775;box-shadow:0 0 0 0.5px rgba(212,163,86,0.3),0 4px 12px rgba(212,163,86,0.15)}
+
+  .composer-preview{margin-top:12px;position:relative;border-radius:10px;overflow:hidden;max-width:280px}
+  .composer-preview img{width:100%;display:block}
+  .composer-preview button{position:absolute;top:7px;right:7px;width:28px;height:28px;border-radius:50%;background:rgba(14,5,9,0.85);border:none;color:#FF8090;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
   .composer-tools{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:0.5px solid rgba(255,245,240,0.06);padding-left:54px;flex-wrap:wrap;gap:10px}
-  .composer-tools-left{display:flex;gap:6px}
+  .composer-tools-left{display:flex;gap:6px;align-items:center}
   .tool-btn{padding:8px 12px;background:transparent;border:0.5px solid rgba(255,245,240,0.12);border-radius:8px;color:rgba(255,245,240,0.65);font-size:11.5px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.25s;font-family:inherit}
   .tool-btn:hover{background:rgba(255,245,240,0.04);color:#FFF5F0}
-  .post-btn{padding:9px 22px;font-size:11.5px;font-weight:500;border-radius:9px;letter-spacing:0.1em}
+  .post-btn{padding:9px 22px;font-size:11.5px;font-weight:500;border-radius:9px;letter-spacing:0.1em;border:none;cursor:pointer}
   .post-btn:disabled{opacity:0.5;cursor:not-allowed}
 
   /* Posts */
@@ -67,48 +61,74 @@
   .post.pinned{border:0.5px solid rgba(212,163,86,0.4);background:linear-gradient(135deg,rgba(212,163,86,0.05),transparent)}
 
   .post-head{display:flex;align-items:center;gap:11px;margin-bottom:11px}
-  .post-avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;border:0.5px solid rgba(255,245,240,0.15)}
-  .post-avatar.milena{background:linear-gradient(135deg,#B8294A,#E8B8C4);border:1.5px solid #FAC775}
+  .post-avatar{width:40px;height:40px;font-size:16px}
+  .post-avatar.fundadora{border:1.5px solid #FAC775}
   .post-author-info{flex:1;min-width:0}
   .post-author-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .post-author-name{font-size:13.5px;font-weight:500}
-  .pinned-tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(212,163,86,0.15);border:0.5px solid rgba(212,163,86,0.4);border-radius:5px;font-size:9.5px;color:#FAC775;font-weight:500;letter-spacing:0.06em}
+  .role-tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(212,163,86,0.15);border:0.5px solid rgba(212,163,86,0.4);border-radius:5px;font-size:9.5px;color:#FAC775;font-weight:500;letter-spacing:0.06em}
+  .pinned-tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(232,184,196,0.14);border:0.5px solid rgba(232,184,196,0.4);border-radius:5px;font-size:9.5px;color:#E8B8C4;font-weight:500;letter-spacing:0.06em}
   .post-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .post-menu{position:relative}
+  .post-menu-btn{background:transparent;border:none;color:rgba(255,245,240,0.45);cursor:pointer;padding:6px;border-radius:6px;font-family:inherit}
+  .post-menu-btn:hover{background:rgba(255,245,240,0.06);color:#FFF5F0}
+  .post-menu-drop{position:absolute;right:0;top:32px;background:#2D0A18;border:0.5px solid rgba(255,245,240,0.14);border-radius:10px;padding:5px;min-width:150px;z-index:50;display:none;box-shadow:0 12px 30px rgba(0,0,0,0.5)}
+  .post-menu-drop.show{display:block}
+  .post-menu-item{display:block;width:100%;text-align:left;padding:9px 12px;background:transparent;border:none;color:rgba(255,245,240,0.85);font-size:12.5px;cursor:pointer;border-radius:7px;font-family:inherit}
+  .post-menu-item:hover{background:rgba(255,245,240,0.07)}
+  .post-menu-item.danger{color:#FF8090}
 
-  .post-body{font-size:14px;line-height:1.55;color:rgba(255,245,240,0.88);margin:0 0 14px}
-  .hashtag{color:#FAC775;cursor:pointer;font-weight:500}
-  .hashtag:hover{text-decoration:underline}
-
-  .post-image{width:100%;aspect-ratio:16/9;border-radius:10px;position:relative;overflow:hidden;margin-bottom:14px}
+  .post-body{font-size:14px;line-height:1.55;color:rgba(255,245,240,0.88);margin:0 0 14px;white-space:pre-wrap;word-wrap:break-word}
+  .hashtag{color:#FAC775;font-weight:500}
+  .post-image{width:100%;border-radius:10px;margin-bottom:14px;display:block;max-height:460px;object-fit:cover}
 
   .post-actions{display:flex;align-items:center;gap:8px;padding-top:10px;border-top:0.5px solid rgba(255,245,240,0.06)}
   .pa-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;background:transparent;border:none;color:rgba(255,245,240,0.65);font-size:12px;cursor:pointer;border-radius:7px;font-family:inherit;transition:all 0.2s}
   .pa-btn:hover{background:rgba(255,245,240,0.05);color:#FFF5F0}
   .pa-btn.liked{color:#E8B8C4}
-  .pa-btn.save{margin-left:auto}
 
-  .show-more{width:100%;padding:12px;background:transparent;border:0.5px dashed rgba(255,245,240,0.18);border-radius:9px;color:rgba(255,245,240,0.6);font-size:12px;cursor:pointer;letter-spacing:0.06em;font-family:inherit;transition:all 0.25s}
-  .show-more:hover{background:rgba(255,245,240,0.04);color:#FFF5F0;border-color:rgba(212,163,86,0.4)}
+  /* Comentarios */
+  .comments-box{margin-top:12px;padding-top:12px;border-top:0.5px solid rgba(255,245,240,0.06);display:none}
+  .comments-box.show{display:block}
+  .comment{display:flex;gap:10px;margin-bottom:12px}
+  .comment-avatar{width:30px;height:30px;font-size:12px}
+  .comment-bubble{flex:1;background:rgba(255,245,240,0.04);border-radius:10px;padding:9px 12px}
+  .comment-author{font-size:12px;font-weight:500;color:#FFF5F0;margin-bottom:2px}
+  .comment-text{font-size:12.5px;color:rgba(255,245,240,0.82);line-height:1.45;white-space:pre-wrap;word-wrap:break-word}
+  .comment-time{font-size:10.5px;color:rgba(255,245,240,0.4);margin-top:4px}
+  .comment-del{background:none;border:none;color:rgba(255,128,144,0.7);font-size:10.5px;cursor:pointer;padding:0;margin-top:4px;margin-left:10px;font-family:inherit}
+  .comment-form{display:flex;gap:9px;align-items:center;margin-top:10px}
+  .comment-input{flex:1;padding:10px 13px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:20px;color:#FFF5F0;font-size:13px;outline:none;font-family:inherit}
+  .comment-input:focus{border-color:rgba(212,163,86,0.5)}
+  .comment-send{padding:9px 16px;border-radius:20px;border:none;background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
 
-  /* Toast */
+  .feed-empty{padding:60px 20px;text-align:center;color:rgba(255,245,240,0.55)}
+  .feed-loading{padding:50px 20px;text-align:center}
+  .fspinner{width:34px;height:34px;border:3px solid rgba(212,163,86,0.2);border-top-color:#FAC775;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
   .toast{position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg,#5DCAA5,#9FE1CB);color:#0E0509;padding:14px 22px;border-radius:11px;font-size:13px;font-weight:500;box-shadow:0 12px 32px rgba(93,202,165,0.4);z-index:2000;display:none;align-items:center;gap:9px;animation:slideUp 0.3s ease-out}
   .toast.show{display:flex}
+  .toast.error{background:linear-gradient(135deg,#FF8090,#C8203A);color:#FFF5F0}
   @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 
   @media (max-width:768px){
     .page-hero{padding:30px 16px 20px}
     .page-title{font-size:32px}
+    .page-title .serif-it{font-size:32px !important}
     .feed-layout{padding:0 16px 30px}
     .search-input{width:100%}
+    .search-wrap{width:100%}
     .composer-tools{padding-left:0}
-    .hashtag-section{padding-left:0}
+    .composer-extra{padding-left:0}
+    .filters-chips{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
+    .toast{left:16px;right:16px;bottom:16px;justify-content:center}
   }
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
 .auth-splash{position:fixed;inset:0;background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);z-index:9999;display:flex;align-items:center;justify-content:center;visibility:visible}
 .auth-splash-spinner{width:40px;height:40px;border:2px solid rgba(212,163,86,0.2);border-top-color:#FAC775;border-radius:50%;animation:spin 0.8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -142,203 +162,68 @@ body{visibility:hidden}
 
   <!-- Filtros -->
   <div class="filters-bar">
-    <div class="filters-chips">
-      <span class="chip chip-active">General</span>
-      <span class="chip chip-quiet">📌 Anuncios</span>
-      <span class="chip chip-quiet">💡 Consejos</span>
-      <span class="chip chip-quiet">🚀 Avances</span>
-      <span class="chip chip-quiet">❓ Preguntas</span>
-      <span class="chip chip-quiet">🏆 Logros</span>
+    <div class="filters-chips" id="filtrosChips">
+      <button class="fchip active" data-cat="todos" onclick="filtrarCat(this)">General</button>
+      <button class="fchip" data-cat="anuncios" onclick="filtrarCat(this)">📌 Anuncios</button>
+      <button class="fchip" data-cat="consejos" onclick="filtrarCat(this)">💡 Consejos</button>
+      <button class="fchip" data-cat="avances" onclick="filtrarCat(this)">🚀 Avances</button>
+      <button class="fchip" data-cat="preguntas" onclick="filtrarCat(this)">❓ Preguntas</button>
+      <button class="fchip" data-cat="logros" onclick="filtrarCat(this)">🏆 Logros</button>
     </div>
     <div class="search-wrap">
       <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
-      <input class="search-input" placeholder="#hashtag o palabra"/>
+      <input class="search-input" id="buscarPosts" placeholder="#hashtag o palabra"/>
     </div>
   </div>
 
-  <!-- COMPOSER con hashtags clickeables -->
+  <!-- COMPOSER -->
   <div class="composer">
     <div class="composer-row">
-      <div class="composer-avatar"></div>
+      <div class="avatar-circle composer-avatar" id="miAvatar">·</div>
       <textarea class="composer-input" placeholder="¿Qué querés compartir hoy con la comunidad?" id="composerText"></textarea>
     </div>
 
-    <!-- Hashtags clickeables -->
-    <div class="hashtag-section">
-      <div class="hashtag-label">
-        ETIQUETAS
-        <span class="hashtag-info" title="Elegí 1 o más etiquetas para clasificar tu post">?</span>
+    <div class="composer-extra">
+      <div class="extra-label">CATEGORÍA</div>
+      <div class="cat-chips" id="catChips">
+        <button class="cat-chip selected" data-cat="general" onclick="elegirCategoria(this)" type="button">General</button>
+        <button class="cat-chip" data-cat="consejos" onclick="elegirCategoria(this)" type="button">💡 Consejo</button>
+        <button class="cat-chip" data-cat="avances" onclick="elegirCategoria(this)" type="button">🚀 Avance</button>
+        <button class="cat-chip" data-cat="preguntas" onclick="elegirCategoria(this)" type="button">❓ Pregunta</button>
+        <button class="cat-chip" data-cat="logros" onclick="elegirCategoria(this)" type="button">🏆 Logro</button>
+        <button class="cat-chip" data-cat="anuncios" onclick="elegirCategoria(this)" type="button" id="chipAnuncio" style="display:none">📌 Anuncio</button>
       </div>
-      <div class="hashtag-chips" id="hashtagChips">
-        <!-- Se rellenan con JS desde localStorage -->
+
+      <div class="extra-label">ETIQUETAS</div>
+      <div class="hashtag-chips" id="hashtagChips"></div>
+
+      <div class="composer-preview" id="composerPreview" style="display:none">
+        <img id="composerPreviewImg" alt="">
+        <button type="button" onclick="quitarFotoPost()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
       </div>
     </div>
 
     <div class="composer-tools">
       <div class="composer-tools-left">
-        <button class="tool-btn">
+        <button class="tool-btn" type="button" onclick="document.getElementById('postFotoInput').click()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-          Foto
+          <span id="fotoBtnText">Foto</span>
         </button>
-        <button class="tool-btn">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-          Video
-        </button>
+        <input type="file" id="postFotoInput" accept="image/*" style="display:none" onchange="subirFotoPost(event)">
       </div>
-      <button class="cta-gold post-btn" onclick="publicar()">PUBLICAR</button>
+      <button class="cta-gold post-btn" id="btnPublicar" onclick="publicar()">PUBLICAR</button>
     </div>
   </div>
 
-  <!-- Post pineado de Milena -->
-  <div class="post pinned">
-    <div class="post-head">
-      <div class="post-avatar milena"></div>
-      <div class="post-author-info">
-        <div class="post-author-row">
-          <span class="post-author-name">Milena Machado</span>
-          <span class="pinned-tag">📌 FUNDADORA</span>
-          <span class="lvl lvl-6">💎 NIVEL 6 · DIAMANTE</span>
-        </div>
-        <div class="post-meta">
-          <span>hace 2 h</span>
-          <span>·</span>
-          <span>📌 Anuncios</span>
-        </div>
-      </div>
-    </div>
-    <p class="post-body">¡Bienvenidas todas las nuevas! 💎 Esta semana arrancamos un <span class="hashtag">#desafio30dias</span> donde cada día publicamos UN avance concreto. Quien complete los 30 días gana acceso anticipado al nuevo curso. ¿Quién se suma?</p>
-    <div class="post-actions">
-      <button class="pa-btn liked">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="url(#dM)" style="filter:drop-shadow(0 0 3px rgba(232,184,196,0.5))"><defs><linearGradient id="dM" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#B8294A"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
-        347
-      </button>
-      <button class="pa-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        128 comentarios
-      </button>
-      <button class="pa-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-        Compartir
-      </button>
-      <button class="pa-btn save">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        Guardar
-      </button>
+  <!-- FEED -->
+  <div id="feed">
+    <div class="feed-loading">
+      <div class="fspinner"></div>
+      <div style="font-size:13px;color:rgba(255,245,240,0.5)">Cargando la comunidad...</div>
     </div>
   </div>
-
-  <!-- Post de alumna con foto -->
-  <div class="post">
-    <div class="post-head">
-      <div class="post-avatar" style="background:linear-gradient(135deg,#7A1B2E,#C97990)"></div>
-      <div class="post-author-info">
-        <div class="post-author-row">
-          <span class="post-author-name">Carolina Saldívar</span>
-          <span class="lvl lvl-4">NIVEL 4 · BRILLANTE</span>
-        </div>
-        <div class="post-meta">
-          <span>hace 5 h</span>
-          <span>·</span>
-          <span>🚀 Avances</span>
-        </div>
-      </div>
-    </div>
-    <p class="post-body">¡FACTURÉ MI PRIMER MILLÓN! 🎉 Hace 6 meses arranqué el curso de CMM sin saber nada. Hoy cerré una venta de Gs 1.200.000 con un cliente que me dijo SÍ a la primera propuesta. <span class="hashtag">#primervimillon</span> <span class="hashtag">#desafio30dias</span></p>
-    <div class="post-image" style="background:linear-gradient(135deg,#2D0A18,#7A1B2E,#1A0509)">
-      <div style="position:absolute;width:240px;height:240px;left:-60px;top:-60px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.5),transparent 65%)"></div>
-      <div style="position:absolute;width:200px;height:200px;right:-50px;bottom:-50px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.45),transparent 65%)"></div>
-      <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:90px">💰</div>
-    </div>
-    <div class="post-actions">
-      <button class="pa-btn liked">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="url(#dC)" style="filter:drop-shadow(0 0 3px rgba(232,184,196,0.5))"><defs><linearGradient id="dC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#B8294A"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
-        184
-      </button>
-      <button class="pa-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        47
-      </button>
-      <button class="pa-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-        Compartir
-      </button>
-      <button class="pa-btn save">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- Post pregunta -->
-  <div class="post">
-    <div class="post-head">
-      <div class="post-avatar" style="background:linear-gradient(135deg,#4A0F1E,#B8294A)"></div>
-      <div class="post-author-info">
-        <div class="post-author-row">
-          <span class="post-author-name">Diego Ramírez</span>
-          <span class="lvl lvl-2">NIVEL 2 · EN CAMINO</span>
-        </div>
-        <div class="post-meta">
-          <span>hace 1 d</span>
-          <span>·</span>
-          <span>❓ Preguntas</span>
-        </div>
-      </div>
-    </div>
-    <p class="post-body">Chicos, una duda con Pagopar: ¿les conviene cobrar en USD o en Gs? Mis clientes son mitad de Paraguay y mitad de Argentina. <span class="hashtag">#pagopar</span> <span class="hashtag">#cobros</span></p>
-    <div class="post-actions">
-      <button class="pa-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="1.7"><path d="M6 3h12l4 6-10 13L2 9z" stroke-linejoin="round"/></svg>
-        12
-      </button>
-      <button class="pa-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        18
-      </button>
-      <button class="pa-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      </button>
-      <button class="pa-btn save">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- Post consejo -->
-  <div class="post">
-    <div class="post-head">
-      <div class="post-avatar" style="background:linear-gradient(135deg,#D4A356,#E8B8C4)"></div>
-      <div class="post-author-info">
-        <div class="post-author-row">
-          <span class="post-author-name">Patricia Méndez</span>
-          <span class="lvl lvl-5">NIVEL 5 · MILLONARIA</span>
-        </div>
-        <div class="post-meta">
-          <span>hace 2 d</span>
-          <span>·</span>
-          <span>💡 Consejos</span>
-        </div>
-      </div>
-    </div>
-    <p class="post-body">Un tip que me cambió la vida: <strong style="color:#FAC775">DEJÁ de responder DMs a las 23 hs.</strong> Si trabajás 24/7 le enseñás a tus clientes que sos urgente y barata. Si tenés horario claro, te respetan más y cobrás mejor. <span class="hashtag">#mindset</span></p>
-    <div class="post-actions">
-      <button class="pa-btn liked">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="url(#dP)" style="filter:drop-shadow(0 0 3px rgba(232,184,196,0.5))"><defs><linearGradient id="dP" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#B8294A"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
-        96
-      </button>
-      <button class="pa-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        24
-      </button>
-      <button class="pa-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      </button>
-      <button class="pa-btn save">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <button class="show-more">CARGAR MÁS POSTS</button>
 
 </div>
 
@@ -346,106 +231,540 @@ body{visibility:hidden}
   Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
 </footer>
 
-<!-- Toast -->
 <div class="toast" id="toast">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E0509" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
   <span id="toastText">Post publicado</span>
 </div>
-
-<script>
-  // ============================
-  // HASHTAGS DESDE SUPABASE
-  // ============================
-  let hashtagsDisponibles = [];
-  let hashtagsSeleccionados = [];
-
-  async function cargarHashtagsDisponibles() {
-    if (!sb) return;
-    const { data, error } = await sb
-      .from('hashtags')
-      .select('nombre')
-      .order('nombre', { ascending: true });
-    if (error) {
-      console.error('Error cargando hashtags:', error);
-      return;
-    }
-    hashtagsDisponibles = (data || []).map(h => h.nombre);
-    renderHashtags();
-  }
-
-  function renderHashtags(){
-    const container = document.getElementById('hashtagChips');
-    if (hashtagsDisponibles.length === 0) {
-      container.innerHTML = '<div style="font-size:11.5px;color:rgba(255,245,240,0.4);font-style:italic">No hay etiquetas disponibles todavía</div>';
-      return;
-    }
-    container.innerHTML = hashtagsDisponibles.map(h => `
-      <button class="hashtag-chip" data-tag="${h}" onclick="toggleHashtag(this)" type="button">#${h}</button>
-    `).join('');
-  }
-
-  function toggleHashtag(el){
-    const tag = el.dataset.tag;
-    if(hashtagsSeleccionados.includes(tag)){
-      hashtagsSeleccionados = hashtagsSeleccionados.filter(t => t !== tag);
-      el.classList.remove('selected');
-    } else {
-      hashtagsSeleccionados.push(tag);
-      el.classList.add('selected');
-    }
-  }
-
-  function publicar(){
-    const text = document.getElementById('composerText').value.trim();
-    if(!text){
-      mostrarToast('Escribí algo primero ✏️', false);
-      return;
-    }
-    const hashtagsTexto = hashtagsSeleccionados.length > 0
-      ? ' · con etiquetas: ' + hashtagsSeleccionados.map(h => '#' + h).join(', ')
-      : '';
-    mostrarToast('✓ Publicado (demo)' + hashtagsTexto);
-
-    document.getElementById('composerText').value = '';
-    hashtagsSeleccionados = [];
-    document.querySelectorAll('.hashtag-chip.selected').forEach(c => c.classList.remove('selected'));
-  }
-
-  function mostrarToast(msg){
-    const t = document.getElementById('toast');
-    document.getElementById('toastText').textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-  }
-
-  // Cargar hashtags cuando Supabase esté listo
-  const waitSupaCom = setInterval(() => {
-    if (typeof sb !== 'undefined' && sb !== null) {
-      clearInterval(waitSupaCom);
-      cargarHashtagsDisponibles();
-    }
-  }, 100);
-</script>
 
 <script src="supabase-config.js"></script>
 <script src="header-dinamico.js"></script>
 <script>
-(function() {
-  const checkLogin = setInterval(async () => {
-    if (typeof sb !== 'undefined' && sb !== null) {
-      clearInterval(checkLogin);
-      const { data: { user } } = await sb.auth.getUser();
-      if (!user) {
-        window.location.replace('/login');
-      } else {
-        // Mostrar la página
-        document.getElementById('auth-splash-style').remove();
-        const splash = document.getElementById('authSplash');
-        if (splash) splash.remove();
-      }
+// ═══════════════════════════════════════════════════════════════════
+// COMUNIDAD CMM - conectada a Supabase
+// ═══════════════════════════════════════════════════════════════════
+
+let usuarioActual = null;
+let perfilActual = null;
+let esAdmin = false;
+
+let posts = [];
+let perfilesCache = {};
+let likesPorPost = {};
+let misLikes = new Set();
+let comentariosPorPost = {};
+
+let categoriaPost = 'general';
+let hashtagsDisponibles = [];
+let hashtagsSeleccionados = [];
+let fotoPostUrl = null;
+
+let filtroCategoria = 'todos';
+let textoBusqueda = '';
+
+// ─── Utilidades ────────────────────────────────────────────────────
+function escapeHtml(t){
+  if(!t) return '';
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+function colorDeNombre(nombre){
+  const paletas = [
+    'linear-gradient(135deg,#7A1B2E,#E8B8C4)',
+    'linear-gradient(135deg,#4A0F1E,#B8294A)',
+    'linear-gradient(135deg,#D4A356,#E8B8C4)',
+    'linear-gradient(135deg,#7A1B2E,#C97990)',
+    'linear-gradient(135deg,#3D1208,#D4A356)',
+    'linear-gradient(135deg,#B8294A,#FAC775)'
+  ];
+  let h = 0;
+  for(let i=0;i<(nombre||'x').length;i++) h = (h + (nombre||'x').charCodeAt(i)) % paletas.length;
+  return paletas[h];
+}
+
+function inicial(nombre){
+  return (nombre || 'A').trim().charAt(0).toUpperCase();
+}
+
+function tiempoRelativo(fecha){
+  if(!fecha) return '';
+  const seg = Math.floor((Date.now() - new Date(fecha).getTime())/1000);
+  if(seg < 60) return 'hace un momento';
+  const min = Math.floor(seg/60);
+  if(min < 60) return 'hace ' + min + ' min';
+  const hr = Math.floor(min/60);
+  if(hr < 24) return 'hace ' + hr + ' h';
+  const dias = Math.floor(hr/24);
+  if(dias < 7) return 'hace ' + dias + (dias === 1 ? ' día' : ' días');
+  const d = new Date(fecha);
+  const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return d.getDate() + ' ' + meses[d.getMonth()];
+}
+
+function resaltarHashtags(texto){
+  return escapeHtml(texto).replace(/#([\wáéíóúñÁÉÍÓÚÑ]+)/g, '<span class="hashtag">#$1</span>');
+}
+
+function mostrarToast(msg, esError){
+  const t = document.getElementById('toast');
+  document.getElementById('toastText').textContent = msg;
+  t.classList.toggle('error', !!esError);
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ─── Composer ──────────────────────────────────────────────────────
+function elegirCategoria(el){
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  categoriaPost = el.dataset.cat;
+}
+
+async function cargarHashtagsDisponibles(){
+  const { data } = await sb.from('hashtags').select('nombre').order('nombre', { ascending: true });
+  hashtagsDisponibles = (data || []).map(h => h.nombre);
+  const cont = document.getElementById('hashtagChips');
+  if(hashtagsDisponibles.length === 0){
+    cont.innerHTML = '<div style="font-size:11.5px;color:rgba(255,245,240,0.4);font-style:italic">No hay etiquetas todavía</div>';
+    return;
+  }
+  cont.innerHTML = hashtagsDisponibles.map(h =>
+    `<button class="hashtag-chip" data-tag="${escapeHtml(h)}" onclick="toggleHashtag(this)" type="button">#${escapeHtml(h)}</button>`
+  ).join('');
+}
+
+function toggleHashtag(el){
+  const tag = el.dataset.tag;
+  if(hashtagsSeleccionados.includes(tag)){
+    hashtagsSeleccionados = hashtagsSeleccionados.filter(t => t !== tag);
+    el.classList.remove('selected');
+  } else {
+    hashtagsSeleccionados.push(tag);
+    el.classList.add('selected');
+  }
+}
+
+async function subirFotoPost(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  if(file.size > 5 * 1024 * 1024){
+    mostrarToast('La foto no puede pesar más de 5 MB', true);
+    return;
+  }
+  document.getElementById('fotoBtnText').textContent = 'Subiendo...';
+  const r = await subirImagen(file, 'posts');
+  document.getElementById('fotoBtnText').textContent = 'Foto';
+  if(r.exito){
+    fotoPostUrl = r.url;
+    document.getElementById('composerPreviewImg').src = r.url;
+    document.getElementById('composerPreview').style.display = 'block';
+  } else {
+    mostrarToast('No se pudo subir: ' + r.error, true);
+  }
+  event.target.value = '';
+}
+
+function quitarFotoPost(){
+  fotoPostUrl = null;
+  document.getElementById('composerPreview').style.display = 'none';
+  document.getElementById('composerPreviewImg').src = '';
+}
+
+async function publicar(){
+  const texto = document.getElementById('composerText').value.trim();
+  if(!texto && !fotoPostUrl){
+    mostrarToast('Escribí algo o subí una foto ✏️', true);
+    return;
+  }
+
+  const btn = document.getElementById('btnPublicar');
+  btn.disabled = true;
+  btn.textContent = 'PUBLICANDO...';
+
+  const { error } = await sb.from('posts').insert({
+    usuario_id: usuarioActual.id,
+    contenido: texto,
+    categoria: categoriaPost,
+    hashtags: hashtagsSeleccionados.length ? hashtagsSeleccionados : null,
+    imagen_url: fotoPostUrl
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'PUBLICAR';
+
+  if(error){
+    mostrarToast('Error al publicar: ' + error.message, true);
+    return;
+  }
+
+  // Limpiar composer
+  document.getElementById('composerText').value = '';
+  hashtagsSeleccionados = [];
+  document.querySelectorAll('.hashtag-chip.selected').forEach(c => c.classList.remove('selected'));
+  quitarFotoPost();
+  mostrarToast('✓ Publicado en la comunidad');
+
+  await cargarFeed();
+}
+
+// ─── Feed ──────────────────────────────────────────────────────────
+async function cargarFeed(){
+  const { data: postsData, error } = await sb
+    .from('posts')
+    .select('*')
+    .order('fijado', { ascending: false })
+    .order('creado_en', { ascending: false })
+    .limit(60);
+
+  if(error){
+    document.getElementById('feed').innerHTML =
+      '<div class="feed-empty"><div style="font-size:42px;opacity:0.4;margin-bottom:12px">⚠️</div>' +
+      '<div style="font-size:14px">No se pudo cargar el feed</div>' +
+      '<div style="font-size:12px;color:rgba(255,245,240,0.4);margin-top:6px">' + escapeHtml(error.message) + '</div></div>';
+    return;
+  }
+
+  posts = postsData || [];
+
+  if(posts.length === 0){
+    renderFeed();
+    return;
+  }
+
+  const idsPost = posts.map(p => p.id);
+  const idsUsuario = [...new Set(posts.map(p => p.usuario_id).filter(Boolean))];
+
+  // Perfiles de los autores
+  if(idsUsuario.length){
+    const { data: perfiles } = await sb
+      .from('perfiles')
+      .select('id, nombre, email, rol, avatar_url')
+      .in('id', idsUsuario);
+    (perfiles || []).forEach(p => { perfilesCache[p.id] = p; });
+  }
+
+  // Likes
+  likesPorPost = {};
+  misLikes = new Set();
+  const { data: likes } = await sb.from('likes').select('post_id, usuario_id').in('post_id', idsPost);
+  (likes || []).forEach(l => {
+    likesPorPost[l.post_id] = (likesPorPost[l.post_id] || 0) + 1;
+    if(l.usuario_id === usuarioActual.id) misLikes.add(l.post_id);
+  });
+
+  // Comentarios
+  comentariosPorPost = {};
+  const { data: comentarios } = await sb
+    .from('comentarios')
+    .select('*')
+    .in('post_id', idsPost)
+    .order('creado_en', { ascending: true });
+
+  const idsComentaristas = [...new Set((comentarios || []).map(c => c.usuario_id).filter(Boolean))]
+    .filter(id => !perfilesCache[id]);
+  if(idsComentaristas.length){
+    const { data: perfilesC } = await sb
+      .from('perfiles')
+      .select('id, nombre, email, rol, avatar_url')
+      .in('id', idsComentaristas);
+    (perfilesC || []).forEach(p => { perfilesCache[p.id] = p; });
+  }
+
+  (comentarios || []).forEach(c => {
+    if(!comentariosPorPost[c.post_id]) comentariosPorPost[c.post_id] = [];
+    comentariosPorPost[c.post_id].push(c);
+  });
+
+  renderFeed();
+}
+
+function nombreDe(usuarioId){
+  const p = perfilesCache[usuarioId];
+  if(!p) return 'Miembro de la comunidad';
+  return p.nombre || (p.email ? p.email.split('@')[0] : 'Miembro');
+}
+
+function rolDe(usuarioId){
+  return perfilesCache[usuarioId]?.rol || 'alumna';
+}
+
+function avatarHtml(usuarioId, clase){
+  const nombre = nombreDe(usuarioId);
+  const rol = rolDe(usuarioId);
+  const esFund = rol === 'fundadora' || rol === 'admin';
+  const url = perfilesCache[usuarioId]?.avatar_url;
+  const style = url
+    ? `background-image:url('${escapeHtml(url)}');background-size:cover;background-position:center`
+    : `background:${colorDeNombre(nombre)}`;
+  return `<div class="avatar-circle ${clase} ${esFund ? 'fundadora' : ''}" style="${style}">${url ? '' : inicial(nombre)}</div>`;
+}
+
+function postVisible(p){
+  if(filtroCategoria !== 'todos' && (p.categoria || 'general') !== filtroCategoria) return false;
+  if(textoBusqueda){
+    const q = textoBusqueda.toLowerCase().replace('#','');
+    const enTexto = (p.contenido || '').toLowerCase().includes(q);
+    const enTags = (p.hashtags || []).some(t => t.toLowerCase().includes(q));
+    const enAutor = nombreDe(p.usuario_id).toLowerCase().includes(q);
+    if(!enTexto && !enTags && !enAutor) return false;
+  }
+  return true;
+}
+
+function renderFeed(){
+  const feed = document.getElementById('feed');
+  const lista = posts.filter(postVisible);
+
+  if(lista.length === 0){
+    const vacio = posts.length === 0;
+    feed.innerHTML = `
+      <div class="feed-empty">
+        <div style="font-size:46px;opacity:0.4;margin-bottom:14px">${vacio ? '💬' : '🔍'}</div>
+        <div style="font-size:15px;margin-bottom:6px">${vacio ? 'Todavía no hay publicaciones' : 'No encontramos nada'}</div>
+        <div style="font-size:12.5px;color:rgba(255,245,240,0.45)">${vacio ? 'Sé la primera en compartir algo con la comunidad' : 'Probá con otra palabra o categoría'}</div>
+      </div>`;
+    return;
+  }
+
+  feed.innerHTML = lista.map(p => {
+    const nombre = escapeHtml(nombreDe(p.usuario_id));
+    const rol = rolDe(p.usuario_id);
+    const esFund = rol === 'fundadora' || rol === 'admin';
+    const nLikes = likesPorPost[p.id] || 0;
+    const yoDiLike = misLikes.has(p.id);
+    const coments = comentariosPorPost[p.id] || [];
+    const puedeBorrar = p.usuario_id === usuarioActual.id || esAdmin;
+
+    const tags = (p.hashtags || []).map(t => `<span class="hashtag">#${escapeHtml(t)}</span>`).join(' ');
+
+    return `
+      <div class="post ${p.fijado ? 'pinned' : ''}" id="post-${p.id}">
+        <div class="post-head">
+          ${avatarHtml(p.usuario_id, 'post-avatar')}
+          <div class="post-author-info">
+            <div class="post-author-row">
+              <span class="post-author-name">${nombre}</span>
+              ${esFund ? '<span class="role-tag">💎 FUNDADORA</span>' : ''}
+              ${p.fijado ? '<span class="pinned-tag">📌 FIJADO</span>' : ''}
+            </div>
+            <div class="post-meta">
+              <span>${tiempoRelativo(p.creado_en)}</span>
+              ${p.categoria && p.categoria !== 'general' ? '<span>·</span><span>' + escapeHtml(p.categoria) + '</span>' : ''}
+            </div>
+          </div>
+          ${(puedeBorrar || esAdmin) ? `
+          <div class="post-menu">
+            <button class="post-menu-btn" onclick="toggleMenu('${p.id}', event)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="19" r="1.7"/></svg>
+            </button>
+            <div class="post-menu-drop" id="menu-${p.id}">
+              ${esAdmin ? `<button class="post-menu-item" onclick="fijarPost('${p.id}', ${!p.fijado})">${p.fijado ? 'Quitar de fijados' : '📌 Fijar arriba'}</button>` : ''}
+              ${puedeBorrar ? `<button class="post-menu-item danger" onclick="borrarPost('${p.id}')">Eliminar post</button>` : ''}
+            </div>
+          </div>` : ''}
+        </div>
+
+        ${p.contenido ? `<p class="post-body">${resaltarHashtags(p.contenido)}</p>` : ''}
+        ${tags ? `<p class="post-body" style="margin-top:-8px">${tags}</p>` : ''}
+        ${p.imagen_url ? `<img class="post-image" src="${escapeHtml(p.imagen_url)}" alt="" loading="lazy">` : ''}
+
+        <div class="post-actions">
+          <button class="pa-btn ${yoDiLike ? 'liked' : ''}" onclick="toggleLike('${p.id}')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="${yoDiLike ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8"><path d="M6 3l6 8 6-8M12 11v10" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 21l-5-5h10l-5 5z"/></svg>
+            <span id="likes-${p.id}">${nLikes}</span>
+          </button>
+          <button class="pa-btn" onclick="toggleComentarios('${p.id}')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-5.1A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            ${coments.length} ${coments.length === 1 ? 'comentario' : 'comentarios'}
+          </button>
+        </div>
+
+        <div class="comments-box" id="comments-${p.id}">
+          <div id="comments-list-${p.id}">${renderComentarios(p.id)}</div>
+          <div class="comment-form">
+            ${avatarHtml(usuarioActual.id, 'comment-avatar')}
+            <input class="comment-input" id="cinput-${p.id}" placeholder="Escribí un comentario..." onkeydown="if(event.key==='Enter')comentar('${p.id}')">
+            <button class="comment-send" onclick="comentar('${p.id}')">ENVIAR</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderComentarios(postId){
+  const lista = comentariosPorPost[postId] || [];
+  if(lista.length === 0){
+    return '<div style="font-size:12px;color:rgba(255,245,240,0.4);font-style:italic;margin-bottom:8px">Todavía no hay comentarios. Sé la primera.</div>';
+  }
+  return lista.map(c => {
+    const puedeBorrar = c.usuario_id === usuarioActual.id || esAdmin;
+    return `
+      <div class="comment">
+        ${avatarHtml(c.usuario_id, 'comment-avatar')}
+        <div class="comment-bubble">
+          <div class="comment-author">${escapeHtml(nombreDe(c.usuario_id))}</div>
+          <div class="comment-text">${resaltarHashtags(c.contenido)}</div>
+          <div style="display:flex;align-items:center">
+            <span class="comment-time">${tiempoRelativo(c.creado_en)}</span>
+            ${puedeBorrar ? `<button class="comment-del" onclick="borrarComentario('${c.id}')">Eliminar</button>` : ''}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ─── Acciones ──────────────────────────────────────────────────────
+function toggleMenu(id, ev){
+  ev.stopPropagation();
+  document.querySelectorAll('.post-menu-drop').forEach(m => {
+    if(m.id !== 'menu-' + id) m.classList.remove('show');
+  });
+  document.getElementById('menu-' + id).classList.toggle('show');
+}
+document.addEventListener('click', () => {
+  document.querySelectorAll('.post-menu-drop').forEach(m => m.classList.remove('show'));
+});
+
+async function toggleLike(postId){
+  const yaDiLike = misLikes.has(postId);
+
+  // Optimista
+  if(yaDiLike){
+    misLikes.delete(postId);
+    likesPorPost[postId] = Math.max(0, (likesPorPost[postId] || 1) - 1);
+  } else {
+    misLikes.add(postId);
+    likesPorPost[postId] = (likesPorPost[postId] || 0) + 1;
+  }
+  renderFeed();
+
+  if(yaDiLike){
+    await sb.from('likes').delete().eq('post_id', postId).eq('usuario_id', usuarioActual.id);
+  } else {
+    const { error } = await sb.from('likes').insert({ post_id: postId, usuario_id: usuarioActual.id });
+    if(error && !String(error.message).includes('duplicate')){
+      mostrarToast('No se pudo dar like', true);
     }
-  }, 50);
-})();
+  }
+}
+
+function toggleComentarios(postId){
+  document.getElementById('comments-' + postId).classList.toggle('show');
+}
+
+async function comentar(postId){
+  const input = document.getElementById('cinput-' + postId);
+  const texto = input.value.trim();
+  if(!texto) return;
+  input.value = '';
+
+  const { error } = await sb.from('comentarios').insert({
+    post_id: postId,
+    usuario_id: usuarioActual.id,
+    contenido: texto
+  });
+
+  if(error){
+    mostrarToast('No se pudo comentar: ' + error.message, true);
+    return;
+  }
+
+  if(!comentariosPorPost[postId]) comentariosPorPost[postId] = [];
+  comentariosPorPost[postId].push({
+    id: 'tmp-' + Date.now(),
+    post_id: postId,
+    usuario_id: usuarioActual.id,
+    contenido: texto,
+    creado_en: new Date().toISOString()
+  });
+
+  renderFeed();
+  document.getElementById('comments-' + postId).classList.add('show');
+  await cargarFeed();
+  document.getElementById('comments-' + postId)?.classList.add('show');
+}
+
+async function borrarComentario(id){
+  if(!confirm('¿Eliminar este comentario?')) return;
+  const { error } = await sb.from('comentarios').delete().eq('id', id);
+  if(error) return mostrarToast('Error: ' + error.message, true);
+  mostrarToast('Comentario eliminado');
+  await cargarFeed();
+}
+
+async function borrarPost(id){
+  if(!confirm('¿Eliminar esta publicación? No se puede deshacer.')) return;
+  const { error } = await sb.from('posts').delete().eq('id', id);
+  if(error) return mostrarToast('Error: ' + error.message, true);
+  mostrarToast('Publicación eliminada');
+  await cargarFeed();
+}
+
+async function fijarPost(id, valor){
+  const { error } = await sb.from('posts').update({ fijado: valor }).eq('id', id);
+  if(error) return mostrarToast('Error: ' + error.message, true);
+  mostrarToast(valor ? '📌 Post fijado arriba' : 'Post desfijado');
+  await cargarFeed();
+}
+
+function filtrarCat(el){
+  document.querySelectorAll('.fchip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  filtroCategoria = el.dataset.cat;
+  renderFeed();
+}
+
+document.getElementById('buscarPosts').addEventListener('input', e => {
+  textoBusqueda = e.target.value.trim();
+  renderFeed();
+});
+
+// ─── Init ──────────────────────────────────────────────────────────
+const waitSupaCom = setInterval(async () => {
+  if(typeof sb === 'undefined' || sb === null) return;
+  clearInterval(waitSupaCom);
+
+  const { data: { user } } = await sb.auth.getUser();
+  if(!user){
+    window.location.replace('/login');
+    return;
+  }
+
+  usuarioActual = user;
+
+  const { data: perfil } = await sb
+    .from('perfiles')
+    .select('id, nombre, email, rol, avatar_url')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  perfilActual = perfil || { id: user.id, email: user.email, nombre: user.email.split('@')[0], rol: 'alumna' };
+  perfilesCache[user.id] = perfilActual;
+  esAdmin = ['admin','fundadora'].includes(perfilActual.rol);
+
+  if(esAdmin) document.getElementById('chipAnuncio').style.display = '';
+
+  // Avatar del composer
+  const mi = document.getElementById('miAvatar');
+  const nombreMio = perfilActual.nombre || perfilActual.email.split('@')[0];
+  if(perfilActual.avatar_url){
+    mi.style.backgroundImage = `url('${perfilActual.avatar_url}')`;
+    mi.style.backgroundSize = 'cover';
+    mi.style.backgroundPosition = 'center';
+    mi.textContent = '';
+  } else {
+    mi.style.background = colorDeNombre(nombreMio);
+    mi.textContent = inicial(nombreMio);
+  }
+
+  // Mostrar página
+  document.getElementById('auth-splash-style')?.remove();
+  document.getElementById('authSplash')?.remove();
+
+  await cargarHashtagsDisponibles();
+  await cargarFeed();
+}, 50);
 </script>
 
 </body>

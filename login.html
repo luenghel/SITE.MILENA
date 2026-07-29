@@ -23,7 +23,6 @@
   .logo-words{font-size:15px;line-height:1.15;letter-spacing:0.16em;font-weight:500}
   .tagline{font-size:13px;color:rgba(232,184,196,0.85);text-align:center}
 
-  /* Tabs login/registro */
   .tabs-row{display:flex;gap:6px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.1);border-radius:12px;padding:4px;margin-bottom:24px}
   .tab-btn{flex:1;padding:11px;font-size:12px;font-weight:500;letter-spacing:0.16em;color:rgba(255,245,240,0.55);cursor:pointer;border-radius:9px;transition:all 0.25s;background:transparent;border:none;font-family:inherit}
   .tab-btn.active{background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208}
@@ -32,7 +31,7 @@
   .tab-content.active{display:block}
 
   .login-title{font-size:30px;font-weight:500;text-align:center;margin:0 0 6px;letter-spacing:-0.02em}
-  .login-subtitle{font-size:13px;color:rgba(255,245,240,0.6);text-align:center;margin:0 0 28px}
+  .login-subtitle{font-size:13px;color:rgba(255,245,240,0.6);text-align:center;margin:0 0 28px;line-height:1.5}
 
   .field-group{margin-bottom:18px}
   .field-label{font-size:10px;letter-spacing:0.2em;color:rgba(255,245,240,0.5);font-weight:500;display:block;margin-bottom:7px}
@@ -45,30 +44,48 @@
   .forgot-link{font-size:12px;color:rgba(232,184,196,0.7);cursor:pointer;text-decoration:none;background:none;border:none;font-family:inherit}
   .forgot-link:hover{color:#E8B8C4}
 
-  .submit-btn{width:100%;padding:16px;font-size:13px;font-weight:500;border-radius:12px;letter-spacing:0.18em}
+  .submit-btn{width:100%;padding:16px;font-size:13px;font-weight:500;border-radius:12px;letter-spacing:0.18em;border:none;cursor:pointer}
   .submit-btn:disabled{opacity:0.6;cursor:not-allowed}
 
-  .divider{display:flex;align-items:center;gap:14px;margin:22px 0}
-  .divider-line{flex:1;height:0.5px;background:rgba(255,245,240,0.12)}
-  .divider-text{font-size:10px;letter-spacing:0.2em;color:rgba(255,245,240,0.4)}
-
-  /* Mensajes */
-  .alert{padding:12px 14px;border-radius:10px;font-size:13px;margin-bottom:18px;display:none;align-items:flex-start;gap:10px}
+  .alert{padding:12px 14px;border-radius:10px;font-size:13px;margin-bottom:18px;display:none;align-items:flex-start;gap:10px;line-height:1.45}
   .alert.show{display:flex}
   .alert.error{background:rgba(255,59,71,0.1);border:0.5px solid rgba(255,59,71,0.4);color:#FF8090}
   .alert.success{background:rgba(93,202,165,0.1);border:0.5px solid rgba(93,202,165,0.4);color:#9FE1CB}
   .alert.info{background:rgba(212,163,86,0.1);border:0.5px solid rgba(212,163,86,0.4);color:#FAC775}
 
-  /* Loading */
   .loading-dots{display:inline-flex;gap:4px}
   .loading-dots span{width:6px;height:6px;border-radius:50%;background:currentColor;animation:loadingDot 1.4s ease-in-out infinite both}
   .loading-dots span:nth-child(2){animation-delay:0.16s}
   .loading-dots span:nth-child(3){animation-delay:0.32s}
   @keyframes loadingDot{0%,80%,100%{opacity:0.3;transform:scale(0.8)}40%{opacity:1;transform:scale(1)}}
 
+  /* ── Pantalla de código ── */
+  .codigo-icon{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,rgba(212,163,86,0.25),rgba(212,163,86,0.06));border:0.5px solid rgba(212,163,86,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:popIn 0.45s cubic-bezier(0.34,1.6,0.64,1)}
+  @keyframes popIn{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+
+  .codigo-email{color:#FAC775;font-weight:500;word-break:break-all}
+
+  .codigo-inputs{display:flex;gap:8px;justify-content:center;margin-bottom:22px}
+  .codigo-box{width:46px;height:56px;text-align:center;font-size:24px;font-weight:600;font-family:Georgia,serif;background:rgba(255,245,240,0.05);border:1px solid rgba(255,245,240,0.18);border-radius:11px;color:#FFF5F0;outline:none;transition:all 0.2s;-moz-appearance:textfield}
+  .codigo-box::-webkit-outer-spin-button,.codigo-box::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .codigo-box:focus{border-color:#FAC775;background:rgba(212,163,86,0.1);box-shadow:0 0 0 3px rgba(212,163,86,0.15);transform:translateY(-2px)}
+  .codigo-box.lleno{border-color:rgba(212,163,86,0.6);background:rgba(212,163,86,0.08)}
+
+  .reenviar-row{text-align:center;margin-top:18px;font-size:12.5px;color:rgba(255,245,240,0.55)}
+  .reenviar-btn{background:none;border:none;color:#FAC775;font-size:12.5px;cursor:pointer;font-family:inherit;font-weight:500;text-decoration:underline}
+  .reenviar-btn:disabled{color:rgba(255,245,240,0.35);cursor:not-allowed;text-decoration:none}
+
+  .volver-row{text-align:center;margin-top:14px}
+  .volver-btn{background:none;border:none;color:rgba(255,245,240,0.5);font-size:12px;cursor:pointer;font-family:inherit}
+  .volver-btn:hover{color:#FFF5F0}
+
+  .spam-tip{margin-top:20px;padding:11px 13px;background:rgba(255,245,240,0.04);border-radius:9px;font-size:11.5px;color:rgba(255,245,240,0.55);line-height:1.5;text-align:center}
+
   @media (max-width:480px){
     .login-title{font-size:24px}
     .logo-mark{width:42px;height:42px;font-size:21px}
+    .codigo-box{width:42px;height:52px;font-size:21px}
+    .codigo-inputs{gap:6px}
   }
 </style>
 </head>
@@ -91,194 +108,385 @@
     <div class="tagline serif-it">Creando Mentes Millonarias</div>
   </div>
 
-  <!-- Mensajes de error/éxito -->
   <div class="alert" id="alertBox">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="alertIcon"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/></svg>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/></svg>
     <span id="alertText"></span>
   </div>
 
   <!-- Tabs -->
-  <div class="tabs-row">
-    <button class="tab-btn active" id="tab-login" onclick="cambiarTab('login')">ENTRAR</button>
-    <button class="tab-btn" id="tab-registro" onclick="cambiarTab('registro')">REGISTRARSE</button>
+  <div class="tabs-row" id="tabsRow">
+    <button class="tab-btn active" onclick="cambiarTab('entrar')" id="tabEntrar">ENTRAR</button>
+    <button class="tab-btn" onclick="cambiarTab('registro')" id="tabRegistro">REGISTRARSE</button>
   </div>
 
-  <!-- TAB: LOGIN -->
-  <div class="tab-content active" id="content-login">
-    <h2 class="login-title serif">Bienvenida <span class="gradtext" style="font-size:30px">de vuelta</span></h2>
-    <p class="login-subtitle">Entrá a tu cuenta para seguir aprendiendo</p>
+  <!-- ═══ ENTRAR ═══ -->
+  <div class="tab-content active" id="content-entrar">
+    <h1 class="login-title serif">Bienvenida <span class="serif-it gradtext" style="font-size:30px">de nuevo</span></h1>
+    <p class="login-subtitle">Entrá para seguir con tus cursos</p>
 
-    <form onsubmit="hacerLogin(event)">
-      <div class="field-group">
-        <label class="field-label">EMAIL</label>
-        <div class="input-wrap">
-          <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" stroke-linecap="round"/></svg>
-          <input type="email" class="input-padded" placeholder="vos@ejemplo.com" id="loginEmail" required autocomplete="email">
-        </div>
+    <div class="field-group">
+      <label class="field-label">EMAIL</label>
+      <div class="input-wrap">
+        <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+        <input class="input-padded" type="email" id="loginEmail" placeholder="vos@ejemplo.com" autocomplete="email">
       </div>
+    </div>
 
-      <div class="field-group">
-        <label class="field-label">CONTRASEÑA</label>
-        <div class="input-wrap">
-          <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="1.7"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke-linecap="round"/></svg>
-          <input type="password" class="input-padded" placeholder="••••••••" id="loginPassword" required autocomplete="current-password">
-        </div>
+    <div class="field-group">
+      <label class="field-label">CONTRASEÑA</label>
+      <div class="input-wrap">
+        <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <input class="input-padded" type="password" id="loginPass" placeholder="Tu contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')hacerLogin()">
       </div>
+    </div>
 
-      <div class="forgot-row">
-        <button type="button" class="forgot-link" onclick="recuperarContrasena()">¿Olvidaste tu contraseña?</button>
-      </div>
+    <div class="forgot-row">
+      <button class="forgot-link" onclick="recuperarContrasena()">¿Olvidaste tu contraseña?</button>
+    </div>
 
-      <button type="submit" class="cta-gold submit-btn" id="loginBtn">ENTRAR</button>
-    </form>
+    <button class="cta-gold submit-btn" id="btnLogin" onclick="hacerLogin()">ENTRAR</button>
   </div>
 
-  <!-- TAB: REGISTRO -->
+  <!-- ═══ REGISTRO ═══ -->
   <div class="tab-content" id="content-registro">
-    <h2 class="login-title serif">Crear tu <span class="gradtext" style="font-size:30px">cuenta</span></h2>
-    <p class="login-subtitle">Es gratis · Solo te toma 30 segundos</p>
+    <h1 class="login-title serif">Creá tu <span class="serif-it gradtext" style="font-size:30px">cuenta</span></h1>
+    <p class="login-subtitle">Te mandamos un código para verificar tu email</p>
 
-    <form onsubmit="hacerRegistro(event)">
-      <div class="field-group">
-        <label class="field-label">NOMBRE</label>
-        <div class="input-wrap">
-          <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="1.7"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <input type="text" class="input-padded" placeholder="María González" id="regNombre" required>
-        </div>
+    <div class="field-group">
+      <label class="field-label">NOMBRE</label>
+      <div class="input-wrap">
+        <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+        <input class="input-padded" type="text" id="regNombre" placeholder="Tu nombre" autocomplete="name">
       </div>
+    </div>
 
-      <div class="field-group">
-        <label class="field-label">EMAIL</label>
-        <div class="input-wrap">
-          <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" stroke-linecap="round"/></svg>
-          <input type="email" class="input-padded" placeholder="vos@ejemplo.com" id="regEmail" required autocomplete="email">
-        </div>
+    <div class="field-group">
+      <label class="field-label">EMAIL</label>
+      <div class="input-wrap">
+        <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+        <input class="input-padded" type="email" id="regEmail" placeholder="vos@ejemplo.com" autocomplete="email">
       </div>
+    </div>
 
-      <div class="field-group">
-        <label class="field-label">CONTRASEÑA · MÍNIMO 6 CARACTERES</label>
-        <div class="input-wrap">
-          <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="1.7"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke-linecap="round"/></svg>
-          <input type="password" class="input-padded" placeholder="••••••••" id="regPassword" required minlength="6" autocomplete="new-password">
-        </div>
+    <div class="field-group">
+      <label class="field-label">CONTRASEÑA</label>
+      <div class="input-wrap">
+        <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <input class="input-padded" type="password" id="regPass" placeholder="Mínimo 6 caracteres" autocomplete="new-password" onkeydown="if(event.key==='Enter')hacerRegistro()">
       </div>
+    </div>
 
-      <button type="submit" class="cta-gold submit-btn" id="registroBtn">CREAR MI CUENTA</button>
-    </form>
-
-    <p style="text-align:center;font-size:11px;color:rgba(255,245,240,0.5);margin-top:18px;line-height:1.5">
-      Al crear tu cuenta aceptás nuestros <a href="#" style="color:#E8B8C4">términos</a> y <a href="#" style="color:#E8B8C4">política de privacidad</a>.
-    </p>
+    <button class="cta-gold submit-btn" id="btnRegistro" onclick="hacerRegistro()">CREAR MI CUENTA</button>
   </div>
+
+  <!-- ═══ CÓDIGO DE VERIFICACIÓN ═══ -->
+  <div class="tab-content" id="content-codigo">
+    <div class="codigo-icon">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+    </div>
+
+    <h1 class="login-title serif">Revisá tu <span class="serif-it gradtext" style="font-size:30px">email</span></h1>
+    <p class="login-subtitle">Enviamos un código de 6 dígitos a<br><span class="codigo-email" id="codigoEmailTxt"></span></p>
+
+    <div class="codigo-inputs" id="codigoInputs">
+      <input class="codigo-box" type="text" inputmode="numeric" maxlength="1" data-i="0">
+      <input class="codigo-box" type="text" inputmode="numeric" maxlength="1" data-i="1">
+      <input class="codigo-box" type="text" inputmode="numeric" maxlength="1" data-i="2">
+      <input class="codigo-box" type="text" inputmode="numeric" maxlength="1" data-i="3">
+      <input class="codigo-box" type="text" inputmode="numeric" maxlength="1" data-i="4">
+      <input class="codigo-box" type="text" inputmode="numeric" maxlength="1" data-i="5">
+    </div>
+
+    <button class="cta-gold submit-btn" id="btnVerificar" onclick="verificarCodigo()">VERIFICAR Y ENTRAR</button>
+
+    <div class="reenviar-row">
+      ¿No te llegó?
+      <button class="reenviar-btn" id="btnReenviar" onclick="reenviarCodigo()">Reenviar código</button>
+    </div>
+
+    <div class="volver-row">
+      <button class="volver-btn" onclick="volverDelCodigo()">← Usar otro email</button>
+    </div>
+
+    <div class="spam-tip">
+      💡 Si no lo ves, revisá la carpeta de <strong>spam</strong> o <strong>promociones</strong>.
+      El código vence en 1 hora.
+    </div>
+  </div>
+
 </div>
 
-<!-- Conectar con Supabase -->
 <script src="supabase-config.js"></script>
-
 <script>
-  // Cuando Supabase esté listo, verificar si ya hay sesión
-  window.onSupabaseReady = async () => {
-    const user = await obtenerUsuario();
-    if (user) {
-      // Ya está logueado, redirigir
-      window.location.href = '/';
+// ═══════════════════════════════════════════════════════════════════
+// LOGIN + REGISTRO CON VERIFICACIÓN POR CÓDIGO
+// ═══════════════════════════════════════════════════════════════════
+
+let emailPendiente = '';
+let nombrePendiente = '';
+let cooldownReenvio = 0;
+let cooldownTimer = null;
+
+// ─── UI helpers ────────────────────────────────────────────────────
+function mostrarAlerta(msg, tipo){
+  const box = document.getElementById('alertBox');
+  document.getElementById('alertText').textContent = msg;
+  box.className = 'alert show ' + (tipo || 'error');
+}
+function ocultarAlerta(){
+  document.getElementById('alertBox').className = 'alert';
+}
+
+function cambiarTab(tab){
+  ocultarAlerta();
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('content-' + tab).classList.add('active');
+  document.getElementById('tabsRow').style.display = (tab === 'codigo') ? 'none' : 'flex';
+  if(tab !== 'codigo'){
+    document.getElementById('tabEntrar').classList.toggle('active', tab === 'entrar');
+    document.getElementById('tabRegistro').classList.toggle('active', tab === 'registro');
+  }
+}
+
+function cargando(btnId, texto){
+  const b = document.getElementById(btnId);
+  b.disabled = true;
+  b.dataset.original = b.dataset.original || b.textContent;
+  b.innerHTML = texto + ' <span class="loading-dots"><span></span><span></span><span></span></span>';
+}
+function listo(btnId){
+  const b = document.getElementById(btnId);
+  b.disabled = false;
+  b.textContent = b.dataset.original || b.textContent;
+}
+
+function traducirError(msg){
+  const m = (msg || '').toLowerCase();
+  if(m.includes('invalid login credentials')) return 'Email o contraseña incorrectos';
+  if(m.includes('email not confirmed')) return 'Todavía no verificaste tu email';
+  if(m.includes('user already registered') || m.includes('already been registered')) return 'Ese email ya está registrado. Probá entrar o recuperar tu contraseña';
+  if(m.includes('password should be at least')) return 'La contraseña necesita al menos 6 caracteres';
+  if(m.includes('unable to validate email') || m.includes('invalid format')) return 'Ese email no parece válido';
+  if(m.includes('token has expired') || m.includes('expired')) return 'El código venció. Pedí uno nuevo';
+  if(m.includes('invalid') && m.includes('token')) return 'El código no es correcto. Revisalo e intentá de nuevo';
+  if(m.includes('rate limit') || m.includes('too many')) return 'Demasiados intentos. Esperá unos minutos';
+  if(m.includes('error sending') || m.includes('smtp')) return 'No pudimos enviar el email. Avisale al equipo';
+  if(m.includes('failed to fetch')) return 'Sin conexión con el servidor. Revisá tu internet';
+  return msg || 'Ocurrió un error inesperado';
+}
+
+// ─── ENTRAR ────────────────────────────────────────────────────────
+async function hacerLogin(){
+  ocultarAlerta();
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+
+  if(!email) return mostrarAlerta('Escribí tu email');
+  if(!pass) return mostrarAlerta('Escribí tu contraseña');
+
+  cargando('btnLogin', 'ENTRANDO');
+
+  const { data, error } = await sb.auth.signInWithPassword({ email: email, password: pass });
+
+  if(error){
+    listo('btnLogin');
+    // Si no confirmó el email, lo mandamos a la pantalla de código
+    if((error.message || '').toLowerCase().includes('email not confirmed')){
+      emailPendiente = email;
+      await enviarCodigoDeNuevo(true);
+      irAPantallaCodigo(email);
+      mostrarAlerta('Te faltaba verificar tu email. Te mandamos un código nuevo.', 'info');
+      return;
     }
-  };
-
-  function cambiarTab(tab) {
-    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.getElementById('tab-' + tab).classList.add('active');
-    document.getElementById('content-' + tab).classList.add('active');
-    ocultarAlerta();
+    return mostrarAlerta(traducirError(error.message));
   }
 
-  function mostrarAlerta(mensaje, tipo) {
-    const box = document.getElementById('alertBox');
-    document.getElementById('alertText').textContent = mensaje;
-    box.className = 'alert show ' + tipo;
+  mostrarAlerta('✓ Entrando...', 'success');
+  window.location.href = '/index';
+}
+
+// ─── REGISTRO ──────────────────────────────────────────────────────
+async function hacerRegistro(){
+  ocultarAlerta();
+  const nombre = document.getElementById('regNombre').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pass = document.getElementById('regPass').value;
+
+  if(!nombre) return mostrarAlerta('Escribí tu nombre');
+  if(!email) return mostrarAlerta('Escribí tu email');
+  if(pass.length < 6) return mostrarAlerta('La contraseña necesita al menos 6 caracteres');
+
+  cargando('btnRegistro', 'CREANDO');
+
+  const { data, error } = await sb.auth.signUp({
+    email: email,
+    password: pass,
+    options: { data: { nombre: nombre } }
+  });
+
+  listo('btnRegistro');
+
+  if(error) return mostrarAlerta(traducirError(error.message));
+
+  // Si Supabase devuelve sesión directa, es que la confirmación está apagada
+  if(data.session){
+    mostrarAlerta('✓ Cuenta creada. Entrando...', 'success');
+    window.location.href = '/index';
+    return;
   }
 
-  function ocultarAlerta() {
-    document.getElementById('alertBox').className = 'alert';
-  }
+  emailPendiente = email;
+  nombrePendiente = nombre;
+  irAPantallaCodigo(email);
+  arrancarCooldown(60);
+}
 
-  async function hacerLogin(e) {
+// ─── PANTALLA DE CÓDIGO ────────────────────────────────────────────
+function irAPantallaCodigo(email){
+  document.getElementById('codigoEmailTxt').textContent = email;
+  limpiarCodigo();
+  cambiarTab('codigo');
+  setTimeout(() => document.querySelector('.codigo-box').focus(), 250);
+}
+
+function volverDelCodigo(){
+  clearInterval(cooldownTimer);
+  cambiarTab('registro');
+}
+
+function limpiarCodigo(){
+  document.querySelectorAll('.codigo-box').forEach(b => {
+    b.value = '';
+    b.classList.remove('lleno');
+  });
+}
+
+function leerCodigo(){
+  return [...document.querySelectorAll('.codigo-box')].map(b => b.value).join('');
+}
+
+// Comportamiento de las 6 cajitas
+document.querySelectorAll('.codigo-box').forEach((box, idx, todas) => {
+  box.addEventListener('input', e => {
+    const v = e.target.value.replace(/\D/g, '');
+    e.target.value = v.slice(-1);
+    e.target.classList.toggle('lleno', !!e.target.value);
+    if(e.target.value && idx < todas.length - 1) todas[idx + 1].focus();
+    if(leerCodigo().length === 6) verificarCodigo();
+  });
+
+  box.addEventListener('keydown', e => {
+    if(e.key === 'Backspace' && !e.target.value && idx > 0){
+      todas[idx - 1].focus();
+      todas[idx - 1].value = '';
+      todas[idx - 1].classList.remove('lleno');
+    }
+    if(e.key === 'ArrowLeft' && idx > 0) todas[idx - 1].focus();
+    if(e.key === 'ArrowRight' && idx < todas.length - 1) todas[idx + 1].focus();
+  });
+
+  box.addEventListener('paste', e => {
     e.preventDefault();
-    if (!sb) {
-      mostrarAlerta('Conectando... esperá un segundo y volvé a intentar.', 'info');
-      return;
-    }
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    const btn = document.getElementById('loginBtn');
+    const texto = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+    texto.split('').forEach((d, i) => {
+      if(todas[i]){
+        todas[i].value = d;
+        todas[i].classList.add('lleno');
+      }
+    });
+    if(texto.length === 6) verificarCodigo();
+    else if(todas[texto.length]) todas[texto.length].focus();
+  });
+});
 
-    btn.disabled = true;
-    btn.innerHTML = '<span class="loading-dots"><span></span><span></span><span></span></span>';
-    ocultarAlerta();
+async function verificarCodigo(){
+  const codigo = leerCodigo();
+  if(codigo.length !== 6) return mostrarAlerta('Completá los 6 dígitos');
 
-    const result = await iniciarSesion(email, password);
+  ocultarAlerta();
+  cargando('btnVerificar', 'VERIFICANDO');
 
-    if (result.exito) {
-      mostrarAlerta('✓ Bienvenida! Redirigiendo...', 'success');
-      setTimeout(() => { window.location.href = '/'; }, 800);
-    } else {
+  // Probamos los dos tipos que usa Supabase para confirmar registro
+  let resultado = await sb.auth.verifyOtp({ email: emailPendiente, token: codigo, type: 'signup' });
+  if(resultado.error){
+    resultado = await sb.auth.verifyOtp({ email: emailPendiente, token: codigo, type: 'email' });
+  }
+
+  if(resultado.error){
+    listo('btnVerificar');
+    limpiarCodigo();
+    document.querySelector('.codigo-box').focus();
+    return mostrarAlerta(traducirError(resultado.error.message));
+  }
+
+  // Guardamos el nombre en el perfil
+  if(nombrePendiente && resultado.data?.user){
+    await sb.from('perfiles').update({ nombre: nombrePendiente }).eq('id', resultado.data.user.id);
+  }
+
+  mostrarAlerta('✓ ¡Email verificado! Entrando...', 'success');
+  setTimeout(() => { window.location.href = '/index'; }, 700);
+}
+
+// ─── REENVÍO ───────────────────────────────────────────────────────
+function arrancarCooldown(segundos){
+  cooldownReenvio = segundos;
+  const btn = document.getElementById('btnReenviar');
+  clearInterval(cooldownTimer);
+  cooldownTimer = setInterval(() => {
+    cooldownReenvio--;
+    if(cooldownReenvio <= 0){
+      clearInterval(cooldownTimer);
       btn.disabled = false;
-      btn.textContent = 'ENTRAR';
-      let mensaje = result.error;
-      if (mensaje.includes('Invalid login')) mensaje = 'Email o contraseña incorrectos';
-      if (mensaje.includes('Email not confirmed')) mensaje = 'Tenés que confirmar tu email primero';
-      mostrarAlerta(mensaje, 'error');
-    }
-  }
-
-  async function hacerRegistro(e) {
-    e.preventDefault();
-    if (!sb) {
-      mostrarAlerta('Conectando... esperá un segundo y volvé a intentar.', 'info');
-      return;
-    }
-    const nombre = document.getElementById('regNombre').value;
-    const email = document.getElementById('regEmail').value;
-    const password = document.getElementById('regPassword').value;
-    const btn = document.getElementById('registroBtn');
-
-    btn.disabled = true;
-    btn.innerHTML = '<span class="loading-dots"><span></span><span></span><span></span></span>';
-    ocultarAlerta();
-
-    const result = await registrarse(email, password, nombre);
-
-    if (result.exito) {
-      mostrarAlerta('✓ Cuenta creada! Redirigiendo...', 'success');
-      setTimeout(() => { window.location.href = '/'; }, 1200);
+      btn.textContent = 'Reenviar código';
     } else {
-      btn.disabled = false;
-      btn.textContent = 'CREAR MI CUENTA';
-      let mensaje = result.error;
-      if (mensaje.includes('already registered')) mensaje = 'Ese email ya tiene cuenta. Probá entrar.';
-      if (mensaje.includes('Password')) mensaje = 'La contraseña tiene que tener al menos 6 caracteres';
-      mostrarAlerta(mensaje, 'error');
+      btn.disabled = true;
+      btn.textContent = 'Reenviar en ' + cooldownReenvio + 's';
     }
-  }
+  }, 1000);
+  btn.disabled = true;
+  btn.textContent = 'Reenviar en ' + cooldownReenvio + 's';
+}
 
-  async function recuperarContrasena() {
-    if (!sb) {
-      mostrarAlerta('Conectando... esperá un segundo.', 'info');
-      return;
-    }
-    const email = document.getElementById('loginEmail').value;
-    if (!email) {
-      mostrarAlerta('Escribí tu email arriba primero', 'info');
-      return;
-    }
-    const result = await recuperarPassword(email);
-    if (result.exito) {
-      mostrarAlerta('✓ Te enviamos un email con instrucciones', 'success');
-    } else {
-      mostrarAlerta(result.error, 'error');
-    }
+async function enviarCodigoDeNuevo(silencioso){
+  const { error } = await sb.auth.resend({ type: 'signup', email: emailPendiente });
+  if(error && !silencioso) mostrarAlerta(traducirError(error.message));
+  return !error;
+}
+
+async function reenviarCodigo(){
+  if(cooldownReenvio > 0) return;
+  ocultarAlerta();
+  const ok = await enviarCodigoDeNuevo(false);
+  if(ok){
+    mostrarAlerta('✓ Código nuevo enviado a ' + emailPendiente, 'success');
+    limpiarCodigo();
+    document.querySelector('.codigo-box').focus();
+    arrancarCooldown(60);
   }
+}
+
+// ─── RECUPERAR CONTRASEÑA ──────────────────────────────────────────
+async function recuperarContrasena(){
+  ocultarAlerta();
+  const email = document.getElementById('loginEmail').value.trim();
+  if(!email) return mostrarAlerta('Escribí tu email arriba y volvé a tocar acá');
+
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/login'
+  });
+
+  if(error) return mostrarAlerta(traducirError(error.message));
+  mostrarAlerta('✓ Te mandamos un email para recuperar tu contraseña. Revisá también spam.', 'success');
+}
+
+// ─── Si ya está logueada, la sacamos de acá ────────────────────────
+const waitSupaLogin = setInterval(async () => {
+  if(typeof sb === 'undefined' || sb === null) return;
+  clearInterval(waitSupaLogin);
+  const { data: { user } } = await sb.auth.getUser();
+  if(user) window.location.replace('/index');
+}, 50);
 </script>
 
 </body>
