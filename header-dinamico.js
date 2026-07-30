@@ -86,6 +86,16 @@
 
       /* ── CELULAR: logo + foto + 3 puntitos, nada más ── */
       @media (max-width:900px){
+        /* Sin sesión: el botón ENTRAR más chico, para que no apriete */
+        .cmm-acciones .btn-outline{
+          padding:9px 14px !important;
+          font-size:10.5px !important;
+          letter-spacing:0.12em !important;
+          white-space:nowrap;
+        }
+        .header-inner{overflow:hidden}
+        .header-inner .logo{min-width:0;flex-shrink:1}
+        .logo-text{overflow:hidden;text-overflow:ellipsis}
         .cmm-burger{display:flex;width:38px;height:38px;border-radius:11px}
         .cmm-user-name{display:none}
         .cmm-user-btn{padding:0;max-width:none;background:none;border:none;border-radius:50%}

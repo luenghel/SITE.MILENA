@@ -417,6 +417,16 @@
   .poster{width:152px}
   .vertical-card{flex:0 0 136px}
 }
+
+  /* Nada se sale de la pantalla en celular */
+  @media (max-width:900px){
+    body{overflow-x:hidden}
+    section,.hero,.row-section,.community,.seguimiento-section,.newsletter-section{max-width:100vw}
+    .hero-inner{max-width:100%;box-sizing:border-box}
+    .hero-title,.hero-desc,.section-title{word-break:break-word;overflow-wrap:anywhere}
+    .scroll-row{max-width:100vw}
+  }
+
 </style>
 </head>
 <body>
@@ -756,6 +766,46 @@
     setTimeout(() => document.getElementById('newsletterSuccess').classList.remove('show'), 4000);
   };
 
+function renderCarruselPrincipal(){
+    const cap = document.getElementById('heroCarrusel');
+    const dots = document.getElementById('heroDots');
+    if(!cap) return;
+
+    cap.innerHTML = principalSlides.map((s, i) =>
+      `<div class="hero-slide ${i === 0 ? 'activa' : ''}" style="background-image:url('${s.imagen_url}')"></div>`
+    ).join('');
+
+    if(principalSlides.length > 1){
+      dots.innerHTML = principalSlides.map((_, i) =>
+        `<div class="hero-dot ${i === 0 ? 'active' : ''}" onclick="irASlide(${i})"></div>`
+      ).join('');
+      dots.classList.add('activo');
+    } else {
+      dots.classList.remove('activo');
+    }
+  }
+
+  function actualizarCarruselPrincipal(){
+    document.querySelectorAll('.hero-slide').forEach((el, i) => {
+      el.classList.toggle('activa', i === principalSlideIndex);
+    });
+    document.querySelectorAll('.hero-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === principalSlideIndex);
+    });
+  }
+
+  window.irASlide = function(i){
+    principalSlideIndex = i;
+    actualizarCarruselPrincipal();
+    if(principalInterval){
+      clearInterval(principalInterval);
+      principalInterval = setInterval(() => {
+        principalSlideIndex = (principalSlideIndex + 1) % principalSlides.length;
+        actualizarCarruselPrincipal();
+      }, 7000);
+    }
+  };
+
   const checkAuthIndex = setInterval(async () => {
     if (typeof sb !== 'undefined' && sb !== null) {
       clearInterval(checkAuthIndex);
@@ -808,44 +858,4 @@
 })();
 </script>
 </body>
-</html>  function renderCarruselPrincipal(){
-    const cap = document.getElementById('heroCarrusel');
-    const dots = document.getElementById('heroDots');
-    if(!cap) return;
-
-    cap.innerHTML = principalSlides.map((s, i) =>
-      `<div class="hero-slide ${i === 0 ? 'activa' : ''}" style="background-image:url('${s.imagen_url}')"></div>`
-    ).join('');
-
-    if(principalSlides.length > 1){
-      dots.innerHTML = principalSlides.map((_, i) =>
-        `<div class="hero-dot ${i === 0 ? 'active' : ''}" onclick="irASlide(${i})"></div>`
-      ).join('');
-      dots.classList.add('activo');
-    } else {
-      dots.classList.remove('activo');
-    }
-  }
-
-  function actualizarCarruselPrincipal(){
-    document.querySelectorAll('.hero-slide').forEach((el, i) => {
-      el.classList.toggle('activa', i === principalSlideIndex);
-    });
-    document.querySelectorAll('.hero-dot').forEach((d, i) => {
-      d.classList.toggle('active', i === principalSlideIndex);
-    });
-  }
-
-  window.irASlide = function(i){
-    principalSlideIndex = i;
-    actualizarCarruselPrincipal();
-    if(principalInterval){
-      clearInterval(principalInterval);
-      principalInterval = setInterval(() => {
-        principalSlideIndex = (principalSlideIndex + 1) % principalSlides.length;
-        actualizarCarruselPrincipal();
-      }, 7000);
-    }
-  };
-
-
+</html>
