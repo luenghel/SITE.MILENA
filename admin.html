@@ -1745,11 +1745,15 @@ body{visibility:hidden}
         <h1 class="header-title">Tus <span class="serif-it gradtext" style="font-size:34px">alumnas</span></h1>
         <p class="header-sub">Todas las personas registradas en el sitio.</p>
       </div>
-      <div class="header-actions">
+      <div class="header-actions" style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
         <div class="buscar-wrap">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
           <input class="al-buscar" id="buscarAlumnas" placeholder="Buscar por nombre o email">
         </div>
+        <button class="btn-secondary" onclick="configurarFuncionAdmin()" title="Si las acciones fallan, pegá acá la URL de la función">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Configurar
+        </button>
       </div>
     </div>
 
@@ -3169,6 +3173,81 @@ body{visibility:hidden}
   }
 
   // ============================
+  // LLAMAR A LA FUNCIÓN DE ADMINISTRACIÓN
+  // Supabase le pone nombres al azar, así que la buscamos sola
+  // y guardamos la que funcione.
+  // ============================
+  const CANDIDATAS_ADM = [
+    'admin-miembros', 'clever-processor', 'clever-process', 'clever-proc',
+    'clever-service', 'clever-worker', 'clever-endpoint', 'clever-api',
+    'clever-function', 'clever-handler', 'clever-task', 'clever-action'
+  ];
+
+  function urlFuncionGuardada(){
+    try { return localStorage.getItem('cmm_func_admin'); } catch(e){ return null; }
+  }
+  function guardarUrlFuncion(nombre){
+    try { localStorage.setItem('cmm_func_admin', nombre); } catch(e){}
+  }
+
+  async function llamarFuncionAdmin(cuerpo){
+    const { data: { session } } = await sb.auth.getSession();
+    const cabeceras = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + (session?.access_token || SUPABASE_ANON_KEY),
+      'apikey': SUPABASE_ANON_KEY
+    };
+
+    // Probamos primero la que ya sabemos que anda
+    const guardada = urlFuncionGuardada();
+    const lista = guardada ? [guardada, ...CANDIDATAS_ADM.filter(x => x !== guardada)] : CANDIDATAS_ADM;
+
+    let ultimoError = null;
+
+    for(const nombre of lista){
+      try {
+        const r = await fetch(SUPABASE_URL + '/functions/v1/' + nombre, {
+          method: 'POST', headers: cabeceras, body: JSON.stringify(cuerpo)
+        });
+
+        // 404 = no existe con ese nombre, seguimos probando
+        if(r.status === 404) continue;
+
+        let d = {};
+        try { d = await r.json(); } catch(e){}
+
+        // Respondió algo: es la nuestra
+        guardarUrlFuncion(nombre);
+        return { ok: r.ok, status: r.status, datos: d };
+
+      } catch(e){
+        ultimoError = e;
+      }
+    }
+
+    return { ok: false, status: 404, datos: {}, noEncontrada: true, error: ultimoError };
+  }
+
+  // Por si ninguna funciona: que la pegue a mano
+  function configurarFuncionAdmin(){
+    const actual = urlFuncionGuardada() || '';
+    const v = prompt(
+      'Pegá la URL de la función de gestión de miembros.\n\n' +
+      'La encontrás en Supabase → Edge Functions → columna URL.\n' +
+      'Ejemplo: https://pdwooahpyustbqlrvlxz.supabase.co/functions/v1/clever-processor',
+      actual
+    );
+    if(v === null) return;
+
+    // Nos quedamos solo con el último tramo
+    const nombre = v.trim().replace(/\/+$/, '').split('/').pop();
+    if(!nombre) return mostrarToast('No entendí esa URL', true);
+
+    guardarUrlFuncion(nombre);
+    mostrarToast('✓ Función configurada: ' + nombre);
+  }
+
+  // ============================
   // ACCIONES SOBRE MIEMBROS
   // ============================
   let accAccion = 'aviso';
@@ -3285,38 +3364,31 @@ body{visibility:hidden}
     btn.textContent = 'PROCESANDO...';
 
     try {
-      const { data: { session } } = await sb.auth.getSession();
-
-      const r = await fetch(SUPABASE_URL + '/functions/v1/admin-miembros', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + (session?.access_token || SUPABASE_ANON_KEY),
-          'apikey': SUPABASE_ANON_KEY
-        },
-        body: JSON.stringify({
-          accion: accAccion,
-          usuario_id: id,
-          motivo: motivo || null,
-          mensaje: mensaje || null,
-          avisar: avisar
-        })
+      const res = await llamarFuncionAdmin({
+        accion: accAccion,
+        usuario_id: id,
+        motivo: motivo || null,
+        mensaje: mensaje || null,
+        avisar: avisar
       });
-
-      let d = {};
-      try { d = await r.json(); } catch(e) { d = {}; }
 
       btn.disabled = false;
       btn.textContent = textoOriginal;
 
-      if(r.status === 404){
-        return mostrarToast('La función "admin-miembros" no existe en Supabase. Revisá cómo quedó nombrada.', true);
+      const d = res.datos || {};
+
+      if(res.noEncontrada){
+        mostrarToast('No encontré la función en Supabase. Tocá "Configurar" y pegá su URL.', true);
+        if(confirm('No pude encontrar la función de gestión.\n\n¿Querés pegar su URL ahora?')){
+          configurarFuncionAdmin();
+        }
+        return;
       }
-      if(r.status === 401 || r.status === 403){
+      if(res.status === 401 || res.status === 403){
         return mostrarToast(d.error || 'Sin permiso. Cerrá sesión, volvé a entrar y probá otra vez.', true);
       }
-      if(!r.ok || !d.exito){
-        return mostrarToast(d.error || ('Error ' + r.status + ' — no se pudo completar'), true);
+      if(!res.ok || !d.exito){
+        return mostrarToast(d.error || ('Error ' + res.status + ' — no se pudo completar'), true);
       }
 
       const hechos = {
