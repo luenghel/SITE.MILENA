@@ -79,10 +79,20 @@ function plantilla(articulo: any) {
         </a>
       </td></tr>
 
-      <tr><td style="border-top:1px solid rgba(255,245,240,0.1);padding-top:20px;">
-        <p style="margin:0;font-size:11.5px;line-height:1.6;color:rgba(255,245,240,0.4);font-family:Arial,sans-serif;">
-          Recibís este correo porque te suscribiste al newsletter de Milena Machado.<br>
-          <a href="${SITIO}/baja?email={{EMAIL}}" style="color:rgba(255,245,240,0.55);">Darme de baja</a>
+      <tr><td style="border-top:1px solid rgba(255,245,240,0.12);padding-top:22px;">
+        <p style="margin:0 0 14px;font-size:11.5px;line-height:1.6;color:rgba(255,245,240,0.45);font-family:Arial,sans-serif;">
+          Recibís este correo porque te suscribiste al newsletter de Milena Machado.
+        </p>
+        <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;">
+          <tr><td align="center" style="background:rgba(255,245,240,0.06);border:1px solid rgba(255,245,240,0.18);border-radius:8px;">
+            <a href="${SITIO}/baja?email={{EMAIL}}"
+               style="display:inline-block;padding:11px 22px;color:rgba(255,245,240,0.75);text-decoration:none;font-size:12px;font-family:Arial,sans-serif;">
+              No quiero recibir más estos correos
+            </a>
+          </td></tr>
+        </table>
+        <p style="margin:14px 0 0;font-size:10.5px;color:rgba(255,245,240,0.3);font-family:Arial,sans-serif;text-align:center;">
+          Milena Machado · Creando Mentes Millonarias · Paraguay
         </p>
       </td></tr>
 
@@ -137,8 +147,14 @@ Deno.serve(async (req) => {
     }
 
     // ─── No mandar dos veces el mismo ────────────────────────────
-    const { data: yaEnviado } = await supabase
+    const { data: yaEnviado, error: errTabla } = await supabase
       .from('envios_newsletter').select('id').eq('articulo_id', articulo_id).maybeSingle()
+
+    if (errTabla && String(errTabla.message || '').includes('does not exist')) {
+      return new Response(JSON.stringify({
+        error: 'Falta crear la tabla de envíos. Corré el archivo SQL-ENVIOS-NEWSLETTER.sql en Supabase.'
+      }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
+    }
 
     if (yaEnviado) {
       return new Response(JSON.stringify({ error: 'Este artículo ya fue enviado a los suscriptores' }), {
@@ -168,12 +184,20 @@ Deno.serve(async (req) => {
     for (let i = 0; i < destinatarios.length; i += 100) {
       const tanda = destinatarios.slice(i, i + 100)
 
-      const lote = tanda.map(email => ({
-        from: EMAIL_REMITENTE,
-        to: [email],
-        subject: asunto,
-        html: htmlBase.replace('{{EMAIL}}', encodeURIComponent(email)),
-      }))
+      const lote = tanda.map(email => {
+        const urlBaja = `${SITIO}/baja?email=${encodeURIComponent(email)}`
+        return {
+          from: EMAIL_REMITENTE,
+          to: [email],
+          subject: asunto,
+          html: htmlBase.replace('{{EMAIL}}', encodeURIComponent(email)),
+          // Gmail y Outlook muestran su propio botón "Cancelar suscripción"
+          headers: {
+            'List-Unsubscribe': `<${urlBaja}>`,
+            'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+          },
+        }
+      })
 
       const resp = await fetch('https://api.resend.com/emails/batch', {
         method: 'POST',
@@ -187,8 +211,21 @@ Deno.serve(async (req) => {
       if (resp.ok) {
         enviados += tanda.length
       } else {
-        const detalle = await resp.text()
-        fallos.push(detalle.slice(0, 200))
+        const crudo = await resp.text()
+        let explicado = crudo.slice(0, 300)
+
+        // Traducimos los errores más comunes de Resend
+        if (resp.status === 401 || crudo.includes('API key')) {
+          explicado = 'La clave de Resend (RESEND_API_KEY) no es válida o venció.'
+        } else if (crudo.includes('domain is not verified') || crudo.includes('not verified')) {
+          explicado = 'El dominio del remitente no está verificado en Resend. Revisá que EMAIL_REMITENTE use el mismo dominio que verificaste.'
+        } else if (crudo.includes('You can only send testing emails')) {
+          explicado = 'Resend está en modo prueba: solo podés enviarte a tu propio email hasta verificar un dominio.'
+        } else if (resp.status === 429) {
+          explicado = 'Superaste el límite de envíos de Resend por ahora. Probá más tarde.'
+        }
+
+        fallos.push(explicado)
       }
 
       // Respetamos el límite de 2 peticiones por segundo
@@ -206,12 +243,21 @@ Deno.serve(async (req) => {
       detalle_error: fallos.length ? fallos.join(' | ') : null,
     })
 
+    // Si no salió ninguno, lo tratamos como error para que se vea
+    if (enviados === 0 && fallos.length > 0) {
+      return new Response(
+        JSON.stringify({ error: fallos[0] }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
     return new Response(
       JSON.stringify({
         exito: true,
         enviados,
         total: destinatarios.length,
         fallos: fallos.length,
+        detalle_error: fallos.length ? fallos[0] : null,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )

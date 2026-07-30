@@ -117,9 +117,13 @@ function plantilla(tipo: string, nombre: string, motivo: string, mensaje: string
    </td></tr>` : ''}
 
    <tr><td style="border-top:1px solid rgba(255,245,240,0.1);padding-top:18px">
-     <p style="margin:0;font-size:11.5px;color:rgba(255,245,240,0.4);font-family:Arial,sans-serif">
+     <p style="margin:0 0 12px;font-size:11.5px;color:rgba(255,245,240,0.4);font-family:Arial,sans-serif">
        Este mensaje lo envía el equipo de Milena Machado.
      </p>
+     ${tipo === 'aviso' ? `
+     <p style="margin:0;font-size:11px;font-family:Arial,sans-serif">
+       <a href="${SITIO}/baja?email={{EMAIL}}" style="color:rgba(255,245,240,0.5)">No quiero recibir más estos correos</a>
+     </p>` : ''}
    </td></tr>
 
   </table>
@@ -131,15 +135,38 @@ function plantilla(tipo: string, nombre: string, motivo: string, mensaje: string
 async function enviarEmail(para: string, asunto: string, html: string) {
   const KEY = Deno.env.get('RESEND_API_KEY')
   const DE = Deno.env.get('EMAIL_REMITENTE')
-  if (!KEY || !DE) return { ok: false, error: 'Falta configurar el email' }
+  if (!KEY || !DE) return { ok: false, error: 'Falta cargar RESEND_API_KEY o EMAIL_REMITENTE en los secrets' }
+
+  const urlBaja = `${SITIO}/baja?email=${encodeURIComponent(para)}`
+  const cuerpo = html.replace(/\{\{EMAIL\}\}/g, encodeURIComponent(para))
 
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: DE, to: [para], subject: asunto, html }),
+    body: JSON.stringify({
+      from: DE,
+      to: [para],
+      subject: asunto,
+      html: cuerpo,
+      headers: {
+        'List-Unsubscribe': `<${urlBaja}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+    }),
   })
 
-  if (!r.ok) return { ok: false, error: (await r.text()).slice(0, 200) }
+  if (!r.ok) {
+    const crudo = await r.text()
+    let explicado = crudo.slice(0, 250)
+    if (r.status === 401 || crudo.includes('API key')) {
+      explicado = 'La clave de Resend no es válida'
+    } else if (crudo.includes('not verified')) {
+      explicado = 'El dominio del remitente no está verificado en Resend'
+    } else if (crudo.includes('You can only send testing emails')) {
+      explicado = 'Resend está en modo prueba: solo podés enviarte a tu propio email'
+    }
+    return { ok: false, error: explicado }
+  }
   return { ok: true }
 }
 
