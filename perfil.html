@@ -147,6 +147,14 @@
     nav.main-nav{display:none !important}
   }
 
+
+  .pass-escudo{width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,rgba(212,163,86,0.22),rgba(212,163,86,0.05));border:0.5px solid rgba(212,163,86,0.45);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+  .pass-escudo.ok{background:linear-gradient(135deg,rgba(93,202,165,0.22),rgba(93,202,165,0.05));border-color:rgba(93,202,165,0.5)}
+  .pass-porque{display:flex;gap:11px;align-items:flex-start;padding:13px 15px;background:rgba(212,163,86,0.07);border:0.5px solid rgba(212,163,86,0.28);border-radius:11px;font-size:12.5px;color:rgba(255,245,240,0.72);line-height:1.55;margin-bottom:16px}
+  .pass-porque strong{color:#FAC775}
+  .pass-correo{padding:12px 14px;background:rgba(255,245,240,0.04);border-radius:10px;font-size:13px;color:rgba(255,245,240,0.8);text-align:center;margin-bottom:16px;word-break:break-all}
+  .pass-correo strong{color:#FFF5F0}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -267,29 +275,48 @@ body{visibility:hidden}
 
 <div class="edit-backdrop" id="passBackdrop">
   <div class="edit-modal">
-    <h3 class="serif">Cambiar contraseña</h3>
+    <div id="passPaso1">
+      <div class="pass-escudo">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
 
-    <div class="alert-pass" id="passAlerta"></div>
+      <h3 class="serif" style="text-align:center;margin-bottom:8px">Cambiar contraseña</h3>
+      <p style="font-size:13.5px;color:rgba(255,245,240,0.7);text-align:center;line-height:1.55;margin-bottom:20px">
+        Por seguridad, la contraseña no se cambia desde acá.<br>
+        Te mandamos un enlace a tu correo.
+      </p>
 
-    <div class="edit-field">
-      <label class="edit-label">CONTRASEÑA NUEVA</label>
-      <input class="edit-input" type="password" id="passNueva" placeholder="Mayúscula, número y símbolo" autocomplete="new-password">
-      <div id="medidorPerfil"></div>
+      <div class="pass-porque">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01" stroke-linecap="round"/></svg>
+        <div>
+          <strong>¿Por qué así?</strong><br>
+          Si alguien llegara a usar tu cuenta con la sesión abierta, sin acceso a tu correo no va a poder cambiarte la contraseña ni dejarte afuera.
+        </div>
+      </div>
+
+      <div class="pass-correo" id="passCorreoTxt"></div>
+
+      <div class="alert-pass" id="passAlerta"></div>
+
+      <div class="edit-actions">
+        <button class="edit-cancel" onclick="cerrarPassword()">Cancelar</button>
+        <button class="edit-save" id="btnPedirPass" onclick="pedirCambioPassword()">ENVIARME EL ENLACE</button>
+      </div>
     </div>
 
-    <div class="edit-field">
-      <label class="edit-label">REPETILA</label>
-      <input class="edit-input" type="password" id="passRepetir" placeholder="Escribila de nuevo" autocomplete="new-password">
-      <div id="passIguales" style="font-size:11.5px;margin-top:6px;display:none"></div>
-    </div>
-
-    <div style="font-size:11.5px;color:rgba(255,245,240,0.45);line-height:1.5;margin-top:4px">
-      Cuando la cambies te va a llegar un email confirmándolo.
-    </div>
-
-    <div class="edit-actions">
-      <button class="edit-cancel" onclick="cerrarPassword()">Cancelar</button>
-      <button class="edit-save" id="btnGuardarPass" onclick="guardarPassword()">GUARDAR</button>
+    <div id="passPaso2" style="display:none;text-align:center">
+      <div class="pass-escudo ok">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+      </div>
+      <h3 class="serif" style="margin-bottom:8px">Revisá tu correo</h3>
+      <p style="font-size:13.5px;color:rgba(255,245,240,0.7);line-height:1.6;margin-bottom:6px">
+        Te mandamos el enlace a<br><strong id="passEnviadoA" style="color:#FAC775"></strong>
+      </p>
+      <p style="font-size:12px;color:rgba(255,245,240,0.5);line-height:1.55;margin-bottom:22px">
+        Tocá el botón del email y ahí elegís tu contraseña nueva.<br>
+        El enlace vence en 1 hora. Si no lo ves, mirá en spam.
+      </p>
+      <button class="edit-save" style="width:100%" onclick="cerrarPassword()">ENTENDIDO</button>
     </div>
   </div>
 </div>
@@ -587,21 +614,15 @@ function elegirGenero(el){
   generoElegido = el.dataset.g;
 }
 
-// ═══ CAMBIAR CONTRASEÑA ═══
-let medidorPerfilCreado = false;
-
+// ═══ CAMBIAR CONTRASEÑA (por email, más seguro) ═══
 function abrirPassword(){
-  document.getElementById('passNueva').value = '';
-  document.getElementById('passRepetir').value = '';
-  document.getElementById('passIguales').style.display = 'none';
+  const correo = perfilActual.email || usuarioActual.email || '';
+  document.getElementById('passCorreoTxt').innerHTML =
+    'Te lo mandamos a<br><strong>' + escapeHtml(correo) + '</strong>';
+  document.getElementById('passPaso1').style.display = 'block';
+  document.getElementById('passPaso2').style.display = 'none';
   avisoPass('');
   document.getElementById('passBackdrop').classList.add('show');
-
-  if(!medidorPerfilCreado && typeof crearMedidorPassword === 'function'){
-    crearMedidorPassword('medidorPerfil', 'passNueva');
-    medidorPerfilCreado = true;
-  }
-  setTimeout(() => document.getElementById('passNueva').focus(), 150);
 }
 
 function cerrarPassword(){
@@ -610,60 +631,40 @@ function cerrarPassword(){
 
 function avisoPass(texto, tipo){
   const el = document.getElementById('passAlerta');
+  if(!el) return;
   if(!texto){ el.className = 'alert-pass'; el.textContent = ''; return; }
   el.className = 'alert-pass show ' + (tipo || 'error');
   el.textContent = texto;
 }
 
-async function guardarPassword(){
-  const p1 = document.getElementById('passNueva').value;
-  const p2 = document.getElementById('passRepetir').value;
+async function pedirCambioPassword(){
+  const correo = perfilActual.email || usuarioActual.email;
+  if(!correo) return avisoPass('No encontramos tu correo. Escribinos.');
+
+  const btn = document.getElementById('btnPedirPass');
+  btn.disabled = true;
+  btn.textContent = 'ENVIANDO...';
   avisoPass('');
 
-  if(typeof evaluarPassword === 'function'){
-    const r = evaluarPassword(p1);
-    if(!r.aceptable) return avisoPass(r.faltantes[0] || 'Elegí una contraseña más segura');
-  } else if(p1.length < 8){
-    return avisoPass('Necesita al menos 8 caracteres');
-  }
-
-  if(p1 !== p2) return avisoPass('Las dos contraseñas tienen que ser iguales');
-
-  const btn = document.getElementById('btnGuardarPass');
-  btn.disabled = true;
-  btn.textContent = 'GUARDANDO...';
-
-  const { error } = await sb.auth.updateUser({ password: p1 });
+  const { error } = await sb.auth.resetPasswordForEmail(correo, {
+    redirectTo: window.location.origin + '/recuperar'
+  });
 
   btn.disabled = false;
-  btn.textContent = 'GUARDAR';
+  btn.textContent = 'ENVIARME EL ENLACE';
 
   if(error){
     const m = (error.message || '').toLowerCase();
-    if(m.includes('should be different') || m.includes('same')){
-      return avisoPass('Esa es tu contraseña actual. Elegí una distinta.');
+    if(m.includes('rate') || m.includes('too many')){
+      return avisoPass('Pediste el enlace hace poco. Esperá unos minutos y probá de nuevo.');
     }
     return avisoPass(error.message);
   }
 
-  if(typeof avisarCambioPassword === 'function'){
-    avisarCambioPassword('El cambio se hizo desde tu perfil en el sitio.');
-  }
-
-  avisoPass('✓ Contraseña cambiada. Te mandamos un email confirmándolo.', 'ok');
-  setTimeout(() => { cerrarPassword(); mostrarToast('✓ Contraseña actualizada'); }, 1600);
+  document.getElementById('passEnviadoA').textContent = correo;
+  document.getElementById('passPaso1').style.display = 'none';
+  document.getElementById('passPaso2').style.display = 'block';
 }
-
-// Aviso de que coincidan
-document.getElementById('passRepetir')?.addEventListener('input', () => {
-  const a = document.getElementById('passNueva').value;
-  const b = document.getElementById('passRepetir').value;
-  const el = document.getElementById('passIguales');
-  if(!b){ el.style.display = 'none'; return; }
-  el.style.display = 'block';
-  el.textContent = (a === b) ? '✓ Coinciden' : 'Todavía no coinciden';
-  el.style.color = (a === b) ? '#9FE1CB' : 'rgba(255,128,144,0.9)';
-});
 
 function abrirEditar(){
   document.getElementById('editNombre').value = perfilActual.nombre || '';

@@ -25,6 +25,8 @@
   .rec-title{font-size:28px;font-weight:500;text-align:center;margin:0 0 6px;letter-spacing:-0.02em}
   .rec-sub{font-size:13.5px;color:rgba(255,245,240,0.6);text-align:center;margin:0 0 28px;line-height:1.5}
 
+  .rec-cuenta{padding:11px 14px;background:rgba(255,245,240,0.04);border-radius:10px;font-size:12.5px;color:rgba(255,245,240,0.65);text-align:center;margin-bottom:20px;word-break:break-all}
+  .rec-cuenta strong{color:#FAC775}
   .field-group{margin-bottom:16px}
   .field-label{font-size:10px;letter-spacing:0.2em;color:rgba(255,245,240,0.5);font-weight:500;display:block;margin-bottom:7px}
   .input-wrap{position:relative}
@@ -83,6 +85,7 @@
   <div id="estadoForm" style="display:none">
     <h1 class="rec-title serif">Elegí tu <span class="serif-it gradtext" style="font-size:28px">nueva contraseña</span></h1>
     <p class="rec-sub">Que sea difícil de adivinar y fácil de recordar para vos.</p>
+    <div class="rec-cuenta" id="recCuenta"></div>
 
     <div class="field-group">
       <label class="field-label">NUEVA CONTRASEÑA</label>
@@ -115,7 +118,11 @@
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
     <h1 class="rec-title serif">Listo</h1>
-    <p class="rec-sub">Tu contraseña quedó cambiada.<br>Ya podés entrar con la nueva.<br><span style="font-size:12px;color:rgba(255,245,240,0.45);display:block;margin-top:8px">Te mandamos un email confirmando el cambio.</span></p>
+    <p class="rec-sub">Tu contraseña quedó cambiada.<br>Ya podés entrar con la nueva.
+      <span style="font-size:12px;color:rgba(255,245,240,0.45);display:block;margin-top:10px;line-height:1.5">
+        Cerramos las sesiones abiertas en otros dispositivos.<br>
+        Te mandamos un email confirmando el cambio.
+      </span></p>
     <a href="/index" class="cta-gold submit-btn" style="display:block;text-align:center;text-decoration:none;box-sizing:border-box">IR AL SITIO</a>
   </div>
 
@@ -193,6 +200,8 @@
     btn.disabled = true;
     btn.textContent = 'GUARDANDO...';
 
+    // scope global: al cambiar la contraseña se cierran TODAS las sesiones
+    // abiertas en otros dispositivos. Si alguien te había entrado, queda afuera.
     const { error } = await sb.auth.updateUser({ password: p1 });
 
     btn.disabled = false;
@@ -209,9 +218,11 @@
       return mostrarAlerta(error.message);
     }
 
+    // Cerramos las sesiones abiertas en otros dispositivos
+    try { await sb.auth.signOut({ scope: 'others' }); } catch(e){}
+
     if(typeof refrescarCacheSesion === 'function') await refrescarCacheSesion();
 
-    // Aviso de seguridad: que le llegue un email de que se cambió
     if(typeof avisarCambioPassword === 'function'){
       avisarCambioPassword('El cambio se hizo desde el enlace de recuperación que pediste por email.');
     }
@@ -236,6 +247,13 @@
       }
       if(!session){
         return mostrar('estadoVencido');
+      }
+
+      // Mostramos de qué cuenta se trata
+      const { data: { user } } = await sb.auth.getUser();
+      if(user?.email){
+        document.getElementById('recCuenta').innerHTML =
+          'Cuenta: <strong>' + user.email.replace(/[<>&]/g, '') + '</strong>';
       }
 
       mostrar('estadoForm');
