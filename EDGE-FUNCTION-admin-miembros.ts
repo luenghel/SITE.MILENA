@@ -227,6 +227,16 @@ Deno.serve(async (req) => {
       }).eq('id', usuario_id)
 
     } else if (accion === 'eliminar') {
+      // ─── No se elimina a quien compró: perdería lo que pagó ───
+      const { data: compras } = await admin
+        .from('compras').select('id').eq('usuario_id', usuario_id).eq('estado', 'pagado')
+
+      if (compras && compras.length > 0) {
+        return new Response(JSON.stringify({
+          error: `Esta persona compró ${compras.length} curso(s). No se puede eliminar su cuenta porque perdería el acceso a lo que pagó. Bloqueala en su lugar.`
+        }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
+      }
+
       // El email se manda ANTES de borrar, si no se pierde la dirección
       if (avisar && destino.email) {
         const r = await enviarEmail(

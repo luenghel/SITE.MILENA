@@ -740,6 +740,11 @@
   .acc-btn-menu{padding:6px 11px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.14);border-radius:8px;color:rgba(255,245,240,0.8);font-size:11px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all 0.2s}
   .acc-btn-menu:hover{background:rgba(212,163,86,0.15);border-color:rgba(212,163,86,0.45);color:#FAC775}
 
+
+  .acc-info{padding:13px 15px;background:rgba(93,202,165,0.09);border:0.5px solid rgba(93,202,165,0.35);border-radius:11px;font-size:12.5px;color:rgba(255,245,240,0.8);line-height:1.55;margin-bottom:16px;display:none}
+  .acc-info.show{display:block}
+  .acc-info strong{color:#9FE1CB}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -2134,6 +2139,8 @@ body{visibility:hidden}
           </button>
         </div>
 
+        <div class="acc-info" id="accAvisoCompras"></div>
+
         <div class="acc-alerta" id="accAlerta">
           <strong>Cuidado.</strong> Eliminar la cuenta borra también sus compras.
           Si pagó un curso, conviene bloquearla en vez de eliminarla.
@@ -3185,6 +3192,22 @@ body{visibility:hidden}
     // Mostrar "Desbloquear" solo si está bloqueada
     document.getElementById('accBtnDesbloquear').style.display = a.bloqueado ? '' : 'none';
 
+    // Si compró algún curso, NO se puede eliminar: pierde lo que pagó
+    const tieneCompras = (a._compras || 0) > 0;
+    const btnEliminar = document.querySelector('.acc-tipo[data-a="eliminar"]');
+    const avisoCompras = document.getElementById('accAvisoCompras');
+
+    if(tieneCompras){
+      btnEliminar.style.display = 'none';
+      avisoCompras.classList.add('show');
+      avisoCompras.innerHTML = '<strong>Esta persona compró ' + a._compras + ' curso' + (a._compras === 1 ? '' : 's') + '.</strong><br>' +
+        'No se puede eliminar su cuenta: perdería el acceso a lo que pagó y vos perderías el registro de la venta. ' +
+        'Si hay un problema, bloqueala — deja de participar en la comunidad pero sigue viendo sus cursos.';
+    } else {
+      btnEliminar.style.display = '';
+      avisoCompras.classList.remove('show');
+    }
+
     // Reiniciar
     document.querySelectorAll('.acc-tipo').forEach(t => t.classList.remove('sel'));
     document.querySelector('.acc-tipo[data-a="aviso"]').classList.add('sel');
@@ -3244,6 +3267,10 @@ body{visibility:hidden}
       return mostrarToast('Escribí un motivo', true);
     }
 
+    if(accAccion === 'eliminar' && (a._compras || 0) > 0){
+      return mostrarToast('No se puede eliminar a alguien que compró cursos. Bloqueala en su lugar.', true);
+    }
+
     // Confirmaciones
     if(accAccion === 'eliminar'){
       if(!confirm('¿ELIMINAR la cuenta de ' + nombre + '?\n\nSe borra su perfil, sus publicaciones, comentarios y compras.\nEsto NO se puede deshacer.')) return;
@@ -3276,12 +3303,20 @@ body{visibility:hidden}
         })
       });
 
-      const d = await r.json();
+      let d = {};
+      try { d = await r.json(); } catch(e) { d = {}; }
+
       btn.disabled = false;
       btn.textContent = textoOriginal;
 
-      if(!d.exito){
-        return mostrarToast(d.error || 'No se pudo completar', true);
+      if(r.status === 404){
+        return mostrarToast('La función "admin-miembros" no existe en Supabase. Revisá cómo quedó nombrada.', true);
+      }
+      if(r.status === 401 || r.status === 403){
+        return mostrarToast(d.error || 'Sin permiso. Cerrá sesión, volvé a entrar y probá otra vez.', true);
+      }
+      if(!r.ok || !d.exito){
+        return mostrarToast(d.error || ('Error ' + r.status + ' — no se pudo completar'), true);
       }
 
       const hechos = {
