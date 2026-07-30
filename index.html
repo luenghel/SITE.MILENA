@@ -498,51 +498,16 @@
   </div>
 </section>
 
-<section class="row-section">
+<section class="row-section" id="seccionAcompana" style="display:none">
   <div class="section-header">
     <div class="section-title-group">
       <h2 class="section-title serif">Acompañá más</h2>
     </div>
-    <a href="#" class="ver-todo">ver todo →</a>
+    <a href="/cursos" class="ver-todo">ver todo →</a>
   </div>
   <div class="scroll-row" style="margin-left:-40px;margin-right:-40px;padding-left:40px;padding-right:40px">
     <div class="row-track">
-      <div class="poster-item">
-        <a href="#" class="poster-hover poster">
-          <div class="poster-shadow" style="background:linear-gradient(160deg,#3D0A1A 0%,#7A1B2E 60%,#1A0509 100%)">
-            <div style="position:absolute;width:130px;height:130px;right:-25px;top:-15px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(255,59,71,0.5),transparent 70%)"></div>
-            <div class="silhouette"></div>
-            <div class="scrim"></div>
-            <div class="poster-inner">
-              <div class="top-icon" style="background:rgba(255,59,71,0.15);border:0.5px solid rgba(255,59,71,0.5)">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF3B47"><path d="M22 8.4c0-2-1.5-3.6-3.5-3.8C16 4.4 13 4.3 12 4.3s-4 .1-6.5.3C3.5 4.8 2 6.4 2 8.4c-.2 1.5-.2 3 0 4.5 0 2 1.5 3.6 3.5 3.8 2.5.2 5.5.3 6.5.3s4-.1 6.5-.3c2-.2 3.5-1.8 3.5-3.8.2-1.5.2-3 0-4.5zM10 14.5v-7l6 3.5z"/></svg>
-              </div>
-              <div class="poster-cat">CANAL</div>
-              <div class="poster-title">YouTube<br>de Milena</div>
-              <div class="poster-meta"><span class="meta-dot" style="background:#FF3B47"></span>cada semana</div>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <div class="poster-item">
-        <a href="#" class="poster-hover poster">
-          <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#3D1208 100%)">
-            <div style="position:absolute;width:130px;height:130px;left:-20px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(212,163,86,0.5),transparent 70%)"></div>
-            <div style="position:absolute;left:48%;top:38%;transform:translate(-50%,-50%);width:70px;height:90px;background:linear-gradient(135deg,rgba(212,163,86,0.4),rgba(232,184,196,0.25));border:0.5px solid rgba(255,245,240,0.18);border-radius:3px;backdrop-filter:blur(8px)"></div>
-            <div style="position:absolute;left:55%;top:42%;transform:translate(-50%,-50%);width:70px;height:90px;background:linear-gradient(135deg,rgba(184,41,74,0.4),rgba(212,163,86,0.2));border:0.5px solid rgba(255,245,240,0.15);border-radius:3px;backdrop-filter:blur(8px)"></div>
-            <div class="scrim"></div>
-            <div class="poster-inner">
-              <div class="top-icon" style="background:rgba(14,5,9,0.55);border:0.5px solid rgba(255,245,240,0.22)">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFF5F0" stroke-width="1.8"><path d="M4 4v16M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4"/></svg>
-              </div>
-              <div class="poster-cat">EXCLUSIVO</div>
-              <div class="poster-title">Club del<br>Libro</div>
-              <div class="poster-meta"><span class="meta-dot" style="background:#5DCAA5"></span>1 libro al mes</div>
-            </div>
-          </div>
-        </a>
-      </div>
+      <div id="indexAcompana" style="display:flex;gap:12px"></div>
     </div>
   </div>
 </section>
@@ -733,8 +698,10 @@
 
   function crearPosterIndex(curso, user, comprasIds) {
     const tieneCompra = comprasIds.includes(curso.id);
-    const esGratis = curso.precio_gs === 0;
-    const necesitaCandado = !esGratis && (!user || !tieneCompra);
+    const acceso = curso.acceso || (curso.precio_gs ? 'pago' : 'gratis');
+    const esGratis = acceso === 'gratis';
+    const esExterno = !!curso.enlace_externo;
+    const necesitaCandado = !esGratis && !esExterno && (!user || !tieneCompra);
     const titulo = curso.titulo;
     const tituloHTML = titulo.includes(' ') && titulo.length > 18
       ? titulo.split(' ').slice(0, Math.ceil(titulo.split(' ').length/2)).join(' ') + '<br>' + titulo.split(' ').slice(Math.ceil(titulo.split(' ').length/2)).join(' ')
@@ -753,7 +720,7 @@
     return `
       <div class="poster-item">
         <a href="/curso-detalle?id=${curso.slug}" class="poster-hover poster">
-          <div class="poster-shadow" style="background:${gradient}">
+          <div class="poster-shadow" style="${fondoCard}">
             <div style="position:absolute;width:130px;height:130px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>
             <div style="position:absolute;width:100px;height:100px;right:-15px;top:30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)"></div>
             <div class="silhouette"></div>
@@ -795,7 +762,7 @@
       cargarCarruseles();
       const { data: { user } } = await sb.auth.getUser();
 
-      // Cargar cursos destacados en home
+      // Cursos publicados y destacados en el home
       const { data: cursos, error } = await sb
         .from('cursos')
         .select('*')
@@ -803,21 +770,39 @@
         .eq('destacado_home', true)
         .order('orden', { ascending: true });
 
-      const container = document.getElementById('indexCursosDestacados');
-      if (!container) return;
-
-      if (error || !cursos || cursos.length === 0) {
-        container.style.display = 'none';
-        return;
-      }
-
       let comprasIds = [];
       if (user) {
         const { data: compras } = await sb.from('compras').select('curso_id').eq('usuario_id', user.id).eq('estado', 'pagado');
         comprasIds = (compras || []).map(c => c.curso_id);
       }
 
-      container.innerHTML = cursos.map(c => crearPosterIndex(c, user, comprasIds)).join('');
+      const todos = (error ? [] : (cursos || []));
+      const principales = todos.filter(c => (c.seccion || 'principal') === 'principal');
+      const acompana = todos.filter(c => c.seccion === 'acompana');
+
+      // Fila principal
+      const cont1 = document.getElementById('indexCursosDestacados');
+      const sec1 = cont1 ? cont1.closest('.row-section') : null;
+      if (cont1) {
+        if (principales.length === 0) {
+          if (sec1) sec1.style.display = 'none';
+        } else {
+          if (sec1) sec1.style.display = '';
+          cont1.innerHTML = principales.map(c => crearPosterIndex(c, user, comprasIds)).join('');
+        }
+      }
+
+      // Fila "Acompañá más"
+      const cont2 = document.getElementById('indexAcompana');
+      const sec2 = document.getElementById('seccionAcompana');
+      if (cont2 && sec2) {
+        if (acompana.length === 0) {
+          sec2.style.display = 'none';
+        } else {
+          sec2.style.display = '';
+          cont2.innerHTML = acompana.map(c => crearPosterIndex(c, user, comprasIds)).join('');
+        }
+      }
     }
   }, 50);
 })();

@@ -190,11 +190,73 @@
       document.getElementById('sumPoster').style.background = curso.color_gradient || 'linear-gradient(160deg,#2D0A18,#4A0F1E,#1A0509)';
       document.getElementById('sumSubtotal').textContent = precio;
       document.getElementById('sumTotal').textContent = precio;
+
+      // Si es gratis, cambiamos el discurso: no hay pago
+      const esGratis = curso.precio_gs === 0 || curso.acceso === 'gratis';
+      if(esGratis){
+        document.getElementById('payBtnText').textContent = 'EMPEZAR GRATIS';
+        document.querySelector('.checkout-title').innerHTML =
+          'Empezá tu <span class="serif-it gradtext" style="font-size:28px">curso</span>';
+        document.querySelector('.checkout-subtitle').textContent =
+          'Este curso es gratis. Confirmá tus datos y te damos acceso.';
+        // Sin pago no hacen falta cédula ni teléfono
+        document.getElementById('ckTelefono').closest('.field-group').style.display = 'none';
+        document.getElementById('ckDocumento').closest('.field-group').style.display = 'none';
+        const g = document.querySelector('.summary-guarantee');
+        if(g) g.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Acceso inmediato, sin pagar nada.';
+      }
     }
   }, 50);
 
+  // ─── Alta en un curso gratuito ───
+  async function activarCursoGratis(){
+    const btn = document.getElementById('payBtn');
+    const btnText = document.getElementById('payBtnText');
+
+    const { data: { user } } = await sb.auth.getUser();
+    if(!user){
+      // Sin cuenta no podemos darle acceso: la mandamos a registrarse
+      window.location.href = '/login?curso=' + cursoSlug;
+      return;
+    }
+
+    btn.disabled = true;
+    btnText.innerHTML = '<span class="loading-spinner"></span> Activando...';
+
+    // ¿Ya lo tiene?
+    const { data: yaTiene } = await sb.from('compras')
+      .select('id').eq('usuario_id', user.id).eq('curso_id', cursoActual.id).maybeSingle();
+
+    if(!yaTiene){
+      const { error } = await sb.from('compras').insert({
+        usuario_id: user.id,
+        curso_id: cursoActual.id,
+        monto_gs: 0,
+        estado: 'pagado',
+        metodo_pago: 'gratis',
+        pagado_en: new Date().toISOString()
+      });
+
+      if(error){
+        mostrarError('No pudimos activarte el curso: ' + error.message);
+        btn.disabled = false;
+        btnText.textContent = 'EMPEZAR GRATIS';
+        return;
+      }
+    }
+
+    btnText.textContent = '✓ ¡Listo!';
+    setTimeout(() => { window.location.href = '/curso-detalle?id=' + cursoSlug; }, 700);
+  }
+
   async function iniciarPago() {
     ocultarError();
+
+    // ─── Curso gratis: acceso directo, sin pasarela ───
+    if(cursoActual && (cursoActual.precio_gs === 0 || cursoActual.acceso === 'gratis')){
+      return activarCursoGratis();
+    }
+
     const nombre = document.getElementById('ckNombre').value.trim();
     const email = document.getElementById('ckEmail').value.trim();
     const telefono = document.getElementById('ckTelefono').value.trim();

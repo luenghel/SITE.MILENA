@@ -753,6 +753,67 @@
   .acc-estado.trabajando{background:rgba(212,163,86,0.1);border:0.5px solid rgba(212,163,86,0.4);color:#FAC775}
   @media (max-width:600px){.acc-estado{margin:0 20px 6px}}
 
+
+  .contenido-zona{margin:0 26px 6px;padding:14px 16px;background:rgba(212,163,86,0.07);border:0.5px solid rgba(212,163,86,0.3);border-radius:12px}
+  .contenido-btn{padding:11px 18px;border-radius:10px;border:none;background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208;font-size:11.5px;font-weight:600;letter-spacing:0.08em;cursor:pointer;font-family:inherit;white-space:nowrap}
+
+  /* ═══ EDITOR DE CONTENIDO ═══ */
+  .cont-modal{background:linear-gradient(180deg,#2D0A18 0%,#1A0509 100%);border:0.5px solid rgba(212,163,86,0.4);border-radius:18px;width:100%;max-width:760px;max-height:92vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,0.7)}
+
+  .modulo{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:13px;margin-bottom:12px;overflow:hidden}
+  .modulo-head{display:flex;align-items:center;gap:11px;padding:14px 16px;cursor:pointer;transition:background 0.2s}
+  .modulo-head:hover{background:rgba(255,245,240,0.03)}
+  .modulo-num{width:28px;height:28px;border-radius:8px;background:rgba(212,163,86,0.15);border:0.5px solid rgba(212,163,86,0.4);color:#FAC775;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .modulo-info{flex:1;min-width:0}
+  .modulo-titulo{font-size:14px;font-weight:500}
+  .modulo-meta{font-size:11.5px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .modulo-flecha{transition:transform 0.25s;color:rgba(255,245,240,0.45)}
+  .modulo.abierto .modulo-flecha{transform:rotate(180deg)}
+  .modulo-body{display:none;padding:0 16px 14px;border-top:0.5px solid rgba(255,245,240,0.06)}
+  .modulo.abierto .modulo-body{display:block}
+
+  .clase-fila{display:flex;align-items:center;gap:10px;padding:11px 12px;background:rgba(255,245,240,0.03);border-radius:9px;margin-top:8px;cursor:pointer;transition:all 0.2s}
+  .clase-fila:hover{background:rgba(255,245,240,0.07)}
+  .clase-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,245,240,0.06);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+  .clase-info{flex:1;min-width:0}
+  .clase-titulo{font-size:13px}
+  .clase-meta{font-size:11px;color:rgba(255,245,240,0.45);margin-top:1px}
+  .clase-badges{display:flex;gap:5px;flex-shrink:0}
+  .mini-badge{padding:2px 7px;border-radius:5px;font-size:9px;font-weight:600;letter-spacing:0.05em}
+  .mini-badge.gratis{background:rgba(93,202,165,0.18);border:0.5px solid rgba(93,202,165,0.45);color:#9FE1CB}
+  .mini-badge.borrador{background:rgba(255,245,240,0.08);border:0.5px solid rgba(255,245,240,0.2);color:rgba(255,245,240,0.6)}
+
+  .btn-agregar{width:100%;padding:11px;background:rgba(255,245,240,0.04);border:1px dashed rgba(255,245,240,0.22);border-radius:10px;color:rgba(255,245,240,0.65);font-size:12px;cursor:pointer;font-family:inherit;margin-top:9px;transition:all 0.2s}
+  .btn-agregar:hover{background:rgba(212,163,86,0.09);border-color:rgba(212,163,86,0.45);color:#FAC775}
+
+  .cont-vacio{padding:46px 20px;text-align:center;color:rgba(255,245,240,0.5)}
+  .cont-vacio .ico{font-size:42px;opacity:0.4;margin-bottom:12px}
+
+  .video-preview{margin-top:10px;padding:11px 13px;background:rgba(255,245,240,0.04);border-radius:9px;font-size:11.5px;color:rgba(255,245,240,0.6);display:none}
+  .video-preview.show{display:block}
+  .video-preview.ok{background:rgba(93,202,165,0.1);border:0.5px solid rgba(93,202,165,0.35);color:#9FE1CB}
+  .video-preview.mal{background:rgba(255,59,71,0.1);border:0.5px solid rgba(255,59,71,0.35);color:#FF8090}
+
+  @media (max-width:600px){
+    .contenido-zona{margin:0 20px 6px}
+    .contenido-btn{width:100%;margin-top:10px}
+  }
+
+
+  .art-envio{display:flex;align-items:center;gap:13px;padding:14px 16px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.09);border-radius:12px;margin-bottom:10px;flex-wrap:wrap}
+  .art-envio.pendiente{border-color:rgba(212,163,86,0.4);background:linear-gradient(135deg,rgba(212,163,86,0.07),transparent)}
+  .art-envio-img{width:54px;height:40px;border-radius:8px;background-size:cover;background-position:center;flex-shrink:0;background-color:rgba(255,245,240,0.05)}
+  .art-envio-info{flex:1;min-width:150px}
+  .art-envio-tit{font-size:13.5px;font-weight:500;line-height:1.3}
+  .art-envio-meta{font-size:11.5px;color:rgba(255,245,240,0.5);margin-top:3px}
+  .art-envio-btn{padding:10px 18px;border-radius:10px;border:none;font-size:11.5px;font-weight:600;letter-spacing:0.08em;cursor:pointer;font-family:inherit;white-space:nowrap;background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208}
+  .art-envio-btn:disabled{background:rgba(255,245,240,0.08);color:rgba(255,245,240,0.45);cursor:not-allowed}
+  .art-enviado{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#9FE1CB;white-space:nowrap}
+  @media (max-width:600px){
+    .art-envio-btn{width:100%}
+    .art-envio-info{min-width:100%}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1431,6 +1492,41 @@ body{visibility:hidden}
           </div>
 
           <div class="form-field">
+            <label class="form-label">TIPO DE CONTENIDO</label>
+            <select class="form-select" id="cursoTipo" onchange="cambiarTipoCurso()">
+              <option value="curso">🎓 Curso con módulos y clases</option>
+              <option value="club">📚 Club o membresía</option>
+              <option value="canal">📺 Canal externo (YouTube, etc.)</option>
+              <option value="material">📄 Material suelto (PDF, plantilla)</option>
+              <option value="comunidad">💬 Acceso a la comunidad</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">DÓNDE APARECE</label>
+            <select class="form-select" id="cursoSeccion">
+              <option value="principal">Fila principal (Marketing Digital)</option>
+              <option value="acompana">Fila "Acompañá más"</option>
+              <option value="oculto">No mostrar en el catálogo</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">CÓMO SE ACCEDE</label>
+            <select class="form-select" id="cursoAcceso" onchange="cambiarAccesoCurso()">
+              <option value="pago">💳 Se compra</option>
+              <option value="gratis">🎁 Gratis (solo registrarse)</option>
+              <option value="suscripcion">⭐ Incluido en el plan anual</option>
+            </select>
+          </div>
+
+          <div class="form-field" id="campoEnlaceExterno" style="display:none">
+            <label class="form-label">ENLACE EXTERNO</label>
+            <input type="text" class="form-input" id="cursoEnlaceExterno" placeholder="https://youtube.com/@milena">
+            <div class="form-help">A dónde lleva al tocarlo</div>
+          </div>
+
+          <div class="form-field">
             <label class="form-label">CATEGORÍA</label>
             <select class="form-select" id="cursoCategoria">
               <option value="FORMACIÓN">Formación</option>
@@ -1472,6 +1568,16 @@ body{visibility:hidden}
             <label class="form-label">PRECIO ACTUAL (Gs)</label>
             <input type="text" class="form-input" id="cursoPrecio" placeholder="200.000" oninput="formatearPrecio(this)" inputmode="numeric">
             <div class="form-help">0 = gratis</div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">ETIQUETA (opcional)</label>
+            <input type="text" class="form-input" id="cursoEtiqueta" placeholder="NUEVO · MÁS VENDIDO · INCLUIDO">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">NOTA DEL PRECIO (opcional)</label>
+            <input type="text" class="form-input" id="cursoNotaPrecio" placeholder="o 3 cuotas sin interés">
           </div>
 
           <div class="form-field">
@@ -1527,6 +1633,16 @@ body{visibility:hidden}
             <div class="toggle-help">Aparece en la página principal del sitio</div>
           </div>
           <div class="toggle-switch" id="cursoDestacado" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+
+      <div class="contenido-zona" id="contenidoZona" style="display:none">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div style="flex:1;min-width:180px">
+            <div style="font-size:13px;font-weight:500">Contenido del curso</div>
+            <div style="font-size:11.5px;color:rgba(255,245,240,0.55);margin-top:2px" id="contenidoResumen">—</div>
+          </div>
+          <button class="contenido-btn" onclick="abrirContenido()">📚 GESTIONAR CONTENIDO</button>
         </div>
       </div>
 
@@ -1721,6 +1837,14 @@ body{visibility:hidden}
           </div>
           <div class="toggle-switch" id="articuloDestacado" onclick="this.classList.toggle('on')"></div>
         </div>
+
+        <div class="toggle-row" style="border:0.5px solid rgba(212,163,86,0.3);background:rgba(212,163,86,0.06)">
+          <div class="toggle-info">
+            <div class="toggle-label">📨 Avisar a los suscriptores al publicar</div>
+            <div class="toggle-help">Al guardar publicado, el email sale solo. Si lo dejás apagado, lo mandás vos con el botón de abajo.</div>
+          </div>
+          <div class="toggle-switch" id="articuloAvisoAuto" onclick="this.classList.toggle('on')"></div>
+        </div>
       </div>
       <div class="envio-zona" id="envioZona" style="display:none">
         <div class="envio-info">
@@ -1913,6 +2037,14 @@ body{visibility:hidden}
         <div class="kpi-sub" id="newsEstadoSub">Verificando…</div>
       </div>
     </div>
+
+    <!-- Artículos listos para enviar -->
+    <h3 class="chart-title" style="margin-bottom:4px">Artículos publicados</h3>
+    <p class="chart-subtitle" style="margin-bottom:14px">Desde acá los mandás a tus suscriptores</p>
+    <div id="articulosParaEnviar" style="margin-bottom:30px"></div>
+
+    <h3 class="chart-title" style="margin-bottom:4px">Suscriptores</h3>
+    <p class="chart-subtitle" style="margin-bottom:14px">Quiénes reciben tus artículos</p>
 
     <div class="buscar-wrap" style="margin-bottom:16px;max-width:320px">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
@@ -2194,6 +2326,180 @@ body{visibility:hidden}
     </div>
   </div>
 
+  <!-- MODAL: CONTENIDO DEL CURSO -->
+  <div class="curso-modal-backdrop" id="contenidoModal">
+    <div class="cont-modal">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">CONTENIDO DEL CURSO</div>
+          <h3 class="curso-modal-titulo serif" id="contTituloCurso">Módulos y clases</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarContenido()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <div id="listaModulos"></div>
+        <button class="btn-agregar" onclick="abrirModulo()">＋ Agregar un módulo</button>
+      </div>
+
+      <div class="curso-modal-footer">
+        <div style="font-size:11.5px;color:rgba(255,245,240,0.45)" id="contPie">—</div>
+        <button class="cta-gold btn-save" style="margin-left:auto" onclick="cerrarContenido()">LISTO</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: MÓDULO -->
+  <div class="curso-modal-backdrop" id="moduloModal" style="z-index:10000">
+    <div class="curso-modal" style="max-width:460px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">MÓDULO</div>
+          <h3 class="curso-modal-titulo serif" id="moduloModalTitulo">Nuevo módulo</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarModulo()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="curso-modal-body">
+        <input type="hidden" id="moduloId">
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">TÍTULO DEL MÓDULO</label>
+          <input type="text" class="form-input" id="moduloTitulo" placeholder="Módulo 1 · Los cimientos">
+        </div>
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">DESCRIPCIÓN (opcional)</label>
+          <textarea class="form-textarea" id="moduloDescripcion" placeholder="Qué va a aprender en este módulo"></textarea>
+        </div>
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">ORDEN</label>
+          <input type="number" class="form-input" id="moduloOrden" min="0" placeholder="1">
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Publicado</div>
+            <div class="toggle-help">Si está apagado, las alumnas no lo ven</div>
+          </div>
+          <div class="toggle-switch on" id="moduloPublicado" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+      <div class="curso-modal-footer">
+        <button class="btn-danger" id="btnEliminarModulo" onclick="eliminarModulo()" style="display:none">ELIMINAR</button>
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarModulo()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="guardarModulo()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CLASE -->
+  <div class="curso-modal-backdrop" id="claseModal" style="z-index:10000">
+    <div class="curso-modal" style="max-width:540px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">CLASE</div>
+          <h3 class="curso-modal-titulo serif" id="claseModalTitulo">Nueva clase</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarClase()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <input type="hidden" id="claseId">
+        <input type="hidden" id="claseModuloId">
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">TÍTULO DE LA CLASE</label>
+          <input type="text" class="form-input" id="claseTitulo" placeholder="Cómo definir a tu clienta ideal">
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">TIPO</label>
+          <select class="form-select" id="claseTipo" onchange="cambiarTipoClase()">
+            <option value="video">🎬 Video</option>
+            <option value="pdf">📄 PDF o material</option>
+            <option value="texto">📝 Texto</option>
+            <option value="enlace">🔗 Enlace externo</option>
+          </select>
+        </div>
+
+        <div class="form-field" id="campoVideo" style="margin-bottom:14px">
+          <label class="form-label">ENLACE DEL VIDEO</label>
+          <input type="text" class="form-input" id="claseVideoUrl" placeholder="https://youtu.be/abc123" oninput="revisarVideo()">
+          <div class="form-help">Pegá el enlace de YouTube (podés usar videos ocultos) o de Vimeo</div>
+          <div class="video-preview" id="videoPreview"></div>
+        </div>
+
+        <div class="form-field" id="campoArchivo" style="margin-bottom:14px;display:none">
+          <label class="form-label">ARCHIVO</label>
+          <div class="image-uploader" id="claseArchivoUploader" onclick="document.getElementById('claseArchivoInput').click()">
+            <div id="claseArchivoEmpty">
+              <svg class="image-uploader-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="image-uploader-text">Subir un PDF o archivo</div>
+            </div>
+            <div id="claseArchivoNombre" style="display:none;font-size:13px;color:#9FE1CB"></div>
+            <input type="file" id="claseArchivoInput" onchange="subirArchivoClase(event)">
+          </div>
+          <input type="hidden" id="claseArchivoUrl">
+        </div>
+
+        <div class="form-field" id="campoEnlace" style="margin-bottom:14px;display:none">
+          <label class="form-label">ENLACE</label>
+          <input type="text" class="form-input" id="claseEnlace" placeholder="https://...">
+        </div>
+
+        <div class="form-field" id="campoTexto" style="margin-bottom:14px;display:none">
+          <label class="form-label">CONTENIDO</label>
+          <textarea class="form-textarea" id="claseContenido" placeholder="Escribí el contenido de la clase" style="min-height:150px"></textarea>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">DESCRIPCIÓN (opcional)</label>
+          <textarea class="form-textarea" id="claseDescripcion" placeholder="Qué se ve en esta clase"></textarea>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">DURACIÓN (minutos)</label>
+            <input type="number" class="form-input" id="claseDuracion" min="0" placeholder="12">
+          </div>
+          <div class="form-field">
+            <label class="form-label">ORDEN</label>
+            <input type="number" class="form-input" id="claseOrden" min="0" placeholder="1">
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Clase de muestra</div>
+            <div class="toggle-help">Se puede ver sin comprar el curso</div>
+          </div>
+          <div class="toggle-switch" id="claseGratis" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Publicada</div>
+            <div class="toggle-help">Si está apagada, las alumnas no la ven</div>
+          </div>
+          <div class="toggle-switch on" id="clasePublicada" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <button class="btn-danger" id="btnEliminarClase" onclick="eliminarClase()" style="display:none">ELIMINAR</button>
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarClase()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="guardarClase()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <!-- Toast -->
@@ -2402,6 +2708,12 @@ body{visibility:hidden}
       document.getElementById('cursoCategoria').value = c.categoria || 'FORMACIÓN';
       document.getElementById('cursoDescripcion').value = c.descripcion || '';
       document.getElementById('cursoSlogan').value = c.slogan || '';
+      document.getElementById('cursoTipo').value = c.tipo || 'curso';
+      document.getElementById('cursoSeccion').value = c.seccion || 'principal';
+      document.getElementById('cursoAcceso').value = c.acceso || (c.precio_gs ? 'pago' : 'gratis');
+      document.getElementById('cursoEnlaceExterno').value = c.enlace_externo || '';
+      document.getElementById('cursoEtiqueta').value = c.etiqueta || '';
+      document.getElementById('cursoNotaPrecio').value = c.nota_precio || '';
       document.getElementById('cursoPrecio').value = c.precio_gs ? c.precio_gs.toLocaleString('es-PY') : '';
       document.getElementById('cursoPrecioAnterior').value = c.precio_anterior_gs ? c.precio_anterior_gs.toLocaleString('es-PY') : '';
       document.getElementById('cursoModulos').value = c.modulos_count || 0;
@@ -2432,13 +2744,32 @@ body{visibility:hidden}
       }
     } else {
       // Limpiar para nuevo
-      ['cursoTitulo','cursoSlug','cursoDescripcion','cursoSlogan','cursoPrecio','cursoPrecioAnterior','cursoModulos','cursoClases','cursoDuracion','cursoOrden'].forEach(f => document.getElementById(f).value = '');
+      ['cursoTitulo','cursoSlug','cursoDescripcion','cursoSlogan','cursoPrecio','cursoPrecioAnterior','cursoModulos','cursoClases','cursoDuracion','cursoOrden','cursoEnlaceExterno','cursoEtiqueta','cursoNotaPrecio'].forEach(f => document.getElementById(f).value = '');
+      document.getElementById('cursoTipo').value = 'curso';
+      document.getElementById('cursoSeccion').value = 'principal';
+      document.getElementById('cursoAcceso').value = 'pago';
       document.getElementById('cursoCategoria').value = 'FORMACIÓN';
       document.getElementById('cursoPublicado').classList.remove('on');
       document.getElementById('cursoDestacado').classList.remove('on');
       gradientSeleccionado = 'linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)';
       document.querySelectorAll('.gradient-option').forEach((g,i) => g.classList.toggle('selected', i === 0));
       quitarFotoCurso();
+    }
+
+    cambiarTipoCurso();
+
+    // Resumen del contenido cargado
+    const zona = document.getElementById('contenidoZona');
+    const resumen = document.getElementById('contenidoResumen');
+    if(id){
+      const cur = cursos.find(x => x.id === id);
+      const nm = cur?.modulos_count || 0;
+      const nc = cur?.clases_count || 0;
+      resumen.textContent = (nm || nc)
+        ? nm + ' módulo' + (nm === 1 ? '' : 's') + ' · ' + nc + ' clase' + (nc === 1 ? '' : 's')
+        : 'Todavía sin módulos ni clases';
+    } else {
+      zona.style.display = 'none';
     }
 
     document.getElementById('cursoModal').classList.add('show');
@@ -2499,7 +2830,13 @@ body{visibility:hidden}
       color_gradient: gradientSeleccionado,
       publicado: document.getElementById('cursoPublicado').classList.contains('on'),
       destacado_home: document.getElementById('cursoDestacado').classList.contains('on'),
-      foto_portada: document.getElementById('cursoFotoUrl').value || null
+      foto_portada: document.getElementById('cursoFotoUrl').value || null,
+      tipo: document.getElementById('cursoTipo').value,
+      seccion: document.getElementById('cursoSeccion').value,
+      acceso: document.getElementById('cursoAcceso').value,
+      enlace_externo: document.getElementById('cursoEnlaceExterno').value.trim() || null,
+      etiqueta: document.getElementById('cursoEtiqueta').value.trim() || null,
+      nota_precio: document.getElementById('cursoNotaPrecio').value.trim() || null
     };
 
     const id = document.getElementById('cursoId').value;
@@ -2583,6 +2920,361 @@ body{visibility:hidden}
       <div class="image-uploader-help">JPG, PNG o WebP · máximo 5 MB</div>
     `;
     document.getElementById('cursoFotoInput').value = '';
+  }
+
+  // ============================
+  // CONTENIDO DEL CURSO (módulos y clases)
+  // ============================
+  let cursoContenidoId = null;
+  let modulos = [];
+  let clasesPorModulo = {};
+
+  // ─── Reconocer el video y armar el enlace para ver ───────────────
+  function analizarVideo(url){
+    if(!url) return null;
+    const u = url.trim();
+
+    // YouTube en todas sus formas
+    let m = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/|youtube\.com\/live\/)([A-Za-z0-9_-]{11})/);
+    if(m) return { plataforma: 'YouTube', id: m[1], embed: 'https://www.youtube.com/embed/' + m[1] };
+
+    // Vimeo
+    m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    if(m) return { plataforma: 'Vimeo', id: m[1], embed: 'https://player.vimeo.com/video/' + m[1] };
+
+    // Un archivo de video directo
+    if(/\.(mp4|webm|mov|m3u8)(\?|$)/i.test(u)) return { plataforma: 'Archivo', id: null, embed: u };
+
+    return null;
+  }
+
+  function revisarVideo(){
+    const url = document.getElementById('claseVideoUrl').value;
+    const box = document.getElementById('videoPreview');
+    if(!url.trim()){ box.className = 'video-preview'; box.textContent = ''; return; }
+
+    const v = analizarVideo(url);
+    if(v){
+      box.className = 'video-preview show ok';
+      box.textContent = '✓ Reconocido: ' + v.plataforma + (v.id ? ' · ' + v.id : '');
+    } else {
+      box.className = 'video-preview show mal';
+      box.textContent = 'No reconocemos ese enlace. Usá uno de YouTube, Vimeo, o un archivo .mp4';
+    }
+  }
+
+  function cambiarTipoClase(){
+    const t = document.getElementById('claseTipo').value;
+    document.getElementById('campoVideo').style.display   = (t === 'video')  ? '' : 'none';
+    document.getElementById('campoArchivo').style.display = (t === 'pdf')    ? '' : 'none';
+    document.getElementById('campoEnlace').style.display  = (t === 'enlace') ? '' : 'none';
+    document.getElementById('campoTexto').style.display   = (t === 'texto')  ? '' : 'none';
+  }
+
+  function cambiarTipoCurso(){
+    const t = document.getElementById('cursoTipo').value;
+    const externo = (t === 'canal' || t === 'material');
+    document.getElementById('campoEnlaceExterno').style.display = externo ? '' : 'none';
+    // Solo los cursos tienen módulos
+    const zona = document.getElementById('contenidoZona');
+    const id = document.getElementById('cursoId').value;
+    zona.style.display = (t === 'curso' && id) ? '' : 'none';
+  }
+
+  function cambiarAccesoCurso(){
+    const a = document.getElementById('cursoAcceso').value;
+    if(a === 'gratis'){
+      document.getElementById('cursoPrecio').value = '0';
+    }
+  }
+
+  // ─── Abrir el editor ─────────────────────────────────────────────
+  async function abrirContenido(){
+    const id = document.getElementById('cursoId').value;
+    if(!id) return mostrarToast('Guardá el curso antes de agregarle contenido', true);
+
+    cursoContenidoId = id;
+    const cur = cursos.find(x => x.id === id);
+    document.getElementById('contTituloCurso').textContent = cur?.titulo || 'Módulos y clases';
+    document.getElementById('contenidoModal').classList.add('show');
+    await cargarContenido();
+  }
+
+  function cerrarContenido(){
+    document.getElementById('contenidoModal').classList.remove('show');
+    cargarCursos();
+  }
+
+  async function cargarContenido(){
+    if(!sb || !cursoContenidoId) return;
+
+    const [rMod, rCla] = await Promise.all([
+      sb.from('modulos').select('*').eq('curso_id', cursoContenidoId).order('orden', { ascending: true }),
+      sb.from('clases').select('*').eq('curso_id', cursoContenidoId).order('orden', { ascending: true })
+    ]);
+
+    modulos = rMod.data || [];
+    clasesPorModulo = {};
+    (rCla.data || []).forEach(cl => {
+      if(!clasesPorModulo[cl.modulo_id]) clasesPorModulo[cl.modulo_id] = [];
+      clasesPorModulo[cl.modulo_id].push(cl);
+    });
+
+    renderContenido();
+  }
+
+  const ICONOS_CLASE = { video: '🎬', pdf: '📄', texto: '📝', enlace: '🔗', audio: '🎧' };
+
+  function renderContenido(){
+    const cont = document.getElementById('listaModulos');
+
+    if(modulos.length === 0){
+      cont.innerHTML = '<div class="cont-vacio"><div class="ico">📚</div>' +
+        '<div style="font-size:14px;margin-bottom:6px">Este curso todavía no tiene contenido</div>' +
+        '<div style="font-size:12px;color:rgba(255,245,240,0.4)">Empezá creando el primer módulo</div></div>';
+      document.getElementById('contPie').textContent = 'Sin módulos';
+      return;
+    }
+
+    let totalClases = 0, totalMin = 0;
+
+    cont.innerHTML = modulos.map((m, i) => {
+      const cls = clasesPorModulo[m.id] || [];
+      totalClases += cls.length;
+      const min = cls.reduce((s, x) => s + (x.duracion_minutos || 0), 0);
+      totalMin += min;
+
+      return '<div class="modulo" id="mod-' + m.id + '">' +
+        '<div class="modulo-head" onclick="toggleModulo(\'' + m.id + '\')">' +
+          '<div class="modulo-num">' + (i + 1) + '</div>' +
+          '<div class="modulo-info">' +
+            '<div class="modulo-titulo">' + esc(m.titulo) + (m.publicado === false ? ' <span class="mini-badge borrador">BORRADOR</span>' : '') + '</div>' +
+            '<div class="modulo-meta">' + cls.length + ' clase' + (cls.length === 1 ? '' : 's') +
+              (min > 0 ? ' · ' + min + ' min' : '') + '</div>' +
+          '</div>' +
+          '<button class="acc-btn-menu" onclick="event.stopPropagation();abrirModulo(\'' + m.id + '\')">Editar</button>' +
+          '<svg class="modulo-flecha" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>' +
+        '</div>' +
+        '<div class="modulo-body">' +
+          (cls.length === 0
+            ? '<div style="padding:14px 0;font-size:12.5px;color:rgba(255,245,240,0.45);font-style:italic">Todavía no hay clases en este módulo</div>'
+            : cls.map(cl =>
+                '<div class="clase-fila" onclick="abrirClase(\'' + m.id + '\', \'' + cl.id + '\')">' +
+                  '<div class="clase-ico">' + (ICONOS_CLASE[cl.tipo] || '🎬') + '</div>' +
+                  '<div class="clase-info">' +
+                    '<div class="clase-titulo">' + esc(cl.titulo) + '</div>' +
+                    '<div class="clase-meta">' +
+                      (cl.duracion_minutos ? cl.duracion_minutos + ' min' : 'sin duración') +
+                      (cl.tipo === 'video' && !cl.video_url ? ' · ⚠️ falta el video' : '') +
+                    '</div>' +
+                  '</div>' +
+                  '<div class="clase-badges">' +
+                    (cl.gratis ? '<span class="mini-badge gratis">MUESTRA</span>' : '') +
+                    (cl.publicado === false ? '<span class="mini-badge borrador">BORRADOR</span>' : '') +
+                  '</div>' +
+                '</div>'
+              ).join('')) +
+          '<button class="btn-agregar" onclick="abrirClase(\'' + m.id + '\')">＋ Agregar una clase</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    document.getElementById('contPie').textContent =
+      modulos.length + ' módulo' + (modulos.length === 1 ? '' : 's') + ' · ' +
+      totalClases + ' clase' + (totalClases === 1 ? '' : 's') +
+      (totalMin > 0 ? ' · ' + Math.floor(totalMin / 60) + 'h ' + (totalMin % 60) + 'm' : '');
+  }
+
+  function toggleModulo(id){
+    document.getElementById('mod-' + id)?.classList.toggle('abierto');
+  }
+
+  // ─── MÓDULOS ─────────────────────────────────────────────────────
+  function abrirModulo(id){
+    document.getElementById('moduloId').value = id || '';
+    document.getElementById('moduloModalTitulo').textContent = id ? 'Editar módulo' : 'Nuevo módulo';
+    document.getElementById('btnEliminarModulo').style.display = id ? '' : 'none';
+
+    if(id){
+      const m = modulos.find(x => x.id === id);
+      document.getElementById('moduloTitulo').value = m?.titulo || '';
+      document.getElementById('moduloDescripcion').value = m?.descripcion || '';
+      document.getElementById('moduloOrden').value = m?.orden ?? 0;
+      document.getElementById('moduloPublicado').classList.toggle('on', m?.publicado !== false);
+    } else {
+      document.getElementById('moduloTitulo').value = '';
+      document.getElementById('moduloDescripcion').value = '';
+      document.getElementById('moduloOrden').value = modulos.length + 1;
+      document.getElementById('moduloPublicado').classList.add('on');
+    }
+    document.getElementById('moduloModal').classList.add('show');
+  }
+
+  function cerrarModulo(){ document.getElementById('moduloModal').classList.remove('show'); }
+
+  async function guardarModulo(){
+    const titulo = document.getElementById('moduloTitulo').value.trim();
+    if(!titulo) return mostrarToast('Poné un título al módulo', true);
+
+    const datos = {
+      curso_id: cursoContenidoId,
+      titulo: titulo,
+      descripcion: document.getElementById('moduloDescripcion').value.trim() || null,
+      orden: parseInt(document.getElementById('moduloOrden').value) || 0,
+      publicado: document.getElementById('moduloPublicado').classList.contains('on')
+    };
+
+    const id = document.getElementById('moduloId').value;
+    const r = id
+      ? await sb.from('modulos').update(datos).eq('id', id)
+      : await sb.from('modulos').insert(datos);
+
+    if(r.error) return mostrarToast('Error: ' + r.error.message, true);
+
+    mostrarToast(id ? '✓ Módulo actualizado' : '✓ Módulo creado');
+    cerrarModulo();
+    await cargarContenido();
+  }
+
+  async function eliminarModulo(){
+    const id = document.getElementById('moduloId').value;
+    if(!id) return;
+    const cls = clasesPorModulo[id] || [];
+    if(!confirm('¿Eliminar este módulo?' + (cls.length ? '\n\nSe borran también sus ' + cls.length + ' clase(s).' : ''))) return;
+
+    const { error } = await sb.from('modulos').delete().eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+
+    mostrarToast('Módulo eliminado');
+    cerrarModulo();
+    await cargarContenido();
+  }
+
+  // ─── CLASES ──────────────────────────────────────────────────────
+  function abrirClase(moduloId, claseId){
+    document.getElementById('claseModuloId').value = moduloId;
+    document.getElementById('claseId').value = claseId || '';
+    document.getElementById('claseModalTitulo').textContent = claseId ? 'Editar clase' : 'Nueva clase';
+    document.getElementById('btnEliminarClase').style.display = claseId ? '' : 'none';
+
+    const lista = clasesPorModulo[moduloId] || [];
+
+    if(claseId){
+      const cl = lista.find(x => x.id === claseId);
+      document.getElementById('claseTitulo').value = cl?.titulo || '';
+      document.getElementById('claseTipo').value = cl?.tipo || 'video';
+      document.getElementById('claseVideoUrl').value = cl?.video_url || '';
+      document.getElementById('claseEnlace').value = (cl?.tipo === 'enlace' ? (cl?.video_url || '') : '');
+      document.getElementById('claseContenido').value = cl?.contenido || '';
+      document.getElementById('claseDescripcion').value = cl?.descripcion || '';
+      document.getElementById('claseDuracion').value = cl?.duracion_minutos || 0;
+      document.getElementById('claseOrden').value = cl?.orden ?? 0;
+      document.getElementById('claseArchivoUrl').value = cl?.archivo_url || '';
+      document.getElementById('claseGratis').classList.toggle('on', !!cl?.gratis);
+      document.getElementById('clasePublicada').classList.toggle('on', cl?.publicado !== false);
+
+      if(cl?.archivo_url){
+        document.getElementById('claseArchivoEmpty').style.display = 'none';
+        const n = document.getElementById('claseArchivoNombre');
+        n.style.display = 'block';
+        n.textContent = '✓ ' + cl.archivo_url.split('/').pop();
+      } else {
+        document.getElementById('claseArchivoEmpty').style.display = '';
+        document.getElementById('claseArchivoNombre').style.display = 'none';
+      }
+    } else {
+      ['claseTitulo','claseVideoUrl','claseEnlace','claseContenido','claseDescripcion','claseArchivoUrl'].forEach(f => document.getElementById(f).value = '');
+      document.getElementById('claseTipo').value = 'video';
+      document.getElementById('claseDuracion').value = '';
+      document.getElementById('claseOrden').value = lista.length + 1;
+      document.getElementById('claseGratis').classList.remove('on');
+      document.getElementById('clasePublicada').classList.add('on');
+      document.getElementById('claseArchivoEmpty').style.display = '';
+      document.getElementById('claseArchivoNombre').style.display = 'none';
+    }
+
+    cambiarTipoClase();
+    revisarVideo();
+    document.getElementById('claseModal').classList.add('show');
+  }
+
+  function cerrarClase(){ document.getElementById('claseModal').classList.remove('show'); }
+
+  async function subirArchivoClase(event){
+    const file = event.target.files[0];
+    if(!file) return;
+    if(file.size > 20 * 1024 * 1024) return mostrarToast('El archivo no puede pesar más de 20 MB', true);
+
+    const empty = document.getElementById('claseArchivoEmpty');
+    empty.innerHTML = '<div class="image-uploading"><div class="upload-spinner"></div> Subiendo...</div>';
+
+    const r = await subirImagen(file, 'materiales');
+    if(r.exito){
+      document.getElementById('claseArchivoUrl').value = r.url;
+      empty.style.display = 'none';
+      const n = document.getElementById('claseArchivoNombre');
+      n.style.display = 'block';
+      n.textContent = '✓ ' + file.name;
+      mostrarToast('✓ Archivo subido');
+    } else {
+      mostrarToast('Error: ' + r.error, true);
+      empty.innerHTML = '<div class="image-uploader-text">Subir un PDF o archivo</div>';
+    }
+  }
+
+  async function guardarClase(){
+    const titulo = document.getElementById('claseTitulo').value.trim();
+    if(!titulo) return mostrarToast('Poné un título a la clase', true);
+
+    const tipo = document.getElementById('claseTipo').value;
+
+    if(tipo === 'video'){
+      const url = document.getElementById('claseVideoUrl').value.trim();
+      if(url && !analizarVideo(url)){
+        return mostrarToast('Ese enlace de video no lo reconocemos', true);
+      }
+    }
+
+    const datos = {
+      curso_id: cursoContenidoId,
+      modulo_id: document.getElementById('claseModuloId').value,
+      titulo: titulo,
+      tipo: tipo,
+      video_url: tipo === 'enlace'
+        ? (document.getElementById('claseEnlace').value.trim() || null)
+        : (document.getElementById('claseVideoUrl').value.trim() || null),
+      archivo_url: document.getElementById('claseArchivoUrl').value || null,
+      contenido: document.getElementById('claseContenido').value || null,
+      descripcion: document.getElementById('claseDescripcion').value.trim() || null,
+      duracion_minutos: parseInt(document.getElementById('claseDuracion').value) || 0,
+      orden: parseInt(document.getElementById('claseOrden').value) || 0,
+      gratis: document.getElementById('claseGratis').classList.contains('on'),
+      publicado: document.getElementById('clasePublicada').classList.contains('on')
+    };
+
+    const id = document.getElementById('claseId').value;
+    const r = id
+      ? await sb.from('clases').update(datos).eq('id', id)
+      : await sb.from('clases').insert(datos);
+
+    if(r.error) return mostrarToast('Error: ' + r.error.message, true);
+
+    mostrarToast(id ? '✓ Clase actualizada' : '✓ Clase creada');
+    cerrarClase();
+    await cargarContenido();
+  }
+
+  async function eliminarClase(){
+    const id = document.getElementById('claseId').value;
+    if(!id) return;
+    if(!confirm('¿Eliminar esta clase?')) return;
+
+    const { error } = await sb.from('clases').delete().eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+
+    mostrarToast('Clase eliminada');
+    cerrarClase();
+    await cargarContenido();
   }
 
   // ============================
@@ -2826,6 +3518,7 @@ body{visibility:hidden}
       document.getElementById('articuloTiempo').value = a.tiempo_lectura || 5;
       document.getElementById('articuloPublicado').classList.toggle('on', !!a.publicado);
       document.getElementById('articuloDestacado').classList.toggle('on', !!a.destacado);
+      document.getElementById('articuloAvisoAuto').classList.toggle('on', avisoAutomatico());
       document.getElementById('articuloFotoUrl').value = a.imagen_portada || '';
       if (a.imagen_portada) {
         document.getElementById('articuloFotoEmpty').style.display = 'none';
@@ -2843,6 +3536,7 @@ body{visibility:hidden}
       document.getElementById('articuloTiempo').value = 5;
       document.getElementById('articuloPublicado').classList.remove('on');
       document.getElementById('articuloDestacado').classList.remove('on');
+      document.getElementById('articuloAvisoAuto').classList.toggle('on', avisoAutomatico());
       document.getElementById('articuloFotoEmpty').style.display = '';
       document.getElementById('articuloFotoPreview').style.display = 'none';
     }
@@ -2911,9 +3605,39 @@ body{visibility:hidden}
 
     if (result.error) return mostrarToast('Error: ' + result.error.message, true);
 
+    // Guardamos la preferencia de aviso automático
+    const auto = document.getElementById('articuloAvisoAuto').classList.contains('on');
+    try { localStorage.setItem('cmm_aviso_auto', auto ? '1' : '0'); } catch(e){}
+
     mostrarToast(id ? '✓ Artículo actualizado' : '✓ Artículo creado');
-    cerrarModalArticulo();
+
     await cargarArticulos();
+    await cargarEnvios();
+
+    // ¿Hay que avisar a los suscriptores?
+    if(publicado && auto){
+      // Buscamos el artículo (recién creado o el editado)
+      const art = id
+        ? articulos.find(a => a.id === id)
+        : articulos.find(a => a.slug === slug);
+
+      if(art && !enviosHechos[art.id]){
+        if(suscriptores.length === 0){
+          mostrarToast('Publicado. Todavía no hay suscriptores a quien avisar.');
+        } else if(!emailConfigurado){
+          mostrarToast('Publicado, pero el envío de emails no está configurado', true);
+        } else {
+          mostrarToast('Publicado. Avisando a ' + suscriptores.length + ' suscriptor(es)...');
+          await enviarNewsletterDe(art.id, true);
+        }
+      }
+    }
+
+    cerrarModalArticulo();
+  }
+
+  function avisoAutomatico(){
+    try { return localStorage.getItem('cmm_aviso_auto') === '1'; } catch(e){ return false; }
   }
 
   async function eliminarArticulo() {
@@ -3773,6 +4497,8 @@ body{visibility:hidden}
       est.style.color = 'rgba(255,245,240,0.6)';
       sub.textContent = 'Falta el dominio y la clave de Resend';
     }
+
+    renderArticulosParaEnviar();
   }
 
   // Estado del recuadro de envío dentro del editor de artículos
@@ -3848,9 +4574,15 @@ body{visibility:hidden}
 
     if(!confirm('¿Enviar "' + (art?.titulo || '') + '" a ' + nSubs + ' suscriptor' + (nSubs === 1 ? '' : 'es') + '?\n\nUn email enviado no se puede corregir. Revisá el título y el resumen antes de seguir.')) return;
 
+    await enviarNewsletterDe(id, false);
+  }
+
+  async function enviarNewsletterDe(id, silencioso){
     const btn = document.getElementById('btnEnviarNews');
-    btn.disabled = true;
-    btn.textContent = 'ENVIANDO...';
+    if(btn && !silencioso){
+      btn.disabled = true;
+      btn.textContent = 'ENVIANDO...';
+    }
 
     try {
       const r = await fetch(SUPABASE_URL + '/functions/v1/bright-api', {
@@ -3867,16 +4599,20 @@ body{visibility:hidden}
       if(d.exito){
         mostrarToast('✓ Enviado a ' + d.enviados + ' persona' + (d.enviados === 1 ? '' : 's'));
         await cargarEnvios();
-        pintarZonaEnvio(id);
+        if(!silencioso) pintarZonaEnvio(id);
       } else {
         mostrarToast('No se pudo enviar: ' + (d.error || 'error desconocido'), true);
-        btn.disabled = false;
-        btn.textContent = '📨 ENVIAR';
+        if(btn && !silencioso){
+          btn.disabled = false;
+          btn.textContent = '📨 ENVIAR';
+        }
       }
     } catch(e){
       mostrarToast('Error de conexión: ' + e.message, true);
-      btn.disabled = false;
-      btn.textContent = '📨 ENVIAR';
+      if(btn && !silencioso){
+        btn.disabled = false;
+        btn.textContent = '📨 ENVIAR';
+      }
     }
   }
 
@@ -4164,6 +4900,61 @@ body{visibility:hidden}
     sub.textContent = 'Falta conectar el servicio de email';
 
     renderNewsletter();
+  }
+
+  function renderArticulosParaEnviar(){
+    const cont = document.getElementById('articulosParaEnviar');
+    if(!cont) return;
+
+    const publicados = articulos.filter(a => a.publicado);
+
+    if(publicados.length === 0){
+      cont.innerHTML = '<div class="vacio-suave"><div class="ico">📝</div>' +
+        'Todavía no hay artículos publicados' +
+        '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">Publicá uno en la pestaña Artículos y volvé acá para enviarlo</div></div>';
+      return;
+    }
+
+    cont.innerHTML = publicados.map(a => {
+      const envio = enviosHechos[a.id];
+      const img = a.imagen_portada
+        ? "background-image:url('" + esc(a.imagen_portada) + "')"
+        : 'background:linear-gradient(135deg,#2D0A18,#4A0F1E)';
+
+      let derecha;
+      if(envio){
+        derecha = '<span class="art-enviado">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+          'Enviado a ' + envio.destinatarios + ' · ' + fechaCorta(envio.enviado_en) + '</span>';
+      } else if(!emailConfigurado){
+        derecha = '<button class="art-envio-btn" disabled title="Falta configurar el envío de emails">NO DISPONIBLE</button>';
+      } else if(suscriptores.length === 0){
+        derecha = '<button class="art-envio-btn" disabled title="No hay suscriptores">SIN SUSCRIPTORES</button>';
+      } else {
+        derecha = '<button class="art-envio-btn" onclick="enviarDesdeNewsletter(\'' + a.id + '\')">📨 ENVIAR A ' + suscriptores.length + '</button>';
+      }
+
+      return '<div class="art-envio ' + (envio ? '' : 'pendiente') + '">' +
+        '<div class="art-envio-img" style="' + img + '"></div>' +
+        '<div class="art-envio-info">' +
+          '<div class="art-envio-tit">' + esc(a.titulo) + '</div>' +
+          '<div class="art-envio-meta">' + esc((a.categoria || '').toUpperCase()) +
+            ' · ' + fechaCorta(a.publicado_en || a.creado_en) +
+            (envio ? '' : ' · <span style="color:#FAC775">sin enviar</span>') + '</div>' +
+        '</div>' +
+        derecha +
+      '</div>';
+    }).join('');
+  }
+
+  async function enviarDesdeNewsletter(id){
+    const a = articulos.find(x => x.id === id);
+    const n = suscriptores.length;
+    if(!confirm('¿Enviar "' + (a?.titulo || '') + '" a ' + n + ' suscriptor' + (n === 1 ? '' : 'es') + '?\n\nUn email enviado no se puede corregir.')) return;
+
+    mostrarToast('Enviando...');
+    await enviarNewsletterDe(id, true);
+    renderArticulosParaEnviar();
   }
 
   function renderNewsletter(){

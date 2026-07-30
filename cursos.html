@@ -163,75 +163,8 @@
     </div>
   </div>
 
-  <h2 class="serif" style="margin-top:32px">Acompañá más</h2>
-  <div class="section-row">
-    <a href="#" class="poster-hover poster-card">
-      <div class="poster-shadow" style="background:linear-gradient(160deg,#3D0A1A 0%,#7A1B2E 60%,#1A0509 100%)">
-        <div style="position:absolute;width:160px;height:160px;right:-25px;top:-15px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(255,59,71,0.5),transparent 70%)"></div>
-        <div class="text-shadow-overlay"></div>
-        <div class="check-icon" style="background:rgba(255,59,71,0.15);border-color:rgba(255,59,71,0.5)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF3B47"><path d="M22 8.4c0-2-1.5-3.6-3.5-3.8C16 4.4 13 4.3 12 4.3s-4 .1-6.5.3C3.5 4.8 2 6.4 2 8.4c-.2 1.5-.2 3 0 4.5 0 2 1.5 3.6 3.5 3.8 2.5.2 5.5.3 6.5.3s4-.1 6.5-.3c2-.2 3.5-1.8 3.5-3.8.2-1.5.2-3 0-4.5zM10 14.5v-7l6 3.5z"/></svg>
-        </div>
-        <div class="poster-card-inner">
-          <div class="poster-cat live">CANAL</div>
-          <div class="poster-title">YouTube<br>de Milena</div>
-          <div class="poster-meta">
-            <span class="meta-dot" style="background:#FF3B47"></span>
-            cada semana
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a href="#" class="poster-hover poster-card" data-card-club>
-      <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#3D1208 100%)">
-        <div class="lock-overlay"></div>
-        <div class="text-shadow-overlay"></div>
-        <div class="price-badge" data-club-badge style="background:rgba(232,184,196,0.15);border-color:rgba(232,184,196,0.4);color:#E8B8C4;display:none">
-          INCLUIDO EN PLAN
-        </div>
-        <div class="poster-card-inner">
-          <div class="poster-cat exclusive">EXCLUSIVO</div>
-          <div class="poster-title">Club del<br>Libro</div>
-          <div class="poster-meta">
-            <span class="meta-dot" style="background:#5DCAA5"></span>
-            1 libro al mes
-          </div>
-          <button class="unlock-btn" data-club-btn>VER PLAN ANUAL</button>
-        </div>
-      </div>
-    </a>
-
-    <a href="/blog" class="poster-hover poster-card">
-      <div class="poster-shadow" style="background:linear-gradient(160deg,#2D0A18 0%,#5A0F2A 50%,#1A0509 100%)">
-        <div style="position:absolute;width:160px;height:160px;right:-25px;top:-15px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.45),transparent 70%)"></div>
-        <div class="text-shadow-overlay"></div>
-        <div class="check-icon" style="background:rgba(93,202,165,0.18);border-color:rgba(93,202,165,0.5)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9FE1CB" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-        <div class="poster-card-inner">
-          <div class="poster-cat green">GRATIS · LECTURAS</div>
-          <div class="poster-title">Blog · Ideas<br>que venden</div>
-          <div class="poster-meta">
-            <span class="meta-dot" style="background:#5DCAA5"></span>
-            artículos nuevos
-          </div>
-        </div>
-      </div>
-    </a>
-  </div>
-
-  <!-- Plan upsell -->
-  <div class="plan-card">
-    <div class="plan-icon">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/></svg>
-    </div>
-    <div class="plan-content">
-      <div class="plan-title">¿Querés acceso a todo?</div>
-      <div class="plan-desc">Suscribite al <strong style="color:#FFF5F0">Plan Anual CMM</strong> y desbloqueá todos los cursos + comunidad por <strong style="color:#FAC775">Gs 1.500.000/año</strong> (ahorrás 60%).</div>
-    </div>
-    <a href="/checkout"><button class="cta-gold plan-cta">VER PLAN ANUAL</button></a>
-  </div>
+  <h2 class="serif" style="margin-top:32px" id="tituloAcompana">Acompañá más</h2>
+  <div class="section-row" id="cursosAcompana"></div>
 </section>
 
 <footer class="main-footer">
@@ -242,52 +175,104 @@
 <script src="header-dinamico.js"></script>
 <script>
 (function(){
-  // Función para crear una card de curso
-  function crearCardCurso(curso, user, comprasIds) {
+
+  const ICONO_TIPO = {
+    curso: '🎓', club: '📚', canal: '📺', material: '📄', comunidad: '💬'
+  };
+
+  function esc(t){
+    if(!t) return '';
+    const d = document.createElement('div');
+    d.textContent = t;
+    return d.innerHTML;
+  }
+
+  function partirTitulo(t){
+    if(!t) return '';
+    const p = t.split(' ');
+    if(p.length > 1 && t.length > 18){
+      const m = Math.ceil(p.length / 2);
+      return esc(p.slice(0, m).join(' ')) + '<br>' + esc(p.slice(m).join(' '));
+    }
+    return esc(t);
+  }
+
+  function crearCard(curso, user, comprasIds){
     const tieneCompra = comprasIds.includes(curso.id);
-    const esGratis = curso.precio_gs === 0;
-    const necesitaCandado = !esGratis && (!user || !tieneCompra);
-    const precioFormateado = curso.precio_gs ? 'Gs ' + curso.precio_gs.toLocaleString('es-PY') : 'GRATIS';
-    const titulo = curso.titulo;
-    // Si tiene <br> en titulo no lo agregamos, sino lo separamos en 2 líneas si es largo
-    const tituloHTML = titulo.includes(' ') && titulo.length > 18
-      ? titulo.split(' ').slice(0, Math.ceil(titulo.split(' ').length/2)).join(' ') + '<br>' + titulo.split(' ').slice(Math.ceil(titulo.split(' ').length/2)).join(' ')
-      : titulo;
+    const acceso = curso.acceso || (curso.precio_gs ? 'pago' : 'gratis');
+    const esGratis = acceso === 'gratis';
+    const esSuscripcion = acceso === 'suscripcion';
+    const esExterno = !!curso.enlace_externo;
+
+    // ¿Hay que mostrar candado?
+    const bloqueado = !esGratis && !esExterno && !tieneCompra;
 
     const gradient = curso.color_gradient || 'linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)';
-    const cat = curso.categoria || 'CURSO';
-    const meta = curso.modulos_count > 0
-      ? curso.modulos_count + ' mód · ' + Math.floor((curso.duracion_minutos||0)/60) + ' h'
-      : (curso.descripcion || '');
+    const fondo = curso.foto_portada
+      ? `background-image:url('${esc(curso.foto_portada)}');background-size:cover;background-position:center`
+      : `background:${gradient}`;
 
-    const link = necesitaCandado ? 'curso-detalle.html?id=' + curso.slug : 'curso-detalle.html?id=' + curso.slug;
-    const dotColor = esGratis ? '#5DCAA5' : '#D4A356';
+    const cat = esc(curso.categoria || (curso.tipo === 'club' ? 'CLUB' : 'CURSO'));
 
-    const lockHTML = necesitaCandado ? `
+    let meta = '';
+    if(curso.tipo === 'curso' && curso.modulos_count > 0){
+      meta = curso.modulos_count + ' mód · ' + Math.max(1, Math.floor((curso.duracion_minutos || 0) / 60)) + ' h';
+    } else if(curso.descripcion){
+      meta = esc(curso.descripcion.slice(0, 40));
+    } else {
+      meta = ICONO_TIPO[curso.tipo] || '🎓';
+    }
+
+    const precioTxt = esGratis ? 'GRATIS'
+      : esSuscripcion ? 'INCLUIDO'
+      : 'Gs ' + (curso.precio_gs || 0).toLocaleString('es-PY');
+
+    const dotColor = esGratis ? '#5DCAA5' : (esSuscripcion ? '#E8B8C4' : '#D4A356');
+
+    // A dónde lleva
+    let link;
+    if(esExterno) link = curso.enlace_externo;
+    else if(!user && bloqueado) link = '/login?curso=' + esc(curso.slug);
+    else link = '/curso-detalle?id=' + esc(curso.slug);
+
+    const target = esExterno ? ' target="_blank" rel="noopener"' : '';
+
+    const lockHTML = bloqueado ? `
       <div class="lock-overlay"></div>
       <div class="price-badge">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        ${precioFormateado}
+        ${precioTxt}
       </div>` : '';
 
-    const checkIconHTML = !necesitaCandado ? `
+    const checkHTML = (!bloqueado && tieneCompra) ? `
       <div class="check-icon">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="#5DCAA5"><polyline points="20 6 9 17 4 12" stroke="#5DCAA5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#5DCAA5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>` : '';
 
-    const btnHTML = necesitaCandado ? `<button class="unlock-btn">DESBLOQUEAR</button>` : '';
+    const etiquetaHTML = curso.etiqueta ? `
+      <div class="price-badge" style="left:9px;right:auto;background:rgba(184,41,74,0.35);border-color:rgba(232,184,196,0.5);color:#E8B8C4">
+        ${esc(curso.etiqueta)}
+      </div>` : '';
+
+    let textoBoton = '';
+    if(esExterno) textoBoton = 'VER';
+    else if(bloqueado) textoBoton = user ? 'DESBLOQUEAR' : 'INICIÁ SESIÓN';
+    else if(esGratis && !tieneCompra) textoBoton = 'EMPEZAR GRATIS';
+
+    const btnHTML = textoBoton ? `<button class="unlock-btn">${textoBoton}</button>` : '';
 
     return `
-      <a href="${link}" class="poster-hover poster-card" data-curso="${curso.slug}">
-        <div class="poster-shadow" style="background:${gradient}">
+      <a href="${link}"${target} class="poster-hover poster-card" data-curso="${esc(curso.slug)}">
+        <div class="poster-shadow" style="${fondo}">
           <div style="position:absolute;width:160px;height:160px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>
           <div style="position:absolute;width:140px;height:140px;right:-30px;bottom:-30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)"></div>
           <div class="text-shadow-overlay"></div>
           ${lockHTML}
-          ${checkIconHTML}
+          ${checkHTML}
+          ${etiquetaHTML}
           <div class="poster-card-inner">
             <div class="poster-cat">${cat}</div>
-            <div class="poster-title">${tituloHTML}</div>
+            <div class="poster-title">${partirTitulo(curso.titulo)}</div>
             <div class="poster-meta">
               <span class="meta-dot" style="background:${dotColor}"></span>
               ${meta}
@@ -299,56 +284,65 @@
     `;
   }
 
-  const checkAuth = setInterval(async () => {
-    if (typeof sb !== 'undefined' && sb !== null) {
-      clearInterval(checkAuth);
-      const { data: { user } } = await sb.auth.getUser();
+  function pintarSeccion(idCont, idTitulo, lista, user, comprasIds, mensajeVacio){
+    const cont = document.getElementById(idCont);
+    const titulo = idTitulo ? document.getElementById(idTitulo) : null;
+    if(!cont) return;
 
-      // Cargar cursos publicados desde Supabase (solo los que NO son YouTube ni Club del Libro)
-      const { data: cursos, error } = await sb
-        .from('cursos')
-        .select('*')
-        .eq('publicado', true)
-        .not('slug', 'in', '("youtube","club")')
-        .order('orden', { ascending: true });
-
-      const container = document.getElementById('cursosDinamicos');
-
-      if (error) {
-        console.error('Error cargando cursos:', error);
-        if (container) container.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:#FF8090">Error al cargar cursos</div>';
-        return;
-      }
-
-      // Obtener IDs de cursos comprados por la usuaria
-      let comprasIds = [];
-      if (user) {
-        const { data: compras } = await sb.from('compras').select('curso_id').eq('usuario_id', user.id).eq('estado', 'pagado');
-        comprasIds = (compras || []).map(c => c.curso_id);
-      }
-
-      // Renderizar cards
-      if (container) {
-        if (!cursos || cursos.length === 0) {
-          container.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:rgba(255,245,240,0.4);font-size:13px">No hay cursos publicados todavía</div>';
-        } else {
-          container.innerHTML = cursos.map(c => crearCardCurso(c, user, comprasIds)).join('');
-        }
-      }
-
-      // Lógica del Club del Libro (sigue igual, sección estática)
-      const badge = document.querySelector('[data-club-badge]');
-      const btn = document.querySelector('[data-club-btn]');
-      if (user) {
-        if (badge) badge.style.display = '';
-        if (btn) btn.textContent = 'VER PLAN ANUAL';
-      } else {
-        if (badge) badge.style.display = 'none';
-        if (btn) btn.textContent = 'INICIÁ SESIÓN';
-        const card = document.querySelector('[data-card-club]');
-        if (card) card.setAttribute('href', 'login.html');
-      }
+    if(!lista || lista.length === 0){
+      cont.innerHTML = '';
+      cont.style.display = 'none';
+      if(titulo) titulo.style.display = 'none';
+      return;
     }
+
+    cont.style.display = '';
+    if(titulo) titulo.style.display = '';
+    cont.innerHTML = lista.map(c => crearCard(c, user, comprasIds)).join('');
+  }
+
+  const checkAuth = setInterval(async () => {
+    if(typeof sb === 'undefined' || sb === null) return;
+    clearInterval(checkAuth);
+
+    const { data: { user } } = await sb.auth.getUser();
+
+    const { data: cursos, error } = await sb
+      .from('cursos')
+      .select('*')
+      .eq('publicado', true)
+      .order('orden', { ascending: true });
+
+    if(error){
+      document.getElementById('cursosDinamicos').innerHTML =
+        '<div style="grid-column:1/-1;padding:40px;text-align:center;color:#FF8090">No pudimos cargar los cursos</div>';
+      return;
+    }
+
+    let comprasIds = [];
+    if(user){
+      const { data: compras } = await sb.from('compras')
+        .select('curso_id').eq('usuario_id', user.id).eq('estado', 'pagado');
+      comprasIds = (compras || []).map(c => c.curso_id);
+    }
+
+    const todos = cursos || [];
+    const principales = todos.filter(c => (c.seccion || 'principal') === 'principal');
+    const acompana = todos.filter(c => c.seccion === 'acompana');
+
+    // Fila principal
+    const contP = document.getElementById('cursosDinamicos');
+    if(principales.length === 0){
+      contP.innerHTML = '<div style="grid-column:1/-1;padding:50px 20px;text-align:center;color:rgba(255,245,240,0.5)">' +
+        '<div style="font-size:42px;opacity:0.35;margin-bottom:12px">🎓</div>' +
+        '<div style="font-size:14px;margin-bottom:6px">Todavía no hay cursos publicados</div>' +
+        '<div style="font-size:12px;color:rgba(255,245,240,0.4)">Muy pronto vas a encontrar acá el contenido</div></div>';
+    } else {
+      contP.innerHTML = principales.map(c => crearCard(c, user, comprasIds)).join('');
+    }
+
+    // Fila "Acompañá más"
+    pintarSeccion('cursosAcompana', 'tituloAcompana', acompana, user, comprasIds);
   }, 50);
 })();
 </script>
