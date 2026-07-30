@@ -3,383 +3,224 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Milena">
-<title>Embudos que escalan · Clase 8 · Milena Machado</title>
+<title>Clase · Milena Machado</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1A0A12">
-
 <link rel="stylesheet" href="styles.css">
 <style>
-  .breadcrumb-bar{padding:18px 32px;max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:12px;font-size:11.5px;color:rgba(255,245,240,0.55)}
-  .back-circle{width:32px;height:32px;border-radius:50%;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.15);color:#FFF5F0;display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;transition:all 0.25s}
-  .back-circle:hover{background:rgba(255,245,240,0.1);transform:translateX(-2px)}
-  .crumb-sep{color:rgba(255,245,240,0.3)}
+  body{background:#0E0509}
 
-  .clase-layout{max-width:1400px;margin:0 auto;padding:0 32px 50px;display:grid;grid-template-columns:2.8fr 1fr;gap:24px}
+  /* ── Barra de arriba ── */
+  .clase-top{position:sticky;top:0;z-index:60;background:rgba(14,5,9,0.97);backdrop-filter:blur(20px);border-bottom:0.5px solid rgba(255,245,240,0.08);padding:12px 24px;display:flex;align-items:center;gap:14px}
+  .volver-curso{display:flex;align-items:center;gap:8px;font-size:12.5px;color:rgba(255,245,240,0.7);text-decoration:none;padding:8px 12px;border-radius:9px;transition:all 0.2s;white-space:nowrap}
+  .volver-curso:hover{background:rgba(255,245,240,0.06);color:#FFF5F0}
+  .top-curso{flex:1;min-width:0}
+  .top-curso-nom{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .top-curso-prog{font-size:11px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .btn-lista{display:none;padding:9px 13px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.16);border-radius:9px;color:#FFF5F0;font-size:12px;cursor:pointer;font-family:inherit;align-items:center;gap:7px}
 
-  /* VIDEO */
-  .video-wrap{position:relative;aspect-ratio:16/9;border-radius:14px;background:linear-gradient(135deg,#2D0A18,#4A0F1E,#1A0509);overflow:hidden;border:0.5px solid rgba(255,245,240,0.15);box-shadow:0 14px 40px rgba(0,0,0,0.4);cursor:pointer}
-  .video-glow-1{position:absolute;width:400px;height:400px;left:-100px;top:-100px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.5),transparent 70%);pointer-events:none}
-  .video-glow-2{position:absolute;width:280px;height:280px;right:-70px;bottom:-70px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.4),transparent 70%);pointer-events:none}
-  .play-circle{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:90px;height:90px;border-radius:50%;background:rgba(255,245,240,0.1);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:0.5px solid rgba(255,245,240,0.3);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 32px rgba(0,0,0,0.5);transition:all 0.3s}
-  .video-wrap:hover .play-circle{transform:translate(-50%,-50%) scale(1.08)}
+  /* ── Distribución ── */
+  .clase-layout{display:grid;grid-template-columns:1fr 340px;gap:0;min-height:calc(100vh - 57px)}
+  .clase-main{padding:0 0 60px;min-width:0}
+  .clase-lista{border-left:0.5px solid rgba(255,245,240,0.08);background:rgba(255,245,240,0.015);overflow-y:auto;max-height:calc(100vh - 57px);position:sticky;top:57px}
 
-  .video-top-bar{position:absolute;top:16px;left:16px;right:16px;display:flex;align-items:center;justify-content:space-between;z-index:5}
-  .video-badge{padding:5px 11px;background:rgba(14,5,9,0.7);backdrop-filter:blur(8px);border-radius:7px;font-size:10.5px;color:#FFF5F0;letter-spacing:0.06em}
+  /* ── Video ── */
+  .video-caja{background:#000;aspect-ratio:16/9;width:100%;position:relative}
+  .video-caja iframe,.video-caja video{width:100%;height:100%;border:0;display:block}
+  .video-sin{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#2D0A18,#1A0509);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:rgba(255,245,240,0.5);text-align:center;padding:20px}
 
-  /* MINI SHARE */
-  .mini-share{display:flex;align-items:center;background:rgba(20,8,12,0.85);backdrop-filter:blur(20px) saturate(160%);border:0.5px solid rgba(212,163,86,0.4);border-radius:18px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.4);animation:slideRight 0.5s ease-out 5s both}
-  @keyframes slideRight{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
-  .mini-share-btn{display:flex;align-items:center;gap:7px;padding:7px 12px 7px 10px;color:#FFF5F0;cursor:pointer;background:none;border:none;font-family:inherit}
-  .mini-share-text{font-size:10.5px;font-weight:500;letter-spacing:0.04em}
-  .mini-share-x{width:24px;height:28px;border-left:0.5px solid rgba(255,245,240,0.1);color:rgba(255,245,240,0.45);cursor:pointer;display:flex;align-items:center;justify-content:center;background:none;border-top:none;border-right:none;border-bottom:none}
-  .mini-share-x:hover{color:#FFF5F0}
+  /* ── Contenido de la clase ── */
+  .clase-cuerpo{padding:26px 32px;max-width:820px}
+  .clase-meta{display:flex;align-items:center;gap:9px;font-size:11px;color:rgba(255,245,240,0.5);margin-bottom:10px;flex-wrap:wrap}
+  .clase-modulo{padding:4px 10px;background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.35);border-radius:14px;color:#FAC775;font-size:10px;letter-spacing:0.08em;font-weight:600}
+  .clase-h1{font-size:27px;font-weight:500;font-family:Georgia,serif;letter-spacing:-0.015em;margin:0 0 12px;line-height:1.2}
+  .clase-desc{font-size:14.5px;color:rgba(255,245,240,0.75);line-height:1.65;margin-bottom:24px;white-space:pre-wrap}
+  .clase-texto{font-size:15px;color:rgba(255,245,240,0.88);line-height:1.75;margin-bottom:26px;white-space:pre-wrap}
 
-  .video-bottom{position:absolute;left:16px;right:16px;bottom:16px;z-index:5}
-  .progress-bar-track{height:3.5px;background:rgba(255,245,240,0.2);border-radius:2px;margin-bottom:11px;overflow:hidden}
-  .progress-bar-fill{width:42%;height:100%;background:linear-gradient(90deg,#FAC775,#D4A356);border-radius:2px}
-  .video-controls{display:flex;align-items:center;gap:12px;font-size:11px;color:#FFF5F0}
-  .video-controls .right{margin-left:auto;display:flex;gap:16px;align-items:center}
+  .clase-acciones{display:flex;gap:10px;flex-wrap:wrap;padding-top:22px;border-top:0.5px solid rgba(255,245,240,0.07)}
+  .btn-completar{padding:14px 26px;border-radius:12px;border:none;font-size:12px;font-weight:600;letter-spacing:0.1em;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208;transition:all 0.25s}
+  .btn-completar.hecha{background:rgba(93,202,165,0.16);border:0.5px solid rgba(93,202,165,0.5);color:#9FE1CB}
+  .btn-nav{padding:14px 20px;border-radius:12px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.16);color:#FFF5F0;font-size:12px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:all 0.2s}
+  .btn-nav:hover{background:rgba(255,245,240,0.1)}
+  .btn-nav.principal{background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.06));border-color:rgba(212,163,86,0.5);color:#FAC775}
 
-  /* TÍTULO Y NAV */
-  .clase-info{margin-top:18px}
-  .clase-title{font-size:26px;font-weight:500;margin:0 0 6px;font-family:Georgia,serif;font-style:italic;letter-spacing:-0.015em}
-  .clase-desc{font-size:13.5px;color:rgba(255,245,240,0.7);line-height:1.55;margin:0}
+  /* ── Materiales ── */
+  .materiales{margin-top:26px;padding-top:22px;border-top:0.5px solid rgba(255,245,240,0.07)}
+  .mat-titulo{font-size:11px;letter-spacing:0.18em;color:rgba(255,245,240,0.5);font-weight:600;margin-bottom:12px}
+  .mat-item{display:flex;align-items:center;gap:12px;padding:13px 15px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.1);border-radius:11px;margin-bottom:8px;text-decoration:none;color:inherit;transition:all 0.2s}
+  .mat-item:hover{background:rgba(255,245,240,0.08);border-color:rgba(212,163,86,0.4)}
+  .mat-ico{width:36px;height:36px;border-radius:9px;background:rgba(212,163,86,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+  .mat-nom{font-size:13.5px;font-weight:500}
+  .mat-sub{font-size:11.5px;color:rgba(255,245,240,0.5);margin-top:1px}
 
-  .nav-classes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
-  .nav-prev,.nav-next{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:13px;cursor:pointer;transition:all 0.25s;text-decoration:none;color:#FFF5F0}
-  .nav-prev{background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);text-align:left}
-  .nav-prev:hover{background:rgba(255,245,240,0.07);transform:translateX(-2px)}
-  .nav-next{background:linear-gradient(135deg,rgba(212,163,86,0.18),rgba(212,163,86,0.06));border:0.5px solid rgba(212,163,86,0.55);text-align:right;flex-direction:row;box-shadow:0 4px 16px rgba(212,163,86,0.12)}
-  .nav-next:hover{transform:translateX(2px) scale(1.02);box-shadow:0 8px 24px rgba(212,163,86,0.25)}
-  .nav-next .nav-circle{order:2}
-  .nav-next .nav-text{order:1;flex:1}
-  .nav-circle{width:40px;height:40px;border-radius:50%;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-  .nav-next .nav-circle{background:linear-gradient(135deg,#FAC775,#D4A356);border:none;box-shadow:0 4px 12px rgba(212,163,86,0.3)}
-  .nav-text{flex:1;min-width:0}
-  .nav-label{font-size:9.5px;letter-spacing:0.2em;font-weight:500;margin-bottom:3px}
-  .nav-prev .nav-label{color:rgba(255,245,240,0.55)}
-  .nav-next .nav-label{color:#FAC775}
-  .nav-class-name{font-size:14.5px;font-family:Georgia,serif;font-style:italic;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  /* ── Lista lateral ── */
+  .lista-head{padding:18px 20px 14px;border-bottom:0.5px solid rgba(255,245,240,0.07);position:sticky;top:0;background:rgba(14,5,9,0.97);backdrop-filter:blur(12px);z-index:5}
+  .lista-titulo{font-size:14px;font-weight:500;margin-bottom:10px}
+  .barra-prog{height:5px;background:rgba(255,245,240,0.1);border-radius:3px;overflow:hidden}
+  .barra-prog-fill{height:100%;background:linear-gradient(90deg,#D4A356,#FAC775);border-radius:3px;transition:width 0.5s cubic-bezier(0.34,1.2,0.64,1)}
+  .lista-prog-txt{font-size:11.5px;color:rgba(255,245,240,0.55);margin-top:7px}
 
-  .quick-actions{display:flex;gap:8px;margin-top:14px}
-  .qa-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:9px;color:rgba(255,245,240,0.85);font-size:11px;cursor:pointer;transition:all 0.25s}
-  .qa-btn:hover{background:rgba(255,245,240,0.06)}
-  .qa-btn.green{background:rgba(93,202,165,0.08);border-color:rgba(93,202,165,0.3);color:#9FE1CB}
-  .qa-btn.green:hover{background:rgba(93,202,165,0.14)}
+  .mod-grupo{border-bottom:0.5px solid rgba(255,245,240,0.05)}
+  .mod-cab{padding:14px 20px 10px;display:flex;align-items:center;gap:10px}
+  .mod-cab-num{width:24px;height:24px;border-radius:7px;background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.35);color:#FAC775;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .mod-cab-tit{font-size:12.5px;font-weight:500;flex:1;min-width:0}
+  .mod-cab-meta{font-size:10.5px;color:rgba(255,245,240,0.4)}
 
-  /* COMENTARIOS */
-  .comments{height:fit-content}
-  .comments-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-  .comments-title{font-size:16px;font-weight:500;margin:0;color:rgba(255,245,240,0.9);font-family:Georgia,serif;font-style:italic}
-  .comments-count{font-size:11px;color:rgba(255,245,240,0.5)}
+  .cl-item{display:flex;align-items:center;gap:11px;padding:11px 20px;cursor:pointer;transition:background 0.18s;border-left:2.5px solid transparent}
+  .cl-item:hover{background:rgba(255,245,240,0.04)}
+  .cl-item.activa{background:rgba(212,163,86,0.1);border-left-color:#FAC775}
+  .cl-item.bloqueada{opacity:0.45;cursor:not-allowed}
+  .cl-estado{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(255,245,240,0.22);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px}
+  .cl-estado.hecha{background:rgba(93,202,165,0.2);border-color:#5DCAA5}
+  .cl-item.activa .cl-estado{border-color:#FAC775}
+  .cl-txt{flex:1;min-width:0}
+  .cl-nom{font-size:12.5px;line-height:1.3}
+  .cl-item.activa .cl-nom{color:#FAC775}
+  .cl-min{font-size:10.5px;color:rgba(255,245,240,0.4);margin-top:2px}
+  .cl-muestra{padding:1px 6px;border-radius:4px;font-size:8.5px;font-weight:700;letter-spacing:0.05em;background:rgba(93,202,165,0.18);border:0.5px solid rgba(93,202,165,0.45);color:#9FE1CB;flex-shrink:0}
 
-  .comment-input-wrap{display:flex;gap:10px;margin-bottom:18px;padding-bottom:18px;border-bottom:0.5px solid rgba(255,245,240,0.06)}
-  .comment-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#7A1B2E,#E8B8C4);flex-shrink:0;border:0.5px solid rgba(255,245,240,0.15)}
-  .comment-input{flex:1;padding:8px 0;background:transparent;border:none;border-bottom:0.5px solid rgba(255,245,240,0.15);color:#FFF5F0;font-size:12px;outline:none;font-family:inherit}
-  .comment-input:focus{border-bottom-color:rgba(212,163,86,0.5)}
+  /* ── Estados ── */
+  .pantalla-msg{max-width:460px;margin:70px auto;text-align:center;padding:0 24px}
+  .msg-ico{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.05));border:0.5px solid rgba(212,163,86,0.45);display:flex;align-items:center;justify-content:center;margin:0 auto 22px}
+  .msg-tit{font-size:24px;font-weight:500;font-family:Georgia,serif;margin-bottom:10px}
+  .msg-txt{font-size:14px;color:rgba(255,245,240,0.65);line-height:1.6;margin-bottom:26px}
 
-  .comment-milena{margin-bottom:18px;padding-left:11px;border-left:1.5px solid #FAC775}
-  .comment-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-  .comment-mini-avatar{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#B8294A,#E8B8C4);border:1px solid #FAC775;flex-shrink:0}
-  .comment-name{font-size:11.5px;font-weight:500}
-  .prof-tag{font-size:9px;letter-spacing:0.1em;color:#FAC775;font-weight:500}
-  .comment-text{font-size:12px;line-height:1.5;color:rgba(255,245,240,0.85);margin:0 0 6px}
-  .timestamp-link{color:#FAC775;background:rgba(212,163,86,0.1);padding:0px 5px;border-radius:4px;font-size:11px;cursor:pointer}
-  .comment-actions{display:flex;align-items:center;gap:14px;font-size:10.5px;color:rgba(255,245,240,0.5)}
-  .ca-btn{display:flex;align-items:center;gap:4px;cursor:pointer;background:none;border:none;color:inherit;font-family:inherit;font-size:inherit}
-  .ca-btn.liked{color:#E8B8C4}
+  .cargando{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;gap:16px}
+  .spin{width:38px;height:38px;border:3px solid rgba(212,163,86,0.2);border-top-color:#FAC775;border-radius:50%;animation:girar 0.8s linear infinite}
+  @keyframes girar{to{transform:rotate(360deg)}}
 
-  .comment-row{margin-bottom:18px}
-  .comment-mini-avatar-2{width:24px;height:24px;border-radius:50%;flex-shrink:0}
-  .comment-time{font-size:9.5px;color:rgba(255,245,240,0.45);margin-left:6px}
-  .comment-content{padding-left:32px}
-  .comment-content p{font-size:11.5px;line-height:1.5;color:rgba(255,245,240,0.82);margin:0 0 6px}
+  .toast{position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg,#5DCAA5,#9FE1CB);color:#0E0509;padding:14px 22px;border-radius:11px;font-size:13px;font-weight:500;z-index:9999;display:none;box-shadow:0 12px 32px rgba(93,202,165,0.4)}
+  .toast.show{display:block}
+  .toast.error{background:linear-gradient(135deg,#FF8090,#C8203A);color:#FFF5F0}
 
-  .show-more{width:100%;padding:9px;background:transparent;border:0.5px dashed rgba(255,245,240,0.18);border-radius:9px;color:rgba(255,245,240,0.6);font-size:11px;cursor:pointer;letter-spacing:0.04em;font-family:inherit;transition:all 0.25s}
-  .show-more:hover{background:rgba(255,245,240,0.04);color:#FFF5F0;border-color:rgba(212,163,86,0.4)}
-
-  @media (max-width:900px){
-    .breadcrumb-bar{padding:14px 16px}
-    .clase-layout{grid-template-columns:1fr;padding:0 16px 30px}
-    .clase-title{font-size:22px}
-    .nav-classes{grid-template-columns:1fr;gap:8px}
-    .quick-actions{flex-wrap:wrap}
+  /* ── Celular ── */
+  @media (max-width:1000px){
+    .clase-layout{grid-template-columns:1fr}
+    .clase-lista{position:fixed;top:0;right:-100%;bottom:0;width:320px;max-width:86vw;z-index:200;background:#12060A;max-height:100vh;transition:right 0.3s cubic-bezier(0.34,1.3,0.64,1);border-left:0.5px solid rgba(212,163,86,0.25)}
+    .clase-lista.abierta{right:0}
+    .btn-lista{display:inline-flex}
+    .lista-fondo{position:fixed;inset:0;background:rgba(8,3,6,0.75);z-index:199;opacity:0;pointer-events:none;transition:opacity 0.25s}
+    .lista-fondo.show{opacity:1;pointer-events:auto}
+    .clase-top{padding:12px 16px}
+    .clase-cuerpo{padding:20px 16px}
+    .clase-h1{font-size:21px}
+    .clase-acciones{flex-direction:column}
+    .clase-acciones>*{width:100%;justify-content:center}
+    .toast{left:16px;right:16px;bottom:16px;text-align:center}
   }
-
-  /* cmm-mobile-nav-fix: en celular solo logo + foto + 3 puntitos */
-  @media (max-width:900px){
-    .main-header .nav-btn{display:none !important}
-    header.main .nav-btn{display:none !important}
-    nav.main-nav{display:none !important}
-  }
-
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
 .auth-splash{position:fixed;inset:0;background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);z-index:9999;display:flex;align-items:center;justify-content:center;visibility:visible}
-.auth-splash-spinner{width:40px;height:40px;border:2px solid rgba(212,163,86,0.2);border-top-color:#FAC775;border-radius:50%;animation:spin 0.8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+.auth-splash-spinner{width:40px;height:40px;border:2px solid rgba(212,163,86,0.2);border-top-color:#FAC775;border-radius:50%;animation:girar 0.8s linear infinite}
 </style>
 </head>
 <body>
 <div class="auth-splash" id="authSplash"><div class="auth-splash-spinner"></div></div>
 
-<header class="main-header">
-  <div class="header-inner">
-    <a href="/index" class="logo">
-      <div class="logo-box">M</div>
-      <div class="logo-text">MILENA<br>MACHADO</div>
+<div id="cargando" class="cargando">
+  <div class="spin"></div>
+  <div style="font-size:13px;color:rgba(255,245,240,0.5)">Cargando la clase...</div>
+</div>
+
+<div id="contenido" style="display:none">
+  <div class="clase-top">
+    <a href="/cursos" class="volver-curso" id="linkVolver">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span class="volver-txt">Volver</span>
     </a>
-    <a href="/index" class="nav-btn">INICIO</a>
-    <a href="/cursos" class="nav-btn active">CURSOS</a>
-    <a href="/blog" class="nav-btn">BLOG</a>
-    <a href="/comunidad" class="nav-btn">COMUNIDAD</a>
-    <div style="margin-left:auto"><a href="/login" class="btn-outline">ENTRAR</a></div>
-  </div>
-</header>
-
-<div class="breadcrumb-bar">
-  <a href="/curso-detalle" class="back-circle">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-  </a>
-  <span class="serif-it" style="color:#E8B8C4">Creando Mentes Millonarias</span>
-  <span class="crumb-sep">/</span>
-  <span style="color:#FFF5F0">Clase 8 · Embudos que escalan</span>
-</div>
-
-<div class="clase-layout">
-
-  <!-- COLUMNA IZQUIERDA -->
-  <div>
-    <!-- VIDEO -->
-    <div class="video-wrap" onclick="togglePlay()">
-      <div class="video-glow-1"></div>
-      <div class="video-glow-2"></div>
-
-      <div class="play-circle" id="playCircle">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="#FFF5F0"><path d="M8 5v14l11-7z"/></svg>
-      </div>
-
-      <!-- Top: badge + mini share -->
-      <div class="video-top-bar">
-        <span class="video-badge">CLASE 8 · 18:42</span>
-        <div class="mini-share" id="miniShare">
-          <button class="mini-share-btn" onclick="event.stopPropagation();compartirJornada()">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="url(#dShare)" style="filter:drop-shadow(0 0 3px rgba(232,184,196,0.5))"><defs><linearGradient id="dShare" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#FAC775"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
-            <span class="mini-share-text">Compartí tu jornada</span>
-          </button>
-          <button class="mini-share-x" onclick="event.stopPropagation();cerrarShare()">
-            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Bottom controls -->
-      <div class="video-bottom" onclick="event.stopPropagation()">
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill"></div>
-        </div>
-        <div class="video-controls">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFF5F0"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>
-          <span>7:48</span>
-          <span style="opacity:0.5">/</span>
-          <span style="opacity:0.7">18:42</span>
-          <div class="right">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke-linecap="round"/></svg>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6"/></svg>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
-          </div>
-        </div>
-      </div>
+    <div class="top-curso">
+      <div class="top-curso-nom" id="topCurso">—</div>
+      <div class="top-curso-prog" id="topProgreso"></div>
     </div>
-
-    <!-- Título y descripción -->
-    <div class="clase-info">
-      <h2 class="clase-title">Embudos que escalan</h2>
-      <p class="clase-desc">El método de las <em style="color:#E8B8C4">3 capas de calor</em> para diseñar embudos de venta que convierten sin parecer agresivos.</p>
-    </div>
-
-    <!-- Navegación clases -->
-    <div class="nav-classes">
-      <a href="/curso-detalle" class="nav-prev">
-        <div class="nav-circle">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </div>
-        <div class="nav-text">
-          <div class="nav-label">CLASE ANTERIOR</div>
-          <div class="nav-class-name">Bienvenida al curso</div>
-        </div>
-      </a>
-
-      <a href="/clase" class="nav-next">
-        <div class="nav-text">
-          <div class="nav-label">PRÓXIMA CLASE</div>
-          <div class="nav-class-name">Métricas que importan</div>
-        </div>
-        <div class="nav-circle">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-        </div>
-      </a>
-    </div>
-
-    <!-- Quick actions -->
-    <div class="quick-actions">
-      <button class="qa-btn" onclick="dar💎()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="url(#dQA)" style="filter:drop-shadow(0 0 4px rgba(232,184,196,0.4))"><defs><linearGradient id="dQA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#B8294A"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
-        287
-      </button>
-      <button class="qa-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        Guardar
-      </button>
-      <button class="qa-btn green">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-        Marcar como vista
-      </button>
-      <button class="qa-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Materiales
-      </button>
-    </div>
+    <button class="btn-lista" onclick="abrirLista()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg>
+      Clases
+    </button>
   </div>
 
-  <!-- COLUMNA DERECHA: Comentarios -->
-  <div class="comments">
-    <div class="comments-header">
-      <h3 class="comments-title">Conversación</h3>
-      <span class="comments-count">48</span>
-    </div>
+  <div class="clase-layout">
+    <div class="clase-main">
+      <div id="zonaVideo"></div>
 
-    <div class="comment-input-wrap">
-      <div class="comment-avatar"></div>
-      <input class="comment-input" placeholder="Compartí lo que pensás..."/>
-    </div>
+      <div class="clase-cuerpo">
+        <div class="clase-meta" id="claseMeta"></div>
+        <h1 class="clase-h1" id="claseTitulo">—</h1>
+        <p class="clase-desc" id="claseDesc"></p>
+        <div class="clase-texto" id="claseTexto" style="display:none"></div>
 
-    <!-- Comentario de Milena destacado -->
-    <div class="comment-milena">
-      <div class="comment-head">
-        <div class="comment-mini-avatar"></div>
-        <span class="comment-name">Milena</span>
-        <span class="prof-tag">PROFESORA</span>
-      </div>
-      <p class="comment-text">Si tienen dudas con la <em style="color:#E8B8C4">capa 2</em>, mírense de nuevo el <span class="timestamp-link">11:24</span> 💎</p>
-      <div class="comment-actions">
-        <button class="ca-btn liked">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="url(#d1)" style="filter:drop-shadow(0 0 3px rgba(232,184,196,0.4))"><defs><linearGradient id="d1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#B8294A"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
-          93
-        </button>
-        <button class="ca-btn">Responder</button>
-      </div>
-    </div>
+        <div class="materiales" id="zonaMateriales" style="display:none">
+          <div class="mat-titulo">MATERIAL DE LA CLASE</div>
+          <div id="listaMateriales"></div>
+        </div>
 
-    <!-- Comentario común 1 -->
-    <div class="comment-row">
-      <div class="comment-head">
-        <div class="comment-mini-avatar-2" style="background:linear-gradient(135deg,#7A1B2E,#C97990)"></div>
-        <span class="comment-name">Carolina S.</span>
-        <span class="comment-time">hace 4 h</span>
-      </div>
-      <div class="comment-content">
-        <p>Esta clase me cambió la cabeza. Apliqué la primera capa con un cliente y respondió en 10 minutos 🤯</p>
-        <div class="comment-actions">
-          <button class="ca-btn liked">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="url(#d2)" style="filter:drop-shadow(0 0 3px rgba(232,184,196,0.4))"><defs><linearGradient id="d2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8B8C4"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#B8294A"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" stroke="#FFF5F0" stroke-width="0.5"/></svg>
-            24
+        <div class="clase-acciones">
+          <button class="btn-completar" id="btnCompletar" onclick="alternarCompletada()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="btnCompletarTxt">MARCAR COMO VISTA</span>
           </button>
-          <button class="ca-btn">Responder</button>
+          <button class="btn-nav" id="btnAnterior" onclick="irAnterior()" style="display:none">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+            Anterior
+          </button>
+          <button class="btn-nav principal" id="btnSiguiente" onclick="irSiguiente()" style="display:none">
+            Siguiente clase
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Comentario común 2 -->
-    <div class="comment-row">
-      <div class="comment-head">
-        <div class="comment-mini-avatar-2" style="background:linear-gradient(135deg,#4A0F1E,#B8294A)"></div>
-        <span class="comment-name">Diego R.</span>
-        <span class="comment-time">hace 6 h</span>
+    <aside class="clase-lista" id="listaLateral">
+      <div class="lista-head">
+        <div class="lista-titulo" id="listaTitulo">Contenido del curso</div>
+        <div class="barra-prog"><div class="barra-prog-fill" id="barraProg" style="width:0%"></div></div>
+        <div class="lista-prog-txt" id="listaProgTxt">—</div>
       </div>
-      <div class="comment-content">
-        <p>Pregunta sobre el <span class="timestamp-link">11:24</span> ¿el filtro lo hacés vos o un asistente?</p>
-        <div class="comment-actions">
-          <button class="ca-btn">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="1.7"><path d="M6 3h12l4 6-10 13L2 9z" stroke-linejoin="round"/></svg>
-            8
-          </button>
-          <button class="ca-btn">Responder</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Comentario común 3 -->
-    <div class="comment-row">
-      <div class="comment-head">
-        <div class="comment-mini-avatar-2" style="background:linear-gradient(135deg,#D4A356,#E8B8C4)"></div>
-        <span class="comment-name">Patricia M.</span>
-        <span class="comment-time">hace 1 d</span>
-      </div>
-      <div class="comment-content">
-        <p>Las plantillas son ORO puro 📋</p>
-        <div class="comment-actions">
-          <button class="ca-btn">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="1.7"><path d="M6 3h12l4 6-10 13L2 9z" stroke-linejoin="round"/></svg>
-            15
-          </button>
-          <button class="ca-btn">Responder</button>
-        </div>
-      </div>
-    </div>
-
-    <button class="show-more">Ver 45 más</button>
-
+      <div id="listaClases"></div>
+    </aside>
   </div>
 </div>
 
-<footer class="main-footer">
-  Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
-</footer>
+<div class="lista-fondo" id="listaFondo" onclick="cerrarLista()"></div>
 
-<script>
-  function togglePlay(){
-    const c = document.getElementById('playCircle');
-    c.style.opacity = c.style.opacity === '0' ? '1' : '0';
-  }
-  function compartirJornada(){
-    if(navigator.share){
-      navigator.share({title:'Clase de Milena Machado',text:'Estoy aprendiendo con CMM',url:window.location.href});
-    } else {
-      alert('Compartí esta clase con tu red para inspirar a otras!');
-    }
-  }
-  function cerrarShare(){
-    document.getElementById('miniShare').style.display = 'none';
-  }
-  // Esconder mini-share automáticamente a los 12 segundos
-  setTimeout(() => {
-    const ms = document.getElementById('miniShare');
-    if(ms) ms.style.transition = 'opacity 0.5s';
-    if(ms) ms.style.opacity = '0';
-    setTimeout(() => { if(ms) ms.style.display = 'none'; }, 500);
-  }, 12000);
-</script>
+<!-- Sin acceso -->
+<div id="sinAcceso" style="display:none">
+  <div class="pantalla-msg">
+    <div class="msg-ico">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.7"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    </div>
+    <h1 class="msg-tit serif" id="sinAccesoTit">Esta clase es para alumnas</h1>
+    <p class="msg-txt" id="sinAccesoTxt">Conseguí el curso y accedé a todo el contenido.</p>
+    <a href="/cursos" class="cta-gold" style="display:inline-block;padding:15px 30px;border-radius:12px;font-size:12px;font-weight:500;letter-spacing:0.14em;text-decoration:none">VER EL CURSO</a>
+  </div>
+</div>
 
+<!-- No existe -->
+<div id="noExiste" style="display:none">
+  <div class="pantalla-msg">
+    <div class="msg-ico">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+    </div>
+    <h1 class="msg-tit serif">No encontramos esta clase</h1>
+    <p class="msg-txt">Puede que se haya movido o que todavía no esté publicada.</p>
+    <a href="/cursos" class="cta-gold" style="display:inline-block;padding:15px 30px;border-radius:12px;font-size:12px;font-weight:500;letter-spacing:0.14em;text-decoration:none">VOLVER AL CATÁLOGO</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastText"></span></div>
 
 <script src="supabase-config.js"></script>
 <script>
-// Revelado inmediato: si el caché dice que hay sesión, mostramos la página
-// al instante y verificamos en segundo plano. Adiós a la espera.
+// Revelado inmediato si el caché dice que hay sesión
 (function(){
   try{
     var cache = localStorage.getItem('cmm_sesion');
     if(cache && JSON.parse(cache).id){
       document.getElementById('auth-splash-style')?.remove();
-      document.addEventListener('DOMContentLoaded', function(){
-        document.getElementById('authSplash')?.remove();
-      });
       document.getElementById('authSplash')?.remove();
     }
   }catch(e){}
@@ -387,22 +228,386 @@ body{visibility:hidden}
 </script>
 <script src="header-dinamico.js"></script>
 <script>
-(function() {
-  const checkLogin = setInterval(async () => {
-    if (typeof sb !== 'undefined' && sb !== null) {
-      clearInterval(checkLogin);
-      const { data: { user } } = await sb.auth.getUser();
-      if (!user) {
-        window.location.replace('/login');
-      } else {
-        // Mostrar la página
-        document.getElementById('auth-splash-style').remove();
-        const splash = document.getElementById('authSplash');
-        if (splash) splash.remove();
-      }
+// ═══════════════════════════════════════════════════════════════════
+// REPRODUCTOR DE CLASES
+// ═══════════════════════════════════════════════════════════════════
+
+const params = new URLSearchParams(window.location.search);
+const cursoSlug = params.get('curso');
+let claseActualId = params.get('clase');
+
+let usuario = null;
+let curso = null;
+let modulos = [];
+let clases = [];
+let clasesPlanas = [];
+let progreso = {};
+let tieneAcceso = false;
+let claseActual = null;
+
+const ICO_TIPO = { video: '🎬', pdf: '📄', texto: '📝', enlace: '🔗', audio: '🎧' };
+
+function esc(t){
+  if(!t) return '';
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+function mostrarToast(msg, err){
+  const t = document.getElementById('toast');
+  document.getElementById('toastText').textContent = msg;
+  t.classList.toggle('error', !!err);
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function verPantalla(id){
+  ['cargando','contenido','sinAcceso','noExiste'].forEach(x => {
+    const el = document.getElementById(x);
+    if(el) el.style.display = (x === id) ? (x === 'contenido' ? 'block' : 'block') : 'none';
+  });
+}
+
+// ─── Reconocer el video ────────────────────────────────────────────
+function analizarVideo(url){
+  if(!url) return null;
+  const u = url.trim();
+
+  let m = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/|youtube\.com\/live\/)([A-Za-z0-9_-]{11})/);
+  if(m) return { tipo: 'iframe', src: 'https://www.youtube.com/embed/' + m[1] + '?rel=0&modestbranding=1&color=white' };
+
+  m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if(m) return { tipo: 'iframe', src: 'https://player.vimeo.com/video/' + m[1] };
+
+  if(/\.(mp4|webm|mov)(\?|$)/i.test(u)) return { tipo: 'archivo', src: u };
+
+  return null;
+}
+
+// ─── Pintar el video / contenido principal ─────────────────────────
+function pintarVideo(cl){
+  const zona = document.getElementById('zonaVideo');
+
+  if(cl.tipo === 'video' && cl.video_url){
+    const v = analizarVideo(cl.video_url);
+    if(v && v.tipo === 'iframe'){
+      zona.innerHTML = '<div class="video-caja"><iframe src="' + esc(v.src) + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+      return;
     }
-  }, 50);
-})();
+    if(v && v.tipo === 'archivo'){
+      zona.innerHTML = '<div class="video-caja"><video src="' + esc(v.src) + '" controls playsinline></video></div>';
+      return;
+    }
+  }
+
+  if(cl.tipo === 'video'){
+    zona.innerHTML = '<div class="video-sin">' +
+      '<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.35)" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>' +
+      '<div style="font-size:14px">Esta clase todavía no tiene video cargado</div></div>';
+    return;
+  }
+
+  if(cl.tipo === 'pdf' && cl.archivo_url){
+    zona.innerHTML = '<div class="video-sin" style="aspect-ratio:auto;padding:40px 20px">' +
+      '<div style="font-size:44px">📄</div>' +
+      '<div style="font-size:15px;color:rgba(255,245,240,0.8)">Material para descargar</div>' +
+      '<a href="' + esc(cl.archivo_url) + '" target="_blank" rel="noopener" class="cta-gold" style="display:inline-block;padding:14px 28px;border-radius:11px;font-size:12px;font-weight:600;letter-spacing:0.1em;text-decoration:none;margin-top:6px">ABRIR EL MATERIAL</a></div>';
+    return;
+  }
+
+  if(cl.tipo === 'enlace' && cl.video_url){
+    zona.innerHTML = '<div class="video-sin" style="aspect-ratio:auto;padding:40px 20px">' +
+      '<div style="font-size:44px">🔗</div>' +
+      '<div style="font-size:15px;color:rgba(255,245,240,0.8)">Contenido externo</div>' +
+      '<a href="' + esc(cl.video_url) + '" target="_blank" rel="noopener" class="cta-gold" style="display:inline-block;padding:14px 28px;border-radius:11px;font-size:12px;font-weight:600;letter-spacing:0.1em;text-decoration:none;margin-top:6px">ABRIR</a></div>';
+    return;
+  }
+
+  zona.innerHTML = '';
+}
+
+// ─── Pintar la clase completa ──────────────────────────────────────
+async function abrirClase(id, empujarHistorial){
+  const cl = clasesPlanas.find(x => x.id === id);
+  if(!cl) return;
+
+  claseActual = cl;
+  claseActualId = id;
+
+  // ¿Puede verla?
+  if(!tieneAcceso && !cl.gratis){
+    document.getElementById('sinAccesoTit').textContent = 'Esta clase es para alumnas';
+    document.getElementById('sinAccesoTxt').textContent =
+      'Conseguí "' + (curso?.titulo || 'el curso') + '" y accedé a todo el contenido.';
+    verPantalla('sinAcceso');
+    return;
+  }
+
+  verPantalla('contenido');
+
+  const mod = modulos.find(m => m.id === cl.modulo_id);
+  document.getElementById('claseMeta').innerHTML =
+    (mod ? '<span class="clase-modulo">' + esc(mod.titulo) + '</span>' : '') +
+    (cl.duracion_minutos ? '<span>' + cl.duracion_minutos + ' min</span>' : '') +
+    (cl.gratis && !tieneAcceso ? '<span class="cl-muestra">CLASE DE MUESTRA</span>' : '');
+
+  document.getElementById('claseTitulo').textContent = cl.titulo;
+
+  const desc = document.getElementById('claseDesc');
+  desc.textContent = cl.descripcion || '';
+  desc.style.display = cl.descripcion ? 'block' : 'none';
+
+  const txt = document.getElementById('claseTexto');
+  if(cl.tipo === 'texto' && cl.contenido){
+    txt.textContent = cl.contenido;
+    txt.style.display = 'block';
+  } else {
+    txt.style.display = 'none';
+  }
+
+  pintarVideo(cl);
+  await cargarMateriales(cl.id);
+  pintarBotonCompletar();
+  pintarNavegacion();
+  renderLista();
+  cerrarLista();
+
+  if(empujarHistorial){
+    const url = '/clase?curso=' + encodeURIComponent(cursoSlug) + '&clase=' + encodeURIComponent(id);
+    history.pushState({ clase: id }, '', url);
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── Materiales ────────────────────────────────────────────────────
+async function cargarMateriales(claseId){
+  const zona = document.getElementById('zonaMateriales');
+  const lista = document.getElementById('listaMateriales');
+
+  const { data } = await sb.from('materiales').select('*').eq('clase_id', claseId).order('orden', { ascending: true });
+  const mats = data || [];
+
+  // Si la clase es un video pero tiene archivo, lo sumamos
+  if(claseActual?.archivo_url && claseActual.tipo !== 'pdf'){
+    mats.unshift({ id: 'propio', titulo: 'Material de la clase', tipo: 'pdf', url: claseActual.archivo_url });
+  }
+
+  if(mats.length === 0){ zona.style.display = 'none'; return; }
+
+  zona.style.display = 'block';
+  lista.innerHTML = mats.map(m => {
+    const ico = m.tipo === 'enlace' ? '🔗' : (m.tipo === 'imagen' ? '🖼️' : '📄');
+    return '<a href="' + esc(m.url) + '" target="_blank" rel="noopener" class="mat-item">' +
+      '<div class="mat-ico">' + ico + '</div>' +
+      '<div style="flex:1;min-width:0"><div class="mat-nom">' + esc(m.titulo) + '</div>' +
+      '<div class="mat-sub">' + (m.tipo === 'enlace' ? 'Abrir enlace' : 'Descargar') + '</div></div>' +
+      '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.4)" stroke-width="1.8" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+      '</a>';
+  }).join('');
+}
+
+// ─── Marcar como vista ─────────────────────────────────────────────
+function pintarBotonCompletar(){
+  const hecha = !!progreso[claseActualId];
+  const btn = document.getElementById('btnCompletar');
+  btn.classList.toggle('hecha', hecha);
+  document.getElementById('btnCompletarTxt').textContent = hecha ? 'CLASE VISTA' : 'MARCAR COMO VISTA';
+}
+
+async function alternarCompletada(){
+  if(!usuario) return mostrarToast('Entrá para guardar tu avance', true);
+
+  const hecha = !!progreso[claseActualId];
+  const nuevo = !hecha;
+
+  progreso[claseActualId] = nuevo;
+  pintarBotonCompletar();
+  pintarProgreso();
+  renderLista();
+
+  const { error } = await sb.from('progreso').upsert({
+    usuario_id: usuario.id,
+    clase_id: claseActualId,
+    curso_id: curso.id,
+    completada: nuevo,
+    actualizado_en: new Date().toISOString()
+  }, { onConflict: 'usuario_id,clase_id' });
+
+  if(error){
+    progreso[claseActualId] = hecha;
+    pintarBotonCompletar();
+    pintarProgreso();
+    renderLista();
+    return mostrarToast('No pudimos guardar tu avance', true);
+  }
+
+  if(nuevo){
+    const idx = clasesPlanas.findIndex(x => x.id === claseActualId);
+    const sig = clasesPlanas[idx + 1];
+    if(sig) mostrarToast('✓ Clase completada');
+    else mostrarToast('🎉 ¡Terminaste el curso!');
+  }
+}
+
+// ─── Navegación ────────────────────────────────────────────────────
+function pintarNavegacion(){
+  const idx = clasesPlanas.findIndex(x => x.id === claseActualId);
+  const ant = clasesPlanas[idx - 1];
+  const sig = clasesPlanas[idx + 1];
+  document.getElementById('btnAnterior').style.display = ant ? '' : 'none';
+  document.getElementById('btnSiguiente').style.display = sig ? '' : 'none';
+}
+
+function irAnterior(){
+  const idx = clasesPlanas.findIndex(x => x.id === claseActualId);
+  const ant = clasesPlanas[idx - 1];
+  if(ant) abrirClase(ant.id, true);
+}
+
+function irSiguiente(){
+  const idx = clasesPlanas.findIndex(x => x.id === claseActualId);
+  const sig = clasesPlanas[idx + 1];
+  if(sig) abrirClase(sig.id, true);
+}
+
+// ─── Progreso ──────────────────────────────────────────────────────
+function pintarProgreso(){
+  const total = clasesPlanas.length;
+  const hechas = clasesPlanas.filter(c => progreso[c.id]).length;
+  const pct = total ? Math.round((hechas / total) * 100) : 0;
+
+  document.getElementById('barraProg').style.width = pct + '%';
+  document.getElementById('listaProgTxt').textContent = hechas + ' de ' + total + ' clases · ' + pct + '%';
+  document.getElementById('topProgreso').textContent = pct + '% completado';
+}
+
+// ─── Lista lateral ─────────────────────────────────────────────────
+function renderLista(){
+  const cont = document.getElementById('listaClases');
+
+  cont.innerHTML = modulos.map((m, i) => {
+    const cls = clases.filter(c => c.modulo_id === m.id);
+    if(cls.length === 0) return '';
+
+    const min = cls.reduce((s, x) => s + (x.duracion_minutos || 0), 0);
+
+    return '<div class="mod-grupo">' +
+      '<div class="mod-cab">' +
+        '<div class="mod-cab-num">' + (i + 1) + '</div>' +
+        '<div class="mod-cab-tit">' + esc(m.titulo) + '</div>' +
+        '<div class="mod-cab-meta">' + cls.length + (min ? ' · ' + min + 'm' : '') + '</div>' +
+      '</div>' +
+      cls.map(cl => {
+        const hecha = !!progreso[cl.id];
+        const activa = cl.id === claseActualId;
+        const bloqueada = !tieneAcceso && !cl.gratis;
+
+        return '<div class="cl-item ' + (activa ? 'activa ' : '') + (bloqueada ? 'bloqueada' : '') + '" ' +
+          (bloqueada ? '' : 'onclick="abrirClase(&#39;' + cl.id + '&#39;, true)"') + '>' +
+          '<div class="cl-estado ' + (hecha ? 'hecha' : '') + '">' +
+            (hecha
+              ? '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+              : (bloqueada
+                  ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>'
+                  : (ICO_TIPO[cl.tipo] || ''))) +
+          '</div>' +
+          '<div class="cl-txt">' +
+            '<div class="cl-nom">' + esc(cl.titulo) + '</div>' +
+            '<div class="cl-min">' + (cl.duracion_minutos ? cl.duracion_minutos + ' min' : (ICO_TIPO[cl.tipo] || '')) + '</div>' +
+          '</div>' +
+          (cl.gratis && !tieneAcceso ? '<span class="cl-muestra">MUESTRA</span>' : '') +
+        '</div>';
+      }).join('') +
+    '</div>';
+  }).join('');
+}
+
+function abrirLista(){
+  document.getElementById('listaLateral').classList.add('abierta');
+  document.getElementById('listaFondo').classList.add('show');
+}
+function cerrarLista(){
+  document.getElementById('listaLateral').classList.remove('abierta');
+  document.getElementById('listaFondo').classList.remove('show');
+}
+
+window.addEventListener('popstate', e => {
+  const id = e.state?.clase || new URLSearchParams(window.location.search).get('clase');
+  if(id) abrirClase(id, false);
+});
+
+// ─── Arranque ──────────────────────────────────────────────────────
+const esperarSupa = setInterval(async () => {
+  if(typeof sb === 'undefined' || sb === null) return;
+  clearInterval(esperarSupa);
+
+  document.getElementById('auth-splash-style')?.remove();
+  document.getElementById('authSplash')?.remove();
+
+  if(!cursoSlug){ verPantalla('noExiste'); return; }
+
+  const { data: { user } } = await sb.auth.getUser();
+  usuario = user;
+
+  // Curso
+  const { data: c } = await sb.from('cursos').select('*').eq('slug', cursoSlug).maybeSingle();
+  if(!c){ verPantalla('noExiste'); return; }
+  curso = c;
+
+  document.getElementById('topCurso').textContent = c.titulo;
+  document.getElementById('listaTitulo').textContent = c.titulo;
+  document.getElementById('linkVolver').href = '/curso-detalle?id=' + encodeURIComponent(cursoSlug);
+
+  // ¿Tiene acceso?
+  const acceso = c.acceso || (c.precio_gs ? 'pago' : 'gratis');
+  if(acceso === 'gratis'){
+    tieneAcceso = true;
+  } else if(user){
+    const { data: compra } = await sb.from('compras')
+      .select('id').eq('usuario_id', user.id).eq('curso_id', c.id).eq('estado', 'pagado').maybeSingle();
+    tieneAcceso = !!compra;
+  }
+
+  // Contenido
+  const [rMod, rCla] = await Promise.all([
+    sb.from('modulos').select('*').eq('curso_id', c.id).eq('publicado', true).order('orden', { ascending: true }),
+    sb.from('clases').select('*').eq('curso_id', c.id).eq('publicado', true).order('orden', { ascending: true })
+  ]);
+
+  modulos = rMod.data || [];
+  clases = rCla.data || [];
+
+  // Orden real: por módulo y dentro de cada módulo
+  clasesPlanas = [];
+  modulos.forEach(m => {
+    clases.filter(x => x.modulo_id === m.id).forEach(x => clasesPlanas.push(x));
+  });
+
+  if(clasesPlanas.length === 0){
+    document.getElementById('sinAccesoTit').textContent = 'Este curso todavía no tiene clases';
+    document.getElementById('sinAccesoTxt').textContent = 'Estamos preparando el contenido. Volvé pronto.';
+    verPantalla('sinAcceso');
+    return;
+  }
+
+  // Progreso
+  if(user){
+    const { data: prog } = await sb.from('progreso')
+      .select('clase_id, completada').eq('usuario_id', user.id).eq('curso_id', c.id);
+    (prog || []).forEach(p => { if(p.completada) progreso[p.clase_id] = true; });
+  }
+
+  pintarProgreso();
+
+  // Qué clase abrir: la de la URL, la primera sin ver, o la primera
+  let inicial = claseActualId && clasesPlanas.find(x => x.id === claseActualId)
+    ? claseActualId
+    : (clasesPlanas.find(x => !progreso[x.id]) || clasesPlanas[0]).id;
+
+  await abrirClase(inicial, false);
+}, 40);
 </script>
 
 </body>

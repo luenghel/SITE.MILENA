@@ -234,6 +234,38 @@
     nav.main-nav{display:none !important}
   }
 
+
+  /* ═══ TEMARIO ═══ */
+  .temario{max-width:900px;margin:0 auto;padding:34px 24px 60px}
+  .temario-caja{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:18px;padding:26px}
+  .temario-cab{display:flex;align-items:flex-start;gap:18px;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+  .temario-eyebrow{font-size:10px;letter-spacing:0.2em;color:rgba(255,245,240,0.45);font-weight:600;margin-bottom:6px}
+  .temario-h2{font-size:26px;font-weight:500;margin:0 0 6px;letter-spacing:-0.015em}
+  .temario-prog-txt{font-size:12.5px;color:rgba(255,245,240,0.55)}
+  .temario-btn{display:inline-flex;align-items:center;gap:9px;padding:15px 26px;border-radius:13px;font-size:12px;font-weight:600;letter-spacing:0.1em;text-decoration:none;white-space:nowrap}
+  .temario-barra{height:6px;background:rgba(255,245,240,0.1);border-radius:4px;overflow:hidden;margin-bottom:24px}
+  .temario-fill{height:100%;background:linear-gradient(90deg,#D4A356,#FAC775);border-radius:4px;transition:width 0.6s}
+
+  .tem-mod{margin-bottom:18px}
+  .tem-mod-cab{display:flex;align-items:center;gap:11px;margin-bottom:9px}
+  .tem-mod-num{width:26px;height:26px;border-radius:8px;background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.4);color:#FAC775;font-size:11.5px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .tem-mod-tit{font-size:14px;font-weight:500}
+  .tem-mod-meta{font-size:11.5px;color:rgba(255,245,240,0.45);margin-top:1px}
+
+  .tem-clase{display:flex;align-items:center;gap:11px;padding:11px 14px;background:rgba(255,245,240,0.03);border-radius:10px;margin-bottom:6px;text-decoration:none;color:inherit;transition:all 0.2s}
+  .tem-clase:hover{background:rgba(255,245,240,0.07);transform:translateX(3px)}
+  .tem-check{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(255,245,240,0.22);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .tem-check.ok{background:rgba(93,202,165,0.18);border-color:#5DCAA5}
+  .tem-clase-tit{font-size:13.5px}
+  .tem-clase-meta{font-size:11px;color:rgba(255,245,240,0.42);margin-top:1px}
+
+  @media (max-width:768px){
+    .temario{padding:24px 16px 40px}
+    .temario-caja{padding:20px}
+    .temario-h2{font-size:21px}
+    .temario-btn{width:100%;justify-content:center}
+  }
+
 </style>
 </head>
 <body>
@@ -547,6 +579,93 @@ function aplicarDatosCurso(curso) {
   }
 }
 
+// ─── Temario para quien ya tiene acceso ───
+async function mostrarTemario(curso, user){
+  const [rMod, rCla] = await Promise.all([
+    sb.from('modulos').select('*').eq('curso_id', curso.id).eq('publicado', true).order('orden', { ascending: true }),
+    sb.from('clases').select('*').eq('curso_id', curso.id).eq('publicado', true).order('orden', { ascending: true })
+  ]);
+
+  const modulos = rMod.data || [];
+  const clases = rCla.data || [];
+
+  if(modulos.length === 0 || clases.length === 0) return;
+
+  // Progreso
+  let progreso = {};
+  if(user){
+    const { data: prog } = await sb.from('progreso')
+      .select('clase_id, completada').eq('usuario_id', user.id).eq('curso_id', curso.id);
+    (prog || []).forEach(p => { if(p.completada) progreso[p.clase_id] = true; });
+  }
+
+  const total = clases.length;
+  const hechas = clases.filter(c => progreso[c.id]).length;
+  const pct = total ? Math.round((hechas / total) * 100) : 0;
+
+  // Siguiente clase a ver
+  const planas = [];
+  modulos.forEach(m => clases.filter(x => x.modulo_id === m.id).forEach(x => planas.push(x)));
+  const siguiente = planas.find(x => !progreso[x.id]) || planas[0];
+
+  const esc2 = t => { const d = document.createElement('div'); d.textContent = t || ''; return d.innerHTML; };
+
+  const html = `
+    <section class="temario">
+      <div class="temario-caja">
+        <div class="temario-cab">
+          <div>
+            <div class="temario-eyebrow">TU CURSO</div>
+            <h2 class="temario-h2 serif">${esc2(curso.titulo)}</h2>
+            <div class="temario-prog-txt">${hechas} de ${total} clases · ${pct}% completado</div>
+          </div>
+          <a href="/clase?curso=${encodeURIComponent(curso.slug)}${siguiente ? '&clase=' + siguiente.id : ''}" class="cta-gold temario-btn">
+            ${hechas === 0 ? 'EMPEZAR EL CURSO' : (hechas === total ? 'REPASAR' : 'SEGUIR DONDE QUEDÉ')}
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="temario-barra"><div class="temario-fill" style="width:${pct}%"></div></div>
+
+        <div class="temario-lista">
+          ${modulos.map((m, i) => {
+            const cls = clases.filter(x => x.modulo_id === m.id);
+            if(cls.length === 0) return '';
+            const min = cls.reduce((s, x) => s + (x.duracion_minutos || 0), 0);
+            return `
+              <div class="tem-mod">
+                <div class="tem-mod-cab">
+                  <div class="tem-mod-num">${i + 1}</div>
+                  <div style="flex:1;min-width:0">
+                    <div class="tem-mod-tit">${esc2(m.titulo)}</div>
+                    <div class="tem-mod-meta">${cls.length} clase${cls.length === 1 ? '' : 's'}${min ? ' · ' + min + ' min' : ''}</div>
+                  </div>
+                </div>
+                ${cls.map(cl => `
+                  <a href="/clase?curso=${encodeURIComponent(curso.slug)}&clase=${cl.id}" class="tem-clase">
+                    <div class="tem-check ${progreso[cl.id] ? 'ok' : ''}">
+                      ${progreso[cl.id]
+                        ? '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+                        : '<svg width="10" height="10" viewBox="0 0 24 24" fill="rgba(255,245,240,0.5)"><polygon points="6 4 20 12 6 20"/></svg>'}
+                    </div>
+                    <div style="flex:1;min-width:0">
+                      <div class="tem-clase-tit">${esc2(cl.titulo)}</div>
+                      <div class="tem-clase-meta">${cl.duracion_minutos ? cl.duracion_minutos + ' min' : ''}</div>
+                    </div>
+                  </a>
+                `).join('')}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    </section>
+  `;
+
+  const cont = document.createElement('div');
+  cont.innerHTML = html;
+  document.body.insertBefore(cont.firstElementChild, document.querySelector('footer') || null);
+}
+
 function mostrarModal(logueada) {
   const modal = document.getElementById('compraModal');
   const subtitle = document.getElementById('modalSubtitle');
@@ -618,9 +737,16 @@ const checkAccess = setInterval(async () => {
     // Verificar acceso
     const { data: { user } } = await sb.auth.getUser();
 
+    const accesoCurso = curso.acceso || (curso.precio_gs ? 'pago' : 'gratis');
+
     if (!user) {
-      // No logueada → mostrar modal
       mostrarModal(false);
+      return;
+    }
+
+    // Curso gratis: acceso directo, sin comprar
+    if (accesoCurso === 'gratis') {
+      await mostrarTemario(curso, user);
       return;
     }
 
@@ -635,8 +761,11 @@ const checkAccess = setInterval(async () => {
 
     if (!compra) {
       mostrarModal(true);
+      return;
     }
-    // Si compró → no mostrar modal (ve la página normal)
+
+    // Tiene acceso: mostramos el temario y el botón para entrar
+    await mostrarTemario(curso, user);
   }
 }, 100);
 </script>
