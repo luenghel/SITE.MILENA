@@ -2985,8 +2985,14 @@ body{visibility:hidden}
 
     alumnas = perfiles || [];
 
-    // Compras por usuaria
-    const { data: compras } = await sb.from('compras').select('usuario_id, estado');
+    // Las tres consultas al mismo tiempo
+    const [rCompras, rPosts, rComs] = await Promise.all([
+      sb.from('compras').select('usuario_id, estado'),
+      sb.from('posts').select('usuario_id'),
+      sb.from('comentarios').select('usuario_id')
+    ]);
+
+    const compras = rCompras.data;
     const comprasPorUsuario = {};
     (compras || []).forEach(x => {
       if(x.estado === 'pagado' && x.usuario_id){
@@ -2994,14 +3000,13 @@ body{visibility:hidden}
       }
     });
 
-    // Posts y comentarios por usuaria
-    const { data: postsAll } = await sb.from('posts').select('usuario_id');
+    const postsAll = rPosts.data;
     const postsPorUsuario = {};
     (postsAll || []).forEach(p => {
       if(p.usuario_id) postsPorUsuario[p.usuario_id] = (postsPorUsuario[p.usuario_id] || 0) + 1;
     });
 
-    const { data: comAll } = await sb.from('comentarios').select('usuario_id');
+    const comAll = rComs.data;
     const comPorUsuario = {};
     (comAll || []).forEach(x => {
       if(x.usuario_id) comPorUsuario[x.usuario_id] = (comPorUsuario[x.usuario_id] || 0) + 1;
@@ -3445,18 +3450,26 @@ body{visibility:hidden}
     const idsPost = modPosts.map(p => p.id);
     const idsUser = [...new Set(modPosts.map(p => p.usuario_id).filter(Boolean))];
 
-    if(idsUser.length){
-      const { data: perf } = await sb.from('perfiles').select('id, nombre, email, rol, avatar_url').in('id', idsUser);
-      (perf || []).forEach(p => { modPerfiles[p.id] = p; });
-    }
+    // Todo junto, en una sola tanda
+    const [rPerf, rLikes, rDen, rComs2, rTodasDen] = await Promise.all([
+      idsUser.length
+        ? sb.from('perfiles').select('id, nombre, email, rol, avatar_url').in('id', idsUser)
+        : Promise.resolve({ data: [] }),
+      sb.from('likes').select('post_id').in('post_id', idsPost),
+      sb.from('denuncias').select('*').in('post_id', idsPost).eq('estado','pendiente'),
+      sb.from('comentarios').select('*').in('post_id', idsPost).order('creado_en', { ascending: true }),
+      sb.from('denuncias').select('denunciante_id')
+    ]);
+
+    (rPerf.data || []).forEach(p => { modPerfiles[p.id] = p; });
 
     modLikes = {};
-    const { data: likes } = await sb.from('likes').select('post_id').in('post_id', idsPost);
+    const likes = rLikes.data;
     (likes || []).forEach(l => { modLikes[l.post_id] = (modLikes[l.post_id] || 0) + 1; });
 
     // Denuncias (con quién las hizo)
     modDenuncias = {};
-    const { data: dens } = await sb.from('denuncias').select('*').in('post_id', idsPost).eq('estado','pendiente');
+    const dens = rDen.data;
 
     // Perfiles de quienes denunciaron (para ver si actúan de buena fe)
     const idsDenunciantes = [...new Set((dens || []).map(d => d.denunciante_id).filter(Boolean))].filter(id => !modPerfiles[id]);
@@ -3466,7 +3479,7 @@ body{visibility:hidden}
     }
 
     // Cuántas denuncias hizo cada uno en total
-    const { data: todasDen } = await sb.from('denuncias').select('denunciante_id');
+    const todasDen = rTodasDen.data;
     denunciasPorPersona = {};
     (todasDen || []).forEach(d => {
       if(d.denunciante_id) denunciasPorPersona[d.denunciante_id] = (denunciasPorPersona[d.denunciante_id] || 0) + 1;
@@ -3484,7 +3497,7 @@ body{visibility:hidden}
       : 'Nada por revisar';
 
     modComentarios = {};
-    const { data: coms } = await sb.from('comentarios').select('*').in('post_id', idsPost).order('creado_en', { ascending: true });
+    const coms = rComs2.data;
     const idsCom = [...new Set((coms || []).map(x => x.usuario_id).filter(Boolean))].filter(id => !modPerfiles[id]);
     if(idsCom.length){
       const { data: perf2 } = await sb.from('perfiles').select('id, nombre, email, rol, avatar_url').in('id', idsCom);
@@ -4232,23 +4245,74 @@ body{visibility:hidden}
   });
 
   // Cargar al iniciar
+  // ─── Números guardados: se pintan al instante ───────────────────
+  const CACHE_NUMS = 'cmm_admin_nums';
+
+  function guardarNumeros(){
+    try {
+      const nums = {};
+      document.querySelectorAll('.kpi-value, .sidebar-badge').forEach(el => {
+        if(el.id) nums[el.id] = el.textContent;
+      });
+      localStorage.setItem(CACHE_NUMS, JSON.stringify(nums));
+    } catch(e){}
+  }
+
+  function pintarNumerosGuardados(){
+    try {
+      const raw = localStorage.getItem(CACHE_NUMS);
+      if(!raw) return false;
+      const nums = JSON.parse(raw);
+      let pintados = 0;
+      Object.keys(nums).forEach(id => {
+        const el = document.getElementById(id);
+        if(el && nums[id]){ el.textContent = nums[id]; pintados++; }
+      });
+      return pintados > 0;
+    } catch(e){ return false; }
+  }
+
+  // Mientras no hay datos, los ceros se ven apagados
+  function marcarCargando(si){
+    document.querySelectorAll('.kpi-value').forEach(el => {
+      el.style.opacity = si ? '0.45' : '1';
+      el.style.transition = 'opacity 0.3s';
+    });
+  }
+
+  // ─── Arranque ───────────────────────────────────────────────────
+  pintarNumerosGuardados();
+
   const waitSupaCursos = setInterval(async () => {
-    if (typeof sb !== 'undefined' && sb !== null) {
-      clearInterval(waitSupaCursos);
-      const { data: { user } } = await sb.auth.getUser();
-      yoSoyId = user?.id || null;
-      await cargarCursos();
-      cargarCarruseles();
-      await cargarAlumnas();
-      await cargarArticulos();
-      await cargarVentas();
-      await cargarModeracion();
-      await cargarEnvios();
-      await cargarNewsletter();
-      await cargarDashboard();
-      verificarEmailConfigurado();
-    }
-  }, 100);
+    if (typeof sb === 'undefined' || sb === null) return;
+    clearInterval(waitSupaCursos);
+
+    marcarCargando(true);
+
+    const { data: { user } } = await sb.auth.getUser();
+    yoSoyId = user?.id || null;
+
+    // Todo lo independiente, al mismo tiempo
+    await Promise.all([
+      cargarCursos(),
+      cargarCarruseles(),
+      cargarAlumnas(),
+      cargarArticulos(),
+      cargarVentas(),
+      cargarModeracion(),
+      cargarEnvios()
+    ]);
+
+    // El newsletter necesita saber quiénes tienen cuenta
+    await cargarNewsletter();
+
+    await cargarDashboard();
+
+    marcarCargando(false);
+    guardarNumeros();
+
+    verificarEmailConfigurado();
+  }, 40);
 
   // Cargar hashtags cuando Supabase esté listo
   const waitSupa = setInterval(() => {

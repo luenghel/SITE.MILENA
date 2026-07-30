@@ -202,16 +202,9 @@
     </div>
 
     <h1 class="login-title serif">Revisá tu <span class="serif-it gradtext" style="font-size:30px">email</span></h1>
-    <p class="login-subtitle">Enviamos un código de 6 dígitos a<br><span class="codigo-email" id="codigoEmailTxt"></span></p>
+    <p class="login-subtitle">Enviamos un código a<br><span class="codigo-email" id="codigoEmailTxt"></span></p>
 
-    <div class="codigo-inputs" id="codigoInputs">
-      <input class="codigo-box" type="text" inputmode="numeric" maxlength="1" data-i="0">
-      <input class="codigo-box" type="text" inputmode="numeric" maxlength="1" data-i="1">
-      <input class="codigo-box" type="text" inputmode="numeric" maxlength="1" data-i="2">
-      <input class="codigo-box" type="text" inputmode="numeric" maxlength="1" data-i="3">
-      <input class="codigo-box" type="text" inputmode="numeric" maxlength="1" data-i="4">
-      <input class="codigo-box" type="text" inputmode="numeric" maxlength="1" data-i="5">
-    </div>
+    <div class="codigo-inputs" id="codigoInputs"></div>
 
     <button class="cta-gold submit-btn" id="btnVerificar" onclick="verificarCodigo()">VERIFICAR Y ENTRAR</button>
 
@@ -226,7 +219,8 @@
 
     <div class="spam-tip">
       💡 Si no lo ves, revisá la carpeta de <strong>spam</strong> o <strong>promociones</strong>.
-      El código vence en 1 hora.
+      El código vence en 1 hora.<br>
+      <button type="button" onclick="cambiarLargoCodigo()" style="background:none;border:none;color:rgba(255,245,240,0.5);font-size:11px;text-decoration:underline;cursor:pointer;font-family:inherit;margin-top:7px">¿Tu código tiene otra cantidad de dígitos?</button>
     </div>
   </div>
 
@@ -241,6 +235,7 @@
 
 let emailPendiente = '';
 let nombrePendiente = '';
+let passPendiente = '';
 let cooldownReenvio = 0;
 let cooldownTimer = null;
 
@@ -383,6 +378,7 @@ async function hacerRegistro(){
 
   emailPendiente = email;
   nombrePendiente = nombre;
+  passPendiente = pass;
   irAPantallaCodigo(email);
   arrancarCooldown(60);
 }
@@ -390,6 +386,7 @@ async function hacerRegistro(){
 // ─── PANTALLA DE CÓDIGO ────────────────────────────────────────────
 function irAPantallaCodigo(email){
   document.getElementById('codigoEmailTxt').textContent = email;
+  if(!document.querySelector('.codigo-box')) armarCajitas(CANT_DIGITOS);
   limpiarCodigo();
   cambiarTab('codigo');
   setTimeout(() => document.querySelector('.codigo-box').focus(), 250);
@@ -398,6 +395,37 @@ function irAPantallaCodigo(email){
 function volverDelCodigo(){
   clearInterval(cooldownTimer);
   cambiarTab('registro');
+}
+
+// ─── Las cajitas se arman solas y se adaptan al largo del código ──
+let CANT_DIGITOS = 6;
+try {
+  const guardado = parseInt(localStorage.getItem('cmm_largo_codigo'));
+  if(guardado >= 4 && guardado <= 10) CANT_DIGITOS = guardado;
+} catch(e){}
+
+function armarCajitas(cantidad){
+  CANT_DIGITOS = cantidad;
+  try { localStorage.setItem('cmm_largo_codigo', String(cantidad)); } catch(e){}
+
+  const cont = document.getElementById('codigoInputs');
+  cont.innerHTML = '';
+  for(let i = 0; i < cantidad; i++){
+    const inp = document.createElement('input');
+    inp.className = 'codigo-box';
+    inp.type = 'text';
+    inp.inputMode = 'numeric';
+    inp.maxLength = 1;
+    inp.dataset.i = i;
+    cont.appendChild(inp);
+  }
+  // Con muchos dígitos, achicamos para que entren en el celular
+  cont.style.gap = cantidad > 6 ? '5px' : '8px';
+  document.querySelectorAll('.codigo-box').forEach(b => {
+    if(cantidad > 6){ b.style.width = '38px'; b.style.fontSize = '20px'; }
+  });
+
+  conectarCajitas();
 }
 
 function limpiarCodigo(){
@@ -411,43 +439,54 @@ function leerCodigo(){
   return [...document.querySelectorAll('.codigo-box')].map(b => b.value).join('');
 }
 
-// Comportamiento de las 6 cajitas
-document.querySelectorAll('.codigo-box').forEach((box, idx, todas) => {
-  box.addEventListener('input', e => {
-    const v = e.target.value.replace(/\D/g, '');
-    e.target.value = v.slice(-1);
-    e.target.classList.toggle('lleno', !!e.target.value);
-    if(e.target.value && idx < todas.length - 1) todas[idx + 1].focus();
-    if(leerCodigo().length === 6) verificarCodigo();
-  });
+function conectarCajitas(){
+  const todas = document.querySelectorAll('.codigo-box');
 
-  box.addEventListener('keydown', e => {
-    if(e.key === 'Backspace' && !e.target.value && idx > 0){
-      todas[idx - 1].focus();
-      todas[idx - 1].value = '';
-      todas[idx - 1].classList.remove('lleno');
-    }
-    if(e.key === 'ArrowLeft' && idx > 0) todas[idx - 1].focus();
-    if(e.key === 'ArrowRight' && idx < todas.length - 1) todas[idx + 1].focus();
-  });
-
-  box.addEventListener('paste', e => {
-    e.preventDefault();
-    const texto = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
-    texto.split('').forEach((d, i) => {
-      if(todas[i]){
-        todas[i].value = d;
-        todas[i].classList.add('lleno');
-      }
+  todas.forEach((box, idx) => {
+    box.addEventListener('input', e => {
+      const v = e.target.value.replace(/\D/g, '');
+      e.target.value = v.slice(-1);
+      e.target.classList.toggle('lleno', !!e.target.value);
+      if(e.target.value && idx < todas.length - 1) todas[idx + 1].focus();
+      if(leerCodigo().length === CANT_DIGITOS) verificarCodigo();
     });
-    if(texto.length === 6) verificarCodigo();
-    else if(todas[texto.length]) todas[texto.length].focus();
+
+    box.addEventListener('keydown', e => {
+      if(e.key === 'Backspace' && !e.target.value && idx > 0){
+        todas[idx - 1].focus();
+        todas[idx - 1].value = '';
+        todas[idx - 1].classList.remove('lleno');
+      }
+      if(e.key === 'ArrowLeft' && idx > 0) todas[idx - 1].focus();
+      if(e.key === 'ArrowRight' && idx < todas.length - 1) todas[idx + 1].focus();
+    });
+
+    box.addEventListener('paste', e => {
+      e.preventDefault();
+      const texto = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+
+      // Si el código pegado es más largo, agrandamos las cajitas
+      if(texto.length > CANT_DIGITOS && texto.length <= 10){
+        armarCajitas(texto.length);
+      }
+
+      const nuevas = document.querySelectorAll('.codigo-box');
+      texto.slice(0, nuevas.length).split('').forEach((d, i) => {
+        nuevas[i].value = d;
+        nuevas[i].classList.add('lleno');
+      });
+
+      if(texto.length >= CANT_DIGITOS) verificarCodigo();
+      else if(nuevas[texto.length]) nuevas[texto.length].focus();
+    });
   });
-});
+}
 
 async function verificarCodigo(){
   const codigo = leerCodigo();
-  if(codigo.length !== 6) return mostrarAlerta('Completá los 6 dígitos');
+  if(codigo.length !== CANT_DIGITOS){
+    return mostrarAlerta('Completá los ' + CANT_DIGITOS + ' dígitos');
+  }
 
   ocultarAlerta();
   cargando('btnVerificar', 'VERIFICANDO');
@@ -459,9 +498,38 @@ async function verificarCodigo(){
   }
 
   if(resultado.error){
+    // Puede pasar que la cuenta YA esté confirmada (por ejemplo, si antes
+    // clickeaste un enlace de confirmación). En ese caso simplemente entramos.
+    if(passPendiente){
+      const intento = await sb.auth.signInWithPassword({ email: emailPendiente, password: passPendiente });
+      if(!intento.error && intento.data?.session){
+        if(nombrePendiente && intento.data.user){
+          await sb.from('perfiles').upsert({
+            id: intento.data.user.id,
+            email: emailPendiente,
+            nombre: nombrePendiente,
+            rol: 'alumna'
+          }, { onConflict: 'id' });
+        }
+        await refrescarCacheSesion();
+        mostrarAlerta('✓ Tu cuenta ya estaba confirmada. Entrando...', 'success');
+        setTimeout(() => { window.location.href = '/index'; }, 700);
+        return;
+      }
+    }
+
     listo('btnVerificar');
     limpiarCodigo();
     document.querySelector('.codigo-box').focus();
+
+    const m = (resultado.error.message || '').toLowerCase();
+    if(m.includes('expired') || m.includes('invalid')){
+      return mostrarAlerta(
+        'Ese código no sirve. Puede ser que esté vencido o que hayas copiado uno de un email anterior. ' +
+        'Usá siempre el último correo que te llegó, o tocá "Reenviar código".',
+        'error'
+      );
+    }
     return mostrarAlerta(traducirError(resultado.error.message));
   }
 
@@ -473,6 +541,14 @@ async function verificarCodigo(){
   await refrescarCacheSesion();
   mostrarAlerta('✓ ¡Email verificado! Entrando...', 'success');
   setTimeout(() => { window.location.href = '/index'; }, 700);
+}
+
+function cambiarLargoCodigo(){
+  const v = prompt('¿Cuántos dígitos tiene el código que te llegó?', String(CANT_DIGITOS));
+  const n = parseInt(v);
+  if(!n || n < 4 || n > 10) return;
+  armarCajitas(n);
+  document.querySelector('.codigo-box').focus();
 }
 
 // ─── REENVÍO ───────────────────────────────────────────────────────
@@ -506,7 +582,7 @@ async function reenviarCodigo(){
   ocultarAlerta();
   const ok = await enviarCodigoDeNuevo(false);
   if(ok){
-    mostrarAlerta('✓ Código nuevo enviado a ' + emailPendiente, 'success');
+    mostrarAlerta('✓ Código nuevo enviado a ' + emailPendiente + '. Usá este, el anterior ya no sirve.', 'success');
     limpiarCodigo();
     document.querySelector('.codigo-box').focus();
     arrancarCooldown(60);
