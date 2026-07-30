@@ -16,7 +16,7 @@ PASO 1 · COMPRAR EL DOMINIO
 Recomendado: Cloudflare (lo vende al costo, sin sorpresas de precio
 en la renovación) o Namecheap.
 
-Ejemplo: milenamachado.com   →  entre US$ 10 y 15 por año
+Ejemplo: milenacmm.com   →  entre US$ 10 y 15 por año
 
 Si lo comprás en Cloudflare, el DNS ya te queda en el mismo lugar y
 el paso 3 se hace mucho más fácil.
@@ -28,7 +28,7 @@ PASO 2 · CONECTAR EL DOMINIO A VERCEL
 
   1. Entrar a vercel.com → proyecto site-milena
   2. Settings → Domains → Add
-  3. Escribir el dominio (ej: milenamachado.com)
+  3. Escribir el dominio (ej: milenacmm.com)
   4. Vercel muestra los registros DNS que hay que cargar
   5. Cargarlos donde compraste el dominio
   6. Esperar a que Vercel lo marque en verde
@@ -41,7 +41,7 @@ PASO 3 · VERIFICAR EL DOMINIO EN RESEND
 ───────────────────────────────────────────────────────────────────
 
   1. Entrar a resend.com → Domains → Add Domain
-  2. Escribir el dominio (o mejor un subdominio: mail.milenamachado.com)
+  2. Escribir el dominio (o mejor un subdominio: mail.milenacmm.com)
   3. Resend muestra 3 registros DNS (DKIM, SPF y uno de MX)
   4. Cargarlos igual que en el paso 2
   5. Volver a Resend → Verify
@@ -62,7 +62,7 @@ PASO 4 · CARGAR LOS SECRETS EN SUPABASE
   Agregar estos 2 secrets:
 
     RESEND_API_KEY    →  la clave de Resend (empieza con re_)
-    EMAIL_REMITENTE   →  Milena Machado <hola@milenamachado.com>
+    EMAIL_REMITENTE   →  Milena Machado <hola@milenacmm.com>
 
   El formato del remitente es importante: nombre + email entre <>.
 
@@ -80,11 +80,11 @@ PASO 5 · CREAR LA EDGE FUNCTION
 
   5. ⚠️ Antes de desplegar, buscar esta línea (cerca del inicio):
 
-         const SITIO = 'https://site-milena.vercel.app'
+         const SITIO = 'https://milenacmm.com'
 
      y cambiarla por el dominio nuevo:
 
-         const SITIO = 'https://milenamachado.com'
+         const SITIO = 'https://milenacmm.com'
 
   6. Deploy
   7. Settings de la función → Verify JWT → DESACTIVAR → Save
@@ -103,7 +103,7 @@ PASO 6 · ACTIVAR LA VERIFICACIÓN POR EMAIL AL REGISTRARSE
      supabase.com/dashboard/project/pdwooahpyustbqlrvlxz/settings/auth
      → SMTP Settings → Enable Custom SMTP
 
-        Sender email  :  hola@milenamachado.com
+        Sender email  :  hola@milenacmm.com
         Sender name   :  Milena Machado
         Host          :  smtp.resend.com
         Port          :  587

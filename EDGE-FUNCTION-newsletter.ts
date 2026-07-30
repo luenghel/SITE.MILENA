@@ -18,7 +18,7 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
-const SITIO = 'https://site-milena.vercel.app'   // ← cambiar por el dominio propio
+const SITIO = 'https://milenacmm.com'
 
 function escapar(t: string) {
   return (t || '')

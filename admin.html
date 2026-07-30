@@ -3368,7 +3368,7 @@ body{visibility:hidden}
   // Preguntamos a la Edge Function si ya están cargados los secrets
   async function verificarEmailConfigurado(){
     try {
-      const r = await fetch(SUPABASE_URL + '/functions/v1/enviar-newsletter', {
+      const r = await fetch(SUPABASE_URL + '/functions/v1/bright-api', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -3476,7 +3476,7 @@ body{visibility:hidden}
     btn.textContent = 'ENVIANDO...';
 
     try {
-      const r = await fetch(SUPABASE_URL + '/functions/v1/enviar-newsletter', {
+      const r = await fetch(SUPABASE_URL + '/functions/v1/bright-api', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
