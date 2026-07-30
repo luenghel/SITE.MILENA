@@ -161,8 +161,8 @@ input,textarea,select{font-family:inherit;color:inherit}
 
 /* MOBILE OPTIMIZADO */
 @media (max-width:900px){
-  /* Los links de navegación viven en el panel lateral */
-  .nav-btn{display:none}
+  /* Los links se ven siempre, en una fila propia (header-dinamico.js) */
+  .nav-btn{padding:7px 11px;font-size:10.5px;letter-spacing:0.1em}
 
   .header-inner{justify-content:space-between;gap:10px}
   .main-header{

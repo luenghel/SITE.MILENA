@@ -200,7 +200,12 @@
       #000 100%);
   }
   .hero-slide.activa{
-    opacity:0.42;
+    opacity:0.26;
+    animation:heroZoom 9s ease-out forwards;
+  }
+  @keyframes heroZoom{
+    from{transform:scale(1.02)}
+    to{transform:scale(1.10)}
   }
 
 
@@ -210,8 +215,8 @@
     position:absolute;
     inset:0;
     background:
-      linear-gradient(100deg, rgba(14,5,9,0.93) 0%, rgba(14,5,9,0.72) 38%, rgba(14,5,9,0.35) 72%, rgba(14,5,9,0.2) 100%),
-      linear-gradient(0deg, rgba(14,5,9,0.8) 0%, rgba(14,5,9,0.1) 45%);
+      linear-gradient(100deg, rgba(14,5,9,0.85) 0%, rgba(14,5,9,0.5) 42%, rgba(14,5,9,0.12) 78%, rgba(14,5,9,0) 100%),
+      linear-gradient(0deg, rgba(14,5,9,0.65) 0%, rgba(14,5,9,0) 45%);
   }
 
   /* El contenido del hero siempre por encima */
@@ -259,56 +264,22 @@
   
 
 
-  /* cmm-mobile-nav-fix: en celular solo logo + foto + 3 puntitos */
-  
-
-
-  /* ═══ CELULAR: más contraste, como en la computadora ═══ */
-  
-
-
-
-/* ═══════════════════════════════════════════════════════════════
-   CELULAR — mismo diseño que la computadora, a escala
-   (un solo bloque, para que nada se pise)
-   ═══════════════════════════════════════════════════════════════ */
-@media (max-width:900px){
-
-  /* ── HEADER ── */
-  .main-header{
-    padding:12px 16px;
-    padding-top:calc(12px + var(--safe-top,0px));
-    background:rgba(14,5,9,0.96);
-    border-bottom:0.5px solid rgba(212,163,86,0.18);
-    box-shadow:0 2px 20px rgba(0,0,0,0.45);
-  }
-  .header-inner{gap:10px;justify-content:space-between;flex-wrap:nowrap}
-  .nav-btn{display:none}
+  .header-inner{gap:10px;justify-content:space-between}
   .logo-box{width:38px;height:38px;font-size:19px}
   .logo-text{font-size:11px;letter-spacing:0.16em}
 
-  /* ── HERO tipo portada: más ancho que alto ── */
-  .hero{
-    min-height:auto;
-    display:flex;
-    align-items:center;
-  }
+  /* ── HERO ── */
+  .hero{min-height:auto}
   .hero-inner{
-    padding:34px 20px 30px;
+    padding:36px 20px 32px;
     flex-direction:column;
     align-items:flex-start;
     gap:0;
-    width:100%;
   }
-  /* Sombra propia detrás del texto, para que se lea sobre cualquier foto */
-  .hero-content{
-    position:relative;
-    z-index:3;
-  }
-  .hero-title,.hero-desc{
-    text-shadow:0 2px 18px rgba(8,3,6,0.9), 0 1px 4px rgba(8,3,6,0.8);
-  }
-  .hero-tags{text-shadow:0 1px 8px rgba(8,3,6,0.9)}
+  .hero-content{position:relative;z-index:3;max-width:100%;width:100%}
+  /* Sombra suave para que el texto se lea sobre cualquier foto */
+  .hero-title,.hero-desc{text-shadow:0 2px 16px rgba(8,3,6,0.85)}
+  .hero-tags{text-shadow:0 1px 8px rgba(8,3,6,0.85)}
   .hero-content{max-width:100%;width:100%;position:relative;z-index:2}
 
   /* Los círculos pasan a ser un halo detrás del texto */
@@ -325,14 +296,14 @@
   .hero-circle-1{width:260px;height:260px;top:0;right:0}
   .hero-circle-2{width:150px;height:150px;top:70px;right:60px}
 
-  .hero-badge{font-size:10px;padding:4px 10px;margin-bottom:14px}
-  .hero-title{font-size:40px;line-height:1.02}
-  .vende-row{gap:10px;flex-wrap:nowrap;align-items:baseline}
-  .que{font-size:28px;flex-shrink:0}
-  .vende{font-size:58px;white-space:nowrap}
-  .hero-desc{font-size:15.5px;margin-top:16px;max-width:100%;color:rgba(255,245,240,0.85)}
-  .hero-tags{gap:14px;font-size:10.5px;margin-top:22px;flex-wrap:wrap}
-  .hero-cta{width:100%;margin-top:26px;padding:17px 20px;font-size:12.5px;letter-spacing:0.16em}
+  .hero-badge{font-size:9.5px;padding:4px 10px;margin-bottom:13px}
+  .hero-title{font-size:33px;line-height:1.04}
+  .vende-row{gap:9px;flex-wrap:nowrap;align-items:baseline}
+  .que{font-size:23px;flex-shrink:0}
+  .vende{font-size:47px;white-space:nowrap}
+  .hero-desc{font-size:13.5px;margin-top:14px;max-width:100%;color:rgba(255,245,240,0.85);line-height:1.5}
+  .hero-tags{gap:12px;font-size:9.5px;margin-top:18px;flex-wrap:wrap}
+  .hero-cta{width:100%;margin-top:22px;padding:15px 20px;font-size:11.5px;letter-spacing:0.14em}
 
   /* Carrusel de fondo en celular: el velo tapa desde abajo,
      así el texto se lee sobre la parte oscura */
@@ -341,15 +312,14 @@
     -webkit-mask-image:none;
     mask-image:none;
   }
-  .hero-slide.activa{opacity:0.30}
-  /* Velo fuerte: la foto es ambiente, el texto se lee siempre */
+  .hero-slide.activa{opacity:0.28}
   .hero-carrusel::after{
     background:
       linear-gradient(180deg,
-        rgba(14,5,9,0.88) 0%,
-        rgba(14,5,9,0.7) 35%,
-        rgba(14,5,9,0.78) 70%,
-        rgba(14,5,9,0.95) 100%);
+        rgba(14,5,9,0.72) 0%,
+        rgba(14,5,9,0.45) 40%,
+        rgba(14,5,9,0.6) 75%,
+        rgba(14,5,9,0.88) 100%);
   }
   .hero-dots{bottom:16px;right:20px}
   .hero-dot{width:6px;height:6px}
@@ -358,7 +328,7 @@
   /* ── FILAS DE CURSOS: mismo formato que escritorio ── */
   section.row-section{padding:30px 0 8px}
   .section-header{padding:0 16px}
-  .section-title{font-size:22px}
+  .section-title{font-size:19px}
   .row-track{padding:0 16px;gap:12px}
   .poster{width:172px}
   .poster-shadow{
@@ -417,9 +387,9 @@
 
 /* Pantallas muy chicas */
 @media (max-width:400px){
-  .hero-title{font-size:34px}
-  .que{font-size:24px}
-  .vende{font-size:50px}
+  .hero-title{font-size:29px}
+  .que{font-size:20px}
+  .vende{font-size:41px}
   .poster{width:152px}
   .vertical-card{flex:0 0 136px}
 }
@@ -436,7 +406,7 @@
   }
 
 
-/* ═══ La portada no se estira de más en celulares altos ═══ */
+
 @media (max-width:900px){
   .hero{max-height:none}
   .hero-inner{max-width:100%}
@@ -447,15 +417,7 @@
   .hero-dots{bottom:12px;right:16px}
 }
 
-/* En celulares apaisados o chicos, más compacto todavía */
-@media (max-width:900px) and (max-height:720px){
-  .hero-inner{padding:24px 20px 22px}
-  .hero-title{font-size:34px}
-  .que{font-size:24px}
-  .vende{font-size:48px}
-  .hero-desc{font-size:13.5px;margin-top:11px}
-  .hero-cta{margin-top:16px;padding:14px 18px}
-}
+
 
 </style>
 </head>
@@ -829,10 +791,19 @@ function renderCarruselPrincipal(){
 
     slides.forEach((el, i) => {
       const activa = (i === principalSlideIndex);
-      el.classList.toggle('activa', activa);
-      // La que entra queda arriba: así el cruce es parejo,
-      // sin importar si volvemos de la última a la primera
       el.style.zIndex = activa ? '2' : '1';
+
+      if(activa && !el.classList.contains('activa')){
+        // Reiniciamos el zoom desde cero cada vez que aparece.
+        // Sin esto, al volver a la primera foto el zoom saltaba de golpe.
+        el.classList.remove('activa');
+        el.style.animation = 'none';
+        void el.offsetWidth;          // fuerza el reinicio
+        el.style.animation = '';
+        el.classList.add('activa');
+      } else if(!activa){
+        el.classList.remove('activa');
+      }
     });
 
     document.querySelectorAll('.hero-dot').forEach((d, i) => {

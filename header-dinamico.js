@@ -84,28 +84,62 @@
       .cmm-panel-close{position:absolute;top:calc(16px + env(safe-area-inset-top,0px));right:16px;width:34px;height:34px;border-radius:50%;background:rgba(255,245,240,0.07);border:none;color:#FFF5F0;cursor:pointer;display:flex;align-items:center;justify-content:center}
       .cmm-panel-foot{padding:16px 20px calc(20px + env(safe-area-inset-bottom,0px));border-top:0.5px solid rgba(255,245,240,0.08)}
 
-      /* ── CELULAR: logo + foto + 3 puntitos, nada más ── */
+      .cmm-acciones{display:flex;align-items:center;gap:12px;margin-left:auto}
+
+      /* ── CELULAR: los links de navegación siempre visibles ── */
       @media (max-width:900px){
-        /* Sin sesión: el botón ENTRAR más chico, para que no apriete */
+        .cmm-burger{display:none !important}
+
+        .header-inner{
+          flex-wrap:wrap;
+          row-gap:9px;
+          align-items:center;
+        }
+        .header-inner .logo{order:1;min-width:0;flex-shrink:1}
+        .cmm-acciones{order:2;margin-left:auto}
+
+        /* Los links pasan a una segunda fila, siempre a la vista */
+        .main-header .nav-btn,
+        header.main .nav-btn{
+          display:inline-flex !important;
+          order:3;
+          padding:7px 11px !important;
+          font-size:10.5px !important;
+          letter-spacing:0.1em !important;
+          border-radius:16px;
+          background:rgba(255,245,240,0.05);
+          border:0.5px solid rgba(255,245,240,0.12);
+          white-space:nowrap;
+        }
+        .main-header .nav-btn.active,
+        header.main .nav-btn.active{
+          background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.06));
+          border-color:rgba(212,163,86,0.5);
+          color:#FAC775;
+        }
+        .cmm-navfila{
+          order:3;
+          width:100%;
+          display:flex;
+          gap:7px;
+          overflow-x:auto;
+          padding-bottom:2px;
+          scrollbar-width:none;
+        }
+        .cmm-navfila::-webkit-scrollbar{display:none}
+
         .cmm-acciones .btn-outline{
-          padding:9px 14px !important;
+          padding:9px 15px !important;
           font-size:10.5px !important;
           letter-spacing:0.12em !important;
           white-space:nowrap;
         }
-        .header-inner{overflow:hidden}
-        .header-inner .logo{min-width:0;flex-shrink:1}
-        .logo-text{overflow:hidden;text-overflow:ellipsis}
-        .cmm-burger{display:flex;width:38px;height:38px;border-radius:11px}
         .cmm-user-name{display:none}
-        .cmm-user-btn{padding:0;max-width:none;background:none;border:none;border-radius:50%}
-        .cmm-user-btn:hover{background:none}
-        .cmm-user-btn svg{display:none}
-        .cmm-user-av{width:36px;height:36px;border:1.5px solid rgba(212,163,86,0.55)}
-        .cmm-drop{display:none !important}
-        .cmm-acciones{display:flex;align-items:center;gap:9px;margin-left:auto}
+        .cmm-user-btn{padding:3px;max-width:none}
+        .cmm-user-av{width:34px;height:34px;border:1.5px solid rgba(212,163,86,0.55)}
+        .cmm-drop{right:0;min-width:210px}
+        .logo-text{overflow:hidden;text-overflow:ellipsis}
       }
-      .cmm-acciones{display:flex;align-items:center;gap:12px;margin-left:auto}
     `;
     document.head.appendChild(st);
   }
@@ -254,16 +288,23 @@
     return caja;
   }
 
+  // Junta los links en una fila propia, que se desliza si no entran
+  function armarFilaNav() {
+    const header = document.querySelector('.header-inner');
+    if (!header || header.querySelector('.cmm-navfila')) return;
+
+    const links = header.querySelectorAll('.nav-btn');
+    if (links.length === 0) return;
+
+    const fila = document.createElement('div');
+    fila.className = 'cmm-navfila';
+    links.forEach(l => fila.appendChild(l));
+    header.appendChild(fila);
+  }
+
   function agregarBurger() {
-    const caja = agruparAcciones();
-    if (!caja || caja.querySelector('.cmm-burger')) return;
-    const b = document.createElement('button');
-    b.className = 'cmm-burger';
-    b.type = 'button';
-    b.setAttribute('aria-label', 'Menú');
-    b.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="19" r="1.9"/></svg>';
-    b.setAttribute('data-cmm-burger', '');
-    caja.appendChild(b);
+    agruparAcciones();
+    armarFilaNav();
   }
 
   function abrirPanel() {
@@ -293,8 +334,7 @@
     const toggle = e.target.closest('[data-cmm-toggle]');
     if (toggle) {
       e.stopPropagation();
-      // En celular la foto es un atajo a "Mi perfil"; el menú son los 3 puntitos
-      if (window.innerWidth <= 900) { window.location.href = '/perfil'; return; }
+      // La foto abre el menú, en celular y en computadora
       const drop = toggle.parentElement.querySelector('.cmm-drop');
       const abierto = drop.classList.contains('show');
       document.querySelectorAll('.cmm-drop').forEach(d => d.classList.remove('show'));
