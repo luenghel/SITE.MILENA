@@ -169,7 +169,7 @@
   .hero-carrusel{
     position:absolute;
     inset:0;
-    z-index:0;
+    z-index:1;          /* por encima del fondo sólido del hero */
     overflow:hidden;
     pointer-events:none;
   }
@@ -219,15 +219,16 @@
   }
 
   /* El contenido del hero siempre por encima */
-  .hero-inner{position:relative;z-index:2}
-  .hero-gradient,.hero-glow-1,.hero-glow-2,.hero-glow-3{z-index:1}
+  .hero-inner{position:relative;z-index:3}
+  .hero-gradient{z-index:0}
+  .hero-glow-1,.hero-glow-2,.hero-glow-3{z-index:2;pointer-events:none}
 
   /* Puntitos discretos abajo a la derecha */
   .hero-dots{
     position:absolute;
     bottom:26px;
     right:40px;
-    z-index:3;
+    z-index:4;
     display:none;
     gap:7px;
   }
@@ -315,10 +316,10 @@
   .hero-circle-2{width:150px;height:150px;top:70px;right:60px}
 
   .hero-badge{font-size:10px;padding:4px 10px;margin-bottom:14px}
-  .hero-title{font-size:44px}
-  .vende-row{gap:14px}
-  .que{font-size:34px}
-  .vende{font-size:74px}
+  .hero-title{font-size:40px;line-height:1.02}
+  .vende-row{gap:10px;flex-wrap:nowrap;align-items:baseline}
+  .que{font-size:28px;flex-shrink:0}
+  .vende{font-size:58px;white-space:nowrap}
   .hero-desc{font-size:15.5px;margin-top:16px;max-width:100%;color:rgba(255,245,240,0.85)}
   .hero-tags{gap:14px;font-size:10.5px;margin-top:22px;flex-wrap:wrap}
   .hero-cta{width:100%;margin-top:26px;padding:17px 20px;font-size:12.5px;letter-spacing:0.16em}
@@ -411,9 +412,9 @@
 
 /* Pantallas muy chicas */
 @media (max-width:400px){
-  .hero-title{font-size:38px}
-  .que{font-size:29px}
-  .vende{font-size:62px}
+  .hero-title{font-size:34px}
+  .que{font-size:24px}
+  .vende{font-size:50px}
   .poster{width:152px}
   .vertical-card{flex:0 0 136px}
 }
@@ -423,7 +424,9 @@
     body{overflow-x:hidden}
     section,.hero,.row-section,.community,.seguimiento-section,.newsletter-section{max-width:100vw}
     .hero-inner{max-width:100%;box-sizing:border-box}
-    .hero-title,.hero-desc,.section-title{word-break:break-word;overflow-wrap:anywhere}
+    .hero-desc,.section-title{overflow-wrap:break-word}
+    /* El título nunca se parte a la mitad de una palabra */
+    .hero-title,.que,.vende{word-break:normal;overflow-wrap:normal;hyphens:none}
     .scroll-row{max-width:100vw}
   }
 
@@ -663,6 +666,10 @@
   async function cargarCarruseles() {
     if (typeof sb === 'undefined' || !sb) return;
 
+    // Si algo falla, que quede escrito en la consola
+    const { error: errCar } = await sb.from('carruseles').select('id').limit(1);
+    if (errCar) console.warn('[carrusel] no pudimos leer la tabla:', errCar.message);
+
     // Carrusel principal
     const { data: principal } = await sb
       .from('carruseles')
@@ -670,6 +677,8 @@
       .eq('tipo', 'home_principal')
       .eq('activo', true)
       .order('orden', { ascending: true });
+
+    console.log('[carrusel] fotos principales encontradas:', principal ? principal.length : 0);
 
     if (principal && principal.length > 0) {
       principalSlides = principal;
