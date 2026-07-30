@@ -268,42 +268,58 @@
   .logo-box{width:38px;height:38px;font-size:19px}
   .logo-text{font-size:11px;letter-spacing:0.16em}
 
-  /* ── HERO: portada compacta ── */
-  .hero{min-height:auto;max-height:none}
+  /* ══════════════════════════════════════════════════════════
+     HERO EN CELULAR
+     Mismas proporciones que la computadora, a escala.
+     Referencia de escritorio:
+       Marketing 64px · que 50px · Vende 110px · desc 18px
+     Las proporciones se mantienen idénticas (0.78 y 1.72).
+     ══════════════════════════════════════════════════════════ */
+  .hero{min-height:auto}
   .hero-inner{
-    padding:30px 20px 28px;
+    padding:clamp(34px,9vw,52px) 20px clamp(30px,8vw,44px);
     flex-direction:column;
     align-items:flex-start;
     gap:0;
+    max-width:100%;
   }
-  .hero-content{position:relative;z-index:3;max-width:100%;width:100%}
-  /* Sombra suave para que el texto se lea sobre cualquier foto */
-  .hero-title,.hero-desc{text-shadow:0 2px 16px rgba(8,3,6,0.85)}
-  .hero-tags{text-shadow:0 1px 8px rgba(8,3,6,0.85)}
-  .hero-content{max-width:100%;width:100%;position:relative;z-index:2}
+  .hero-content{flex:none;max-width:100%;width:100%;position:relative;z-index:3}
 
-  /* Los círculos pasan a ser un halo detrás del texto */
-  .hero-visual{
-    display:block;
-    position:absolute;
-    top:-40px;right:-70px;
-    width:280px;height:280px;
-    flex:none;
-    z-index:0;
-    opacity:0.75;
-    pointer-events:none;
+  .hero-badge{
+    font-size:clamp(9px,2.5vw,11px);
+    padding:4px 11px;
+    letter-spacing:0.1em;
+    margin-bottom:clamp(12px,3.4vw,18px);
   }
-  .hero-circle-1{width:260px;height:260px;top:0;right:0}
-  .hero-circle-2{width:150px;height:150px;top:70px;right:60px}
 
-  .hero-badge{font-size:9px;padding:3.5px 9px;margin-bottom:11px;letter-spacing:0.16em}
-  .hero-title{font-size:29px;line-height:1.05}
-  .vende-row{gap:8px;flex-wrap:nowrap;align-items:baseline}
-  .que{font-size:20px;flex-shrink:0}
-  .vende{font-size:41px;white-space:nowrap}
-  .hero-desc{font-size:12.5px;margin-top:12px;max-width:100%;color:rgba(255,245,240,0.82);line-height:1.5}
-  .hero-tags{gap:11px;font-size:9px;margin-top:15px;flex-wrap:wrap}
-  .hero-cta{width:100%;margin-top:19px;padding:14px 18px;font-size:11px;letter-spacing:0.13em}
+  .hero-title{font-size:clamp(26px,8.2vw,42px);line-height:1}
+  .vende-row{gap:clamp(9px,2.9vw,15px);flex-wrap:nowrap;align-items:baseline}
+  .que{font-size:clamp(20px,6.4vw,33px);flex-shrink:0}
+  .vende{font-size:clamp(44px,14.1vw,72px);white-space:nowrap;letter-spacing:-0.025em}
+
+  .hero-desc{
+    font-size:clamp(13px,3.6vw,16px);
+    margin-top:clamp(13px,3.4vw,20px);
+    max-width:100%;
+    line-height:1.45;
+  }
+  .hero-tags{
+    gap:clamp(12px,3.4vw,20px);
+    margin-top:clamp(17px,4.6vw,28px);
+    font-size:clamp(9px,2.5vw,11.5px);
+    letter-spacing:0.13em;
+    flex-wrap:wrap;
+  }
+  .hero-cta{
+    width:100%;
+    margin-top:clamp(18px,4.8vw,28px);
+    padding:clamp(15px,4.2vw,19px) 24px;
+    font-size:clamp(11px,3vw,13px);
+    letter-spacing:0.18em;
+  }
+
+  /* Sombra suave: el texto se lee sobre cualquier foto */
+  .hero-title,.hero-desc{text-shadow:0 2px 16px rgba(8,3,6,0.8)}
 
   /* Carrusel de fondo en celular: el velo tapa desde abajo,
      así el texto se lee sobre la parte oscura */
@@ -385,10 +401,6 @@
   }
 }
 
-/* Pantallas muy chicas */
-@media (max-width:400px){
-  .hero-title{font-size:26px}
-  .que{font-size:18px}
   .vende{font-size:36px}
   .poster{width:152px}
   .vertical-card{flex:0 0 136px}
