@@ -97,6 +97,10 @@
   .genero-chip{padding:9px 15px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.16);border-radius:18px;color:rgba(255,245,240,0.75);font-size:12px;cursor:pointer;font-family:inherit;transition:all 0.22s;white-space:nowrap}
   .genero-chip:hover{background:rgba(255,245,240,0.09);color:#FFF5F0}
   .genero-chip.selected{background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.06));border-color:#FAC775;color:#FAC775}
+  .alert-pass{padding:11px 13px;border-radius:9px;font-size:12.5px;line-height:1.5;margin-bottom:16px;display:none}
+  .alert-pass.show{display:block}
+  .alert-pass.error{background:rgba(255,59,71,0.12);border:0.5px solid rgba(255,59,71,0.4);color:#FF8090}
+  .alert-pass.ok{background:rgba(93,202,165,0.12);border:0.5px solid rgba(93,202,165,0.4);color:#9FE1CB}
   .edit-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
   .edit-cancel{padding:10px 18px;background:transparent;border:0.5px solid rgba(255,245,240,0.2);border-radius:9px;color:#FFF5F0;font-size:12px;cursor:pointer;font-family:inherit}
   .edit-save{padding:10px 22px;background:linear-gradient(135deg,#FAC775,#D4A356);border:none;border-radius:9px;color:#3D1208;font-size:12px;font-weight:600;letter-spacing:0.08em;cursor:pointer;font-family:inherit}
@@ -187,10 +191,16 @@ body{visibility:hidden}
       <div class="level-fill" id="pfLevelFill" style="width:0%"></div>
     </div>
     <p class="level-progress-text" id="pfProgreso"></p>
-    <button class="btn-editar-perfil" onclick="abrirEditar()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-      Editar perfil
-    </button>
+    <div style="display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+      <button class="btn-editar-perfil" style="margin-top:0" onclick="abrirEditar()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+        Editar perfil
+      </button>
+      <button class="btn-editar-perfil" style="margin-top:0" onclick="abrirPassword()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Cambiar contraseña
+      </button>
+    </div>
   </div>
 </section>
 
@@ -255,6 +265,35 @@ body{visibility:hidden}
   </div>
 </div>
 
+<div class="edit-backdrop" id="passBackdrop">
+  <div class="edit-modal">
+    <h3 class="serif">Cambiar contraseña</h3>
+
+    <div class="alert-pass" id="passAlerta"></div>
+
+    <div class="edit-field">
+      <label class="edit-label">CONTRASEÑA NUEVA</label>
+      <input class="edit-input" type="password" id="passNueva" placeholder="Mayúscula, número y símbolo" autocomplete="new-password">
+      <div id="medidorPerfil"></div>
+    </div>
+
+    <div class="edit-field">
+      <label class="edit-label">REPETILA</label>
+      <input class="edit-input" type="password" id="passRepetir" placeholder="Escribila de nuevo" autocomplete="new-password">
+      <div id="passIguales" style="font-size:11.5px;margin-top:6px;display:none"></div>
+    </div>
+
+    <div style="font-size:11.5px;color:rgba(255,245,240,0.45);line-height:1.5;margin-top:4px">
+      Cuando la cambies te va a llegar un email confirmándolo.
+    </div>
+
+    <div class="edit-actions">
+      <button class="edit-cancel" onclick="cerrarPassword()">Cancelar</button>
+      <button class="edit-save" id="btnGuardarPass" onclick="guardarPassword()">GUARDAR</button>
+    </div>
+  </div>
+</div>
+
 <div class="edit-backdrop" id="editBackdrop">
   <div class="edit-modal">
     <h3 class="serif">Editar perfil</h3>
@@ -291,6 +330,7 @@ body{visibility:hidden}
 
 
 <script src="supabase-config.js"></script>
+<script src="password-fuerza.js"></script>
 <script>
 // Revelado inmediato: si el caché dice que hay sesión, mostramos la página
 // al instante y verificamos en segundo plano. Adiós a la espera.
@@ -546,6 +586,84 @@ function elegirGenero(el){
   el.classList.add('selected');
   generoElegido = el.dataset.g;
 }
+
+// ═══ CAMBIAR CONTRASEÑA ═══
+let medidorPerfilCreado = false;
+
+function abrirPassword(){
+  document.getElementById('passNueva').value = '';
+  document.getElementById('passRepetir').value = '';
+  document.getElementById('passIguales').style.display = 'none';
+  avisoPass('');
+  document.getElementById('passBackdrop').classList.add('show');
+
+  if(!medidorPerfilCreado && typeof crearMedidorPassword === 'function'){
+    crearMedidorPassword('medidorPerfil', 'passNueva');
+    medidorPerfilCreado = true;
+  }
+  setTimeout(() => document.getElementById('passNueva').focus(), 150);
+}
+
+function cerrarPassword(){
+  document.getElementById('passBackdrop').classList.remove('show');
+}
+
+function avisoPass(texto, tipo){
+  const el = document.getElementById('passAlerta');
+  if(!texto){ el.className = 'alert-pass'; el.textContent = ''; return; }
+  el.className = 'alert-pass show ' + (tipo || 'error');
+  el.textContent = texto;
+}
+
+async function guardarPassword(){
+  const p1 = document.getElementById('passNueva').value;
+  const p2 = document.getElementById('passRepetir').value;
+  avisoPass('');
+
+  if(typeof evaluarPassword === 'function'){
+    const r = evaluarPassword(p1);
+    if(!r.aceptable) return avisoPass(r.faltantes[0] || 'Elegí una contraseña más segura');
+  } else if(p1.length < 8){
+    return avisoPass('Necesita al menos 8 caracteres');
+  }
+
+  if(p1 !== p2) return avisoPass('Las dos contraseñas tienen que ser iguales');
+
+  const btn = document.getElementById('btnGuardarPass');
+  btn.disabled = true;
+  btn.textContent = 'GUARDANDO...';
+
+  const { error } = await sb.auth.updateUser({ password: p1 });
+
+  btn.disabled = false;
+  btn.textContent = 'GUARDAR';
+
+  if(error){
+    const m = (error.message || '').toLowerCase();
+    if(m.includes('should be different') || m.includes('same')){
+      return avisoPass('Esa es tu contraseña actual. Elegí una distinta.');
+    }
+    return avisoPass(error.message);
+  }
+
+  if(typeof avisarCambioPassword === 'function'){
+    avisarCambioPassword('El cambio se hizo desde tu perfil en el sitio.');
+  }
+
+  avisoPass('✓ Contraseña cambiada. Te mandamos un email confirmándolo.', 'ok');
+  setTimeout(() => { cerrarPassword(); mostrarToast('✓ Contraseña actualizada'); }, 1600);
+}
+
+// Aviso de que coincidan
+document.getElementById('passRepetir')?.addEventListener('input', () => {
+  const a = document.getElementById('passNueva').value;
+  const b = document.getElementById('passRepetir').value;
+  const el = document.getElementById('passIguales');
+  if(!b){ el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  el.textContent = (a === b) ? '✓ Coinciden' : 'Todavía no coinciden';
+  el.style.color = (a === b) ? '#9FE1CB' : 'rgba(255,128,144,0.9)';
+});
 
 function abrirEditar(){
   document.getElementById('editNombre').value = perfilActual.nombre || '';

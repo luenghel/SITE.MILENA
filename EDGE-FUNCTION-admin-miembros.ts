@@ -58,6 +58,12 @@ function plantilla(tipo: string, nombre: string, motivo: string, mensaje: string
       color: '#FF8090',
       cierre: 'Si creés que hubo un error, respondé este correo.',
     },
+    seguridad: {
+      titulo: 'Cambiaste tu contraseña',
+      intro: `${saludo}, tu contraseña se cambió correctamente.`,
+      color: '#9FE1CB',
+      cierre: 'Si NO fuiste vos, respondé este correo ahora mismo: alguien podría estar entrando a tu cuenta.',
+    },
   }
 
   const t = textos[tipo] || textos.aviso
@@ -162,7 +168,51 @@ Deno.serve(async (req) => {
       })
     }
 
-    // ─── 2. ¿Es del equipo? ─────────────────────────────────────
+    const cuerpo = await req.json()
+    const { accion, usuario_id, motivo, mensaje, avisar, detalle } = cuerpo
+
+    // ─── 2a. Aviso de seguridad: cada quien puede avisarse a sí ──
+    // (no hace falta ser del equipo, pero solo sobre la propia cuenta)
+    if (accion === 'aviso-seguridad') {
+      const { data: yo } = await admin
+        .from('perfiles').select('nombre, email').eq('id', quien.id).maybeSingle()
+
+      const correo = yo?.email || quien.email
+      if (!correo) {
+        return new Response(JSON.stringify({ exito: true, email_enviado: false }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        })
+      }
+
+      const fecha = new Date().toLocaleString('es-PY', {
+        timeZone: 'America/Asuncion',
+        day: '2-digit', month: 'long', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      })
+
+      const r = await enviarEmail(
+        correo,
+        'Cambiaste tu contraseña · Milena Machado',
+        plantilla('seguridad', yo?.nombre || '', 'Cambio de contraseña · ' + fecha, detalle || '')
+      )
+
+      await admin.from('avisos_admin').insert({
+        destinatario_id: quien.id,
+        destinatario_email: correo,
+        destinatario_nombre: yo?.nombre || null,
+        tipo: 'seguridad',
+        motivo: 'Cambio de contraseña',
+        mensaje: null,
+        email_enviado: r.ok,
+        hecho_por: quien.id,
+      })
+
+      return new Response(JSON.stringify({ exito: true, email_enviado: r.ok }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      })
+    }
+
+    // ─── 2b. Todo lo demás: solo el equipo ──────────────────────
     const { data: perfilQuien } = await admin
       .from('perfiles').select('rol, nombre').eq('id', quien.id).maybeSingle()
 
@@ -171,9 +221,6 @@ Deno.serve(async (req) => {
         status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       })
     }
-
-    // ─── 3. Qué hay que hacer ───────────────────────────────────
-    const { accion, usuario_id, motivo, mensaje, avisar } = await req.json()
 
     if (!accion || !usuario_id) {
       return new Response(JSON.stringify({ error: 'Faltan datos' }), {

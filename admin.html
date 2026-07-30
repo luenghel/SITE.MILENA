@@ -3182,65 +3182,10 @@ body{visibility:hidden}
     mostrarToast('✓ Rol actualizado a ' + nuevoRol);
   }
 
-  // ============================
-  // LLAMAR A LA FUNCIÓN DE ADMINISTRACIÓN
-  // Supabase le pone nombres al azar, así que la buscamos sola
-  // y guardamos la que funcione.
-  // ============================
-  const CANDIDATAS_ADM = [
-    'admin-miembros', 'clever-processor', 'clever-process', 'clever-proc',
-    'clever-service', 'clever-worker', 'clever-endpoint', 'clever-api',
-    'clever-function', 'clever-handler', 'clever-task', 'clever-action'
-  ];
-
-  function urlFuncionGuardada(){
-    try { return localStorage.getItem('cmm_func_admin'); } catch(e){ return null; }
-  }
-  function guardarUrlFuncion(nombre){
-    try { localStorage.setItem('cmm_func_admin', nombre); } catch(e){}
-  }
-
-  async function llamarFuncionAdmin(cuerpo){
-    const { data: { session } } = await sb.auth.getSession();
-    const cabeceras = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + (session?.access_token || SUPABASE_ANON_KEY),
-      'apikey': SUPABASE_ANON_KEY
-    };
-
-    // Probamos primero la que ya sabemos que anda
-    const guardada = urlFuncionGuardada();
-    const lista = guardada ? [guardada, ...CANDIDATAS_ADM.filter(x => x !== guardada)] : CANDIDATAS_ADM;
-
-    let ultimoError = null;
-
-    for(const nombre of lista){
-      try {
-        const r = await fetch(SUPABASE_URL + '/functions/v1/' + nombre, {
-          method: 'POST', headers: cabeceras, body: JSON.stringify(cuerpo)
-        });
-
-        // 404 = no existe con ese nombre, seguimos probando
-        if(r.status === 404) continue;
-
-        let d = {};
-        try { d = await r.json(); } catch(e){}
-
-        // Respondió algo: es la nuestra
-        guardarUrlFuncion(nombre);
-        return { ok: r.ok, status: r.status, datos: d };
-
-      } catch(e){
-        ultimoError = e;
-      }
-    }
-
-    return { ok: false, status: 404, datos: {}, noEncontrada: true, error: ultimoError };
-  }
-
-  // Por si ninguna funciona: que la pegue a mano
+  // La función llamarFuncionAdmin() vive en supabase-config.js
+  // Acá solo dejamos el configurador manual.
   function configurarFuncionAdmin(){
-    const actual = urlFuncionGuardada() || '';
+    const actual = (typeof urlFuncionGuardada === 'function' ? urlFuncionGuardada() : '') || '';
     const v = prompt(
       'Pegá la URL de la función de gestión de miembros.\n\n' +
       'La encontrás en Supabase → Edge Functions → columna URL.\n' +
@@ -3248,11 +3193,8 @@ body{visibility:hidden}
       actual
     );
     if(v === null) return;
-
-    // Nos quedamos solo con el último tramo
     const nombre = v.trim().replace(/\/+$/, '').split('/').pop();
     if(!nombre) return mostrarToast('No entendí esa URL', true);
-
     guardarUrlFuncion(nombre);
     mostrarToast('✓ Función configurada: ' + nombre);
   }

@@ -194,3 +194,71 @@ async function borrarImagen(path) {
   const { error } = await sb.storage.from('imagenes').remove([path]);
   return { exito: !error, error: error?.message };
 }
+
+
+// ═══════════════════════════════════════════════════════
+// LLAMAR A LA FUNCIÓN DE ADMINISTRACIÓN
+// Supabase asigna nombres al azar, así que la buscamos
+// y recordamos la que responde.
+// ═══════════════════════════════════════════════════════
+
+const CANDIDATAS_FUNC_ADM = [
+  'admin-miembros', 'clever-processor', 'clever-process', 'clever-proc',
+  'clever-service', 'clever-worker', 'clever-endpoint', 'clever-api',
+  'clever-function', 'clever-handler', 'clever-task', 'clever-action'
+];
+
+function urlFuncionGuardada() {
+  try { return localStorage.getItem('cmm_func_admin'); } catch(e) { return null; }
+}
+
+function guardarUrlFuncion(nombre) {
+  try { localStorage.setItem('cmm_func_admin', nombre); } catch(e) {}
+}
+
+async function llamarFuncionAdmin(cuerpo) {
+  if (!sb) return { ok: false, status: 0, datos: {}, noEncontrada: true };
+
+  const { data: { session } } = await sb.auth.getSession();
+  const cabeceras = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + (session?.access_token || SUPABASE_ANON_KEY),
+    'apikey': SUPABASE_ANON_KEY
+  };
+
+  const guardada = urlFuncionGuardada();
+  const lista = guardada
+    ? [guardada, ...CANDIDATAS_FUNC_ADM.filter(x => x !== guardada)]
+    : CANDIDATAS_FUNC_ADM;
+
+  for (const nombre of lista) {
+    try {
+      const r = await fetch(SUPABASE_URL + '/functions/v1/' + nombre, {
+        method: 'POST', headers: cabeceras, body: JSON.stringify(cuerpo)
+      });
+
+      if (r.status === 404) continue;
+
+      let d = {};
+      try { d = await r.json(); } catch(e) {}
+
+      guardarUrlFuncion(nombre);
+      return { ok: r.ok, status: r.status, datos: d };
+    } catch(e) {}
+  }
+
+  return { ok: false, status: 404, datos: {}, noEncontrada: true };
+}
+
+// Aviso de seguridad al cambiar la contraseña.
+// Supabase ya lo manda solo con su plantilla "Password Changed",
+// así que acá no hacemos nada (si no, llegarían dos emails).
+// Si algún día se apaga esa opción, cambiar false por true.
+const AVISO_PASSWORD_PROPIO = false;
+
+async function avisarCambioPassword(detalle) {
+  if (!AVISO_PASSWORD_PROPIO) return;
+  try {
+    await llamarFuncionAdmin({ accion: 'aviso-seguridad', detalle: detalle || null });
+  } catch(e) {}
+}

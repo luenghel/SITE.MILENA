@@ -46,6 +46,9 @@
   .input-padded{width:100%;padding:14px 16px 14px 44px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.15);border-radius:11px;color:#FFF5F0;font-size:14px;outline:none;box-sizing:border-box;font-family:inherit;transition:border-color 0.2s}
   .input-padded:focus{border-color:rgba(212,163,86,0.5)}
 
+  .input-padded{padding-right:46px}
+  .ver-pass{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,245,240,0.45);cursor:pointer;padding:4px;display:flex}
+  .ver-pass:hover{color:#FFF5F0}
   .forgot-row{text-align:right;margin-bottom:18px}
   .forgot-link{font-size:12px;color:rgba(232,184,196,0.7);cursor:pointer;text-decoration:none;background:none;border:none;font-family:inherit}
   .forgot-link:hover{color:#E8B8C4}
@@ -143,6 +146,9 @@
       <div class="input-wrap">
         <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
         <input class="input-padded" type="password" id="loginPass" placeholder="Tu contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')hacerLogin()">
+        <button class="ver-pass" type="button" onclick="verPass('loginPass', this)" aria-label="Ver contraseña">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
       </div>
     </div>
 
@@ -178,8 +184,12 @@
       <label class="field-label">CONTRASEÑA</label>
       <div class="input-wrap">
         <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        <input class="input-padded" type="password" id="regPass" placeholder="Mínimo 6 caracteres" autocomplete="new-password" onkeydown="if(event.key==='Enter')hacerRegistro()">
+        <input class="input-padded" type="password" id="regPass" placeholder="Mayúscula, número y símbolo" autocomplete="new-password" onkeydown="if(event.key==='Enter')hacerRegistro()">
+        <button class="ver-pass" type="button" onclick="verPass('regPass', this)" aria-label="Ver contraseña">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
       </div>
+      <div id="medidorReg"></div>
     </div>
 
     <button class="cta-gold submit-btn" id="btnRegistro" onclick="hacerRegistro()">CREAR MI CUENTA</button>
@@ -223,6 +233,7 @@
 </div>
 
 <script src="supabase-config.js"></script>
+<script src="password-fuerza.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════════
 // LOGIN + REGISTRO CON VERIFICACIÓN POR CÓDIGO
@@ -232,6 +243,16 @@ let emailPendiente = '';
 let nombrePendiente = '';
 let cooldownReenvio = 0;
 let cooldownTimer = null;
+
+// ─── Ver / ocultar contraseña ──────────────────────────────────────
+function verPass(id, btn){
+  const i = document.getElementById(id);
+  const oculto = i.type === 'password';
+  i.type = oculto ? 'text' : 'password';
+  btn.innerHTML = oculto
+    ? '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M17.9 17.9A10.1 10.1 0 0 1 12 20C5 20 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9M9.9 4.2A9.1 9.1 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.2 3.2"/><line x1="2" y1="2" x2="22" y2="22" stroke-linecap="round"/></svg>'
+    : '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+}
 
 // ─── UI helpers ────────────────────────────────────────────────────
 function mostrarAlerta(msg, tipo){
@@ -326,7 +347,10 @@ async function hacerRegistro(){
 
   if(!nombre) return mostrarAlerta('Escribí tu nombre');
   if(!email) return mostrarAlerta('Escribí tu email');
-  if(pass.length < 6) return mostrarAlerta('La contraseña necesita al menos 6 caracteres');
+  const fuerza = evaluarPassword(pass);
+  if(!fuerza.aceptable){
+    return mostrarAlerta(fuerza.faltantes[0] || 'Elegí una contraseña más segura');
+  }
 
   cargando('btnRegistro', 'CREANDO');
 
@@ -496,11 +520,16 @@ async function recuperarContrasena(){
   if(!email) return mostrarAlerta('Escribí tu email arriba y volvé a tocar acá');
 
   const { error } = await sb.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '/login'
+    redirectTo: window.location.origin + '/recuperar'
   });
 
   if(error) return mostrarAlerta(traducirError(error.message));
-  mostrarAlerta('✓ Te mandamos un email para recuperar tu contraseña. Revisá también spam.', 'success');
+  mostrarAlerta('✓ Te mandamos un email a ' + email + ' con el enlace para cambiar tu contraseña. Revisá también spam.', 'success');
+}
+
+// Medidor de fuerza en el registro
+if(typeof crearMedidorPassword === 'function'){
+  crearMedidorPassword('medidorReg', 'regPass');
 }
 
 // ─── Si ya está logueada, la sacamos de acá ────────────────────────
