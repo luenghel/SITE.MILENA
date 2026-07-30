@@ -1,0 +1,16 @@
+{
+  "name": "Milena Machado · Creando Mentes Millonarias",
+  "short_name": "Milena CMM",
+  "description": "Marketing que vende. Cursos y comunidad para emprendedores en Paraguay.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0E0509",
+  "theme_color": "#1A0A12",
+  "orientation": "portrait",
+  "lang": "es-PY",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

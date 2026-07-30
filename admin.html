@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panel Admin · Milena Machado</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1A0A12">
+
 <link rel="stylesheet" href="styles.css">
 <style>
   body{display:grid;grid-template-columns:240px 1fr;min-height:100vh;background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);color:#FFF5F0}
@@ -704,6 +710,35 @@
     .dash-cols{grid-template-columns:1fr}
     .dash-seccion{margin:20px 0 10px}
   }
+
+
+  /* ═══ ACCIONES SOBRE UN MIEMBRO ═══ */
+  .acc-persona{display:flex;align-items:center;gap:12px;padding:14px;background:rgba(255,245,240,0.04);border-radius:12px;margin-bottom:18px}
+  .acc-tipo-row{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+  .acc-tipo{display:flex;align-items:flex-start;gap:11px;padding:13px 14px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.14);border-radius:11px;cursor:pointer;font-family:inherit;text-align:left;transition:all 0.2s;width:100%}
+  .acc-tipo:hover{background:rgba(255,245,240,0.07)}
+  .acc-tipo.sel{border-color:rgba(212,163,86,0.6);background:rgba(212,163,86,0.1)}
+  .acc-tipo.sel.peligro{border-color:rgba(255,59,71,0.55);background:rgba(255,59,71,0.1)}
+  .acc-tipo-ico{font-size:18px;flex-shrink:0;line-height:1.2}
+  .acc-tipo-nom{font-size:13.5px;font-weight:500;color:#FFF5F0}
+  .acc-tipo-des{font-size:11.5px;color:rgba(255,245,240,0.55);margin-top:2px;line-height:1.45}
+
+  .acc-motivos{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .acc-motivo{padding:7px 12px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);border-radius:16px;font-size:11.5px;color:rgba(255,245,240,0.72);cursor:pointer;font-family:inherit;transition:all 0.2s}
+  .acc-motivo:hover{background:rgba(255,245,240,0.09)}
+  .acc-motivo.sel{background:rgba(212,163,86,0.16);border-color:rgba(212,163,86,0.5);color:#FAC775}
+
+  .acc-check{display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(255,245,240,0.04);border-radius:11px;margin-bottom:16px;cursor:pointer}
+  .acc-check-box{width:20px;height:20px;border-radius:6px;border:1.5px solid rgba(255,245,240,0.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+  .acc-check.on .acc-check-box{background:linear-gradient(135deg,#FAC775,#D4A356);border-color:#FAC775}
+  .acc-check-box svg{opacity:0;transition:opacity 0.2s}
+  .acc-check.on .acc-check-box svg{opacity:1}
+
+  .acc-alerta{padding:12px 14px;background:rgba(255,59,71,0.1);border:0.5px solid rgba(255,59,71,0.35);border-radius:10px;font-size:12px;color:#FF8090;line-height:1.5;margin-bottom:16px;display:none}
+  .acc-alerta.show{display:block}
+
+  .acc-btn-menu{padding:6px 11px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.14);border-radius:8px;color:rgba(255,245,240,0.8);font-size:11px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all 0.2s}
+  .acc-btn-menu:hover{background:rgba(212,163,86,0.15);border-color:rgba(212,163,86,0.45);color:#FAC775}
 
 </style>
 <style id="auth-splash-style">
@@ -1734,6 +1769,7 @@ body{visibility:hidden}
             <th>PARTICIPACIÓN</th>
             <th>🚩</th>
             <th>REGISTRO</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="alumnasBody"></tbody>
@@ -2051,6 +2087,87 @@ body{visibility:hidden}
         <div style="margin-left:auto;display:flex;gap:10px">
           <button class="btn-secondary" onclick="cerrarModalCarrusel()">Cancelar</button>
           <button class="cta-gold btn-save" onclick="guardarCarrusel()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ACCIONES SOBRE UN MIEMBRO -->
+  <div class="curso-modal-backdrop" id="accionesModal">
+    <div class="curso-modal" style="max-width:520px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">GESTIÓN DE MIEMBRO</div>
+          <h3 class="curso-modal-titulo serif">Acciones</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarAcciones()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <input type="hidden" id="accUsuarioId">
+
+        <div class="acc-persona" id="accPersona"></div>
+
+        <div class="form-label" style="margin-bottom:9px">QUÉ QUERÉS HACER</div>
+        <div class="acc-tipo-row" id="accTipos">
+          <button class="acc-tipo sel" data-a="aviso" onclick="elegirAccion(this)" type="button">
+            <span class="acc-tipo-ico">✉️</span>
+            <span><span class="acc-tipo-nom">Enviar un aviso</span>
+            <span class="acc-tipo-des">Le llega un email. No pierde el acceso.</span></span>
+          </button>
+          <button class="acc-tipo" data-a="bloquear" onclick="elegirAccion(this)" type="button">
+            <span class="acc-tipo-ico">🚫</span>
+            <span><span class="acc-tipo-nom">Bloquear</span>
+            <span class="acc-tipo-des">No puede publicar ni comentar. Sigue viendo sus cursos.</span></span>
+          </button>
+          <button class="acc-tipo" data-a="desbloquear" onclick="elegirAccion(this)" type="button" id="accBtnDesbloquear" style="display:none">
+            <span class="acc-tipo-ico">✅</span>
+            <span><span class="acc-tipo-nom">Desbloquear</span>
+            <span class="acc-tipo-des">Le devolvés el acceso a la comunidad.</span></span>
+          </button>
+          <button class="acc-tipo peligro" data-a="eliminar" onclick="elegirAccion(this)" type="button">
+            <span class="acc-tipo-ico">🗑️</span>
+            <span><span class="acc-tipo-nom">Eliminar la cuenta</span>
+            <span class="acc-tipo-des">Se borra todo: perfil, posts y comentarios. No se puede deshacer.</span></span>
+          </button>
+        </div>
+
+        <div class="acc-alerta" id="accAlerta">
+          <strong>Cuidado.</strong> Eliminar la cuenta borra también sus compras.
+          Si pagó un curso, conviene bloquearla en vez de eliminarla.
+        </div>
+
+        <div class="form-label" style="margin-bottom:9px">MOTIVO</div>
+        <div class="acc-motivos" id="accMotivos">
+          <button class="acc-motivo" onclick="elegirMotivoAcc(this)" type="button">Contenido inapropiado</button>
+          <button class="acc-motivo" onclick="elegirMotivoAcc(this)" type="button">Spam o publicidad</button>
+          <button class="acc-motivo" onclick="elegirMotivoAcc(this)" type="button">Falta de respeto</button>
+          <button class="acc-motivo" onclick="elegirMotivoAcc(this)" type="button">Denuncias reiteradas</button>
+          <button class="acc-motivo" onclick="elegirMotivoAcc(this)" type="button">Cuenta falsa</button>
+          <button class="acc-motivo" onclick="elegirMotivoAcc(this)" type="button">Pedido de la persona</button>
+        </div>
+        <input type="text" class="form-input" id="accMotivo" placeholder="O escribí el motivo con tus palabras" style="margin-bottom:16px">
+
+        <div class="form-label" style="margin-bottom:9px">MENSAJE (opcional)</div>
+        <textarea class="form-textarea" id="accMensaje" placeholder="Algo más que quieras explicarle. Va en el email." style="margin-bottom:16px"></textarea>
+
+        <div class="acc-check on" id="accAvisar" onclick="this.classList.toggle('on')">
+          <div class="acc-check-box">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:500">Avisarle por email</div>
+            <div style="font-size:11.5px;color:rgba(255,245,240,0.55);margin-top:2px">Recibe un correo con el motivo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarAcciones()">Cancelar</button>
+          <button class="cta-gold btn-save" id="btnAplicarAccion" onclick="aplicarAccion()">APLICAR</button>
         </div>
       </div>
     </div>
@@ -2832,7 +2949,7 @@ body{visibility:hidden}
 
     if(error){
       const r = await sb.from('perfiles')
-        .select('id, nombre, email, rol, avatar_url, creado_en, genero, bloqueado')
+        .select('id, nombre, email, rol, avatar_url, creado_en, genero, bloqueado, motivo_bloqueo')
         .order('creado_en', { ascending: false });
       perfiles = r.data;
       error = r.error;
@@ -2841,7 +2958,7 @@ body{visibility:hidden}
     if(error){
       console.error('Error cargando alumnas:', error);
       document.getElementById('alumnasBody').innerHTML =
-        '<tr><td colspan="6" style="padding:40px;text-align:center;color:#FF8090">Error: ' + esc(error.message) + '</td></tr>';
+        '<tr><td colspan="7" style="padding:40px;text-align:center;color:#FF8090">Error: ' + esc(error.message) + '</td></tr>';
       return;
     }
 
@@ -2937,7 +3054,7 @@ body{visibility:hidden}
     if(lista.length === 0){
       const vacio = alumnas.length === 0;
       const msg = vacio ? 'Todavía no hay nadie registrado' : 'No encontramos ninguna alumna con ese filtro';
-      body.innerHTML = '<tr><td colspan="6" style="padding:50px;text-align:center;color:rgba(255,245,240,0.5)">' +
+      body.innerHTML = '<tr><td colspan="7" style="padding:50px;text-align:center;color:rgba(255,245,240,0.5)">' +
         '<div style="font-size:40px;opacity:0.4;margin-bottom:10px">' + (vacio ? '👥' : '🔍') + '</div>' + msg + '</td></tr>';
       cards.innerHTML = '<div style="padding:50px 20px;text-align:center;color:rgba(255,245,240,0.5)">' +
         '<div style="font-size:40px;opacity:0.4;margin-bottom:10px">' + (vacio ? '👥' : '🔍') + '</div>' + msg + '</div>';
@@ -2963,6 +3080,8 @@ body{visibility:hidden}
           '</div></td>' +
         '<td>' + insigniaDenuncias(a) + '</td>' +
         '<td style="color:rgba(255,245,240,0.55);font-size:12px;white-space:nowrap">' + fechaCorta(a.creado_en) + '</td>' +
+        '<td>' + (a.id === yoSoyId ? '' :
+          '<button class="acc-btn-menu" onclick="abrirAcciones(\'' + a.id + '\')">Gestionar</button>') + '</td>' +
       '</tr>';
     }).join('');
 
@@ -2984,7 +3103,11 @@ body{visibility:hidden}
         (a._denHechas > 0 || a._denRecib > 0
           ? '<div style="margin-top:9px">' + insigniaDenuncias(a) + '</div>'
           : '') +
-        '<div style="margin-top:8px;font-size:11px;color:rgba(255,245,240,0.4)">Registro: ' + fechaCorta(a.creado_en) + '</div>' +
+        '<div style="margin-top:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">' +
+          '<span style="font-size:11px;color:rgba(255,245,240,0.4)">Registro: ' + fechaCorta(a.creado_en) + '</span>' +
+          (a.id === yoSoyId ? '' :
+            '<button class="acc-btn-menu" style="margin-left:auto" onclick="abrirAcciones(\'' + a.id + '\')">Gestionar</button>') +
+        '</div>' +
         '</div>';
     }).join('');
   }
@@ -3036,6 +3159,150 @@ body{visibility:hidden}
     }
     if(a) a.rol = nuevoRol;
     mostrarToast('✓ Rol actualizado a ' + nuevoRol);
+  }
+
+  // ============================
+  // ACCIONES SOBRE MIEMBROS
+  // ============================
+  let accAccion = 'aviso';
+
+  function abrirAcciones(id){
+    const a = alumnas.find(x => x.id === id);
+    if(!a) return;
+    if(a.id === yoSoyId) return mostrarToast('No podés aplicarte esto a vos misma', true);
+
+    document.getElementById('accUsuarioId').value = id;
+
+    const nombre = a.nombre || (a.email || '').split('@')[0];
+    document.getElementById('accPersona').innerHTML =
+      avatarAlumna(a, 44) +
+      '<div style="min-width:0"><div class="al-nombre">' + esc(nombre) + '</div>' +
+      '<div class="al-email">' + esc(a.email || '') + '</div>' +
+      (a.bloqueado ? '<div style="font-size:11px;color:#FF8090;margin-top:3px">🚫 Bloqueada' +
+        (a.motivo_bloqueo ? ' · ' + esc(a.motivo_bloqueo) : '') + '</div>' : '') +
+      '</div>';
+
+    // Mostrar "Desbloquear" solo si está bloqueada
+    document.getElementById('accBtnDesbloquear').style.display = a.bloqueado ? '' : 'none';
+
+    // Reiniciar
+    document.querySelectorAll('.acc-tipo').forEach(t => t.classList.remove('sel'));
+    document.querySelector('.acc-tipo[data-a="aviso"]').classList.add('sel');
+    accAccion = 'aviso';
+    document.getElementById('accMotivo').value = '';
+    document.getElementById('accMensaje').value = '';
+    document.querySelectorAll('.acc-motivo').forEach(m => m.classList.remove('sel'));
+    document.getElementById('accAvisar').classList.add('on');
+    document.getElementById('accAlerta').classList.remove('show');
+    document.getElementById('btnAplicarAccion').textContent = 'APLICAR';
+
+    document.getElementById('accionesModal').classList.add('show');
+  }
+
+  function cerrarAcciones(){
+    document.getElementById('accionesModal').classList.remove('show');
+  }
+
+  function elegirAccion(el){
+    document.querySelectorAll('.acc-tipo').forEach(t => t.classList.remove('sel'));
+    el.classList.add('sel');
+    accAccion = el.dataset.a;
+
+    document.getElementById('accAlerta').classList.toggle('show', accAccion === 'eliminar');
+
+    const btn = document.getElementById('btnAplicarAccion');
+    const textos = {
+      aviso: 'ENVIAR AVISO',
+      bloquear: 'BLOQUEAR',
+      desbloquear: 'DESBLOQUEAR',
+      eliminar: 'ELIMINAR CUENTA'
+    };
+    btn.textContent = textos[accAccion] || 'APLICAR';
+    btn.style.background = accAccion === 'eliminar'
+      ? 'linear-gradient(135deg,#FF8090,#C8203A)'
+      : '';
+    btn.style.color = accAccion === 'eliminar' ? '#FFF5F0' : '';
+  }
+
+  function elegirMotivoAcc(el){
+    document.querySelectorAll('.acc-motivo').forEach(m => m.classList.remove('sel'));
+    el.classList.add('sel');
+    document.getElementById('accMotivo').value = el.textContent.trim();
+  }
+
+  async function aplicarAccion(){
+    const id = document.getElementById('accUsuarioId').value;
+    const a = alumnas.find(x => x.id === id);
+    if(!id || !a) return;
+
+    const motivo = document.getElementById('accMotivo').value.trim();
+    const mensaje = document.getElementById('accMensaje').value.trim();
+    const avisar = document.getElementById('accAvisar').classList.contains('on');
+    const nombre = a.nombre || (a.email || '').split('@')[0];
+
+    if(accAccion !== 'desbloquear' && !motivo){
+      return mostrarToast('Escribí un motivo', true);
+    }
+
+    // Confirmaciones
+    if(accAccion === 'eliminar'){
+      if(!confirm('¿ELIMINAR la cuenta de ' + nombre + '?\n\nSe borra su perfil, sus publicaciones, comentarios y compras.\nEsto NO se puede deshacer.')) return;
+      if(!confirm('Última confirmación.\n\nEscribí mentalmente el nombre: ' + nombre + '\n\n¿Seguimos?')) return;
+    } else if(accAccion === 'bloquear'){
+      if(!confirm('¿Bloquear a ' + nombre + '?\n\nNo va a poder publicar ni comentar.')) return;
+    }
+
+    const btn = document.getElementById('btnAplicarAccion');
+    const textoOriginal = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'PROCESANDO...';
+
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+
+      const r = await fetch(SUPABASE_URL + '/functions/v1/admin-miembros', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + (session?.access_token || SUPABASE_ANON_KEY),
+          'apikey': SUPABASE_ANON_KEY
+        },
+        body: JSON.stringify({
+          accion: accAccion,
+          usuario_id: id,
+          motivo: motivo || null,
+          mensaje: mensaje || null,
+          avisar: avisar
+        })
+      });
+
+      const d = await r.json();
+      btn.disabled = false;
+      btn.textContent = textoOriginal;
+
+      if(!d.exito){
+        return mostrarToast(d.error || 'No se pudo completar', true);
+      }
+
+      const hechos = {
+        aviso: '✓ Aviso enviado a ' + nombre,
+        bloquear: '✓ ' + nombre + ' fue bloqueada',
+        desbloquear: '✓ ' + nombre + ' fue desbloqueada',
+        eliminar: '✓ Cuenta de ' + nombre + ' eliminada'
+      };
+      let msg = hechos[accAccion];
+      if(avisar && !d.email_enviado) msg += ' (el email no salió)';
+
+      mostrarToast(msg);
+      cerrarAcciones();
+      await cargarAlumnas();
+      await cargarDashboard();
+
+    } catch(e){
+      btn.disabled = false;
+      btn.textContent = textoOriginal;
+      mostrarToast('Error de conexión: ' + e.message, true);
+    }
   }
 
   // ============================
