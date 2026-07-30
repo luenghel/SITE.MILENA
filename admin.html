@@ -166,7 +166,7 @@
   .stat-mini-sub{font-size:11px;color:rgba(255,245,240,0.55);margin-top:3px}
 
   /* Toast */
-  .toast{position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg,#5DCAA5,#9FE1CB);color:#0E0509;padding:14px 22px;border-radius:11px;font-size:13px;font-weight:500;box-shadow:0 12px 32px rgba(93,202,165,0.4);z-index:2000;display:none;align-items:center;gap:9px;animation:slideUp 0.3s ease-out}
+  .toast{position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg,#5DCAA5,#9FE1CB);color:#0E0509;padding:14px 22px;border-radius:11px;font-size:13px;font-weight:500;box-shadow:0 12px 32px rgba(93,202,165,0.4);z-index:99999;display:none;align-items:center;gap:9px;animation:slideUp 0.3s ease-out}
   .toast.show{display:flex}
   .toast.error{background:linear-gradient(135deg,#FF6B7A,#FF8090);color:#FFF5F0;box-shadow:0 12px 32px rgba(255,59,71,0.4)}
   @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
@@ -744,6 +744,14 @@
   .acc-info{padding:13px 15px;background:rgba(93,202,165,0.09);border:0.5px solid rgba(93,202,165,0.35);border-radius:11px;font-size:12.5px;color:rgba(255,245,240,0.8);line-height:1.55;margin-bottom:16px;display:none}
   .acc-info.show{display:block}
   .acc-info strong{color:#9FE1CB}
+
+
+  .acc-estado{margin:0 26px 6px;padding:13px 15px;border-radius:11px;font-size:12.5px;line-height:1.55;display:none}
+  .acc-estado.show{display:block}
+  .acc-estado.ok{background:rgba(93,202,165,0.12);border:0.5px solid rgba(93,202,165,0.45);color:#9FE1CB}
+  .acc-estado.error{background:rgba(255,59,71,0.12);border:0.5px solid rgba(255,59,71,0.45);color:#FF8090}
+  .acc-estado.trabajando{background:rgba(212,163,86,0.1);border:0.5px solid rgba(212,163,86,0.4);color:#FAC775}
+  @media (max-width:600px){.acc-estado{margin:0 20px 6px}}
 
 </style>
 <style id="auth-splash-style">
@@ -2175,6 +2183,8 @@ body{visibility:hidden}
         </div>
       </div>
 
+      <div class="acc-estado" id="accEstado"></div>
+
       <div class="curso-modal-footer">
         <div style="margin-left:auto;display:flex;gap:10px">
           <button class="btn-secondary" onclick="cerrarAcciones()">Cancelar</button>
@@ -3298,11 +3308,26 @@ body{visibility:hidden}
     document.getElementById('accAlerta').classList.remove('show');
     document.getElementById('btnAplicarAccion').textContent = 'APLICAR';
 
+    estadoAcc('');
     document.getElementById('accionesModal').classList.add('show');
   }
 
   function cerrarAcciones(){
     document.getElementById('accionesModal').classList.remove('show');
+    estadoAcc('');
+  }
+
+  // Mensaje visible DENTRO del modal (el toast queda tapado por él)
+  function estadoAcc(texto, tipo){
+    const el = document.getElementById('accEstado');
+    if(!el) return;
+    if(!texto){
+      el.className = 'acc-estado';
+      el.innerHTML = '';
+      return;
+    }
+    el.className = 'acc-estado show ' + (tipo || 'trabajando');
+    el.innerHTML = texto;
   }
 
   function elegirAccion(el){
@@ -3342,26 +3367,35 @@ body{visibility:hidden}
     const avisar = document.getElementById('accAvisar').classList.contains('on');
     const nombre = a.nombre || (a.email || '').split('@')[0];
 
+    estadoAcc('');
+
     if(accAccion !== 'desbloquear' && !motivo){
-      return mostrarToast('Escribí un motivo', true);
+      return estadoAcc('Escribí un motivo antes de continuar.', 'error');
     }
 
     if(accAccion === 'eliminar' && (a._compras || 0) > 0){
-      return mostrarToast('No se puede eliminar a alguien que compró cursos. Bloqueala en su lugar.', true);
+      return estadoAcc('No se puede eliminar a alguien que compró cursos. Bloqueala en su lugar.', 'error');
     }
 
     // Confirmaciones
     if(accAccion === 'eliminar'){
-      if(!confirm('¿ELIMINAR la cuenta de ' + nombre + '?\n\nSe borra su perfil, sus publicaciones, comentarios y compras.\nEsto NO se puede deshacer.')) return;
-      if(!confirm('Última confirmación.\n\nEscribí mentalmente el nombre: ' + nombre + '\n\n¿Seguimos?')) return;
+      if(!confirm('¿ELIMINAR la cuenta de ' + nombre + '?\n\nSe borra su perfil, publicaciones y comentarios.\nEsto NO se puede deshacer.')){
+        return estadoAcc('Cancelaste la eliminación.', 'trabajando');
+      }
+      if(!confirm('Última confirmación.\n\nSe va a eliminar: ' + nombre + '\n\n¿Seguimos?')){
+        return estadoAcc('Cancelaste la eliminación.', 'trabajando');
+      }
     } else if(accAccion === 'bloquear'){
-      if(!confirm('¿Bloquear a ' + nombre + '?\n\nNo va a poder publicar ni comentar.')) return;
+      if(!confirm('¿Bloquear a ' + nombre + '?\n\nNo va a poder publicar ni comentar.')){
+        return estadoAcc('Cancelaste el bloqueo.', 'trabajando');
+      }
     }
 
     const btn = document.getElementById('btnAplicarAccion');
     const textoOriginal = btn.textContent;
     btn.disabled = true;
     btn.textContent = 'PROCESANDO...';
+    estadoAcc('Conectando con el servidor...', 'trabajando');
 
     try {
       const res = await llamarFuncionAdmin({
@@ -3378,39 +3412,53 @@ body{visibility:hidden}
       const d = res.datos || {};
 
       if(res.noEncontrada){
-        mostrarToast('No encontré la función en Supabase. Tocá "Configurar" y pegá su URL.', true);
-        if(confirm('No pude encontrar la función de gestión.\n\n¿Querés pegar su URL ahora?')){
-          configurarFuncionAdmin();
-        }
+        estadoAcc('<strong>No encontré la función en Supabase.</strong><br>' +
+          'Tocá el botón <strong>Configurar</strong> (arriba, junto al buscador) y pegá la URL de tu función de administración.',
+          'error');
         return;
       }
+
       if(res.status === 401 || res.status === 403){
-        return mostrarToast(d.error || 'Sin permiso. Cerrá sesión, volvé a entrar y probá otra vez.', true);
+        estadoAcc('<strong>Sin permiso.</strong><br>' + (d.error || 'Cerrá sesión, volvé a entrar y probá otra vez.'), 'error');
+        return;
       }
+
       if(!res.ok || !d.exito){
-        return mostrarToast(d.error || ('Error ' + res.status + ' — no se pudo completar'), true);
+        estadoAcc('<strong>No se pudo completar.</strong><br>' +
+          (d.error || ('El servidor respondió con el código ' + res.status + '.')), 'error');
+        return;
       }
 
+      // ─── Salió bien ───
       const hechos = {
-        aviso: '✓ Aviso enviado a ' + nombre,
-        bloquear: '✓ ' + nombre + ' fue bloqueada',
-        desbloquear: '✓ ' + nombre + ' fue desbloqueada',
-        eliminar: '✓ Cuenta de ' + nombre + ' eliminada'
+        aviso: 'Aviso enviado a ' + esc(nombre),
+        bloquear: esc(nombre) + ' fue bloqueada',
+        desbloquear: esc(nombre) + ' fue desbloqueada',
+        eliminar: 'Cuenta de ' + esc(nombre) + ' eliminada'
       };
-      let msg = hechos[accAccion];
-      if(avisar && !d.email_enviado) msg += ' (el email no salió)';
 
-      mostrarToast(msg);
-      cerrarAcciones();
+      let msg = '<strong>✓ ' + hechos[accAccion] + '</strong>';
+      if(avisar){
+        msg += d.email_enviado
+          ? '<br>El email salió correctamente.'
+          : '<br>⚠️ La acción se aplicó, pero el email no salió' +
+            (d.detalle_email ? ': ' + esc(String(d.detalle_email)) : '. Revisá la configuración de Resend.');
+      }
+      estadoAcc(msg, 'ok');
+      mostrarToast('✓ ' + hechos[accAccion].replace(/<[^>]*>/g, ''));
+
       await cargarAlumnas();
       await cargarDashboard();
+
+      setTimeout(() => cerrarAcciones(), 2200);
 
     } catch(e){
       btn.disabled = false;
       btn.textContent = textoOriginal;
-      mostrarToast('Error de conexión: ' + e.message, true);
+      estadoAcc('<strong>Error de conexión.</strong><br>' + esc(e.message), 'error');
     }
   }
+
 
   // ============================
   // MODERACIÓN DE LA COMUNIDAD
