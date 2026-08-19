@@ -165,42 +165,32 @@
   @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 
 
-  /* ═══ CARRUSEL DE FONDO DEL HERO ═══ */
+  /* ═══════════════════════════════════════════════════════════
+     CARRUSEL DEL HERO
+     La foto ocupa su propia zona (derecha en computadora,
+     arriba en celular). El texto nunca queda encima.
+     ═══════════════════════════════════════════════════════════ */
+  .hero-visual{position:relative;overflow:hidden;border-radius:20px}
+
   .hero-carrusel{
     position:absolute;
     inset:0;
-    z-index:1;          /* por encima del fondo sólido del hero */
+    z-index:1;
     overflow:hidden;
+    border-radius:20px;
     pointer-events:none;
   }
   .hero-slide{
     position:absolute;
     inset:0;
     background-size:cover;
-    background-position:center right;
+    background-position:center;
     opacity:0;
     transition:opacity 1.6s ease-in-out;
     transform:scale(1.04);
-
-    /* La foto se desvanece hacia la izquierda:
-       casi invisible detrás del texto, más presente a la derecha */
-    -webkit-mask-image:linear-gradient(100deg,
-      transparent 0%,
-      transparent 18%,
-      rgba(0,0,0,0.22) 38%,
-      rgba(0,0,0,0.6) 62%,
-      rgba(0,0,0,0.92) 82%,
-      #000 100%);
-    mask-image:linear-gradient(100deg,
-      transparent 0%,
-      transparent 18%,
-      rgba(0,0,0,0.22) 38%,
-      rgba(0,0,0,0.6) 62%,
-      rgba(0,0,0,0.92) 82%,
-      #000 100%);
   }
   .hero-slide.activa{
-    opacity:0.52;
+    opacity:1;
     animation:heroZoom 9s ease-out forwards;
   }
   @keyframes heroZoom{
@@ -208,23 +198,21 @@
     to{transform:scale(1.11)}
   }
 
-
-  /* Velo para que el texto siempre se lea */
+  /* La foto se funde con el fondo del lado del texto */
   .hero-carrusel::after{
     content:'';
     position:absolute;
     inset:0;
-    background:
-      linear-gradient(100deg, rgba(14,5,9,0.75) 0%, rgba(14,5,9,0.35) 40%, rgba(14,5,9,0) 70%),
-      linear-gradient(0deg, rgba(14,5,9,0.6) 0%, rgba(14,5,9,0) 40%);
+    background:linear-gradient(90deg,
+      #1A0A12 0%,
+      rgba(26,10,18,0.72) 14%,
+      rgba(26,10,18,0.22) 34%,
+      rgba(26,10,18,0) 55%);
   }
 
-  /* El contenido del hero siempre por encima */
-  .hero-inner{position:relative;z-index:3}
-  .hero-gradient{z-index:0}
-  .hero-glow-1,.hero-glow-2,.hero-glow-3{z-index:2;pointer-events:none}
+  /* Los círculos decorativos, por encima de la foto */
+  .hero-circle-1,.hero-circle-2{z-index:2}
 
-  /* Puntitos discretos abajo a la derecha */
   .hero-dots{
     position:absolute;
     bottom:26px;
@@ -237,12 +225,40 @@
   .hero-dot{
     width:7px;height:7px;
     border-radius:50%;
-    background:rgba(255,245,240,0.28);
+    background:rgba(255,245,240,0.3);
     cursor:pointer;
     transition:all 0.3s;
   }
-  .hero-dot:hover{background:rgba(255,245,240,0.5)}
+  .hero-dot:hover{background:rgba(255,245,240,0.55)}
   .hero-dot.active{background:#FAC775;width:22px;border-radius:4px}
+
+
+  .hero-flechas{
+    position:absolute;
+    bottom:26px;
+    right:40px;
+    z-index:5;
+    display:none;
+    gap:9px;
+  }
+  .hero-flechas.activo{display:flex}
+  .hero-flecha{
+    width:44px;height:44px;
+    border-radius:50%;
+    background:rgba(14,5,9,0.45);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:0.5px solid rgba(255,245,240,0.28);
+    color:#FFF5F0;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:all 0.22s;
+  }
+  .hero-flecha:hover{background:rgba(212,163,86,0.35);border-color:rgba(212,163,86,0.6)}
+  .hero-flecha:active{transform:scale(0.93)}
+
+  /* Los puntitos se corren para no chocar con las flechas */
+  .hero-dots.activo{bottom:38px;right:auto;left:50%;transform:translateX(-50%)}
 
   /* CARRUSEL VERTICAL CHICO */
   section.carrusel-vertical-section{max-width:1400px;padding:50px 40px 20px;margin:0 auto;display:none}
@@ -270,35 +286,64 @@
 
   /* ══════════════════════════════════════════════════════════
      HERO EN CELULAR
-     Mismas proporciones que la computadora, a escala.
-     Referencia de escritorio:
-       Marketing 64px · que 50px · Vende 110px · desc 18px
-     Las proporciones se mantienen idénticas (0.78 y 1.72).
+     La foto arriba, el texto abajo. Nunca encima uno del otro.
      ══════════════════════════════════════════════════════════ */
   .hero{min-height:auto}
   .hero-inner{
-    padding:clamp(34px,9vw,52px) 20px clamp(30px,8vw,44px);
+    padding:0 0 clamp(28px,7vw,40px);
     flex-direction:column;
-    align-items:flex-start;
+    align-items:stretch;
     gap:0;
     max-width:100%;
   }
-  .hero-content{flex:none;max-width:100%;width:100%;position:relative;z-index:3}
 
+  /* La foto va PRIMERO */
+  .hero-visual{
+    order:-1;
+    flex:none;
+    height:auto;
+    aspect-ratio:4/3;
+    width:100%;
+    border-radius:0;
+    margin-bottom:clamp(20px,5.5vw,30px);
+  }
+  .hero-carrusel{border-radius:0}
+
+  /* De arriba hacia abajo: la foto se funde con el fondo */
+  .hero-carrusel::after{
+    background:linear-gradient(180deg,
+      rgba(26,10,18,0.35) 0%,
+      rgba(26,10,18,0.1) 35%,
+      rgba(26,10,18,0.65) 82%,
+      #1A0A12 100%);
+  }
+
+  /* Los círculos molestan en celular */
+  .hero-circle-1,.hero-circle-2{display:none}
+
+  .hero-content{
+    flex:none;
+    max-width:100%;
+    width:100%;
+    padding:0 20px;
+    position:relative;
+    z-index:4;
+  }
+
+  /* Mismas proporciones que la computadora */
   .hero-badge{
     font-size:clamp(9px,2.5vw,11px);
     padding:4px 11px;
     letter-spacing:0.1em;
     margin-bottom:clamp(12px,3.4vw,18px);
   }
-
-  .hero-title{font-size:clamp(26px,8.2vw,42px);line-height:1}
-  .vende-row{gap:clamp(9px,2.9vw,15px);flex-wrap:nowrap;align-items:baseline}
-  .que{font-size:clamp(20px,6.4vw,33px);flex-shrink:0}
-  .vende{font-size:clamp(44px,14.1vw,72px);white-space:nowrap;letter-spacing:-0.025em}
+  .hero-title{font-size:clamp(28px,8.6vw,44px);line-height:1}
+  .vende-row{gap:clamp(9px,3vw,16px);flex-wrap:nowrap;align-items:baseline}
+  .que{font-size:clamp(22px,6.7vw,34px);flex-shrink:0}
+  .vende{font-size:clamp(48px,14.8vw,76px);white-space:nowrap;letter-spacing:-0.025em}
 
   .hero-desc{
-    font-size:clamp(13px,3.6vw,16px);
+    font-size:clamp(13.5px,3.7vw,16px);
     margin-top:clamp(13px,3.4vw,20px);
     max-width:100%;
     line-height:1.45;
@@ -318,28 +363,9 @@
     letter-spacing:0.18em;
   }
 
-  /* Sombra suave: el texto se lee sobre cualquier foto */
-  .hero-title,.hero-desc{text-shadow:0 2px 16px rgba(8,3,6,0.8)}
-
-  /* Carrusel de fondo en celular: el velo tapa desde abajo,
-     así el texto se lee sobre la parte oscura */
-  .hero-slide{
-    background-position:center;
-    -webkit-mask-image:none;
-    mask-image:none;
-  }
-  .hero-slide.activa{opacity:0.24}
-  .hero-carrusel::after{
-    background:
-      linear-gradient(180deg,
-        rgba(14,5,9,0.7) 0%,
-        rgba(14,5,9,0.42) 42%,
-        rgba(14,5,9,0.62) 78%,
-        rgba(14,5,9,0.9) 100%);
-  }
-  .hero-dots{bottom:16px;right:20px}
-  .hero-dot{width:6px;height:6px}
-  .hero-dot.active{width:18px}
+  .hero-flechas{bottom:auto;top:calc(75vw - 56px);right:14px;gap:7px}
+  .hero-flecha{width:36px;height:36px}
+  .hero-dots.activo{bottom:auto;top:calc(75vw - 22px);left:50%;transform:translateX(-50%)}
 
   /* ── FILAS DE CURSOS: mismo formato que escritorio ── */
   section.row-section{padding:30px 0 8px}
@@ -464,8 +490,6 @@
 </header>
 
 <section class="hero">
-  <!-- Carrusel de fondo, al 30% -->
-  <div class="hero-carrusel" id="heroCarrusel"></div>
   <div class="hero-gradient"></div>
   <div class="hero-glow-1"></div>
   <div class="hero-glow-2"></div>
@@ -492,7 +516,17 @@
     <div class="hero-visual">
       <div class="hero-circle-1"></div>
       <div class="hero-circle-2"></div>
+      <!-- Las fotos viven acá, en su propia zona -->
+      <div class="hero-carrusel" id="heroCarrusel"></div>
     </div>
+  </div>
+  <div class="hero-flechas" id="heroFlechas">
+    <button class="hero-flecha" onclick="slideAnterior()" aria-label="Anterior">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <button class="hero-flecha" onclick="slideSiguiente()" aria-label="Siguiente">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
   </div>
   <div class="hero-dots" id="heroDots"></div>
 </section>
@@ -793,8 +827,10 @@ function renderCarruselPrincipal(){
         `<div class="hero-dot ${i === 0 ? 'active' : ''}" onclick="irASlide(${i})"></div>`
       ).join('');
       dots.classList.add('activo');
+      document.getElementById('heroFlechas')?.classList.add('activo');
     } else {
       dots.classList.remove('activo');
+      document.getElementById('heroFlechas')?.classList.remove('activo');
     }
   }
 
@@ -828,6 +864,29 @@ function renderCarruselPrincipal(){
       d.classList.toggle('active', i === principalSlideIndex);
     });
   }
+
+  function reiniciarAuto(){
+    if(!principalInterval) return;
+    clearInterval(principalInterval);
+    principalInterval = setInterval(() => {
+      principalSlideIndex = (principalSlideIndex + 1) % principalSlides.length;
+      actualizarCarruselPrincipal();
+    }, 7000);
+  }
+
+  window.slideSiguiente = function(){
+    if(principalSlides.length < 2) return;
+    principalSlideIndex = (principalSlideIndex + 1) % principalSlides.length;
+    actualizarCarruselPrincipal();
+    reiniciarAuto();
+  };
+
+  window.slideAnterior = function(){
+    if(principalSlides.length < 2) return;
+    principalSlideIndex = (principalSlideIndex - 1 + principalSlides.length) % principalSlides.length;
+    actualizarCarruselPrincipal();
+    reiniciarAuto();
+  };
 
   window.irASlide = function(i){
     principalSlideIndex = i;
