@@ -533,49 +533,9 @@
 </section>
 
 
-<section class="row-section">
-  <div class="section-header">
-    <div class="section-title-group">
-      <h2 class="section-title serif">Marketing Digital</h2>
-    </div>
-    <a href="/cursos" class="ver-todo">ver todo →</a>
-  </div>
-  <div class="scroll-row" style="margin-left:-40px;margin-right:-40px;padding-left:40px;padding-right:40px">
-    <div class="row-track">
-      <!-- Cards dinámicas desde Supabase -->
-      <div id="indexCursosDestacados" style="display:flex;gap:12px"></div>
-    </div>
-  </div>
-</section>
+<!-- Las filas del catálogo se arman según lo que configures en el panel -->
+<div id="filasCatalogo"></div>
 
-<section class="row-section" id="seccionAcompana" style="display:none">
-  <div class="section-header">
-    <div class="section-title-group">
-      <h2 class="section-title serif">Acompañá más</h2>
-    </div>
-    <a href="/cursos" class="ver-todo">ver todo →</a>
-  </div>
-  <div class="scroll-row" style="margin-left:-40px;margin-right:-40px;padding-left:40px;padding-right:40px">
-    <div class="row-track">
-      <div id="indexAcompana" style="display:flex;gap:12px"></div>
-    </div>
-  </div>
-</section>
-
-<section class="row-section" id="seccionGratis" style="display:none">
-  <div class="section-header">
-    <div class="section-title-group">
-      <h2 class="section-title serif">Contenidos gratuitos</h2>
-      <span class="free-badge">GRATIS</span>
-    </div>
-    <a href="/cursos" class="ver-todo">ver todo →</a>
-  </div>
-  <div class="scroll-row" style="margin-left:-40px;margin-right:-40px;padding-left:40px;padding-right:40px">
-    <div class="row-track">
-      <div id="indexGratis" style="display:flex;gap:18px"></div>
-    </div>
-  </div>
-</section>
 
 
 <!-- SECCIÓN: SEGUIMIENTO COMPLETO -->
@@ -921,6 +881,7 @@
             <div style="position:absolute;width:100px;height:100px;right:-15px;top:30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)"></div>
             <div class="silhouette"></div>
             <div class="scrim"></div>
+            ${esProximo ? `<div class="proximo-chip">🔮 PRÓXIMAMENTE</div>` : ''}
             <div class="poster-inner">
               ${iconHTML}
               <div class="poster-cat">${cat}</div>
@@ -1070,53 +1031,61 @@
       });
 
       const todos = (error ? [] : (cursos || []));
-      const principales = todos.filter(c => (c.seccion || 'principal') === 'principal');
-      const acompana = todos.filter(c => c.seccion === 'acompana');
 
-      // Fila principal
-      const cont1 = document.getElementById('indexCursosDestacados');
-      const sec1 = cont1 ? cont1.closest('.row-section') : null;
-      if (cont1) {
-        if (principales.length === 0) {
-          if (sec1) sec1.style.display = 'none';
-        } else {
-          if (sec1) sec1.style.display = '';
-          cont1.innerHTML = principales.map(c => crearPosterIndex(c, user, comprasIds)).join('');
-        }
-      }
-
-      // Fila "Acompañá más"
-      const cont2 = document.getElementById('indexAcompana');
-      const sec2 = document.getElementById('seccionAcompana');
-      if (cont2 && sec2) {
-        if (acompana.length === 0) {
-          sec2.style.display = 'none';
-        } else {
-          sec2.style.display = '';
-          cont2.innerHTML = acompana.map(c => crearPosterIndex(c, user, comprasIds)).join('');
-        }
-      }
-
-      // Fila "Contenidos gratuitos": todo lo publicado con acceso gratis
-      const { data: gratuitos } = await sb
-        .from('cursos')
+      // ─── Las filas que configuraste en el panel ───
+      const { data: secciones } = await sb
+        .from('secciones')
         .select('*')
-        .eq('publicado', true)
-        .neq('seccion', 'oculto')
-        .or('acceso.eq.gratis,precio_gs.eq.0')
+        .eq('activa', true)
+        .eq('mostrar_home', true)
         .order('orden', { ascending: true });
 
-      const cont3 = document.getElementById('indexGratis');
-      const sec3 = document.getElementById('seccionGratis');
-      if (cont3 && sec3) {
-        const libres = gratuitos || [];
-        if (libres.length === 0) {
-          sec3.style.display = 'none';
+      const filas = secciones || [
+        { clave:'principal', nombre:'Marketing Digital' },
+        { clave:'acompana',  nombre:'Acompañá más' }
+      ];
+
+      const cont = document.getElementById('filasCatalogo');
+      if(!cont) return;
+
+      let html = '';
+
+      for(const s of filas){
+        // Qué cursos van en esta fila
+        let deLaFila;
+        if(s.clave === 'gratis'){
+          // Especial: todo lo que sea gratis, esté donde esté
+          deLaFila = todos.filter(x => (x.acceso === 'gratis' || !x.precio_gs) && x.seccion !== 'oculto');
         } else {
-          sec3.style.display = '';
-          cont3.innerHTML = libres.map(c => crearPosterIndex(c, user, comprasIds)).join('');
+          deLaFila = todos.filter(x => (x.seccion || 'principal') === s.clave);
         }
+
+        if(deLaFila.length === 0) continue;
+
+        const etiqueta = s.etiqueta
+          ? '<span class="free-badge" style="background:' + (s.color_etiqueta || '#5DCAA5') + '1F;border-color:' +
+            (s.color_etiqueta || '#5DCAA5') + '66;color:' + (s.color_etiqueta || '#5DCAA5') + '">' + s.etiqueta + '</span>'
+          : '';
+
+        html += '<section class="row-section">' +
+          '<div class="section-header">' +
+            '<div class="section-title-group">' +
+              '<h2 class="section-title serif">' + s.nombre + '</h2>' +
+              etiqueta +
+            '</div>' +
+            '<a href="/cursos" class="ver-todo">ver todo →</a>' +
+          '</div>' +
+          '<div class="scroll-row" style="margin-left:-40px;margin-right:-40px;padding-left:40px;padding-right:40px">' +
+            '<div class="row-track">' +
+              '<div style="display:flex;gap:18px">' +
+                deLaFila.map(x => crearPosterIndex(x, user, comprasIds)).join('') +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</section>';
       }
+
+      cont.innerHTML = html;
     }
   }, 50);
 })();

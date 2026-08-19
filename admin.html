@@ -982,6 +982,40 @@
   .ins-rareza-op.sel{color:#0E0509}
   .ins-previa-img{width:44px;height:44px;object-fit:contain}
 
+
+  .sec-gestionar{width:44px;height:44px;border-radius:11px;background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.4);color:#FAC775;font-size:17px;cursor:pointer;flex-shrink:0;transition:all 0.2s}
+  .sec-gestionar:hover{background:rgba(212,163,86,0.26)}
+  .sec-aviso{font-size:12.5px;color:rgba(255,245,240,0.6);line-height:1.55;margin-bottom:16px;padding:12px 14px;background:rgba(255,245,240,0.04);border-radius:10px}
+  .sec-item{display:flex;align-items:center;gap:11px;padding:12px 14px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:11px;margin-bottom:8px}
+  .sec-item.apagada{opacity:0.5}
+  .sec-num{width:26px;height:26px;border-radius:8px;background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.35);color:#FAC775;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .sec-info{flex:1;min-width:0}
+  .sec-nom{font-size:13.5px;font-weight:500;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .sec-chip{padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700;letter-spacing:0.06em}
+  .sec-meta{font-size:11.5px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .sec-acciones{display:flex;gap:5px;flex-shrink:0}
+  .sec-btn{padding:6px 10px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.14);border-radius:8px;color:rgba(255,245,240,0.8);font-size:10.5px;cursor:pointer;font-family:inherit}
+  .sec-btn:hover{background:rgba(212,163,86,0.18);color:#FAC775}
+  .sec-btn.danger:hover{background:rgba(255,59,71,0.2);color:#FF8090;border-color:rgba(255,59,71,0.4)}
+  .sec-nueva{padding:15px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(212,163,86,0.3);border-radius:12px;margin-bottom:10px}
+
+
+  .sec-fila{display:flex;align-items:center;gap:14px;padding:16px 18px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:13px;margin-bottom:11px;cursor:pointer;transition:all 0.2s;flex-wrap:wrap}
+  .sec-fila:hover{background:rgba(255,245,240,0.06);border-color:rgba(212,163,86,0.4)}
+  .sec-fila.apagada{opacity:0.5}
+  .sec-num{width:32px;height:32px;border-radius:9px;background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.38);color:#FAC775;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .sec-info{flex:1;min-width:150px}
+  .sec-nom{font-size:15px;font-weight:500;font-family:Georgia,serif;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .sec-sub{font-size:12px;color:rgba(255,245,240,0.5);margin-top:3px}
+  .sec-chip{padding:3px 10px;border-radius:12px;font-size:9.5px;font-weight:700;letter-spacing:0.08em;border:0.5px solid}
+  .sec-donde{display:flex;gap:6px;flex-wrap:wrap}
+  .sec-donde span{padding:4px 9px;border-radius:7px;background:rgba(255,245,240,0.06);font-size:10.5px;color:rgba(255,245,240,0.6)}
+  .sec-cursos{font-size:12px;color:rgba(255,245,240,0.45);white-space:nowrap}
+
+  .sec-previa{padding:18px;background:rgba(255,245,240,0.04);border-radius:12px;margin-bottom:18px}
+  .sec-previa-tit{font-size:20px;font-family:Georgia,serif;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .sec-previa-sub{font-size:12.5px;color:rgba(255,245,240,0.5);margin-top:4px}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1363,6 +1397,11 @@ body{visibility:hidden}
       Ventas
       <span class="sidebar-badge dim" id="ventasCount">0</span>
     </a>
+    <a href="#" onclick="cambiarTab('secciones')" class="sidebar-item" id="nav-secciones">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="13" width="18" height="5" rx="1"/></svg>
+      Filas del catálogo
+      <span class="sidebar-badge dim" id="seccionesCount">0</span>
+    </a>
     <a href="#" onclick="cambiarTab('insignias')" class="sidebar-item" id="nav-insignias">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="6"/><path d="M8.2 13.9 7 22l5-3 5 3-1.2-8.1"/></svg>
       Insignias
@@ -1677,11 +1716,11 @@ body{visibility:hidden}
 
           <div class="form-field">
             <label class="form-label">DÓNDE APARECE</label>
-            <select class="form-select" id="cursoSeccion">
-              <option value="principal">Fila principal (Marketing Digital)</option>
-              <option value="acompana">Fila "Acompañá más"</option>
-              <option value="oculto">No mostrar en el catálogo</option>
-            </select>
+            <div style="display:flex;gap:8px;align-items:center">
+              <select class="form-select" id="cursoSeccion" style="flex:1"></select>
+              <button type="button" class="sec-gestionar" onclick="abrirSecciones()" title="Crear o editar filas">⚙️</button>
+            </div>
+            <div class="form-help">Tocá ⚙️ para crear tus propias filas</div>
           </div>
 
           <div class="form-field form-grid-full">
@@ -3141,6 +3180,186 @@ body{visibility:hidden}
     </div>
   </div>
 
+  <!-- MODAL: FILAS DEL CATÁLOGO -->
+  <div class="curso-modal-backdrop" id="seccionesModal" style="z-index:10002">
+    <div class="curso-modal" style="max-width:520px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">CATÁLOGO</div>
+          <h3 class="curso-modal-titulo serif">Filas del catálogo</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarSecciones()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <div class="sec-aviso">
+          Cada fila es una hilera de cursos en el sitio. Las vacías no se muestran.
+        </div>
+
+        <div id="seccionesLista"></div>
+
+        <div class="sec-nueva" id="secFormulario" style="display:none">
+          <input type="hidden" id="secId">
+          <div class="form-field" style="margin-bottom:11px">
+            <label class="form-label">NOMBRE DE LA FILA</label>
+            <input type="text" class="form-input" id="secNombre" placeholder="Marketing Digital">
+          </div>
+          <div class="form-field" style="margin-bottom:11px">
+            <label class="form-label">ETIQUETA (opcional)</label>
+            <input type="text" class="form-input" id="secEtiqueta" placeholder="GRATIS · NUEVO · EXCLUSIVO">
+            <div class="form-help">Se ve al lado del título, en un chip de color</div>
+          </div>
+          <div class="form-grid" style="margin-bottom:11px">
+            <div class="form-field">
+              <label class="form-label">ORDEN</label>
+              <input type="number" class="form-input" id="secOrden" min="0" placeholder="1">
+            </div>
+            <div class="form-field">
+              <label class="form-label">COLOR DE ETIQUETA</label>
+              <input type="text" class="form-input" id="secColor" placeholder="#5DCAA5">
+            </div>
+          </div>
+          <div class="toggle-row" style="margin-bottom:8px">
+            <div class="toggle-info">
+              <div class="toggle-label">Mostrar en el inicio</div>
+            </div>
+            <div class="toggle-switch on" id="secHome" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="toggle-row" style="margin-bottom:12px">
+            <div class="toggle-info">
+              <div class="toggle-label">Mostrar en el catálogo</div>
+            </div>
+            <div class="toggle-switch on" id="secCatalogo" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div style="display:flex;gap:9px">
+            <button class="btn-secondary" onclick="cancelarSeccion()" style="flex:1">Cancelar</button>
+            <button class="cta-gold btn-save" onclick="guardarSeccion()" style="flex:1">GUARDAR</button>
+          </div>
+        </div>
+
+        <button class="btn-agregar" id="btnNuevaSec" onclick="nuevaSeccion()">＋ Crear una fila nueva</button>
+      </div>
+
+      <div class="curso-modal-footer">
+        <button class="cta-gold btn-save" style="margin-left:auto" onclick="cerrarSecciones()">LISTO</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ -->
+  <!-- TAB: FILAS DEL CATÁLOGO -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-secciones">
+    <div class="header-bar">
+      <div>
+        <div class="header-meta">ORGANIZACIÓN</div>
+        <h1 class="header-title">Filas del <span class="serif-it gradtext" style="font-size:34px">catálogo</span></h1>
+        <p class="header-sub">Cada fila agrupa cursos en el inicio y en el catálogo.</p>
+      </div>
+      <div class="header-actions">
+        <button class="cta-gold btn-primary" onclick="abrirSeccion()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          NUEVA FILA
+        </button>
+      </div>
+    </div>
+
+    <div class="ins-aviso">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01" stroke-linecap="round"/></svg>
+      <div>
+        Las filas <strong>sin cursos no se muestran</strong> en el sitio.
+        Podés crear las que quieras y ordenarlas como prefieras.
+      </div>
+    </div>
+
+    <div id="seccionesLista"></div>
+  </div>
+
+  <!-- MODAL FILA -->
+  <div class="curso-modal-backdrop" id="seccionModal">
+    <div class="curso-modal" style="max-width:460px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">FILA DEL CATÁLOGO</div>
+          <h3 class="curso-modal-titulo serif" id="secTituloModal">Nueva fila</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarSeccion()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <input type="hidden" id="secId">
+        <input type="hidden" id="secClave">
+
+        <div class="sec-previa" id="secPrevia"></div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">TÍTULO DE LA FILA</label>
+          <input type="text" class="form-input" id="secNombre" placeholder="Marketing Digital" oninput="pintarPreviaSec()">
+          <div class="form-help">Es lo que se lee arriba de los cursos</div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">SUBTÍTULO (opcional)</label>
+          <input type="text" class="form-input" id="secSubtitulo" placeholder="Lo esencial para empezar" oninput="pintarPreviaSec()">
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">ETIQUETA (opcional)</label>
+            <input type="text" class="form-input" id="secEtiqueta" placeholder="GRATIS" maxlength="12" oninput="pintarPreviaSec()">
+          </div>
+          <div class="form-field">
+            <label class="form-label">COLOR</label>
+            <div class="ins-colores" id="secColores"></div>
+            <input type="hidden" id="secColor" value="#5DCAA5">
+          </div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">ORDEN</label>
+          <input type="number" class="form-input" id="secOrden" min="0" placeholder="1">
+          <div class="form-help">Número más chico = aparece más arriba</div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Mostrar en el inicio</div>
+            <div class="toggle-help">La fila aparece en la página principal</div>
+          </div>
+          <div class="toggle-switch on" id="secHome" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Mostrar en el catálogo</div>
+            <div class="toggle-help">La fila aparece en la página de cursos</div>
+          </div>
+          <div class="toggle-switch on" id="secCatalogo" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Activa</div>
+            <div class="toggle-help">Si está apagada, no se muestra en ningún lado</div>
+          </div>
+          <div class="toggle-switch on" id="secActiva" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <button class="btn-danger" id="btnBorrarSec" onclick="borrarSeccion()" style="display:none">ELIMINAR</button>
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarSeccion()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="guardarSeccion()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <!-- Toast -->
@@ -3596,6 +3815,221 @@ body{visibility:hidden}
       <div class="image-uploader-help">JPG, PNG o WebP · máximo 5 MB</div>
     `;
     document.getElementById('cursoFotoInput').value = '';
+  }
+
+  // ============================
+  // FILAS DEL CATÁLOGO
+  // ============================
+  // El modal antiguo de secciones apunta al sistema nuevo
+  function abrirSecciones(){ cambiarTab('secciones'); }
+  function cerrarSecciones(){
+    const m = document.getElementById('seccionesModal');
+    if(m) m.classList.remove('show');
+  }
+  function nuevaSeccion(){ abrirSeccion(); }
+  function cancelarSeccion(){ cerrarSeccion(); }
+
+
+  let secciones = [];
+
+  async function cargarSecciones(){
+    if(!sb) return;
+    const { data, error } = await sb.from('secciones').select('*').order('orden', { ascending: true });
+
+    if(error){
+      const cont = document.getElementById('seccionesLista');
+      if(cont){
+        cont.innerHTML = '<div style="padding:40px;text-align:center;color:#FF8090">' +
+          (String(error.message).includes('does not exist')
+            ? 'Falta crear la tabla. Corré SQL-SECCIONES.sql en Supabase.'
+            : esc(error.message)) + '</div>';
+      }
+      // Igual dejamos el selector usable
+      llenarSelectorSecciones();
+      return;
+    }
+
+    secciones = data || [];
+    const el = document.getElementById('seccionesCount');
+    if(el) el.textContent = secciones.filter(s => s.activa).length;
+
+    renderSecciones();
+    llenarSelectorSecciones();
+  }
+
+  // El selector del curso se llena con las filas que existan
+  function llenarSelectorSecciones(){
+    const sel = document.getElementById('cursoSeccion');
+    if(!sel) return;
+    const actual = sel.value;
+
+    const activas = secciones.filter(s => s.activa);
+    sel.innerHTML =
+      (activas.length
+        ? activas.map(s => '<option value="' + esc(s.clave) + '">' + esc(s.nombre) + '</option>').join('')
+        : '<option value="principal">Fila principal</option>') +
+      '<option value="oculto">— No mostrar en el catálogo —</option>';
+
+    if(actual) sel.value = actual;
+  }
+
+  function renderSecciones(){
+    const cont = document.getElementById('seccionesLista');
+    if(!cont) return;
+
+    if(secciones.length === 0){
+      cont.innerHTML = '<div class="vacio-suave"><div class="ico">📚</div>' +
+        'Todavía no hay filas' +
+        '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">Creá la primera con el botón de arriba</div></div>';
+      return;
+    }
+
+    cont.innerHTML = secciones.map((s, i) => {
+      const nCursos = (cursos || []).filter(c => c.seccion === s.clave).length;
+      const nPub = (cursos || []).filter(c => c.seccion === s.clave && c.publicado).length;
+      const col = s.color_etiqueta || '#5DCAA5';
+
+      return '<div class="sec-fila ' + (s.activa ? '' : 'apagada') + '" onclick="abrirSeccion(\'' + s.id + '\')">' +
+        '<div class="sec-num">' + (i + 1) + '</div>' +
+        '<div class="sec-info">' +
+          '<div class="sec-nom">' + esc(s.nombre) +
+            (s.etiqueta ? '<span class="sec-chip" style="background:' + col + '22;border-color:' + col + '66;color:' + col + '">' + esc(s.etiqueta) + '</span>' : '') +
+          '</div>' +
+          (s.subtitulo ? '<div class="sec-sub">' + esc(s.subtitulo) + '</div>' : '') +
+        '</div>' +
+        '<div class="sec-donde">' +
+          (s.mostrar_home ? '<span>🏠 inicio</span>' : '') +
+          (s.mostrar_catalogo ? '<span>📚 catálogo</span>' : '') +
+          (s.activa ? '' : '<span>apagada</span>') +
+        '</div>' +
+        '<div class="sec-cursos">' + nPub + ' publicado' + (nPub === 1 ? '' : 's') +
+          (nCursos > nPub ? ' · ' + (nCursos - nPub) + ' en borrador' : '') + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function pintarPreviaSec(){
+    const nom = document.getElementById('secNombre').value || 'Título de la fila';
+    const sub = document.getElementById('secSubtitulo').value;
+    const et = document.getElementById('secEtiqueta').value;
+    const col = document.getElementById('secColor').value;
+
+    document.getElementById('secPrevia').innerHTML =
+      '<div class="sec-previa-tit">' + esc(nom) +
+        (et ? '<span class="sec-chip" style="background:' + col + '22;border-color:' + col + '66;color:' + col + '">' + esc(et) + '</span>' : '') +
+      '</div>' +
+      (sub ? '<div class="sec-previa-sub">' + esc(sub) + '</div>' : '');
+  }
+
+  function pintarColoresSec(){
+    const cont = document.getElementById('secColores');
+    if(!cont) return;
+    const actual = document.getElementById('secColor').value;
+    cont.innerHTML = COLORES_DISPONIBLES.map(col =>
+      '<div class="ins-color-op ' + (col === actual ? 'sel' : '') + '" style="background:' + col + ';width:26px;height:26px" onclick="elegirColorSec(\'' + col + '\')"></div>'
+    ).join('');
+  }
+
+  function elegirColorSec(col){
+    document.getElementById('secColor').value = col;
+    pintarColoresSec();
+    pintarPreviaSec();
+  }
+
+  function abrirSeccion(id){
+    document.getElementById('secId').value = id || '';
+    document.getElementById('secTituloModal').textContent = id ? 'Editar fila' : 'Nueva fila';
+    document.getElementById('btnBorrarSec').style.display = id ? '' : 'none';
+
+    if(id){
+      const s = secciones.find(x => x.id === id);
+      document.getElementById('secClave').value = s?.clave || '';
+      document.getElementById('secNombre').value = s?.nombre || '';
+      document.getElementById('secSubtitulo').value = s?.subtitulo || '';
+      document.getElementById('secEtiqueta').value = s?.etiqueta || '';
+      document.getElementById('secColor').value = s?.color_etiqueta || '#5DCAA5';
+      document.getElementById('secOrden').value = s?.orden ?? 0;
+      document.getElementById('secHome').classList.toggle('on', s?.mostrar_home !== false);
+      document.getElementById('secCatalogo').classList.toggle('on', s?.mostrar_catalogo !== false);
+      document.getElementById('secActiva').classList.toggle('on', s?.activa !== false);
+    } else {
+      document.getElementById('secClave').value = '';
+      document.getElementById('secNombre').value = '';
+      document.getElementById('secSubtitulo').value = '';
+      document.getElementById('secEtiqueta').value = '';
+      document.getElementById('secColor').value = '#5DCAA5';
+      document.getElementById('secOrden').value = secciones.length + 1;
+      document.getElementById('secHome').classList.add('on');
+      document.getElementById('secCatalogo').classList.add('on');
+      document.getElementById('secActiva').classList.add('on');
+    }
+
+    pintarColoresSec();
+    pintarPreviaSec();
+    document.getElementById('seccionModal').classList.add('show');
+  }
+
+  function cerrarSeccion(){ document.getElementById('seccionModal').classList.remove('show'); }
+
+  async function guardarSeccion(){
+    const nombre = document.getElementById('secNombre').value.trim();
+    if(!nombre) return mostrarToast('Poné un título a la fila', true);
+
+    const id = document.getElementById('secId').value;
+    let clave = document.getElementById('secClave').value;
+
+    // La clave se arma sola con el nombre
+    if(!clave){
+      clave = nombre.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+      if(!clave) clave = 'fila_' + Date.now();
+      if(secciones.some(s => s.clave === clave)) clave += '_' + (secciones.length + 1);
+    }
+
+    const datos = {
+      clave: clave,
+      nombre: nombre,
+      subtitulo: document.getElementById('secSubtitulo').value.trim() || null,
+      etiqueta: document.getElementById('secEtiqueta').value.trim().toUpperCase() || null,
+      color_etiqueta: document.getElementById('secColor').value,
+      orden: parseInt(document.getElementById('secOrden').value) || 0,
+      mostrar_home: document.getElementById('secHome').classList.contains('on'),
+      mostrar_catalogo: document.getElementById('secCatalogo').classList.contains('on'),
+      activa: document.getElementById('secActiva').classList.contains('on')
+    };
+
+    const r = id
+      ? await sb.from('secciones').update(datos).eq('id', id)
+      : await sb.from('secciones').insert(datos);
+
+    if(r.error) return mostrarToast('Error: ' + r.error.message, true);
+
+    mostrarToast(id ? '✓ Fila actualizada' : '✓ Fila creada');
+    cerrarSeccion();
+    await cargarSecciones();
+  }
+
+  async function borrarSeccion(){
+    const id = document.getElementById('secId').value;
+    if(!id) return;
+    const s = secciones.find(x => x.id === id);
+    const n = (cursos || []).filter(c => c.seccion === s?.clave).length;
+
+    if(!confirm('¿Eliminar la fila "' + (s?.nombre || '') + '"?' +
+      (n > 0 ? '\n\nLos ' + n + ' curso(s) que están ahí pasan a la fila principal.' : ''))) return;
+
+    if(n > 0){
+      await sb.from('cursos').update({ seccion: 'principal' }).eq('seccion', s.clave);
+    }
+
+    const { error } = await sb.from('secciones').delete().eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+
+    mostrarToast('Fila eliminada');
+    cerrarSeccion();
+    await cargarSecciones();
+    await cargarCursos();
   }
 
   // ============================
@@ -7036,7 +7470,8 @@ body{visibility:hidden}
       cargarAnuncios(),
       cargarFunciones(),
       cargarClasesParaAnuncio(),
-      cargarHashtags()
+      cargarHashtags(),
+      cargarSecciones()
     ]);
 
     // El newsletter necesita saber quiénes tienen cuenta

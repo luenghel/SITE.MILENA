@@ -159,17 +159,10 @@
   </div>
 </section>
 
-<section class="courses-section">
-  <h2 class="serif">Marketing Digital</h2>
-  <div class="section-row" id="cursosDinamicos">
-    <!-- Las cards se cargan acá desde Supabase -->
-    <div style="grid-column:1/-1;padding:40px;text-align:center;color:rgba(255,245,240,0.4);font-size:13px">
-      Cargando cursos...
-    </div>
+<section class="courses-section" id="filasCursos">
+  <div style="padding:40px;text-align:center;color:rgba(255,245,240,0.4);font-size:13px">
+    Cargando cursos...
   </div>
-
-  <h2 class="serif" style="margin-top:32px" id="tituloAcompana">Acompañá más</h2>
-  <div class="section-row" id="cursosAcompana"></div>
 </section>
 
 <footer class="main-footer">
@@ -299,6 +292,7 @@
           <div style="position:absolute;width:160px;height:160px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>
           <div style="position:absolute;width:140px;height:140px;right:-30px;bottom:-30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)"></div>
           <div class="text-shadow-overlay"></div>
+          ${esProximo ? `<div class="proximo-chip">🔮 PRÓXIMAMENTE</div>` : ''}
           ${lockHTML}
           ${checkHTML}
           ${etiquetaHTML}
@@ -346,8 +340,8 @@
       .order('orden', { ascending: true });
 
     if(error){
-      document.getElementById('cursosDinamicos').innerHTML =
-        '<div style="grid-column:1/-1;padding:40px;text-align:center;color:#FF8090">No pudimos cargar los cursos</div>';
+      const p = document.getElementById('filasCursos');
+      if(p) p.innerHTML = '<div style="padding:40px;text-align:center;color:#FF8090">No pudimos cargar los cursos</div>';
       return;
     }
 
@@ -367,22 +361,49 @@
     });
 
     const todos = cursos || [];
-    const principales = todos.filter(c => (c.seccion || 'principal') === 'principal');
-    const acompana = todos.filter(c => c.seccion === 'acompana');
 
-    // Fila principal
-    const contP = document.getElementById('cursosDinamicos');
-    if(principales.length === 0){
-      contP.innerHTML = '<div style="grid-column:1/-1;padding:50px 20px;text-align:center;color:rgba(255,245,240,0.5)">' +
+    // Traemos las filas configuradas
+    const { data: secs } = await sb.from('secciones')
+      .select('*').eq('activa', true).eq('mostrar_catalogo', true)
+      .order('orden', { ascending: true });
+
+    const filas = secs || [
+      { clave:'principal', nombre:'Marketing Digital' },
+      { clave:'acompana',  nombre:'Acompañá más' }
+    ];
+
+    const padre = document.getElementById('filasCursos');
+    if(!padre) return;
+    padre.innerHTML = '';
+
+    let algunaConCursos = false;
+
+    filas.forEach(function(f){
+      const deEsta = todos.filter(c => (c.seccion || 'principal') === f.clave);
+      if(deEsta.length === 0) return;
+      algunaConCursos = true;
+
+      const col = f.color_etiqueta || '#5DCAA5';
+      const h2 = document.createElement('h2');
+      h2.className = 'serif';
+      h2.style.marginTop = '32px';
+      h2.innerHTML = esc(f.nombre) +
+        (f.etiqueta ? ' <span class="free-badge" style="background:' + col + '22;border-color:' + col + '66;color:' + col + '">' + esc(f.etiqueta) + '</span>' : '') +
+        (f.subtitulo ? '<div style="font-size:13px;color:rgba(255,245,240,0.5);font-family:ui-sans-serif,system-ui;font-style:normal;margin-top:5px">' + esc(f.subtitulo) + '</div>' : '');
+      padre.appendChild(h2);
+
+      const grid = document.createElement('div');
+      grid.className = 'section-row';
+      grid.innerHTML = deEsta.map(c => crearCard(c, user, comprasIds)).join('');
+      padre.appendChild(grid);
+    });
+
+    if(!algunaConCursos){
+      padre.innerHTML = '<div style="padding:60px 20px;text-align:center;color:rgba(255,245,240,0.5)">' +
         '<div style="font-size:42px;opacity:0.35;margin-bottom:12px">🎓</div>' +
-        '<div style="font-size:14px;margin-bottom:6px">Todavía no hay cursos publicados</div>' +
-        '<div style="font-size:12px;color:rgba(255,245,240,0.4)">Muy pronto vas a encontrar acá el contenido</div></div>';
-    } else {
-      contP.innerHTML = principales.map(c => crearCard(c, user, comprasIds)).join('');
+        '<div style="font-size:15px;margin-bottom:6px">Todavía no hay cursos publicados</div>' +
+        '<div style="font-size:12.5px;color:rgba(255,245,240,0.4)">Muy pronto vas a encontrar acá el contenido</div></div>';
     }
-
-    // Fila "Acompañá más"
-    pintarSeccion('cursosAcompana', 'tituloAcompana', acompana, user, comprasIds);
   }, 50);
 })();
 </script>
