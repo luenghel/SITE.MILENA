@@ -279,24 +279,57 @@ async function avisarCambioPassword(detalle) {
 
 // ═══════════════════════════════════════════════════════════
 // LIBERACIÓN PROGRAMADA DE CLASES
-// Calcula qué clases ya están disponibles según cuándo compró.
+//
+// Tres formas, se elige UNA:
+//   inmediata    → apenas se inscribe
+//   inscripcion  → X días después de inscribirse
+//   lanzamiento  → X días después del lanzamiento del curso
+//
+// Manda lo más específico: clase → módulo → curso.
 // ═══════════════════════════════════════════════════════════
 
-// Cuántos días después de la compra se libera una clase
-function diasParaClase(clase, curso, todasLasClases, modulos) {
-  // Si la clase tiene su propio día, ese manda
-  if (clase.dias_desbloqueo !== null && clase.dias_desbloqueo !== undefined) {
-    return clase.dias_desbloqueo;
+// Devuelve { modo, dias, origen } resolviendo la herencia
+function configLiberacion(clase, modulo, curso) {
+  if (clase && clase.modo_liberacion && clase.modo_liberacion !== 'heredar') {
+    return { modo: clase.modo_liberacion, dias: clase.dias_liberacion || 0, origen: 'clase' };
+  }
+  if (modulo && modulo.modo_liberacion && modulo.modo_liberacion !== 'heredar') {
+    return { modo: modulo.modo_liberacion, dias: modulo.dias_liberacion || 0, origen: 'modulo' };
+  }
+  return { modo: null, dias: 0, origen: 'curso' };
+}
+
+// Cuándo se libera esta clase para esta persona. null = no se sabe (no inscripta)
+function fechaLiberacion(clase, modulo, curso, compra, todasLasClases, modulos) {
+  const cfg = configLiberacion(clase, modulo, curso);
+  const inscripcion = compra && compra.pagado_en ? new Date(compra.pagado_en).getTime() : null;
+  const lanzamiento = curso && curso.fecha_lanzamiento
+    ? new Date(curso.fecha_lanzamiento).getTime()
+    : (curso && curso.creado_en ? new Date(curso.creado_en).getTime() : Date.now());
+
+  // ─── Configuración propia de la clase o del módulo ───
+  if (cfg.modo) {
+    if (cfg.modo === 'inmediata') return inscripcion || Date.now();
+    if (cfg.modo === 'inscripcion') {
+      if (!inscripcion) return null;
+      return inscripcion + cfg.dias * 86400000;
+    }
+    if (cfg.modo === 'lanzamiento') {
+      return lanzamiento + cfg.dias * 86400000;
+    }
   }
 
-  const modo = curso.modo_liberacion || 'inmediata';
-  const dias = curso.dias_liberacion || 0;
+  // ─── Si no, lo que diga el curso ───
+  const modoCurso = (curso && curso.modo_liberacion) || 'inmediata';
+  const diasCurso = (curso && curso.dias_liberacion) || 0;
 
-  if (modo === 'inmediata') return 0;
-  if (modo === 'espera') return dias;
+  if (modoCurso === 'espera') {
+    if (!inscripcion) return null;
+    return inscripcion + diasCurso * 86400000;
+  }
 
-  if (modo === 'goteo') {
-    // Ordenamos las clases como se ven en el curso
+  if (modoCurso === 'goteo') {
+    if (!inscripcion) return null;
     const planas = [];
     (modulos || []).forEach(m => {
       (todasLasClases || [])
@@ -305,24 +338,22 @@ function diasParaClase(clase, curso, todasLasClases, modulos) {
         .forEach(x => planas.push(x));
     });
     const pos = planas.findIndex(x => x.id === clase.id);
-    return (pos < 0 ? 0 : pos) * (dias || 1);
+    return inscripcion + (pos < 0 ? 0 : pos) * (diasCurso || 1) * 86400000;
   }
 
-  return 0;
+  return inscripcion || Date.now();
 }
 
 // ¿Ya está disponible?
 function claseDisponible(clase, curso, compra, todasLasClases, modulos) {
-  // El equipo ve todo
-  const necesarios = diasParaClase(clase, curso, todasLasClases, modulos);
-  if (necesarios <= 0) return { libre: true, dias: 0, fecha: null };
+  const modulo = (modulos || []).find(m => m.id === clase.modulo_id) || null;
+  const cuando = fechaLiberacion(clase, modulo, curso, compra, todasLasClases, modulos);
 
-  if (!compra || !compra.pagado_en) return { libre: false, dias: necesarios, fecha: null };
+  if (cuando === null) {
+    return { libre: false, dias: 0, fecha: null, sinInscripcion: true };
+  }
 
-  const inicio = new Date(compra.pagado_en).getTime();
-  const cuando = inicio + necesarios * 86400000;
   const faltan = Math.ceil((cuando - Date.now()) / 86400000);
-
   return {
     libre: Date.now() >= cuando,
     dias: Math.max(0, faltan),
@@ -332,6 +363,7 @@ function claseDisponible(clase, curso, compra, todasLasClases, modulos) {
 
 function textoEspera(info) {
   if (info.libre) return '';
+  if (info.sinInscripcion) return 'Anotate para desbloquearla';
   if (info.dias <= 0) return 'Se libera hoy';
   if (info.dias === 1) return 'Se libera mañana';
   if (info.fecha) {

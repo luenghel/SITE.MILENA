@@ -892,6 +892,17 @@
     .anuncio-btn{width:100%}
   }
 
+
+  .lib-caja{padding:15px 16px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:12px;margin-bottom:16px}
+  .lib-label{font-size:9.5px;letter-spacing:0.18em;color:rgba(255,245,240,0.5);font-weight:600;margin-bottom:11px}
+  .lib-opciones{display:flex;flex-direction:column;gap:7px}
+  .lib-op{display:flex;flex-direction:column;gap:2px;align-items:flex-start;padding:11px 13px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:10px;cursor:pointer;font-family:inherit;text-align:left;transition:all 0.2s;width:100%}
+  .lib-op:hover{background:rgba(255,245,240,0.07)}
+  .lib-op.sel{background:rgba(212,163,86,0.12);border-color:rgba(212,163,86,0.5)}
+  .lib-op-tit{font-size:13px;font-weight:500;color:#FFF5F0}
+  .lib-op.sel .lib-op-tit{color:#FAC775}
+  .lib-op-sub{font-size:11px;color:rgba(255,245,240,0.5)}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1597,6 +1608,12 @@ body{visibility:hidden}
               <option value="goteo">💧 De a una clase, cada X días</option>
             </select>
             <div class="form-help" id="ayudaLiberacion">Todas las clases quedan disponibles apenas compra.</div>
+          </div>
+
+          <div class="form-field form-grid-full">
+            <label class="form-label">FECHA DE LANZAMIENTO</label>
+            <input type="date" class="form-input" id="cursoLanzamiento">
+            <div class="form-help">Se usa para las clases configuradas como "X días tras el lanzamiento"</div>
           </div>
 
           <div class="form-field form-grid-full" id="campoDiasLiberacion" style="display:none">
@@ -2601,6 +2618,33 @@ body{visibility:hidden}
           <label class="form-label">ORDEN</label>
           <input type="number" class="form-input" id="moduloOrden" min="0" placeholder="1">
         </div>
+        <div class="lib-caja">
+          <div class="lib-label">CUÁNDO SE LIBERA ESTE MÓDULO</div>
+          <div class="lib-opciones">
+            <button type="button" class="lib-op" data-m="heredar" onclick="elegirLibModulo(this)">
+              <span class="lib-op-tit">↑ Como diga el curso</span>
+              <span class="lib-op-sub">Usa la configuración general</span>
+            </button>
+            <button type="button" class="lib-op" data-m="inmediata" onclick="elegirLibModulo(this)">
+              <span class="lib-op-tit">🔓 Al inscribirse</span>
+              <span class="lib-op-sub">Disponible apenas se anota</span>
+            </button>
+            <button type="button" class="lib-op" data-m="inscripcion" onclick="elegirLibModulo(this)">
+              <span class="lib-op-tit">📅 X días tras inscribirse</span>
+              <span class="lib-op-sub">Cuenta desde que cada persona se anota</span>
+            </button>
+            <button type="button" class="lib-op" data-m="lanzamiento" onclick="elegirLibModulo(this)">
+              <span class="lib-op-tit">🚀 X días tras el lanzamiento</span>
+              <span class="lib-op-sub">Misma fecha para todas</span>
+            </button>
+          </div>
+          <div id="libModuloDias" style="display:none;margin-top:11px">
+            <label class="form-label">DÍAS</label>
+            <input type="number" class="form-input" id="moduloDiasLib" min="0" max="365" placeholder="7">
+            <div class="form-help" id="libModuloEj"></div>
+          </div>
+        </div>
+
         <div class="toggle-row">
           <div class="toggle-info">
             <div class="toggle-label">Publicado</div>
@@ -2694,6 +2738,33 @@ body{visibility:hidden}
           <div class="form-field">
             <label class="form-label">ORDEN</label>
             <input type="number" class="form-input" id="claseOrden" min="0" placeholder="1">
+          </div>
+        </div>
+
+        <div class="lib-caja">
+          <div class="lib-label">CUÁNDO SE LIBERA ESTA CLASE</div>
+          <div class="lib-opciones">
+            <button type="button" class="lib-op" data-m="heredar" onclick="elegirLibClase(this)">
+              <span class="lib-op-tit">↑ Como diga el módulo</span>
+              <span class="lib-op-sub">Hereda del módulo o del curso</span>
+            </button>
+            <button type="button" class="lib-op" data-m="inmediata" onclick="elegirLibClase(this)">
+              <span class="lib-op-tit">🔓 Al inscribirse</span>
+              <span class="lib-op-sub">Disponible apenas se anota</span>
+            </button>
+            <button type="button" class="lib-op" data-m="inscripcion" onclick="elegirLibClase(this)">
+              <span class="lib-op-tit">📅 X días tras inscribirse</span>
+              <span class="lib-op-sub">Cuenta desde que cada persona se anota</span>
+            </button>
+            <button type="button" class="lib-op" data-m="lanzamiento" onclick="elegirLibClase(this)">
+              <span class="lib-op-tit">🚀 X días tras el lanzamiento</span>
+              <span class="lib-op-sub">Misma fecha para todas</span>
+            </button>
+          </div>
+          <div id="libClaseDias" style="display:none;margin-top:11px">
+            <label class="form-label">DÍAS</label>
+            <input type="number" class="form-input" id="claseDiasLib" min="0" max="365" placeholder="7">
+            <div class="form-help" id="libClaseEj"></div>
           </div>
         </div>
 
@@ -2952,6 +3023,8 @@ body{visibility:hidden}
       document.getElementById('cursoEtiqueta').value = c.etiqueta || '';
       document.getElementById('cursoNotaPrecio').value = c.nota_precio || '';
       document.getElementById('cursoLiberacion').value = c.modo_liberacion || 'inmediata';
+      document.getElementById('cursoLanzamiento').value = c.fecha_lanzamiento
+        ? new Date(c.fecha_lanzamiento).toISOString().slice(0,10) : '';
       document.getElementById('cursoDiasLiberacion').value = c.dias_liberacion || '';
       document.getElementById('cursoAvisarLiberacion').classList.toggle('on', c.avisar_liberacion !== false);
       document.getElementById('cursoPrecio').value = c.precio_gs ? c.precio_gs.toLocaleString('es-PY') : '';
@@ -2989,6 +3062,7 @@ body{visibility:hidden}
       document.getElementById('cursoSeccion').value = 'principal';
       document.getElementById('cursoAcceso').value = 'pago';
       document.getElementById('cursoLiberacion').value = 'inmediata';
+      document.getElementById('cursoLanzamiento').value = new Date().toISOString().slice(0,10);
       document.getElementById('cursoDiasLiberacion').value = '';
       document.getElementById('cursoAvisarLiberacion').classList.add('on');
       document.getElementById('cursoCategoria').value = 'FORMACIÓN';
@@ -3082,6 +3156,9 @@ body{visibility:hidden}
       enlace_externo: document.getElementById('cursoEnlaceExterno').value.trim() || null,
       etiqueta: document.getElementById('cursoEtiqueta').value.trim() || null,
       nota_precio: document.getElementById('cursoNotaPrecio').value.trim() || null,
+      fecha_lanzamiento: document.getElementById('cursoLanzamiento').value
+        ? new Date(document.getElementById('cursoLanzamiento').value + 'T00:00:00').toISOString()
+        : null,
       modo_liberacion: document.getElementById('cursoLiberacion').value,
       dias_liberacion: parseInt(document.getElementById('cursoDiasLiberacion').value) || 0,
       avisar_liberacion: document.getElementById('cursoAvisarLiberacion').classList.contains('on')
@@ -3386,6 +3463,8 @@ body{visibility:hidden}
   }
 
   document.getElementById('cursoDiasLiberacion')?.addEventListener('input', cambiarLiberacion);
+  document.getElementById('moduloDiasLib')?.addEventListener('input', pintarLibModulo);
+  document.getElementById('claseDiasLib')?.addEventListener('input', pintarLibClase);
 
   function cambiarTipoCurso(){
     const t = document.getElementById('cursoTipo').value;
@@ -3474,6 +3553,16 @@ body{visibility:hidden}
 
   const ICONOS_CLASE = { video: '🎬', pdf: '📄', texto: '📝', enlace: '🔗', audio: '🎧' };
 
+  // Muestra cómo está configurada la liberación
+  function textoLib(x){
+    if(!x || !x.modo_liberacion || x.modo_liberacion === 'heredar') return '';
+    const d = x.dias_liberacion || 0;
+    if(x.modo_liberacion === 'inmediata') return ' · 🔓 al inscribirse';
+    if(x.modo_liberacion === 'inscripcion') return ' · 📅 ' + d + 'd tras inscribirse';
+    if(x.modo_liberacion === 'lanzamiento') return ' · 🚀 ' + d + 'd tras lanzamiento';
+    return '';
+  }
+
   function renderContenido(){
     const cont = document.getElementById('listaModulos');
 
@@ -3499,7 +3588,7 @@ body{visibility:hidden}
           '<div class="modulo-info">' +
             '<div class="modulo-titulo">' + esc(m.titulo) + (m.publicado === false ? ' <span class="mini-badge borrador">BORRADOR</span>' : '') + '</div>' +
             '<div class="modulo-meta">' + cls.length + ' clase' + (cls.length === 1 ? '' : 's') +
-              (min > 0 ? ' · ' + min + ' min' : '') + '</div>' +
+              (min > 0 ? ' · ' + min + ' min' : '') + textoLib(m) + '</div>' +
           '</div>' +
           '<button class="acc-btn-menu" onclick="event.stopPropagation();abrirModulo(\'' + m.id + '\')">Editar</button>' +
           '<svg class="modulo-flecha" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>' +
@@ -3515,6 +3604,7 @@ body{visibility:hidden}
                     '<div class="clase-meta">' +
                       (cl.duracion_minutos ? cl.duracion_minutos + ' min' : 'sin duración') +
                       (cl.tipo === 'video' && !cl.video_url ? ' · ⚠️ falta el video' : '') +
+                      textoLib(cl) +
                     '</div>' +
                   '</div>' +
                   '<div class="clase-badges">' +
@@ -3538,6 +3628,76 @@ body{visibility:hidden}
     document.getElementById('mod-' + id)?.classList.toggle('abierto');
   }
 
+  // ─── Selectores de liberación (solo una opción a la vez) ───
+  let libModuloModo = 'heredar';
+  let libClaseModo = 'heredar';
+
+  function elegirLibModulo(el){
+    document.querySelectorAll('#moduloModal .lib-op').forEach(x => x.classList.remove('sel'));
+    el.classList.add('sel');
+    libModuloModo = el.dataset.m;
+    pintarLibModulo();
+  }
+
+  function pintarLibModulo(){
+    const caja = document.getElementById('libModuloDias');
+    const ej = document.getElementById('libModuloEj');
+    const necesita = (libModuloModo === 'inscripcion' || libModuloModo === 'lanzamiento');
+    caja.style.display = necesita ? '' : 'none';
+    if(!necesita) return;
+
+    const d = parseInt(document.getElementById('moduloDiasLib').value) || 0;
+    if(libModuloModo === 'inscripcion'){
+      ej.textContent = d === 0
+        ? 'Con 0 días se libera al inscribirse.'
+        : 'Quien se anote hoy lo ve el ' + new Date(Date.now() + d*86400000).toLocaleDateString('es-PY',{day:'numeric',month:'long'}) + '.';
+    } else {
+      const lanz = document.getElementById('cursoLanzamiento').value;
+      if(lanz){
+        const f = new Date(lanz + 'T00:00:00').getTime() + d*86400000;
+        ej.textContent = 'Se libera el ' + new Date(f).toLocaleDateString('es-PY',{day:'numeric',month:'long',year:'numeric'}) + ', para todas por igual.';
+      } else {
+        ej.textContent = 'Poné la fecha de lanzamiento del curso para ver el cálculo.';
+      }
+    }
+  }
+
+  function elegirLibClase(el){
+    document.querySelectorAll('#claseModal .lib-op').forEach(x => x.classList.remove('sel'));
+    el.classList.add('sel');
+    libClaseModo = el.dataset.m;
+    pintarLibClase();
+  }
+
+  function pintarLibClase(){
+    const caja = document.getElementById('libClaseDias');
+    const ej = document.getElementById('libClaseEj');
+    const necesita = (libClaseModo === 'inscripcion' || libClaseModo === 'lanzamiento');
+    caja.style.display = necesita ? '' : 'none';
+    if(!necesita) return;
+
+    const d = parseInt(document.getElementById('claseDiasLib').value) || 0;
+    if(libClaseModo === 'inscripcion'){
+      ej.textContent = d === 0
+        ? 'Con 0 días se libera al inscribirse.'
+        : 'Quien se anote hoy la ve el ' + new Date(Date.now() + d*86400000).toLocaleDateString('es-PY',{day:'numeric',month:'long'}) + '.';
+    } else {
+      const lanz = document.getElementById('cursoLanzamiento').value;
+      if(lanz){
+        const f = new Date(lanz + 'T00:00:00').getTime() + d*86400000;
+        ej.textContent = 'Se libera el ' + new Date(f).toLocaleDateString('es-PY',{day:'numeric',month:'long',year:'numeric'}) + ', para todas por igual.';
+      } else {
+        ej.textContent = 'Poné la fecha de lanzamiento del curso para ver el cálculo.';
+      }
+    }
+  }
+
+  function marcarLib(contenedor, modo){
+    document.querySelectorAll(contenedor + ' .lib-op').forEach(x => {
+      x.classList.toggle('sel', x.dataset.m === (modo || 'heredar'));
+    });
+  }
+
   // ─── MÓDULOS ─────────────────────────────────────────────────────
   function abrirModulo(id){
     document.getElementById('moduloId').value = id || '';
@@ -3550,12 +3710,18 @@ body{visibility:hidden}
       document.getElementById('moduloDescripcion').value = m?.descripcion || '';
       document.getElementById('moduloOrden').value = m?.orden ?? 0;
       document.getElementById('moduloPublicado').classList.toggle('on', m?.publicado !== false);
+      libModuloModo = m?.modo_liberacion || 'heredar';
+      document.getElementById('moduloDiasLib').value = m?.dias_liberacion || '';
     } else {
       document.getElementById('moduloTitulo').value = '';
       document.getElementById('moduloDescripcion').value = '';
       document.getElementById('moduloOrden').value = modulos.length + 1;
       document.getElementById('moduloPublicado').classList.add('on');
+      libModuloModo = 'heredar';
+      document.getElementById('moduloDiasLib').value = '';
     }
+    marcarLib('#moduloModal', libModuloModo);
+    pintarLibModulo();
     document.getElementById('moduloModal').classList.add('show');
   }
 
@@ -3570,7 +3736,9 @@ body{visibility:hidden}
       titulo: titulo,
       descripcion: document.getElementById('moduloDescripcion').value.trim() || null,
       orden: parseInt(document.getElementById('moduloOrden').value) || 0,
-      publicado: document.getElementById('moduloPublicado').classList.contains('on')
+      publicado: document.getElementById('moduloPublicado').classList.contains('on'),
+      modo_liberacion: libModuloModo,
+      dias_liberacion: parseInt(document.getElementById('moduloDiasLib').value) || 0
     };
 
     const id = document.getElementById('moduloId').value;
@@ -3621,6 +3789,8 @@ body{visibility:hidden}
       document.getElementById('claseArchivoUrl').value = cl?.archivo_url || '';
       document.getElementById('claseGratis').classList.toggle('on', !!cl?.gratis);
       document.getElementById('clasePublicada').classList.toggle('on', cl?.publicado !== false);
+      libClaseModo = cl?.modo_liberacion || 'heredar';
+      document.getElementById('claseDiasLib').value = cl?.dias_liberacion || '';
 
       if(cl?.archivo_url){
         document.getElementById('claseArchivoEmpty').style.display = 'none';
@@ -3640,7 +3810,11 @@ body{visibility:hidden}
       document.getElementById('clasePublicada').classList.add('on');
       document.getElementById('claseArchivoEmpty').style.display = '';
       document.getElementById('claseArchivoNombre').style.display = 'none';
+      libClaseModo = 'heredar';
+      document.getElementById('claseDiasLib').value = '';
     }
+    marcarLib('#claseModal', libClaseModo);
+    pintarLibClase();
 
     cambiarTipoClase();
     revisarVideo();
@@ -3699,7 +3873,9 @@ body{visibility:hidden}
       duracion_minutos: parseInt(document.getElementById('claseDuracion').value) || 0,
       orden: parseInt(document.getElementById('claseOrden').value) || 0,
       gratis: document.getElementById('claseGratis').classList.contains('on'),
-      publicado: document.getElementById('clasePublicada').classList.contains('on')
+      publicado: document.getElementById('clasePublicada').classList.contains('on'),
+      modo_liberacion: libClaseModo,
+      dias_liberacion: parseInt(document.getElementById('claseDiasLib').value) || 0
     };
 
     const id = document.getElementById('claseId').value;
