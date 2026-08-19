@@ -77,7 +77,12 @@
   .main-footer .heart{color:#FF6B7A}
 
   /* HERO */
-  .hero{position:relative;overflow:hidden;min-height:640px}
+  /* ═══ HERO: solo el banner y el botón · 2.5:1 (1920×768) ═══ */
+  .hero{position:relative;overflow:hidden;width:100%;aspect-ratio:2.5/1;max-height:78vh;min-height:380px;background:#1A0A12}
+  .hero-encima{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:0 40px 42px;max-width:1400px;margin:0 auto;pointer-events:none}
+  .hero-cta{pointer-events:auto;display:inline-block;width:auto;min-width:340px;text-align:center;padding:19px 40px;font-size:13px;font-weight:500;border-radius:12px;letter-spacing:0.2em;text-decoration:none;box-shadow:0 10px 30px rgba(0,0,0,0.35);margin:0}
+  .hero-vacio{position:absolute;inset:0;z-index:2;display:none;align-items:center;justify-content:center;background:linear-gradient(135deg,#2D0A18,#1A0A12)}
+  .hero-vacio.mostrar{display:flex}
   .hero-gradient{position:absolute;inset:0;background:linear-gradient(115deg,#4A152A 0%,#2D0A1A 45%,#1A0A12 75%,#0E0509 100%)}
   .hero-glow-1{position:absolute;width:600px;height:600px;left:-150px;top:-150px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.4) 0%,rgba(232,184,196,0) 65%)}
   .hero-glow-2{position:absolute;width:500px;height:500px;right:-100px;top:0;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.32) 0%,rgba(212,163,86,0) 70%)}
@@ -165,100 +170,23 @@
   @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 
 
-  /* ═══════════════════════════════════════════════════════════
-     CARRUSEL DEL HERO
-     La foto ocupa su propia zona (derecha en computadora,
-     arriba en celular). El texto nunca queda encima.
-     ═══════════════════════════════════════════════════════════ */
-  .hero-visual{position:relative;overflow:hidden;border-radius:20px}
+  /* ═══ CARRUSEL DEL HERO ═══ */
+  .hero-carrusel{position:absolute;inset:0;z-index:1;overflow:hidden}
+  .hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity 1.2s ease-in-out}
+  .hero-slide.activa{opacity:1;z-index:2}
+  .hero-slide.enlace{cursor:pointer}
 
-  .hero-carrusel{
-    position:absolute;
-    inset:0;
-    z-index:1;
-    overflow:hidden;
-    border-radius:20px;
-    pointer-events:none;
-  }
-  .hero-slide{
-    position:absolute;
-    inset:0;
-    background-size:cover;
-    background-position:center;
-    opacity:0;
-    transition:opacity 1.6s ease-in-out;
-    transform:scale(1.04);
-  }
-  .hero-slide.activa{
-    opacity:1;
-    animation:heroZoom 9s ease-out forwards;
-  }
-  @keyframes heroZoom{
-    from{transform:scale(1.04)}
-    to{transform:scale(1.11)}
-  }
-
-  /* La foto se funde con el fondo del lado del texto */
-  .hero-carrusel::after{
-    content:'';
-    position:absolute;
-    inset:0;
-    background:linear-gradient(90deg,
-      #1A0A12 0%,
-      rgba(26,10,18,0.72) 14%,
-      rgba(26,10,18,0.22) 34%,
-      rgba(26,10,18,0) 55%);
-  }
-
-  /* Los círculos decorativos, por encima de la foto */
-  .hero-circle-1,.hero-circle-2{z-index:2}
-
-  .hero-dots{
-    position:absolute;
-    bottom:26px;
-    right:40px;
-    z-index:4;
-    display:none;
-    gap:7px;
-  }
-  .hero-dots.activo{display:flex}
-  .hero-dot{
-    width:7px;height:7px;
-    border-radius:50%;
-    background:rgba(255,245,240,0.3);
-    cursor:pointer;
-    transition:all 0.3s;
-  }
-  .hero-dot:hover{background:rgba(255,245,240,0.55)}
-  .hero-dot.active{background:#FAC775;width:22px;border-radius:4px}
-
-
-  .hero-flechas{
-    position:absolute;
-    bottom:26px;
-    right:40px;
-    z-index:5;
-    display:none;
-    gap:9px;
-  }
+  .hero-flechas{position:absolute;bottom:38px;right:40px;z-index:5;display:none;gap:10px}
   .hero-flechas.activo{display:flex}
-  .hero-flecha{
-    width:44px;height:44px;
-    border-radius:50%;
-    background:rgba(14,5,9,0.45);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    border:0.5px solid rgba(255,245,240,0.28);
-    color:#FFF5F0;
-    cursor:pointer;
-    display:flex;align-items:center;justify-content:center;
-    transition:all 0.22s;
-  }
-  .hero-flecha:hover{background:rgba(212,163,86,0.35);border-color:rgba(212,163,86,0.6)}
+  .hero-flecha{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,0.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.3);color:#FFF;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.22s}
+  .hero-flecha:hover{background:rgba(255,255,255,0.26)}
   .hero-flecha:active{transform:scale(0.93)}
 
-  /* Los puntitos se corren para no chocar con las flechas */
-  .hero-dots.activo{bottom:38px;right:auto;left:50%;transform:translateX(-50%)}
+  .hero-dots{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:5;display:none;gap:8px}
+  .hero-dots.activo{display:flex}
+  .hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s}
+  .hero-dot:hover{background:rgba(255,255,255,0.7)}
+  .hero-dot.active{background:#FAC775;width:24px;border-radius:4px}
 
   /* CARRUSEL VERTICAL CHICO */
   section.carrusel-vertical-section{max-width:1400px;padding:50px 40px 20px;margin:0 auto;display:none}
@@ -284,88 +212,16 @@
   .logo-box{width:38px;height:38px;font-size:19px}
   .logo-text{font-size:11px;letter-spacing:0.16em}
 
-  /* ══════════════════════════════════════════════════════════
-     HERO EN CELULAR
-     La foto arriba, el texto abajo. Nunca encima uno del otro.
-     ══════════════════════════════════════════════════════════ */
-  .hero{min-height:auto}
-  .hero-inner{
-    padding:0 0 clamp(28px,7vw,40px);
-    flex-direction:column;
-    align-items:stretch;
-    gap:0;
-    max-width:100%;
-  }
-
-  /* La foto va PRIMERO */
-  .hero-visual{
-    order:-1;
-    flex:none;
-    height:auto;
-    aspect-ratio:4/3;
-    width:100%;
-    border-radius:0;
-    margin-bottom:clamp(20px,5.5vw,30px);
-  }
-  .hero-carrusel{border-radius:0}
-
-  /* De arriba hacia abajo: la foto se funde con el fondo */
-  .hero-carrusel::after{
-    background:linear-gradient(180deg,
-      rgba(26,10,18,0.35) 0%,
-      rgba(26,10,18,0.1) 35%,
-      rgba(26,10,18,0.65) 82%,
-      #1A0A12 100%);
-  }
-
-  /* Los círculos molestan en celular */
-  .hero-circle-1,.hero-circle-2{display:none}
-
-  .hero-content{
-    flex:none;
-    max-width:100%;
-    width:100%;
-    padding:0 20px;
-    position:relative;
-    z-index:4;
-  }
-
-  /* Mismas proporciones que la computadora */
-  .hero-badge{
-    font-size:clamp(9px,2.5vw,11px);
-    padding:4px 11px;
-    letter-spacing:0.1em;
-    margin-bottom:clamp(12px,3.4vw,18px);
-  }
-  .hero-title{font-size:clamp(28px,8.6vw,44px);line-height:1}
-  .vende-row{gap:clamp(9px,3vw,16px);flex-wrap:nowrap;align-items:baseline}
-  .que{font-size:clamp(22px,6.7vw,34px);flex-shrink:0}
-  .vende{font-size:clamp(48px,14.8vw,76px);white-space:nowrap;letter-spacing:-0.025em}
-
-  .hero-desc{
-    font-size:clamp(13.5px,3.7vw,16px);
-    margin-top:clamp(13px,3.4vw,20px);
-    max-width:100%;
-    line-height:1.45;
-  }
-  .hero-tags{
-    gap:clamp(12px,3.4vw,20px);
-    margin-top:clamp(17px,4.6vw,28px);
-    font-size:clamp(9px,2.5vw,11.5px);
-    letter-spacing:0.13em;
-    flex-wrap:wrap;
-  }
-  .hero-cta{
-    width:100%;
-    margin-top:clamp(18px,4.8vw,28px);
-    padding:clamp(15px,4.2vw,19px) 24px;
-    font-size:clamp(11px,3vw,13px);
-    letter-spacing:0.18em;
-  }
-
-  .hero-flechas{bottom:auto;top:calc(75vw - 56px);right:14px;gap:7px}
-  .hero-flecha{width:36px;height:36px}
-  .hero-dots.activo{bottom:auto;top:calc(75vw - 22px);left:50%;transform:translateX(-50%)}
+  /* ═══ HERO EN CELULAR · imagen vertical 4:5 (1080×1350) ═══ */
+  .hero{aspect-ratio:4/5;max-height:none;min-height:0}
+  .hero-encima{padding:0 18px 22px}
+  .hero-cta{display:block;width:100%;min-width:0;padding:16px 20px;font-size:11.5px;letter-spacing:0.16em;border-radius:11px}
+  .hero-flechas{bottom:auto;top:16px;right:16px;gap:7px}
+  .hero-flecha{width:38px;height:38px}
+  .hero-flecha svg{width:15px;height:15px}
+  .hero-dots{bottom:8px}
+  .hero-dot{width:7px;height:7px}
+  .hero-dot.active{width:20px}
 
   /* ── FILAS DE CURSOS: mismo formato que escritorio ── */
   section.row-section{padding:30px 0 8px}
@@ -489,47 +345,33 @@
   </div>
 </header>
 
-<section class="hero">
-  <div class="hero-gradient"></div>
-  <div class="hero-glow-1"></div>
-  <div class="hero-glow-2"></div>
-  <div class="hero-glow-3"></div>
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-badge">NUEVO MÓDULO</div>
-      <h1 class="hero-title serif">
-        <div>Marketing</div>
-        <div class="vende-row">
-          <span class="que">que</span>
-          <span class="vende gradtext">Vende</span>
-        </div>
-      </h1>
-      <p class="hero-desc">La guía práctica para escalar tu negocio <span style="color:#E8B8C4">en Paraguay</span>.</p>
-      <div class="hero-tags">
-        <span class="quiet">ESTRATEGIA</span>
-        <span class="strong">CONTENIDO</span>
-        <span class="quiet">EMBUDO</span>
-        <span class="quiet">EN VIVO</span>
-      </div>
-      <a href="/curso-detalle"><button class="cta-gold hero-cta">QUIERO INSCRIBIRME AHORA</button></a>
-    </div>
-    <div class="hero-visual">
-      <div class="hero-circle-1"></div>
-      <div class="hero-circle-2"></div>
-      <!-- Las fotos viven acá, en su propia zona -->
-      <div class="hero-carrusel" id="heroCarrusel"></div>
-    </div>
+<section class="hero" id="heroBanner">
+  <div class="hero-carrusel" id="heroCarrusel"></div>
+
+  <div class="hero-encima">
+    <a href="/cursos" class="cta-gold hero-cta" id="heroBoton">QUIERO INSCRIBIRME AHORA</a>
   </div>
+
   <div class="hero-flechas" id="heroFlechas">
     <button class="hero-flecha" onclick="slideAnterior()" aria-label="Anterior">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     </button>
     <button class="hero-flecha" onclick="slideSiguiente()" aria-label="Siguiente">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
   </div>
+
   <div class="hero-dots" id="heroDots"></div>
+
+  <div class="hero-vacio" id="heroVacio">
+    <div style="text-align:center;padding:20px">
+      <div style="font-size:44px;opacity:0.4;margin-bottom:14px">🖼️</div>
+      <div style="font-size:16px;color:rgba(255,245,240,0.75);margin-bottom:8px">Todavía no hay banners cargados</div>
+      <div style="font-size:13px;color:rgba(255,245,240,0.45)">Subilos desde el panel: Admin → Carruseles</div>
+    </div>
+  </div>
 </section>
+
 
 <section class="row-section">
   <div class="section-header">
@@ -810,65 +652,103 @@
     setTimeout(() => document.getElementById('newsletterSuccess').classList.remove('show'), 4000);
   };
 
-function renderCarruselPrincipal(){
+  function esCelular(){
+    return window.matchMedia('(max-width:900px)').matches;
+  }
+
+  // Cada banner puede tener imagen para computadora y otra para celular
+  function imagenDe(s){
+    if(esCelular() && s.imagen_movil) return s.imagen_movil;
+    return s.imagen_url;
+  }
+
+  function renderCarruselPrincipal(){
     const cap = document.getElementById('heroCarrusel');
     const dots = document.getElementById('heroDots');
+    const flechas = document.getElementById('heroFlechas');
+    const vacio = document.getElementById('heroVacio');
+    const btn = document.getElementById('heroBoton');
     if(!cap) return;
 
-    cap.innerHTML = principalSlides.map((s, i) =>
-      `<div class="hero-slide ${i === 0 ? 'activa' : ''}" style="background-image:url('${s.imagen_url}');z-index:${i === 0 ? 2 : 1}"></div>`
-    ).join('');
+    if(principalSlides.length === 0){
+      cap.innerHTML = '';
+      if(vacio) vacio.classList.add('mostrar');
+      if(dots) dots.classList.remove('activo');
+      if(flechas) flechas.classList.remove('activo');
+      if(btn) btn.style.display = 'none';
+      return;
+    }
 
-    // Precargamos las fotos, así el cambio no parpadea
-    principalSlides.forEach(s => { const img = new Image(); img.src = s.imagen_url; });
+    if(vacio) vacio.classList.remove('mostrar');
+
+    cap.innerHTML = principalSlides.map(function(s, i){
+      const img = imagenDe(s);
+      const clase = s.link ? 'hero-slide enlace' : 'hero-slide';
+      const act = (i === 0) ? ' activa' : '';
+      const onclic = s.link ? ' onclick="abrirEnlaceSlide(' + i + ')"' : '';
+      return '<div class="' + clase + act + '" style="background-image:url(\'' + img + '\')"' + onclic + '></div>';
+    }).join('');
+
+    principalSlides.forEach(function(s){
+      const a = new Image(); a.src = s.imagen_url;
+      if(s.imagen_movil){ const b = new Image(); b.src = s.imagen_movil; }
+    });
 
     if(principalSlides.length > 1){
-      dots.innerHTML = principalSlides.map((_, i) =>
-        `<div class="hero-dot ${i === 0 ? 'active' : ''}" onclick="irASlide(${i})"></div>`
-      ).join('');
+      dots.innerHTML = principalSlides.map(function(_, i){
+        return '<div class="hero-dot' + (i === 0 ? ' active' : '') + '" onclick="irASlide(' + i + ')"></div>';
+      }).join('');
       dots.classList.add('activo');
-      document.getElementById('heroFlechas')?.classList.add('activo');
+      if(flechas) flechas.classList.add('activo');
     } else {
       dots.classList.remove('activo');
-      document.getElementById('heroFlechas')?.classList.remove('activo');
+      if(flechas) flechas.classList.remove('activo');
+    }
+
+    aplicarBoton(0);
+  }
+
+  // El botón cambia según el banner que se esté viendo
+  function aplicarBoton(i){
+    const btn = document.getElementById('heroBoton');
+    if(!btn) return;
+    const s = principalSlides[i];
+    if(!s){ btn.style.display = 'none'; return; }
+    if(s.mostrar_boton === false){ btn.style.display = 'none'; return; }
+
+    btn.style.display = '';
+    btn.textContent = s.texto_boton || 'QUIERO INSCRIBIRME AHORA';
+    btn.setAttribute('href', s.link || '/cursos');
+    if(s.link && /^https?:\/\//i.test(s.link)){
+      btn.setAttribute('target', '_blank');
+      btn.setAttribute('rel', 'noopener');
+    } else {
+      btn.removeAttribute('target');
+      btn.removeAttribute('rel');
     }
   }
 
+  window.abrirEnlaceSlide = function(i){
+    const s = principalSlides[i];
+    if(!s || !s.link) return;
+    if(/^https?:\/\//i.test(s.link)) window.open(s.link, '_blank', 'noopener');
+    else window.location.href = s.link;
+  };
+
   function actualizarCarruselPrincipal(){
-    const slides = document.querySelectorAll('.hero-slide');
-
-    slides.forEach((el, i) => {
-      const activa = (i === principalSlideIndex);
-      el.style.zIndex = activa ? '2' : '1';
-
-      if(activa){
-        el.classList.add('activa');
-        return;
-      }
-
-      // La que sale: recién reiniciamos su zoom cuando ya es invisible.
-      // Si lo hiciéramos al entrar, se vería el salto de escala.
-      if(el.classList.contains('activa')){
-        el.classList.remove('activa');
-        setTimeout(() => {
-          if(!el.classList.contains('activa')){
-            el.style.animation = 'none';
-            void el.offsetWidth;
-            el.style.animation = '';
-          }
-        }, 1800);
-      }
+    document.querySelectorAll('.hero-slide').forEach(function(el, i){
+      el.classList.toggle('activa', i === principalSlideIndex);
     });
-
-    document.querySelectorAll('.hero-dot').forEach((d, i) => {
+    document.querySelectorAll('.hero-dot').forEach(function(d, i){
       d.classList.toggle('active', i === principalSlideIndex);
     });
+    aplicarBoton(principalSlideIndex);
   }
 
   function reiniciarAuto(){
-    if(!principalInterval) return;
-    clearInterval(principalInterval);
-    principalInterval = setInterval(() => {
+    if(principalSlides.length < 2) return;
+    if(principalInterval) clearInterval(principalInterval);
+    principalInterval = setInterval(function(){
       principalSlideIndex = (principalSlideIndex + 1) % principalSlides.length;
       actualizarCarruselPrincipal();
     }, 7000);
@@ -891,14 +771,37 @@ function renderCarruselPrincipal(){
   window.irASlide = function(i){
     principalSlideIndex = i;
     actualizarCarruselPrincipal();
-    if(principalInterval){
-      clearInterval(principalInterval);
-      principalInterval = setInterval(() => {
-        principalSlideIndex = (principalSlideIndex + 1) % principalSlides.length;
-        actualizarCarruselPrincipal();
-      }, 7000);
-    }
+    reiniciarAuto();
   };
+
+  // Al girar el teléfono, cambiamos a la imagen que corresponda
+  var anchoAnterior = window.innerWidth;
+  window.addEventListener('resize', function(){
+    var eraCel = anchoAnterior <= 900;
+    var esCel = window.innerWidth <= 900;
+    anchoAnterior = window.innerWidth;
+    if(eraCel !== esCel && principalSlides.length){
+      var idx = principalSlideIndex;
+      renderCarruselPrincipal();
+      principalSlideIndex = idx;
+      actualizarCarruselPrincipal();
+    }
+  });
+
+  // Deslizar con el dedo
+  (function(){
+    var zona = document.getElementById('heroBanner');
+    if(!zona) return;
+    var x0 = null;
+    zona.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, { passive:true });
+    zona.addEventListener('touchend', function(e){
+      if(x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0;
+      if(Math.abs(dx) > 55){ dx < 0 ? window.slideSiguiente() : window.slideAnterior(); }
+      x0 = null;
+    }, { passive:true });
+  })();
+
 
   const checkAuthIndex = setInterval(async () => {
     if (typeof sb !== 'undefined' && sb !== null) {

@@ -814,6 +814,12 @@
     .art-envio-info{min-width:100%}
   }
 
+
+  .banner-aviso{display:flex;gap:11px;align-items:flex-start;padding:13px 15px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.3);border-radius:11px;font-size:12.5px;color:rgba(255,245,240,0.75);line-height:1.55;margin-bottom:18px}
+  .banner-aviso strong{color:#FAC775}
+  .medida-tip{font-size:11.5px;color:rgba(255,245,240,0.55);margin-bottom:8px}
+  .medida-tip strong{color:#FAC775}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -2186,13 +2192,21 @@ body{visibility:hidden}
       <div class="curso-modal-body">
         <input type="hidden" id="carruselId">
 
+        <div class="banner-aviso">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01" stroke-linecap="round"/></svg>
+          <div>
+            <strong>Diseñá el banner completo</strong> (texto, foto, todo) y subilo acá.
+            Necesitás <strong>dos versiones</strong> porque la pantalla del celular es vertical y la de la computadora apaisada.
+          </div>
+        </div>
+
         <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">FOTO</label>
-          <div class="image-uploader" id="carruselFotoUploader" onclick="document.getElementById('carruselFotoInput').click()">
+          <label class="form-label">IMAGEN PARA COMPUTADORA</label>
+          <div class="medida-tip">📐 Medida ideal: <strong>1920 × 768 px</strong> (proporción 2,5 : 1)</div>
+          <div class="image-uploader" onclick="document.getElementById('carruselFotoInput').click()">
             <div id="carruselFotoEmpty">
-              <svg class="image-uploader-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-              <div class="image-uploader-text">Clickeá para subir una foto</div>
-              <div class="image-uploader-help">Para el principal conviene horizontal · para el vertical, parada</div>
+              <svg class="image-uploader-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="7" cy="11" r="1.3"/><path d="M22 15l-5-4L8 18"/></svg>
+              <div class="image-uploader-text">Subir la versión apaisada</div>
             </div>
             <div id="carruselFotoPreview" style="display:none;width:100%"></div>
             <input type="file" id="carruselFotoInput" accept="image/*" onchange="subirFotoCarrusel(event)">
@@ -2201,20 +2215,47 @@ body{visibility:hidden}
         </div>
 
         <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">TÍTULO (opcional)</label>
-          <input type="text" class="form-input" id="carruselTitulo" placeholder="Se muestra sobre la foto">
+          <label class="form-label">IMAGEN PARA CELULAR</label>
+          <div class="medida-tip">📐 Medida ideal: <strong>1080 × 1350 px</strong> (proporción 4 : 5)</div>
+          <div class="image-uploader" onclick="document.getElementById('carruselMovilInput').click()">
+            <div id="carruselMovilEmpty">
+              <svg class="image-uploader-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+              <div class="image-uploader-text">Subir la versión vertical</div>
+              <div class="image-uploader-help">Si no subís ninguna, se usa la de computadora</div>
+            </div>
+            <div id="carruselMovilPreview" style="display:none;width:100%"></div>
+            <input type="file" id="carruselMovilInput" accept="image/*" onchange="subirFotoCarruselMovil(event)">
+          </div>
+          <input type="hidden" id="carruselMovilUrl">
         </div>
 
         <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">DESCRIPCIÓN (opcional)</label>
-          <textarea class="form-textarea" id="carruselDescripcion" placeholder="Texto debajo del título"></textarea>
+          <label class="form-label">ADÓNDE LLEVA</label>
+          <input type="text" class="form-input" id="carruselLink" placeholder="/curso-detalle?id=cmm">
+          <div class="form-help">Al tocar la imagen y al tocar el botón se va a este enlace.<br>
+          Ejemplos: <strong>/cursos</strong> · <strong>/curso-detalle?id=cmm</strong> · <strong>/comunidad</strong> · o un enlace completo con https://</div>
         </div>
 
         <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">ADÓNDE LLEVA AL TOCARLA (opcional)</label>
-          <input type="text" class="form-input" id="carruselLink" placeholder="/cursos">
-          <div class="form-help">Ejemplos: /cursos · /comunidad · /blog</div>
+          <label class="form-label">TEXTO DEL BOTÓN</label>
+          <input type="text" class="form-input" id="carruselTextoBoton" placeholder="QUIERO INSCRIBIRME AHORA">
+          <div class="form-help">Si lo dejás vacío dice "QUIERO INSCRIBIRME AHORA"</div>
         </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Mostrar el botón</div>
+            <div class="toggle-help">Apagalo si tu imagen ya trae su propio botón dibujado</div>
+          </div>
+          <div class="toggle-switch on" id="carruselMostrarBoton" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">NOMBRE INTERNO (para que lo reconozcas)</label>
+          <input type="text" class="form-input" id="carruselTitulo" placeholder="Banner de lanzamiento">
+        </div>
+
+        <input type="hidden" id="carruselDescripcion">
 
         <div class="form-field" style="margin-bottom:14px">
           <label class="form-label">ORDEN</label>
@@ -3316,8 +3357,11 @@ body{visibility:hidden}
       <div class="carrusel-card" onclick="editarCarrusel('${c.id}')">
         <div class="carrusel-card-img" style="background-image:url('${c.imagen_url}')"></div>
         <div class="carrusel-card-info">
-          <div class="carrusel-card-title">${c.titulo || 'Sin título'}</div>
-          <div class="carrusel-card-meta">Orden: ${c.orden} · ${c.activo ? '✓ Activo' : '✗ Inactivo'}</div>
+          <div class="carrusel-card-title">${c.titulo || 'Banner sin nombre'}</div>
+          <div class="carrusel-card-meta">
+            Orden ${c.orden} · ${c.activo ? '✓ Activo' : '✗ Inactivo'}<br>
+            ${c.imagen_movil ? '📱 tiene versión celular' : '⚠️ falta versión celular'}
+          </div>
         </div>
       </div>
     `).join('');
@@ -3340,21 +3384,22 @@ body{visibility:hidden}
       const c = carruseles.find(x => x.id === id);
       if (!c) return;
       document.getElementById('carruselTitulo').value = c.titulo || '';
-      document.getElementById('carruselDescripcion').value = c.descripcion || '';
       document.getElementById('carruselLink').value = c.link || '';
+      document.getElementById('carruselTextoBoton').value = c.texto_boton || '';
       document.getElementById('carruselOrden').value = c.orden || 0;
-      document.getElementById('carruselFotoUrl').value = c.imagen_url;
+      document.getElementById('carruselFotoUrl').value = c.imagen_url || '';
+      document.getElementById('carruselMovilUrl').value = c.imagen_movil || '';
       document.getElementById('carruselActivo').classList.toggle('on', !!c.activo);
-      // Mostrar la foto actual
-      document.getElementById('carruselFotoEmpty').style.display = 'none';
-      const preview = document.getElementById('carruselFotoPreview');
-      preview.style.display = 'block';
-      preview.innerHTML = `<div class="image-uploader-preview" style="background-image:url('${c.imagen_url}')"></div>`;
+      document.getElementById('carruselMostrarBoton').classList.toggle('on', c.mostrar_boton !== false);
+
+      pintarPreviewCarrusel('carruselFoto', c.imagen_url);
+      pintarPreviewCarrusel('carruselMovil', c.imagen_movil);
     } else {
-      ['carruselTitulo','carruselDescripcion','carruselLink','carruselOrden','carruselFotoUrl'].forEach(f => document.getElementById(f).value = '');
+      ['carruselTitulo','carruselLink','carruselTextoBoton','carruselOrden','carruselFotoUrl','carruselMovilUrl'].forEach(f => document.getElementById(f).value = '');
       document.getElementById('carruselActivo').classList.add('on');
-      document.getElementById('carruselFotoEmpty').style.display = '';
-      document.getElementById('carruselFotoPreview').style.display = 'none';
+      document.getElementById('carruselMostrarBoton').classList.add('on');
+      pintarPreviewCarrusel('carruselFoto', null);
+      pintarPreviewCarrusel('carruselMovil', null);
     }
 
     document.getElementById('carruselModal').classList.add('show');
@@ -3381,12 +3426,11 @@ body{visibility:hidden}
 
     if (result.exito) {
       document.getElementById('carruselFotoUrl').value = result.url;
-      preview.style.display = 'block';
-      preview.innerHTML = `<div class="image-uploader-preview" style="background-image:url('${result.url}')"></div>`;
-      empty.style.display = 'none';
-      mostrarToast('✓ Foto subida');
+      pintarPreviewCarrusel('carruselFoto', result.url);
+      mostrarToast('✓ Imagen de computadora subida');
     } else {
       mostrarToast('Error: ' + result.error, true);
+      empty.innerHTML = '<div class="image-uploader-text">Subir la versión apaisada</div>';
     }
   }
 
@@ -3399,9 +3443,11 @@ body{visibility:hidden}
     const datos = {
       tipo: tipoCarruselActual,
       imagen_url: url,
+      imagen_movil: document.getElementById('carruselMovilUrl').value || null,
       titulo: document.getElementById('carruselTitulo').value.trim() || null,
-      descripcion: document.getElementById('carruselDescripcion').value.trim() || null,
       link: document.getElementById('carruselLink').value.trim() || null,
+      texto_boton: document.getElementById('carruselTextoBoton').value.trim() || null,
+      mostrar_boton: document.getElementById('carruselMostrarBoton').classList.contains('on'),
       orden: parseInt(document.getElementById('carruselOrden').value) || 0,
       activo: document.getElementById('carruselActivo').classList.contains('on')
     };
