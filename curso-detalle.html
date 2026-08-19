@@ -268,6 +268,14 @@
   .lesson-encurso{font-size:9.5px;letter-spacing:0.16em;color:#FAC775;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:6px}
   .lesson-encurso .pt{width:5px;height:5px;border-radius:50%;background:#FAC775;display:inline-block}
 
+
+  .lesson.bloqueada{opacity:0.55;cursor:default;pointer-events:none}
+  .lesson-title-text.bloq{color:rgba(255,245,240,0.6)}
+  .lesson-espera{font-size:11.5px;color:#FAC775;margin-top:3px}
+  .status-lock{background:rgba(14,5,9,0.75);border:0.5px solid rgba(255,245,240,0.3)}
+  .aviso-liberacion{padding:13px 15px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.3);border-radius:11px;font-size:12.5px;color:rgba(255,245,240,0.75);line-height:1.55;margin-bottom:16px}
+  .aviso-liberacion strong{color:#FAC775}
+
 </style>
 </head>
 <body>
@@ -312,9 +320,9 @@
       <div class="course-poster-bottom" id="posterPie"></div>
     </div>
 
-    <a href="/clase" class="cta-gold course-cta">
+    <a href="#" class="cta-gold course-cta" id="btnContinuar" style="visibility:hidden">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="#3D1208"><path d="M8 5v14l11-7z"/></svg>
-      CONTINUAR APRENDIENDO
+      <span id="btnContinuarTxt">CONTINUAR APRENDIENDO</span>
     </a>
 
     <div class="course-actions">
@@ -530,7 +538,13 @@ async function mostrarTemario(curso, user){
   // Siguiente clase a ver
   const planas = [];
   modulos.forEach(m => clases.filter(x => x.modulo_id === m.id).forEach(x => planas.push(x)));
-  const siguiente = planas.find(x => !progreso[x.id]) || planas[0];
+
+  // Solo las que ya están liberadas
+  const libres = planas.filter(function(x){
+    if(typeof claseDisponible !== 'function') return true;
+    return claseDisponible(x, curso, compra, clases, modulos).libre;
+  });
+  const siguiente = libres.find(x => !progreso[x.id]) || libres[0] || null;
 
   const esc2 = t => { const d = document.createElement('div'); d.textContent = t || ''; return d.innerHTML; };
 
@@ -753,6 +767,15 @@ async function pintarCursoReal(){
   document.getElementById('posterTag').textContent =
     modulos.length + ' módulo' + (modulos.length === 1 ? '' : 's') + ' · ' + clases.length + ' clase' + (clases.length === 1 ? '' : 's');
 
+  // ─── Cuándo compró, para calcular la liberación ───
+  let compra = null;
+  if(user){
+    const { data: cmp } = await sb.from('compras')
+      .select('pagado_en, creado_en').eq('usuario_id', user.id)
+      .eq('curso_id', curso.id).eq('estado','pagado').maybeSingle();
+    if(cmp) compra = { pagado_en: cmp.pagado_en || cmp.creado_en };
+  }
+
   // ─── Progreso ───
   let progreso = {};
   if(user){
@@ -786,7 +809,13 @@ async function pintarCursoReal(){
   // Siguiente clase a ver
   const planas = [];
   modulos.forEach(m => clases.filter(x => x.modulo_id === m.id).forEach(x => planas.push(x)));
-  const siguiente = planas.find(x => !progreso[x.id]) || planas[0];
+
+  // Solo las que ya están liberadas
+  const libres = planas.filter(function(x){
+    if(typeof claseDisponible !== 'function') return true;
+    return claseDisponible(x, curso, compra, clases, modulos).libre;
+  });
+  const siguiente = libres.find(x => !progreso[x.id]) || libres[0] || null;
 
   cont.innerHTML = modulos.map(function(m, i){
     const cls = clases.filter(x => x.modulo_id === m.id);
@@ -799,10 +828,29 @@ async function pintarCursoReal(){
       '</div>' +
       cls.map(function(cl){
         const hecha = !!progreso[cl.id];
-        const enCurso = siguiente && cl.id === siguiente.id;
+        const info = (typeof claseDisponible === 'function')
+          ? claseDisponible(cl, curso, compra, clases, modulos)
+          : { libre: true, dias: 0, fecha: null };
+        const bloqueada = !info.libre;
+        const enCurso = !bloqueada && siguiente && cl.id === siguiente.id;
         const tipoTxt = cl.tipo === 'video' ? 'Video' :
                         cl.tipo === 'pdf' ? 'Material' :
                         cl.tipo === 'enlace' ? 'Enlace externo' : 'Contenido';
+
+        if(bloqueada){
+          return '<div class="lesson bloqueada">' +
+            '<div class="lesson-thumb" style="background:linear-gradient(135deg,#3D1520,#5A1F30)">' +
+              '<div class="lesson-thumb-overlay"></div>' +
+              '<div class="lesson-status status-lock">' +
+                '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.7)" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>' +
+              '</div>' +
+            '</div>' +
+            '<div class="lesson-info">' +
+              '<div class="lesson-title-text bloq">' + escC(cl.titulo) + '</div>' +
+              '<div class="lesson-espera">🔒 ' + textoEspera(info) + '</div>' +
+            '</div>' +
+          '</div>';
+        }
 
         return '<a href="/clase?curso=' + encodeURIComponent(slug) + '&clase=' + cl.id + '" class="lesson">' +
           '<div class="lesson-thumb" style="background:linear-gradient(135deg,#7A1B2E,#B8294A)">' +
@@ -827,13 +875,16 @@ async function pintarCursoReal(){
   }).join('');
 
   // El botón de abajo lleva a la clase correcta
-  const btn = document.querySelector('.continue-btn');
-  if(btn && siguiente){
+  const btn = document.getElementById('btnContinuar');
+  const btnTxt = document.getElementById('btnContinuarTxt');
+  if(btn && btnTxt && siguiente){
     btn.setAttribute('href', '/clase?curso=' + encodeURIComponent(slug) + '&clase=' + siguiente.id);
-    const txt = btn.querySelector('span') || btn;
-    if(hechas === 0) txt.textContent = 'EMPEZAR EL CURSO';
-    else if(hechas === clases.length) txt.textContent = 'REPASAR EL CURSO';
-    else txt.textContent = 'CONTINUAR APRENDIENDO';
+    if(hechas === 0) btnTxt.textContent = 'EMPEZAR EL CURSO';
+    else if(hechas === clases.length) btnTxt.textContent = 'REPASAR EL CURSO';
+    else btnTxt.textContent = 'CONTINUAR DONDE QUEDÉ';
+    btn.style.visibility = 'visible';
+  } else if(btn){
+    btn.style.display = 'none';
   }
 }
 

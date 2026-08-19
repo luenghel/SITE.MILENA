@@ -244,8 +244,15 @@ let clasesPlanas = [];
 let progreso = {};
 let tieneAcceso = false;
 let claseActual = null;
+let compraActual = null;
 
 const ICO_TIPO = { video: '🎬', pdf: '📄', texto: '📝', enlace: '🔗', audio: '🎧' };
+
+// ¿Esta clase ya se liberó para esta alumna?
+function estadoLiberacion(cl){
+  if(typeof claseDisponible !== 'function') return { libre: true, dias: 0, fecha: null };
+  return claseDisponible(cl, curso || {}, compraActual, clases, modulos);
+}
 
 function esc(t){
   if(!t) return '';
@@ -334,6 +341,16 @@ async function abrirClase(id, empujarHistorial){
 
   claseActual = cl;
   claseActualId = id;
+
+  // ¿Ya se liberó?
+  const lib = estadoLiberacion(cl);
+  if(!lib.libre && !cl.gratis){
+    document.getElementById('sinAccesoTit').textContent = 'Todavía no está disponible';
+    document.getElementById('sinAccesoTxt').textContent =
+      '"' + cl.titulo + '" ' + textoEspera(lib).toLowerCase() + '. Te vamos a avisar por email cuando puedas verla.';
+    verPantalla('sinAcceso');
+    return;
+  }
 
   // ¿Puede verla?
   if(!tieneAcceso && !cl.gratis){
@@ -502,7 +519,9 @@ function renderLista(){
       cls.map(cl => {
         const hecha = !!progreso[cl.id];
         const activa = cl.id === claseActualId;
-        const bloqueada = !tieneAcceso && !cl.gratis;
+        const lib = estadoLiberacion(cl);
+        const porLiberar = !lib.libre && !cl.gratis;
+        const bloqueada = (!tieneAcceso && !cl.gratis) || porLiberar;
 
         return '<div class="cl-item ' + (activa ? 'activa ' : '') + (bloqueada ? 'bloqueada' : '') + '" ' +
           (bloqueada ? '' : 'onclick="abrirClase(&#39;' + cl.id + '&#39;, true)"') + '>' +
@@ -515,7 +534,9 @@ function renderLista(){
           '</div>' +
           '<div class="cl-txt">' +
             '<div class="cl-nom">' + esc(cl.titulo) + '</div>' +
-            '<div class="cl-min">' + (cl.duracion_minutos ? cl.duracion_minutos + ' min' : (ICO_TIPO[cl.tipo] || '')) + '</div>' +
+            '<div class="cl-min">' + (porLiberar
+                ? '🔒 ' + esc(textoEspera(lib))
+                : (cl.duracion_minutos ? cl.duracion_minutos + ' min' : (ICO_TIPO[cl.tipo] || ''))) + '</div>' +
           '</div>' +
           (cl.gratis && !tieneAcceso ? '<span class="cl-muestra">MUESTRA</span>' : '') +
         '</div>';
@@ -566,8 +587,9 @@ const esperarSupa = setInterval(async () => {
     tieneAcceso = true;
   } else if(user){
     const { data: compra } = await sb.from('compras')
-      .select('id').eq('usuario_id', user.id).eq('curso_id', c.id).eq('estado', 'pagado').maybeSingle();
+      .select('id, pagado_en, creado_en').eq('usuario_id', user.id).eq('curso_id', c.id).eq('estado', 'pagado').maybeSingle();
     tieneAcceso = !!compra;
+    if(compra) compraActual = { pagado_en: compra.pagado_en || compra.creado_en };
   }
 
   // Contenido
@@ -602,9 +624,22 @@ const esperarSupa = setInterval(async () => {
   pintarProgreso();
 
   // Qué clase abrir: la de la URL, la primera sin ver, o la primera
-  let inicial = claseActualId && clasesPlanas.find(x => x.id === claseActualId)
+  const disponibles = clasesPlanas.filter(x => estadoLiberacion(x).libre || x.gratis);
+
+  if(disponibles.length === 0){
+    const prox = clasesPlanas[0];
+    const lib = prox ? estadoLiberacion(prox) : null;
+    document.getElementById('sinAccesoTit').textContent = 'Tu curso todavía no empezó';
+    document.getElementById('sinAccesoTxt').textContent = lib
+      ? 'La primera clase ' + textoEspera(lib).toLowerCase() + '. Te avisamos por email.'
+      : 'Estamos preparando el contenido.';
+    verPantalla('sinAcceso');
+    return;
+  }
+
+  let inicial = claseActualId && disponibles.find(x => x.id === claseActualId)
     ? claseActualId
-    : (clasesPlanas.find(x => !progreso[x.id]) || clasesPlanas[0]).id;
+    : (disponibles.find(x => !progreso[x.id]) || disponibles[0]).id;
 
   await abrirClase(inicial, false);
 }, 40);

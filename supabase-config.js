@@ -262,3 +262,67 @@ async function avisarCambioPassword(detalle) {
     await llamarFuncionAdmin({ accion: 'aviso-seguridad', detalle: detalle || null });
   } catch(e) {}
 }
+
+
+// ═══════════════════════════════════════════════════════════
+// LIBERACIÓN PROGRAMADA DE CLASES
+// Calcula qué clases ya están disponibles según cuándo compró.
+// ═══════════════════════════════════════════════════════════
+
+// Cuántos días después de la compra se libera una clase
+function diasParaClase(clase, curso, todasLasClases, modulos) {
+  // Si la clase tiene su propio día, ese manda
+  if (clase.dias_desbloqueo !== null && clase.dias_desbloqueo !== undefined) {
+    return clase.dias_desbloqueo;
+  }
+
+  const modo = curso.modo_liberacion || 'inmediata';
+  const dias = curso.dias_liberacion || 0;
+
+  if (modo === 'inmediata') return 0;
+  if (modo === 'espera') return dias;
+
+  if (modo === 'goteo') {
+    // Ordenamos las clases como se ven en el curso
+    const planas = [];
+    (modulos || []).forEach(m => {
+      (todasLasClases || [])
+        .filter(x => x.modulo_id === m.id)
+        .sort((a, b) => (a.orden || 0) - (b.orden || 0))
+        .forEach(x => planas.push(x));
+    });
+    const pos = planas.findIndex(x => x.id === clase.id);
+    return (pos < 0 ? 0 : pos) * (dias || 1);
+  }
+
+  return 0;
+}
+
+// ¿Ya está disponible?
+function claseDisponible(clase, curso, compra, todasLasClases, modulos) {
+  // El equipo ve todo
+  const necesarios = diasParaClase(clase, curso, todasLasClases, modulos);
+  if (necesarios <= 0) return { libre: true, dias: 0, fecha: null };
+
+  if (!compra || !compra.pagado_en) return { libre: false, dias: necesarios, fecha: null };
+
+  const inicio = new Date(compra.pagado_en).getTime();
+  const cuando = inicio + necesarios * 86400000;
+  const faltan = Math.ceil((cuando - Date.now()) / 86400000);
+
+  return {
+    libre: Date.now() >= cuando,
+    dias: Math.max(0, faltan),
+    fecha: new Date(cuando)
+  };
+}
+
+function textoEspera(info) {
+  if (info.libre) return '';
+  if (info.dias <= 0) return 'Se libera hoy';
+  if (info.dias === 1) return 'Se libera mañana';
+  if (info.fecha) {
+    return 'Se libera el ' + info.fecha.toLocaleDateString('es-PY', { day: 'numeric', month: 'long' });
+  }
+  return 'Se libera en ' + info.dias + ' días';
+}

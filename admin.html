@@ -853,6 +853,10 @@
   .eg-chip:hover{background:rgba(212,163,86,0.25)}
   .eg-nota{font-size:10.5px;color:rgba(255,245,240,0.4);margin-top:7px}
 
+
+  .avisos-caja{display:flex;align-items:center;gap:14px;padding:16px 18px;background:rgba(212,163,86,0.07);border:0.5px solid rgba(212,163,86,0.3);border-radius:13px;margin-bottom:30px;flex-wrap:wrap}
+  @media (max-width:600px){.avisos-caja .art-envio-btn{width:100%}}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1550,6 +1554,30 @@ body{visibility:hidden}
             </select>
           </div>
 
+          <div class="form-field form-grid-full">
+            <label class="form-label">CUÁNDO SE LIBERAN LAS CLASES</label>
+            <select class="form-select" id="cursoLiberacion" onchange="cambiarLiberacion()">
+              <option value="inmediata">🔓 Todo de una, al comprar</option>
+              <option value="espera">⏳ Todo junto, unos días después</option>
+              <option value="goteo">💧 De a una clase, cada X días</option>
+            </select>
+            <div class="form-help" id="ayudaLiberacion">Todas las clases quedan disponibles apenas compra.</div>
+          </div>
+
+          <div class="form-field form-grid-full" id="campoDiasLiberacion" style="display:none">
+            <label class="form-label" id="labelDias">DÍAS</label>
+            <input type="number" class="form-input" id="cursoDiasLiberacion" min="1" max="365" placeholder="7">
+            <div class="form-help" id="ejemploDias"></div>
+          </div>
+
+          <div class="toggle-row form-grid-full" id="filaAvisoLiberacion" style="display:none">
+            <div class="toggle-info">
+              <div class="toggle-label">📧 Avisar por email al liberar</div>
+              <div class="toggle-help">Cada vez que se libera una clase, le llega un correo</div>
+            </div>
+            <div class="toggle-switch on" id="cursoAvisarLiberacion" onclick="this.classList.toggle('on')"></div>
+          </div>
+
           <div class="form-field">
             <label class="form-label">CÓMO SE ACCEDE</label>
             <select class="form-select" id="cursoAcceso" onchange="cambiarAccesoCurso()">
@@ -2082,6 +2110,16 @@ body{visibility:hidden}
     <h3 class="chart-title" style="margin-bottom:4px">Artículos publicados</h3>
     <p class="chart-subtitle" style="margin-bottom:14px">Desde acá los mandás a tus suscriptores</p>
     <div id="articulosParaEnviar" style="margin-bottom:30px"></div>
+
+    <div class="avisos-caja">
+      <div style="flex:1;min-width:200px">
+        <div style="font-size:13.5px;font-weight:500;margin-bottom:3px">📚 Avisos de clases liberadas</div>
+        <div style="font-size:12px;color:rgba(255,245,240,0.6);line-height:1.5" id="avisosClasesTxt">
+          Manda un email a cada alumna cuando se le libera una clase nueva.
+        </div>
+      </div>
+      <button class="art-envio-btn" onclick="enviarAvisosClases()" id="btnAvisosClases">REVISAR Y AVISAR</button>
+    </div>
 
     <h3 class="chart-title" style="margin-bottom:4px">Suscriptores</h3>
     <p class="chart-subtitle" style="margin-bottom:14px">Quiénes reciben tus artículos</p>
@@ -2801,6 +2839,9 @@ body{visibility:hidden}
       document.getElementById('cursoEnlaceExterno').value = c.enlace_externo || '';
       document.getElementById('cursoEtiqueta').value = c.etiqueta || '';
       document.getElementById('cursoNotaPrecio').value = c.nota_precio || '';
+      document.getElementById('cursoLiberacion').value = c.modo_liberacion || 'inmediata';
+      document.getElementById('cursoDiasLiberacion').value = c.dias_liberacion || '';
+      document.getElementById('cursoAvisarLiberacion').classList.toggle('on', c.avisar_liberacion !== false);
       document.getElementById('cursoPrecio').value = c.precio_gs ? c.precio_gs.toLocaleString('es-PY') : '';
       document.getElementById('cursoPrecioAnterior').value = c.precio_anterior_gs ? c.precio_anterior_gs.toLocaleString('es-PY') : '';
       document.getElementById('cursoModulos').value = c.modulos_count || 0;
@@ -2835,6 +2876,9 @@ body{visibility:hidden}
       document.getElementById('cursoTipo').value = 'curso';
       document.getElementById('cursoSeccion').value = 'principal';
       document.getElementById('cursoAcceso').value = 'pago';
+      document.getElementById('cursoLiberacion').value = 'inmediata';
+      document.getElementById('cursoDiasLiberacion').value = '';
+      document.getElementById('cursoAvisarLiberacion').classList.add('on');
       document.getElementById('cursoCategoria').value = 'FORMACIÓN';
       document.getElementById('cursoPublicado').classList.remove('on');
       document.getElementById('cursoDestacado').classList.remove('on');
@@ -2844,6 +2888,7 @@ body{visibility:hidden}
     }
 
     cambiarTipoCurso();
+    cambiarLiberacion();
 
     // Resumen del contenido cargado
     const zona = document.getElementById('contenidoZona');
@@ -2923,7 +2968,10 @@ body{visibility:hidden}
       acceso: document.getElementById('cursoAcceso').value,
       enlace_externo: document.getElementById('cursoEnlaceExterno').value.trim() || null,
       etiqueta: document.getElementById('cursoEtiqueta').value.trim() || null,
-      nota_precio: document.getElementById('cursoNotaPrecio').value.trim() || null
+      nota_precio: document.getElementById('cursoNotaPrecio').value.trim() || null,
+      modo_liberacion: document.getElementById('cursoLiberacion').value,
+      dias_liberacion: parseInt(document.getElementById('cursoDiasLiberacion').value) || 0,
+      avisar_liberacion: document.getElementById('cursoAvisarLiberacion').classList.contains('on')
     };
 
     const id = document.getElementById('cursoId').value;
@@ -3058,6 +3106,8 @@ body{visibility:hidden}
     document.getElementById('campoTexto').style.display   = (t === 'texto')  ? '' : 'none';
   }
 
+  document.getElementById('cursoDiasLiberacion')?.addEventListener('input', cambiarLiberacion);
+
   function cambiarTipoCurso(){
     const t = document.getElementById('cursoTipo').value;
     const externo = (t === 'canal' || t === 'material');
@@ -3066,6 +3116,39 @@ body{visibility:hidden}
     const zona = document.getElementById('contenidoZona');
     const id = document.getElementById('cursoId').value;
     zona.style.display = (t === 'curso' && id) ? '' : 'none';
+  }
+
+  function cambiarLiberacion(){
+    const modo = document.getElementById('cursoLiberacion').value;
+    const campo = document.getElementById('campoDiasLiberacion');
+    const fila = document.getElementById('filaAvisoLiberacion');
+    const ayuda = document.getElementById('ayudaLiberacion');
+    const label = document.getElementById('labelDias');
+    const ej = document.getElementById('ejemploDias');
+    const dias = parseInt(document.getElementById('cursoDiasLiberacion').value) || 7;
+
+    if(modo === 'inmediata'){
+      campo.style.display = 'none';
+      fila.style.display = 'none';
+      ayuda.textContent = 'Todas las clases quedan disponibles apenas compra.';
+      return;
+    }
+
+    campo.style.display = '';
+    fila.style.display = '';
+
+    if(modo === 'espera'){
+      label.textContent = 'DÍAS DE ESPERA';
+      ayuda.textContent = 'Al comprar no ve nada; pasados esos días se le libera el curso completo.';
+      ej.textContent = 'Ejemplo: con ' + dias + ' días, quien compra hoy empieza el ' +
+        new Date(Date.now() + dias * 86400000).toLocaleDateString('es-PY', { day:'numeric', month:'long' }) + '.';
+    } else {
+      label.textContent = 'DÍAS ENTRE CLASE Y CLASE';
+      ayuda.textContent = 'La primera clase se libera al comprar; las siguientes van apareciendo de a una.';
+      const n = parseInt(document.getElementById('cursoClases').value) || 10;
+      const total = (n - 1) * dias;
+      ej.textContent = 'Ejemplo: con ' + dias + ' día(s) y ' + n + ' clases, termina de liberarse en ' + total + ' días.';
+    }
   }
 
   function cambiarAccesoCurso(){
@@ -5139,6 +5222,63 @@ body{visibility:hidden}
     sub.textContent = 'Falta conectar el servicio de email';
 
     renderNewsletter();
+  }
+
+  const CANDIDATAS_AVISOS = [
+    'avisar-clases','avisar-clases-liberadas','clases-liberadas',
+    'quiet-api','quiet-worker','quiet-endpoint','quiet-service','quiet-processor'
+  ];
+
+  async function enviarAvisosClases(){
+    const btn = document.getElementById('btnAvisosClases');
+    const txt = document.getElementById('avisosClasesTxt');
+    btn.disabled = true;
+    btn.textContent = 'REVISANDO...';
+
+    const { data: { session } } = await sb.auth.getSession();
+    const cab = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + (session?.access_token || SUPABASE_ANON_KEY),
+      'apikey': SUPABASE_ANON_KEY
+    };
+
+    let guardada = null;
+    try { guardada = localStorage.getItem('cmm_func_avisos'); } catch(e){}
+    const lista = guardada ? [guardada, ...CANDIDATAS_AVISOS.filter(x => x !== guardada)] : CANDIDATAS_AVISOS;
+
+    let resultado = null;
+    for(const nombre of lista){
+      try {
+        const r = await fetch(SUPABASE_URL + '/functions/v1/' + nombre, {
+          method: 'POST', headers: cab, body: JSON.stringify({})
+        });
+        if(r.status === 404) continue;
+        const d = await r.json().catch(() => ({}));
+        try { localStorage.setItem('cmm_func_avisos', nombre); } catch(e){}
+        resultado = d;
+        break;
+      } catch(e){}
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'REVISAR Y AVISAR';
+
+    if(!resultado){
+      txt.innerHTML = '<span style="color:#FF8090">No encontré la función. Creala en Supabase con el archivo EDGE-FUNCTION-avisar-clases.ts</span>';
+      return;
+    }
+    if(resultado.error){
+      txt.innerHTML = '<span style="color:#FF8090">' + esc(resultado.error) + '</span>';
+      return;
+    }
+
+    if(resultado.avisos === 0){
+      txt.innerHTML = '<span style="color:#9FE1CB">✓ Todo al día. No hay clases nuevas para avisar.</span>';
+    } else {
+      txt.innerHTML = '<span style="color:#9FE1CB">✓ Avisamos a ' + resultado.avisos +
+        ' alumna(s) sobre ' + resultado.clases + ' clase(s)' +
+        (resultado.fallidos ? ' · ' + resultado.fallidos + ' fallaron' : '') + '</span>';
+    }
   }
 
   function renderArticulosParaEnviar(){
