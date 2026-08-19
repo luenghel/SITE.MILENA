@@ -109,25 +109,35 @@
   /* Si todavía no hay banners, un alto de respaldo */
   .hero.sin-banner{aspect-ratio:2.5/1;min-height:340px}
   .hero.sin-banner .hero-espaciador{display:none}
-  .hero-encima{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:0 40px 42px;max-width:1400px;margin:0 auto;pointer-events:none}
-  /* Botón con el peso del de Luana: más alto, esquinas menos redondas */
+  /* Botón: mismas medidas que el de Luana
+     92 px desde la izquierda · 355 × 62 px · esquinas de 4 px */
+  .hero-encima{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    z-index:4;
+    padding:0 0 78px 92px;
+    pointer-events:none;
+    display:flex;
+    justify-content:flex-start;
+  }
   .hero-cta{
     pointer-events:auto;
-    display:inline-block;
-    width:auto;
-    min-width:355px;
-    text-align:center;
-    padding:21px 40px;
-    font-size:13.5px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:355px;
+    height:62px;
+    padding:0 24px;
+    font-size:13px;
     font-weight:600;
-    border-radius:8px;
-    letter-spacing:0.16em;
+    border-radius:4px;
+    letter-spacing:0.14em;
     text-decoration:none;
-    box-shadow:0 12px 34px rgba(0,0,0,0.4);
     margin:0;
-    transition:transform 0.22s cubic-bezier(0.34,1.4,0.64,1), box-shadow 0.22s;
+    box-shadow:0 8px 26px rgba(0,0,0,0.3);
+    transition:transform 0.2s, box-shadow 0.2s, filter 0.2s;
   }
-  .hero-cta:hover{transform:translateY(-2px);box-shadow:0 16px 42px rgba(0,0,0,0.5)}
+  .hero-cta:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(0,0,0,0.42);filter:brightness(1.06)}
   .hero-vacio{position:absolute;inset:0;z-index:2;display:none;align-items:center;justify-content:center;background:linear-gradient(135deg,#2D0A18,#1A0A12)}
   .hero-vacio.mostrar{display:flex}
   .hero-gradient{position:absolute;inset:0;background:linear-gradient(115deg,#4A152A 0%,#2D0A1A 45%,#1A0A12 75%,#0E0509 100%)}
@@ -276,7 +286,7 @@
   .hero-espaciador{max-height:none}
   .hero.sin-banner{aspect-ratio:4/5;min-height:0}
   .hero-encima{padding:0 18px 22px}
-  .hero-cta{display:block;width:100%;min-width:0;padding:19px 20px;font-size:12px;letter-spacing:0.14em;border-radius:8px;font-weight:600}
+  .hero-cta{display:flex;width:100%;height:54px;padding:0 18px;font-size:11.5px;letter-spacing:0.12em;border-radius:4px;font-weight:600}
   .hero-flechas{bottom:auto;top:16px;right:16px;gap:7px}
   .hero-flecha{width:38px;height:38px}
   .hero-flecha svg{width:15px;height:15px}
@@ -626,6 +636,120 @@
   let principalSlides = [];
   let principalInterval = null;
 
+  function esCelular(){
+    return window.matchMedia('(max-width:900px)').matches;
+  }
+
+  // Cada banner puede tener imagen para computadora y otra para celular
+  function imagenDe(s){
+    if(esCelular() && s.imagen_movil) return s.imagen_movil;
+    return s.imagen_url;
+  }
+
+  // El sitio toma el alto de la imagen que se está viendo
+  function ajustarAlto(i){
+    var esp = document.getElementById('heroEspaciador');
+    var hero = document.getElementById('heroBanner');
+    var s = principalSlides[i];
+    if(!esp || !s) return;
+    var url = imagenDe(s);
+    if(esp.getAttribute('src') === url) return;
+    esp.onload = function(){ if(hero) hero.classList.add('medido'); };
+    esp.setAttribute('src', url);
+  }
+
+  // El botón cambia según el banner que se está viendo
+  function aplicarBoton(i){
+    var btn = document.getElementById('heroBoton');
+    if(!btn) return;
+    var s = principalSlides[i];
+    if(!s){ btn.style.display = 'none'; return; }
+
+    if(s.mostrar_boton === false){ btn.style.display = 'none'; return; }
+
+    btn.style.display = '';
+    btn.textContent = (s.texto_boton && s.texto_boton.trim()) ? s.texto_boton.trim() : 'QUIERO INSCRIBIRME AHORA';
+
+    var destino = (s.link && s.link.trim()) ? s.link.trim() : '/cursos';
+    btn.setAttribute('href', destino);
+
+    if(/^https?:\/\//i.test(destino)){
+      btn.setAttribute('target', '_blank');
+      btn.setAttribute('rel', 'noopener');
+    } else {
+      btn.removeAttribute('target');
+      btn.removeAttribute('rel');
+    }
+  }
+
+  window.abrirEnlaceSlide = function(i){
+    var s = principalSlides[i];
+    if(!s || !s.link) return;
+    if(/^https?:\/\//i.test(s.link)) window.open(s.link, '_blank', 'noopener');
+    else window.location.href = s.link;
+  };
+
+  function renderCarruselPrincipal(){
+    var cap = document.getElementById('heroCarrusel');
+    var dots = document.getElementById('heroDots');
+    var flechas = document.getElementById('heroFlechas');
+    var vacio = document.getElementById('heroVacio');
+    var btn = document.getElementById('heroBoton');
+    var hero = document.getElementById('heroBanner');
+    if(!cap) return;
+
+    if(principalSlides.length === 0){
+      cap.innerHTML = '';
+      if(hero) hero.classList.add('sin-banner');
+      if(vacio) vacio.classList.add('mostrar');
+      if(dots) dots.classList.remove('activo');
+      if(flechas) flechas.classList.remove('activo');
+      if(btn) btn.style.display = 'none';
+      return;
+    }
+
+    if(vacio) vacio.classList.remove('mostrar');
+    if(hero) hero.classList.remove('sin-banner');
+    ajustarAlto(0);
+
+    cap.innerHTML = principalSlides.map(function(s, i){
+      var img = imagenDe(s);
+      var clase = s.link ? 'hero-slide enlace' : 'hero-slide';
+      var act = (i === 0) ? ' activa' : '';
+      var onclic = s.link ? ' onclick="abrirEnlaceSlide(' + i + ')"' : '';
+      return '<div class="' + clase + act + '" style="background-image:url(\'' + img + '\')"' + onclic + '></div>';
+    }).join('');
+
+    principalSlides.forEach(function(s){
+      var a = new Image(); a.src = s.imagen_url;
+      if(s.imagen_movil){ var b = new Image(); b.src = s.imagen_movil; }
+    });
+
+    if(principalSlides.length > 1){
+      dots.innerHTML = principalSlides.map(function(_, i){
+        return '<div class="hero-dot' + (i === 0 ? ' active' : '') + '" onclick="irASlide(' + i + ')"></div>';
+      }).join('');
+      dots.classList.add('activo');
+      if(flechas) flechas.classList.add('activo');
+    } else {
+      dots.classList.remove('activo');
+      if(flechas) flechas.classList.remove('activo');
+    }
+
+    aplicarBoton(0);
+  }
+
+  function actualizarCarruselPrincipal(){
+    document.querySelectorAll('.hero-slide').forEach(function(el, i){
+      el.classList.toggle('activa', i === principalSlideIndex);
+    });
+    document.querySelectorAll('.hero-dot').forEach(function(d, i){
+      d.classList.toggle('active', i === principalSlideIndex);
+    });
+    ajustarAlto(principalSlideIndex);
+    aplicarBoton(principalSlideIndex);
+  }
+
   async function cargarCarruseles() {
     if (typeof sb === 'undefined' || !sb) return;
 
@@ -646,13 +770,9 @@
     if (principal && principal.length > 0) {
       principalSlides = principal;
       renderCarruselPrincipal();
-      // Auto-play
-      if (principal.length > 1) {
-        principalInterval = setInterval(() => {
-          principalSlideIndex = (principalSlideIndex + 1) % principal.length;
-          actualizarCarruselPrincipal();
-        }, 7000);
-      }
+      reiniciarAuto();
+    } else {
+      renderCarruselPrincipal();
     }
 
     // Carrusel vertical
