@@ -29,13 +29,13 @@ create policy "Equipo actualiza ajustes"
   on public.ajustes for update
   using (public.es_equipo());
 
--- Valores iniciales (los vas a completar desde el panel)
+-- Los nombres que quedaron en este proyecto
 insert into public.ajustes (clave, valor) values
-  ('func_dos_pasos', null),
-  ('func_admin', null),
-  ('func_newsletter', 'bright-api'),
-  ('func_avisos_clases', null)
-on conflict (clave) do nothing;
+  ('func_dos_pasos',      'Edge-function-dos-pasos'),
+  ('func_admin',          'clever-processor'),
+  ('func_newsletter',     'bright-api'),
+  ('func_avisos_clases',  'AVISAR-CLASES')
+on conflict (clave) do update set valor = excluded.valor, actualizado_en = now();
 
 -- ─── VERIFICACIÓN ──────────────────────────────────────────────────
 select clave, coalesce(valor, '(sin configurar)') as valor from public.ajustes order by clave;

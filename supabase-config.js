@@ -203,9 +203,11 @@ async function borrarImagen(path) {
 // ═══════════════════════════════════════════════════════
 
 const CANDIDATAS_FUNC_ADM = [
-  'admin-miembros', 'clever-processor', 'clever-process', 'clever-proc',
+  'clever-processor',                 // FUNCION-ADM en este proyecto
+  'Edge-function-admin-miembros',
+  'admin-miembros', 'clever-process', 'clever-proc',
   'clever-service', 'clever-worker', 'clever-endpoint', 'clever-api',
-  'clever-function', 'clever-handler', 'clever-task', 'clever-action'
+  'clever-responder', 'clever-function', 'clever-handler'
 ];
 
 function urlFuncionGuardada() {
