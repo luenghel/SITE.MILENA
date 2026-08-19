@@ -820,6 +820,22 @@
   .medida-tip{font-size:11.5px;color:rgba(255,245,240,0.55);margin-bottom:8px}
   .medida-tip strong{color:#FAC775}
 
+
+  .carrusel-card-img{position:relative}
+  .card-borrar{
+    position:absolute;top:8px;right:8px;
+    width:28px;height:28px;border-radius:50%;
+    background:rgba(14,5,9,0.8);
+    backdrop-filter:blur(8px);
+    border:0.5px solid rgba(255,59,71,0.45);
+    color:#FF8090;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;transition:all 0.2s;
+  }
+  .carrusel-card:hover .card-borrar{opacity:1}
+  .card-borrar:hover{background:rgba(184,41,74,0.9);color:#FFF5F0}
+  @media (max-width:900px){ .card-borrar{opacity:1} }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1212,7 +1228,7 @@ body{visibility:hidden}
     </a>
     <a href="#" onclick="cambiarTab('carruseles')" class="sidebar-item" id="nav-carruseles">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-      Carruseles
+      Portada
     </a>
     <a href="#" onclick="cambiarTab('newsletter')" class="sidebar-item" id="nav-newsletter">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
@@ -2156,21 +2172,21 @@ body{visibility:hidden}
   <div class="tab-content" id="content-carruseles">
     <div class="header-bar">
       <div>
-        <div class="header-meta">GESTOR DE CARRUSELES</div>
-        <h1 class="header-title">Carruseles <span class="serif-it gradtext" style="font-size:34px">del inicio</span></h1>
-        <p class="header-sub">Las fotos que aparecen en la página principal del sitio.</p>
+        <div class="header-meta">BANNERS DE LA PORTADA</div>
+        <h1 class="header-title">La <span class="serif-it gradtext" style="font-size:34px">portada</span></h1>
+        <p class="header-sub">Los banners que se ven al entrar al sitio. Diseñalos vos y subilos acá.</p>
       </div>
       <div class="header-actions">
         <button class="cta-gold btn-primary" onclick="abrirModalCarrusel()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-          AGREGAR FOTO
+          AGREGAR BANNER
         </button>
       </div>
     </div>
 
     <div class="carrusel-tabs">
-      <button class="carrusel-tab-btn active" onclick="cambiarTipoCarrusel('home_principal', this)">Carrusel principal (arriba, ancho)</button>
-      <button class="carrusel-tab-btn" onclick="cambiarTipoCarrusel('home_vertical', this)">Carrusel vertical (chico)</button>
+      <button class="carrusel-tab-btn active" onclick="cambiarTipoCarrusel('home_principal', this)">Portada principal</button>
+      <button class="carrusel-tab-btn" onclick="cambiarTipoCarrusel('home_vertical', this)">Fila de destacados (más abajo)</button>
     </div>
 
     <div class="carruseles-grid" id="carruselesGrid"></div>
@@ -2181,8 +2197,8 @@ body{visibility:hidden}
     <div class="curso-modal">
       <div class="curso-modal-header">
         <div>
-          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">EDITOR DE CARRUSEL</div>
-          <h3 class="curso-modal-titulo serif" id="carruselModalTitulo">Nueva foto</h3>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">EDITOR DE BANNER</div>
+          <h3 class="curso-modal-titulo serif" id="carruselModalTitulo">Nuevo banner</h3>
         </div>
         <button class="curso-modal-close" onclick="cerrarModalCarrusel()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -2271,6 +2287,8 @@ body{visibility:hidden}
           <div class="toggle-switch on" id="carruselActivo" onclick="this.classList.toggle('on')"></div>
         </div>
       </div>
+
+      <div class="acc-estado" id="carruselEstado"></div>
 
       <div class="curso-modal-footer">
         <button class="btn-danger" id="btnEliminarCarrusel" onclick="eliminarCarrusel()" style="display:none">ELIMINAR</button>
@@ -3335,6 +3353,16 @@ body{visibility:hidden}
       .order('orden', { ascending: true });
     if (error) {
       console.error('Error cargando carruseles:', error);
+      const grid = document.getElementById('carruselesGrid');
+      if(grid){
+        let msg = error.message;
+        if(msg.includes('imagen_movil') || msg.includes('column')){
+          msg = 'Faltan columnas nuevas. Corré <strong>SQL-BANNERS-HERO.sql</strong> en Supabase.';
+        }
+        grid.innerHTML = '<div class="empty-carruseles"><div class="empty-cursos-icon">⚠️</div>' +
+          '<div style="font-size:14px;color:#FF8090;margin-bottom:6px">No pudimos cargar los banners</div>' +
+          '<div style="font-size:12.5px;color:rgba(255,245,240,0.6)">' + msg + '</div></div>';
+      }
       return;
     }
     carruseles = data || [];
@@ -3347,20 +3375,29 @@ body{visibility:hidden}
       grid.innerHTML = `
         <div class="empty-carruseles">
           <div style="font-size:48px;margin-bottom:14px;opacity:0.4">🖼️</div>
-          <div style="font-size:14px;margin-bottom:6px">No hay fotos en este carrusel</div>
-          <div style="font-size:12px;color:rgba(255,245,240,0.4)">Hacé click en "AGREGAR FOTO" para subir la primera</div>
+          <div style="font-size:14px;margin-bottom:6px">Todavía no hay banners acá</div>
+          <div style="font-size:12px;color:rgba(255,245,240,0.4)">Tocá "AGREGAR BANNER" arriba para subir el primero</div>
         </div>
       `;
       return;
     }
     grid.innerHTML = carruseles.map(c => `
-      <div class="carrusel-card" onclick="editarCarrusel('${c.id}')">
-        <div class="carrusel-card-img" style="background-image:url('${c.imagen_url}')"></div>
+      <div class="carrusel-card">
+        <div class="carrusel-card-img" style="background-image:url('${c.imagen_url}')" onclick="editarCarrusel('${c.id}')">
+          <button class="card-borrar" onclick="event.stopPropagation();borrarBannerDirecto('${c.id}')" title="Eliminar banner">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
         <div class="carrusel-card-info">
           <div class="carrusel-card-title">${c.titulo || 'Banner sin nombre'}</div>
           <div class="carrusel-card-meta">
             Orden ${c.orden} · ${c.activo ? '✓ Activo' : '✗ Inactivo'}<br>
-            ${c.imagen_movil ? '📱 tiene versión celular' : '⚠️ falta versión celular'}
+            ${c.imagen_movil ? '📱 versión celular ✓' : '⚠️ falta versión celular'}<br>
+            ${c.link ? '🔗 ' + esc(c.link) : '⚠️ sin enlace'}
+          </div>
+          <div class="carrusel-card-actions">
+            <button class="carrusel-mini-btn" onclick="editarCarrusel('${c.id}')">Editar</button>
+            <button class="carrusel-mini-btn danger" onclick="borrarBannerDirecto('${c.id}')">Eliminar</button>
           </div>
         </div>
       </div>
@@ -3434,11 +3471,20 @@ body{visibility:hidden}
     }
   }
 
+  function estadoCarrusel(txt, tipo){
+    const el = document.getElementById('carruselEstado');
+    if(!el) return;
+    if(!txt){ el.className = 'acc-estado'; el.innerHTML = ''; return; }
+    el.className = 'acc-estado show ' + (tipo || 'trabajando');
+    el.innerHTML = txt;
+  }
+
   async function guardarCarrusel() {
-    if (!sb) return mostrarToast('Conectando...', true);
+    estadoCarrusel('');
+    if (!sb) return estadoCarrusel('Todavía conectando con el servidor. Esperá un segundo.', 'error');
 
     const url = document.getElementById('carruselFotoUrl').value;
-    if (!url) return mostrarToast('Subí una foto primero', true);
+    if (!url) return estadoCarrusel('Subí primero la <strong>imagen para computadora</strong>.', 'error');
 
     const datos = {
       tipo: tipoCarruselActual,
@@ -3460,24 +3506,33 @@ body{visibility:hidden}
       result = await sb.from('carruseles').insert(datos);
     }
 
-    if (result.error) return mostrarToast('Error: ' + result.error.message, true);
+    if (result.error) {
+      let msg = result.error.message;
+      if(msg.includes('imagen_movil') || msg.includes('texto_boton') || msg.includes('mostrar_boton')){
+        msg = 'Faltan columnas en la base. Corré el archivo <strong>SQL-BANNERS-HERO.sql</strong> en Supabase.';
+      }
+      return estadoCarrusel('<strong>No se pudo guardar.</strong><br>' + msg, 'error');
+    }
 
-    mostrarToast(id ? '✓ Foto actualizada' : '✓ Foto agregada');
-    cerrarModalCarrusel();
+    estadoCarrusel('<strong>✓ Banner guardado</strong>', 'ok');
+    mostrarToast(id ? '✓ Banner actualizado' : '✓ Banner agregado');
     await cargarCarruseles();
+    setTimeout(() => cerrarModalCarrusel(), 900);
   }
 
   async function eliminarCarrusel() {
     const id = document.getElementById('carruselId').value;
     if (!id) return;
-    if (!confirm('¿Eliminar esta foto del carrusel?')) return;
+    if (!confirm('¿Eliminar este banner de la portada?')) return;
 
+    estadoCarrusel('Eliminando...', 'trabajando');
     const { error } = await sb.from('carruseles').delete().eq('id', id);
-    if (error) return mostrarToast('Error: ' + error.message, true);
 
-    mostrarToast('Foto eliminada');
-    cerrarModalCarrusel();
+    if (error) return estadoCarrusel('<strong>No se pudo eliminar.</strong><br>' + error.message, 'error');
+
+    mostrarToast('Banner eliminado');
     await cargarCarruseles();
+    cerrarModalCarrusel();
   }
 
   // ============================
