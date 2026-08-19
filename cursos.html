@@ -125,6 +125,9 @@
   .precio-chip{position:absolute;bottom:10px;left:10px;display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:8px;background:rgba(14,5,9,0.82);backdrop-filter:blur(10px);border:0.5px solid rgba(212,163,86,0.45);color:#FAC775;font-size:11px;font-weight:600;z-index:3}
   .listo-chip{position:absolute;top:10px;right:10px;width:26px;height:26px;border-radius:50%;background:rgba(14,5,9,0.75);backdrop-filter:blur(10px);border:0.5px solid rgba(93,202,165,0.5);display:flex;align-items:center;justify-content:center;z-index:3}
 
+
+  .muestra-chip{position:absolute;bottom:10px;right:10px;display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:8px;background:rgba(93,202,165,0.2);backdrop-filter:blur(10px);border:0.5px solid rgba(93,202,165,0.5);color:#9FE1CB;font-size:10px;font-weight:600;z-index:3;white-space:nowrap}
+
 </style>
 </head>
 <body>
@@ -203,8 +206,11 @@
     const esSuscripcion = acceso === 'suscripcion';
     const esExterno = !!curso.enlace_externo;
 
-    // ¿Hay que mostrar candado?
-    const bloqueado = !esGratis && !esExterno && !tieneCompra;
+    // Aunque sea gratis, hasta que no se anote va con candado
+    const bloqueado = !esExterno && !tieneCompra;
+
+    // ¿Tiene clases que puede ver sin anotarse?
+    const nMuestra = (window.clasesMuestra || {})[curso.id] || 0;
 
     const gradient = curso.color_gradient || 'linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)';
     const fondo = curso.foto_portada
@@ -255,8 +261,7 @@
 
     let textoBoton = '';
     if(esExterno) textoBoton = 'VER';
-    else if(bloqueado) textoBoton = user ? 'DESBLOQUEAR' : 'INICIÁ SESIÓN';
-    else if(esGratis && !tieneCompra) textoBoton = 'EMPEZAR GRATIS';
+    else if(bloqueado) textoBoton = !user ? 'INICIÁ SESIÓN' : (esGratis ? 'ANOTARME GRATIS' : 'DESBLOQUEAR');
 
     const btnHTML = textoBoton ? `<button class="unlock-btn">${textoBoton}</button>` : '';
 
@@ -269,6 +274,10 @@
             <div class="precio-chip">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2.6" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
               ${precioTxt}
+            </div>` : ''}
+          ${(bloqueado && nMuestra > 0) ? `
+            <div class="muestra-chip">
+              ▶ ${nMuestra} clase${nMuestra === 1 ? '' : 's'} gratis
             </div>` : ''}
           ${tieneCompra ? `
             <div class="listo-chip">
@@ -343,6 +352,14 @@
         .select('curso_id').eq('usuario_id', user.id).eq('estado', 'pagado');
       comprasIds = (compras || []).map(c => c.curso_id);
     }
+
+    // Cuántas clases de muestra tiene cada curso
+    const { data: muestras } = await sb.from('clases')
+      .select('curso_id').eq('gratis', true).eq('publicado', true);
+    window.clasesMuestra = {};
+    (muestras || []).forEach(m => {
+      window.clasesMuestra[m.curso_id] = (window.clasesMuestra[m.curso_id] || 0) + 1;
+    });
 
     const todos = cursos || [];
     const principales = todos.filter(c => (c.seccion || 'principal') === 'principal');

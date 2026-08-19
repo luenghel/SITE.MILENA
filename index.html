@@ -464,6 +464,9 @@
     z-index:3;
   }
 
+
+  .muestra-chip{position:absolute;bottom:10px;right:10px;display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:8px;background:rgba(93,202,165,0.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:0.5px solid rgba(93,202,165,0.5);color:#9FE1CB;font-size:10px;font-weight:600;z-index:3;white-space:nowrap}
+
 </style>
 </head>
 <body>
@@ -855,7 +858,9 @@
     const acceso = curso.acceso || (curso.precio_gs ? 'pago' : 'gratis');
     const esGratis = acceso === 'gratis';
     const esExterno = !!curso.enlace_externo;
-    const necesitaCandado = !esGratis && !esExterno && (!user || !tieneCompra);
+    // Aunque sea gratis, hasta que no se anote va con candado
+    const necesitaCandado = !esExterno && (!user || !tieneCompra);
+    const nMuestra = (window.clasesMuestra || {})[curso.id] || 0;
     const titulo = curso.titulo;
     const tituloHTML = titulo.includes(' ') && titulo.length > 18
       ? titulo.split(' ').slice(0, Math.ceil(titulo.split(' ').length/2)).join(' ') + '<br>' + titulo.split(' ').slice(Math.ceil(titulo.split(' ').length/2)).join(' ')
@@ -891,6 +896,8 @@
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2.6" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
                 ${esGratis ? 'GRATIS' : 'Gs ' + (curso.precio_gs || 0).toLocaleString('es-PY')}
               </div>` : ''}
+            ${(necesitaCandado && nMuestra > 0) ? `
+              <div class="muestra-chip">▶ ${nMuestra} clase${nMuestra === 1 ? '' : 's'} gratis</div>` : ''}
             ${(!necesitaCandado && tieneCompra) ? `
               <div class="listo-chip">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1048,6 +1055,14 @@
         const { data: compras } = await sb.from('compras').select('curso_id').eq('usuario_id', user.id).eq('estado', 'pagado');
         comprasIds = (compras || []).map(c => c.curso_id);
       }
+
+      // Cuántas clases de muestra tiene cada curso
+      const { data: muestras } = await sb.from('clases')
+        .select('curso_id').eq('gratis', true).eq('publicado', true);
+      window.clasesMuestra = {};
+      (muestras || []).forEach(m => {
+        window.clasesMuestra[m.curso_id] = (window.clasesMuestra[m.curso_id] || 0) + 1;
+      });
 
       const todos = (error ? [] : (cursos || []));
       const principales = todos.filter(c => (c.seccion || 'principal') === 'principal');

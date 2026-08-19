@@ -879,6 +879,19 @@
     .func-input,.func-btn{width:100%}
   }
 
+
+  .anuncio-zona{margin:0 26px 6px;padding:14px 16px;background:rgba(212,163,86,0.07);border:0.5px solid rgba(212,163,86,0.3);border-radius:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .anuncio-zona.hecho{background:rgba(93,202,165,0.08);border-color:rgba(93,202,165,0.35)}
+  .anuncio-info{display:flex;gap:11px;align-items:flex-start;flex:1;min-width:190px}
+  .anuncio-tit{font-size:13px;font-weight:500;color:#FFF5F0}
+  .anuncio-sub{font-size:11.5px;color:rgba(255,245,240,0.55);margin-top:2px;line-height:1.45}
+  .anuncio-btn{padding:11px 20px;border-radius:10px;border:none;background:linear-gradient(135deg,#EFB85C,#DDA63F);color:#2E0C05;font-size:11.5px;font-weight:600;letter-spacing:0.08em;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .anuncio-btn:disabled{background:rgba(255,245,240,0.1);color:rgba(255,245,240,0.5);cursor:not-allowed}
+  @media (max-width:600px){
+    .anuncio-zona{margin:0 20px 6px;flex-direction:column;align-items:stretch}
+    .anuncio-btn{width:100%}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1734,6 +1747,17 @@ body{visibility:hidden}
           </div>
           <button class="contenido-btn" onclick="abrirContenido()">📚 GESTIONAR CONTENIDO</button>
         </div>
+      </div>
+
+      <div class="anuncio-zona" id="anuncioCurso" style="display:none">
+        <div class="anuncio-info">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+          <div>
+            <div class="anuncio-tit">Anunciar a la comunidad</div>
+            <div class="anuncio-sub" id="anuncioCursoSub">Un email a todas las personas registradas contándoles del curso nuevo</div>
+          </div>
+        </div>
+        <button class="anuncio-btn" id="btnAnunciarCurso" onclick="anunciarCursoNuevo()">📢 ANUNCIAR</button>
       </div>
 
       <div class="curso-modal-footer">
@@ -2690,6 +2714,17 @@ body{visibility:hidden}
         </div>
       </div>
 
+      <div class="anuncio-zona" id="anuncioClase" style="display:none">
+        <div class="anuncio-info">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+          <div>
+            <div class="anuncio-tit">Avisar a las alumnas</div>
+            <div class="anuncio-sub" id="anuncioClaseSub">Les llega un email contándoles que hay clase nueva</div>
+          </div>
+        </div>
+        <button class="anuncio-btn" id="btnAnunciarClase" onclick="anunciarClaseNueva()">📧 AVISAR</button>
+      </div>
+
       <div class="curso-modal-footer">
         <button class="btn-danger" id="btnEliminarClase" onclick="eliminarClase()" style="display:none">ELIMINAR</button>
         <div style="margin-left:auto;display:flex;gap:10px">
@@ -2981,6 +3016,7 @@ body{visibility:hidden}
       zona.style.display = 'none';
     }
 
+    pintarAnuncioCurso(id || null);
     document.getElementById('cursoModal').classList.add('show');
   }
 
@@ -3132,6 +3168,172 @@ body{visibility:hidden}
       <div class="image-uploader-help">JPG, PNG o WebP · máximo 5 MB</div>
     `;
     document.getElementById('cursoFotoInput').value = '';
+  }
+
+  // ============================
+  // ANUNCIOS POR EMAIL
+  // ============================
+  let anunciosHechos = { clase_nueva: {}, curso_nuevo: {} };
+
+  async function cargarAnuncios(){
+    if(!sb) return;
+    const { data } = await sb.from('anuncios_enviados').select('tipo, referencia_id, destinatarios, enviado_en');
+    anunciosHechos = { clase_nueva: {}, curso_nuevo: {} };
+    (data || []).forEach(a => {
+      if(anunciosHechos[a.tipo]) anunciosHechos[a.tipo][a.referencia_id] = a;
+    });
+  }
+
+  async function llamarAvisos(cuerpo){
+    const { data: { session } } = await sb.auth.getSession();
+    const cab = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + (session?.access_token || SUPABASE_ANON_KEY),
+      'apikey': SUPABASE_ANON_KEY
+    };
+
+    let guardada = null;
+    try {
+      const { data } = await sb.from('ajustes').select('valor').eq('clave','func_avisos_clases').maybeSingle();
+      if(data && data.valor) guardada = data.valor.trim();
+    } catch(e){}
+    if(!guardada){ try { guardada = localStorage.getItem('cmm_func_avisos'); } catch(e){} }
+
+    const lista = guardada ? [guardada, ...CANDIDATAS_AVISOS.filter(x => x !== guardada)] : CANDIDATAS_AVISOS;
+
+    for(const nombre of lista){
+      try {
+        const r = await fetch(SUPABASE_URL + '/functions/v1/' + nombre, {
+          method:'POST', headers: cab, body: JSON.stringify(cuerpo)
+        });
+        if(r.status === 404) continue;
+        const d = await r.json().catch(() => ({}));
+        try { localStorage.setItem('cmm_func_avisos', nombre); } catch(e){}
+        return { ok: r.ok, datos: d };
+      } catch(e){}
+    }
+    return { ok:false, datos:{}, noEncontrada:true };
+  }
+
+  // ─── Estado del recuadro de anuncio ───
+  function pintarAnuncioClase(claseId){
+    const zona = document.getElementById('anuncioClase');
+    const sub = document.getElementById('anuncioClaseSub');
+    const btn = document.getElementById('btnAnunciarClase');
+    if(!zona) return;
+
+    if(!claseId){ zona.style.display = 'none'; return; }
+    zona.style.display = 'flex';
+    zona.className = 'anuncio-zona';
+
+    const hecho = anunciosHechos.clase_nueva[claseId];
+    if(hecho){
+      zona.classList.add('hecho');
+      sub.textContent = 'Ya avisamos a ' + hecho.destinatarios + ' alumna(s) el ' + fechaCorta(hecho.enviado_en);
+      btn.disabled = true;
+      btn.textContent = '✓ AVISADO';
+      return;
+    }
+
+    const publicada = document.getElementById('clasePublicada').classList.contains('on');
+    if(!publicada){
+      sub.textContent = 'Publicá la clase antes de avisar';
+      btn.disabled = true;
+      btn.textContent = '📧 AVISAR';
+      return;
+    }
+
+    sub.textContent = 'Les llega un email contándoles que hay clase nueva';
+    btn.disabled = false;
+    btn.textContent = '📧 AVISAR';
+  }
+
+  function pintarAnuncioCurso(cursoId){
+    const zona = document.getElementById('anuncioCurso');
+    const sub = document.getElementById('anuncioCursoSub');
+    const btn = document.getElementById('btnAnunciarCurso');
+    if(!zona) return;
+
+    if(!cursoId){ zona.style.display = 'none'; return; }
+    zona.style.display = 'flex';
+    zona.className = 'anuncio-zona';
+
+    const hecho = anunciosHechos.curso_nuevo[cursoId];
+    if(hecho){
+      zona.classList.add('hecho');
+      sub.textContent = 'Ya lo anunciamos a ' + hecho.destinatarios + ' persona(s) el ' + fechaCorta(hecho.enviado_en);
+      btn.disabled = true;
+      btn.textContent = '✓ ANUNCIADO';
+      return;
+    }
+
+    const cur = cursos.find(x => x.id === cursoId);
+    if(!cur || !cur.publicado){
+      sub.textContent = 'Publicá el curso antes de anunciarlo';
+      btn.disabled = true;
+      btn.textContent = '📢 ANUNCIAR';
+      return;
+    }
+
+    sub.textContent = 'Un email a las ' + alumnas.length + ' personas registradas contándoles del curso nuevo';
+    btn.disabled = false;
+    btn.textContent = '📢 ANUNCIAR';
+  }
+
+  // ─── Enviar ───
+  async function anunciarClaseNueva(){
+    const id = document.getElementById('claseId').value;
+    if(!id) return mostrarToast('Guardá la clase antes de avisar', true);
+
+    const titulo = document.getElementById('claseTitulo').value.trim();
+    if(!confirm('¿Avisar a las alumnas del curso que "' + titulo + '" ya está disponible?\n\nUn email enviado no se puede deshacer.')) return;
+
+    const btn = document.getElementById('btnAnunciarClase');
+    btn.disabled = true;
+    btn.textContent = 'ENVIANDO...';
+
+    const r = await llamarAvisos({ accion: 'clase_nueva', clase_id: id });
+
+    if(r.noEncontrada){
+      btn.disabled = false; btn.textContent = '📧 AVISAR';
+      return mostrarToast('No encontré la función. Configurala en Newsletter → ⚙️ Funciones.', true);
+    }
+    if(!r.ok || !r.datos.exito){
+      btn.disabled = false; btn.textContent = '📧 AVISAR';
+      return mostrarToast(r.datos.error || 'No se pudo enviar', true);
+    }
+
+    mostrarToast('✓ Avisamos a ' + r.datos.enviados + ' alumna(s)');
+    await cargarAnuncios();
+    pintarAnuncioClase(id);
+  }
+
+  async function anunciarCursoNuevo(){
+    const id = document.getElementById('cursoId').value;
+    if(!id) return mostrarToast('Guardá el curso antes de anunciarlo', true);
+
+    const titulo = document.getElementById('cursoTitulo').value.trim();
+    const n = alumnas.length;
+    if(!confirm('¿Anunciar "' + titulo + '" a las ' + n + ' personas registradas?\n\nUn email enviado no se puede deshacer. Revisá el título, la descripción y la portada antes.')) return;
+
+    const btn = document.getElementById('btnAnunciarCurso');
+    btn.disabled = true;
+    btn.textContent = 'ENVIANDO...';
+
+    const r = await llamarAvisos({ accion: 'curso_nuevo', curso_id: id });
+
+    if(r.noEncontrada){
+      btn.disabled = false; btn.textContent = '📢 ANUNCIAR';
+      return mostrarToast('No encontré la función. Configurala en Newsletter → ⚙️ Funciones.', true);
+    }
+    if(!r.ok || !r.datos.exito){
+      btn.disabled = false; btn.textContent = '📢 ANUNCIAR';
+      return mostrarToast(r.datos.error || 'No se pudo enviar', true);
+    }
+
+    mostrarToast('✓ Anunciado a ' + r.datos.enviados + ' persona(s)');
+    await cargarAnuncios();
+    pintarAnuncioCurso(id);
   }
 
   // ============================
@@ -3442,6 +3644,7 @@ body{visibility:hidden}
 
     cambiarTipoClase();
     revisarVideo();
+    pintarAnuncioClase(claseId || null);
     document.getElementById('claseModal').classList.add('show');
   }
 

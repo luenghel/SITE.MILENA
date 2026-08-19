@@ -354,9 +354,18 @@ async function abrirClase(id, empujarHistorial){
 
   // ¿Puede verla?
   if(!tieneAcceso && !cl.gratis){
-    document.getElementById('sinAccesoTit').textContent = 'Esta clase es para alumnas';
-    document.getElementById('sinAccesoTxt').textContent =
-      'Conseguí "' + (curso?.titulo || 'el curso') + '" y accedé a todo el contenido.';
+    const esGratis = (curso?.acceso === 'gratis') || (curso && !curso.precio_gs);
+    document.getElementById('sinAccesoTit').textContent = esGratis
+      ? 'Anotate para ver esta clase'
+      : 'Esta clase es para alumnas';
+    document.getElementById('sinAccesoTxt').textContent = esGratis
+      ? 'El curso es gratis, pero necesitás anotarte para acceder al contenido completo.'
+      : 'Conseguí "' + (curso?.titulo || 'el curso') + '" y accedé a todo el contenido.';
+    const btn = document.querySelector('#sinAcceso .cta-gold');
+    if(btn){
+      btn.textContent = esGratis ? 'ANOTARME GRATIS' : 'VER EL CURSO';
+      btn.setAttribute('href', '/curso-detalle?id=' + encodeURIComponent(cursoSlug));
+    }
     verPantalla('sinAcceso');
     return;
   }
@@ -582,10 +591,9 @@ const esperarSupa = setInterval(async () => {
   document.getElementById('linkVolver').href = '/curso-detalle?id=' + encodeURIComponent(cursoSlug);
 
   // ¿Tiene acceso?
+  // Aunque sea gratis, hace falta registrarse: así queda contada como alumna
   const acceso = c.acceso || (c.precio_gs ? 'pago' : 'gratis');
-  if(acceso === 'gratis'){
-    tieneAcceso = true;
-  } else if(user){
+  if(user){
     const { data: compra } = await sb.from('compras')
       .select('id, pagado_en, creado_en').eq('usuario_id', user.id).eq('curso_id', c.id).eq('estado', 'pagado').maybeSingle();
     tieneAcceso = !!compra;

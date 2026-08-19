@@ -604,6 +604,75 @@ async function mostrarTemario(curso, user){
   document.body.insertBefore(cont.firstElementChild, document.querySelector('footer') || null);
 }
 
+// ─── Anotarse en un curso gratuito ───
+let cursoGratisActual = null;
+
+function mostrarModalGratis(curso){
+  cursoGratisActual = curso;
+
+  const titulo = document.querySelector('.compra-modal-title');
+  if(titulo) titulo.innerHTML = 'Anotate <span class="serif-it gradtext" style="font-size:24px">gratis</span>';
+
+  const sub = document.getElementById('modalSubtitle');
+  if(sub) sub.textContent = 'Este curso no tiene costo. Anotate y vamos a guardar tu avance clase por clase.';
+
+  const btnTxt = document.getElementById('modalBtnText');
+  if(btnTxt) btnTxt.textContent = 'ANOTARME GRATIS';
+
+  const btnPrecio = document.getElementById('modalBtnPrice');
+  if(btnPrecio) btnPrecio.textContent = '';
+
+  const cta = document.querySelector('.compra-modal-cta');
+  if(cta){
+    cta.onclick = anotarseGratis;
+    cta.removeAttribute('href');
+    cta.style.cursor = 'pointer';
+  }
+
+  const link = document.getElementById('modalLoginLink');
+  if(link) link.style.display = 'none';
+
+  // El candado del ícono pasa a ser un regalo
+  const ico = document.querySelector('.compra-modal-icon');
+  if(ico) ico.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>';
+
+  document.getElementById('compraModal').classList.add('show');
+}
+
+async function anotarseGratis(){
+  if(!cursoGratisActual) return;
+
+  const btnTxt = document.getElementById('modalBtnText');
+  const cta = document.querySelector('.compra-modal-cta');
+  if(btnTxt) btnTxt.textContent = 'ANOTANDO...';
+  if(cta) cta.style.pointerEvents = 'none';
+
+  const { data: { user } } = await sb.auth.getUser();
+  if(!user){
+    window.location.href = '/login?curso=' + encodeURIComponent(cursoGratisActual.slug);
+    return;
+  }
+
+  const { error } = await sb.from('compras').insert({
+    usuario_id: user.id,
+    curso_id: cursoGratisActual.id,
+    monto_gs: 0,
+    estado: 'pagado',
+    metodo_pago: 'gratis',
+    pagado_en: new Date().toISOString()
+  });
+
+  if(error){
+    if(btnTxt) btnTxt.textContent = 'ANOTARME GRATIS';
+    if(cta) cta.style.pointerEvents = '';
+    alert('No pudimos anotarte: ' + error.message);
+    return;
+  }
+
+  if(btnTxt) btnTxt.textContent = '✓ ¡LISTO!';
+  setTimeout(() => window.location.reload(), 700);
+}
+
 function mostrarModal(logueada) {
   const modal = document.getElementById('compraModal');
   const subtitle = document.getElementById('modalSubtitle');
@@ -682,13 +751,7 @@ const checkAccess = setInterval(async () => {
       return;
     }
 
-    // Curso gratis: acceso directo, sin comprar
-    if (accesoCurso === 'gratis') {
-      await mostrarTemario(curso, user);
-      return;
-    }
-
-    // Logueada → verificar si compró
+    // ¿Ya está anotada?
     const { data: compra } = await sb
       .from('compras')
       .select('id, estado')
@@ -698,6 +761,11 @@ const checkAccess = setInterval(async () => {
       .maybeSingle();
 
     if (!compra) {
+      // Gratis pero sin anotarse: le mostramos el botón para sumarse
+      if (accesoCurso === 'gratis') {
+        mostrarModalGratis(curso);
+        return;
+      }
       mostrarModal(true);
       return;
     }
