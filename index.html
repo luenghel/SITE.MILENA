@@ -79,14 +79,23 @@
   .btn-outline:hover{transform:translateY(-2px) scale(1.04);background:rgba(255,245,240,0.08);border-color:rgba(255,245,240,0.85)}
 
   .cta-gold{
-    background:linear-gradient(135deg,#FAC775 0%,#E8B547 50%,#D4A356 100%);
-    color:#3D1208;
-    box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.5),inset 0 -1.5px 2px rgba(74,15,30,0.18);
-    border:0.5px solid rgba(74,15,30,0.18);
+    background:linear-gradient(135deg,#EFB85C 0%,#DDA63F 50%,#C08F32 100%);
+    color:#2E0C05;
+    box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.42),inset 0 -2px 3px rgba(74,15,30,0.22);
+    border:0.5px solid rgba(74,15,30,0.28);
     transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);
     cursor:pointer;font-weight:500;
   }
-  .cta-gold:hover{transform:translateY(-2px) scale(1.03);filter:brightness(1.05);box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.5),inset 0 -1.5px 2px rgba(74,15,30,0.18),0 8px 20px rgba(212,163,86,0.4)}
+  .cta-gold:hover{
+    transform:translateY(-2px) scale(1.02);
+    background:linear-gradient(135deg,#F5C46B 0%,#E5B04A 50%,#CB9A38 100%);
+    /* Sombra hacia adentro: se siente hundido, con más cuerpo */
+    box-shadow:inset 0 2px 6px rgba(74,15,30,0.28),inset 0 -1px 0 rgba(255,255,255,0.28),0 10px 24px rgba(192,143,50,0.45);
+  }
+  .cta-gold:active{
+    transform:translateY(0) scale(0.995);
+    box-shadow:inset 0 3px 9px rgba(74,15,30,0.42),inset 0 -1px 0 rgba(255,255,255,0.18);
+  }
 
   .scroll-row{overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-top:30px;padding-bottom:40px;margin-top:-10px;margin-bottom:-40px}
   .scroll-row::-webkit-scrollbar{display:none}
@@ -141,8 +150,15 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    box-shadow:0 8px 24px rgba(0,0,0,0.3), inset 0 1.5px 0 rgba(255,255,255,0.5);
+    box-shadow:0 8px 24px rgba(0,0,0,0.34), inset 0 1.5px 0 rgba(255,255,255,0.42), inset 0 -2px 3px rgba(74,15,30,0.22);
+
+    /* Invisible hasta que sepamos qué dice y a dónde va,
+       así no se ve un texto y después otro */
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 0.35s ease, transform 0.2s, box-shadow 0.2s;
   }
+  .hero-cta.listo{opacity:1;visibility:visible}
   .hero-vacio{position:absolute;inset:0;z-index:2;display:none;align-items:center;justify-content:center;background:linear-gradient(135deg,#2D0A18,#1A0A12)}
   .hero-vacio.mostrar{display:flex}
   .hero-gradient{position:absolute;inset:0;background:linear-gradient(115deg,#4A152A 0%,#2D0A1A 45%,#1A0A12 75%,#0E0509 100%)}
@@ -208,7 +224,7 @@
   .seguimiento-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(212,163,86,0.12);border:0.5px solid rgba(212,163,86,0.4);border-radius:24px;font-size:10.5px;letter-spacing:0.18em;color:#FAC775;font-weight:500;margin-bottom:18px}
   .seguimiento-title{font-size:40px;line-height:1.05;font-weight:500;margin:0;letter-spacing:-0.02em}
   .seguimiento-desc{font-size:15px;color:rgba(255,245,240,0.75);line-height:1.5;margin-top:18px;max-width:520px}
-  .seguimiento-cta{margin-top:32px;padding:16px 38px;font-size:13px;font-weight:500;border-radius:14px;letter-spacing:0.18em;display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#FAC775 0%,#E8B547 50%,#D4A356 100%);color:#3D1208;border:none;cursor:pointer;transition:all 0.25s}
+  .seguimiento-cta{margin-top:32px;padding:16px 38px;font-size:13px;font-weight:500;border-radius:14px;letter-spacing:0.18em;display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#EFB85C 0%,#DDA63F 50%,#C08F32 100%);color:#3D1208;border:none;cursor:pointer;transition:all 0.25s}
   .seguimiento-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(212,163,86,0.4)}
 
   /* NEWSLETTER */
@@ -224,7 +240,7 @@
   .newsletter-input{flex:1;padding:14px 18px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.2);border-radius:11px;color:#FFF5F0;font-size:14px;outline:none;font-family:inherit;transition:all 0.2s}
   .newsletter-input:focus{border-color:rgba(212,163,86,0.5);background:rgba(255,245,240,0.1)}
   .newsletter-input::placeholder{color:rgba(255,245,240,0.4)}
-  .newsletter-btn{padding:14px 26px;border:none;border-radius:11px;font-size:12px;font-weight:500;letter-spacing:0.14em;background:linear-gradient(135deg,#FAC775 0%,#E8B547 50%,#D4A356 100%);color:#3D1208;cursor:pointer;transition:all 0.25s;font-family:inherit;white-space:nowrap}
+  .newsletter-btn{padding:14px 26px;border:none;border-radius:11px;font-size:12px;font-weight:500;letter-spacing:0.14em;background:linear-gradient(135deg,#EFB85C 0%,#DDA63F 50%,#C08F32 100%);color:#3D1208;cursor:pointer;transition:all 0.25s;font-family:inherit;white-space:nowrap}
   .newsletter-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,163,86,0.4)}
   .newsletter-success{display:none;margin-top:16px;color:#9FE1CB;font-size:13px;font-weight:500}
   .newsletter-success.show{display:block;animation:fadeIn 0.4s}
@@ -286,13 +302,38 @@
   .logo-box{width:38px;height:38px;font-size:19px}
   .logo-text{font-size:11px;letter-spacing:0.16em}
 
-  /* ═══ HERO EN CELULAR · imagen vertical 4:5 (1080×1350) ═══ */
-  .hero{aspect-ratio:4/5;max-height:none;min-height:0}
-  .hero.medido{aspect-ratio:auto}
+  /* ═══ HERO EN CELULAR · proporción 3:4, como el de Luana ═══
+     El menú tiene dos filas, así que dejamos su espacio arriba
+     para que no tape la imagen. */
+  .hero{
+    aspect-ratio:auto;
+    max-height:none;
+    min-height:0;
+    padding-top:112px;
+    background:#0E0509;
+  }
+  /* La imagen empieza debajo del menú */
+  .hero-carrusel{top:112px}
   .hero-espaciador{max-height:none}
-  .hero.sin-banner{aspect-ratio:4/5;min-height:0}
-  .hero-encima{padding:0 0 22px 18px}
-  .hero-cta{width:min(300px, calc(100vw - 36px)) !important;height:52px;padding:0 18px !important;font-size:11px;letter-spacing:0.13em;border-radius:6px}
+  .hero.sin-banner{aspect-ratio:auto;height:calc(112px + 75vw)}
+  .hero-vacio{top:112px}
+
+  /* Botón centrado, con márgenes iguales a los costados */
+  .hero-encima{
+    left:0;right:0;
+    padding:0 16px 20px;
+    display:flex;
+    justify-content:center;
+  }
+  .hero-cta{
+    width:100% !important;
+    max-width:none;
+    height:58px;
+    padding:0 18px !important;
+    font-size:11.5px;
+    letter-spacing:0.14em;
+    border-radius:8px;
+  }
   .hero-flechas{bottom:auto;top:16px;right:16px;gap:7px}
   .hero-flecha{width:38px;height:38px}
   .hero-flecha svg{width:15px;height:15px}
@@ -452,7 +493,7 @@
   <div class="hero-carrusel" id="heroCarrusel"></div>
 
   <div class="hero-encima">
-    <a href="/cursos" class="cta-gold hero-cta" id="heroBoton">QUIERO INSCRIBIRME AHORA</a>
+    <a href="/cursos" class="cta-gold hero-cta" id="heroBoton" aria-hidden="true"></a>
   </div>
 
   <div class="hero-flechas" id="heroFlechas">
@@ -696,13 +737,21 @@
     var s = principalSlides[i];
     if(!s){ btn.style.display = 'none'; return; }
 
-    if(s.mostrar_boton === false){ btn.style.display = 'none'; return; }
+    if(s.mostrar_boton === false){
+      btn.classList.remove('listo');
+      btn.style.display = 'none';
+      return;
+    }
 
     btn.style.display = '';
     btn.textContent = (s.texto_boton && s.texto_boton.trim()) ? s.texto_boton.trim() : 'QUIERO INSCRIBIRME AHORA';
 
     var destino = normalizarEnlace(s.link);
     btn.setAttribute('href', destino);
+    btn.removeAttribute('aria-hidden');
+
+    // Ya tiene texto y destino: recién ahora se muestra
+    btn.classList.add('listo');
 
     if(/^https?:\/\//i.test(destino)){
       btn.setAttribute('target', '_blank');
@@ -736,7 +785,7 @@
       if(vacio) vacio.classList.add('mostrar');
       if(dots) dots.classList.remove('activo');
       if(flechas) flechas.classList.remove('activo');
-      if(btn) btn.style.display = 'none';
+      if(btn){ btn.classList.remove('listo'); btn.style.display = 'none'; }
       return;
     }
 
