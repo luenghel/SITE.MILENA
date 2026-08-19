@@ -62,7 +62,7 @@ function plantilla(tipo: string, nombre: string, motivo: string, mensaje: string
       titulo: 'Cambiaste tu contraseña',
       intro: `${saludo}, tu contraseña se cambió correctamente.`,
       color: '#9FE1CB',
-      cierre: 'Si NO fuiste vos, respondé este correo ahora mismo: alguien podría estar entrando a tu cuenta.',
+      cierre: '',
     },
   }
 
@@ -111,9 +111,23 @@ function plantilla(tipo: string, nombre: string, motivo: string, mensaje: string
      <p style="margin:0;font-size:13.5px;line-height:1.6;color:rgba(255,245,240,0.65);font-family:Arial,sans-serif">${t.cierre}</p>
    </td></tr>
 
-   ${tipo !== 'eliminacion' ? `
+   ${tipo === 'seguridad' ? `
+   <tr><td style="padding-bottom:24px">
+     <div style="background:rgba(255,59,71,0.1);border:1px solid rgba(255,59,71,0.35);border-radius:12px;padding:18px 16px">
+       <p style="margin:0 0 6px;font-size:15px;color:#FF8090;font-family:Arial,sans-serif;font-weight:bold">¿No fuiste vos?</p>
+       <p style="margin:0 0 18px;font-size:13px;color:rgba(255,245,240,0.75);line-height:1.55;font-family:Arial,sans-serif">
+         Alguien podría estar entrando a tu cuenta. Cambiá tu contraseña ahora mismo.
+       </p>
+       <a href="${SITIO}/recuperar-inicio?email={{EMAIL}}"
+          style="display:inline-block;padding:15px 30px;background:#C8203A;color:#FFF5F0;text-decoration:none;border-radius:8px;font-size:12.5px;font-weight:bold;letter-spacing:0.12em;font-family:Arial,sans-serif">
+         CAMBIAR MI CONTRASEÑA AHORA
+       </a>
+     </div>
+   </td></tr>` : ''}
+
+   ${(tipo !== 'eliminacion' && tipo !== 'seguridad') ? `
    <tr><td align="center" style="padding-bottom:24px">
-     <a href="${SITIO}" style="display:inline-block;padding:14px 30px;background:#FAC775;color:#3D1208;text-decoration:none;border-radius:11px;font-size:12.5px;font-weight:bold;letter-spacing:0.1em;font-family:Arial,sans-serif">IR AL SITIO</a>
+     <a href="${SITIO}" style="display:inline-block;padding:14px 30px;background:#DDA63F;color:#2E0C05;text-decoration:none;border-radius:11px;font-size:12.5px;font-weight:bold;letter-spacing:0.1em;font-family:Arial,sans-serif">IR AL SITIO</a>
    </td></tr>` : ''}
 
    <tr><td style="border-top:1px solid rgba(255,245,240,0.1);padding-top:18px">

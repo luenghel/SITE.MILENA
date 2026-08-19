@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proteger mi cuenta · Milena Machado</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1A0A12">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body{display:flex;min-height:100vh;align-items:center;justify-content:center;padding:40px 20px}
+  .glow-1{position:fixed;width:480px;height:480px;left:-160px;top:-140px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.3),transparent 65%);pointer-events:none}
+  .glow-2{position:fixed;width:340px;height:340px;right:-90px;bottom:-90px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.4),transparent 65%);pointer-events:none}
+
+  .caja{position:relative;z-index:1;width:100%;max-width:440px}
+
+  .logo-row{display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:30px}
+  .logo-mark{width:46px;height:46px;border:0.5px solid rgba(255,245,240,0.55);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-size:23px;font-weight:500}
+  .logo-words{font-size:14px;line-height:1.15;letter-spacing:0.16em;font-weight:500}
+
+  .panel{background:linear-gradient(180deg,rgba(45,10,24,0.7),rgba(26,5,9,0.7));border:0.5px solid rgba(255,59,71,0.35);border-radius:20px;padding:34px 30px;backdrop-filter:blur(16px)}
+
+  .ico{width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:pop 0.45s cubic-bezier(0.34,1.6,0.64,1)}
+  @keyframes pop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+  .ico.alerta{background:linear-gradient(135deg,rgba(255,59,71,0.22),rgba(255,59,71,0.06));border:0.5px solid rgba(255,59,71,0.5)}
+  .ico.ok{background:linear-gradient(135deg,rgba(93,202,165,0.22),rgba(93,202,165,0.06));border:0.5px solid rgba(93,202,165,0.5)}
+
+  .titulo{font-size:24px;font-weight:500;font-family:Georgia,serif;text-align:center;margin:0 0 10px}
+  .texto{font-size:14px;color:rgba(255,245,240,0.72);text-align:center;line-height:1.6;margin:0 0 24px}
+  .correo{color:#FAC775;word-break:break-all}
+
+  .pasos{background:rgba(255,245,240,0.04);border-radius:12px;padding:16px 18px;margin-bottom:24px;text-align:left}
+  .paso{display:flex;gap:11px;align-items:flex-start;font-size:13px;color:rgba(255,245,240,0.75);line-height:1.5;margin-bottom:11px}
+  .paso:last-child{margin-bottom:0}
+  .paso-num{width:20px;height:20px;border-radius:50%;background:rgba(212,163,86,0.18);border:0.5px solid rgba(212,163,86,0.45);color:#FAC775;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+  .btn-rojo{width:100%;padding:16px;border-radius:12px;border:none;font-size:12.5px;font-weight:600;letter-spacing:0.14em;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#FF8090,#C8203A);color:#FFF5F0;transition:all 0.2s}
+  .btn-rojo:hover{transform:translateY(-1px);filter:brightness(1.06)}
+  .btn-rojo:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+
+  .link-abajo{display:block;text-align:center;margin-top:16px;font-size:12.5px;color:rgba(255,245,240,0.55);text-decoration:none}
+  .link-abajo:hover{color:#FFF5F0}
+
+  .aviso{padding:12px 14px;border-radius:10px;font-size:13px;margin-bottom:18px;display:none;line-height:1.5}
+  .aviso.show{display:block}
+  .aviso.error{background:rgba(255,59,71,0.1);border:0.5px solid rgba(255,59,71,0.4);color:#FF8090}
+  .aviso.ok{background:rgba(93,202,165,0.1);border:0.5px solid rgba(93,202,165,0.4);color:#9FE1CB}
+</style>
+</head>
+<body>
+
+<div class="glow-1"></div>
+<div class="glow-2"></div>
+
+<div class="caja">
+  <div class="logo-row">
+    <div class="logo-mark">M</div>
+    <div class="logo-words">MILENA<br>MACHADO</div>
+  </div>
+
+  <div class="panel">
+    <div class="aviso" id="aviso"></div>
+
+    <!-- Paso 1 -->
+    <div id="paso1">
+      <div class="ico alerta">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FF8090" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      </div>
+
+      <h1 class="titulo serif">Protegé tu cuenta</h1>
+      <p class="texto">
+        Si recibiste un código que no pediste, alguien puede tener tu contraseña.<br>
+        Cambiala ahora mismo.
+      </p>
+
+      <div class="pasos">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div>Te mandamos un enlace a <span class="correo" id="correoTxt">tu email</span></div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div>Tocás el botón del correo y elegís una contraseña nueva</div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">3</div>
+          <div>Se cierran <strong>todas las sesiones abiertas</strong>, incluida la de quien haya entrado</div>
+        </div>
+      </div>
+
+      <button class="btn-rojo" id="btnProteger" onclick="protegerCuenta()">
+        CAMBIAR MI CONTRASEÑA AHORA
+      </button>
+
+      <a href="/index" class="link-abajo">Fui yo, todo bien</a>
+    </div>
+
+    <!-- Paso 2 -->
+    <div id="paso2" style="display:none;text-align:center">
+      <div class="ico ok">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+      </div>
+      <h1 class="titulo serif">Revisá tu correo</h1>
+      <p class="texto">
+        Te mandamos el enlace a<br><strong class="correo" id="correoEnviado"></strong>
+      </p>
+      <div class="pasos" style="text-align:left">
+        <div class="paso">
+          <div class="paso-num">!</div>
+          <div>Si no lo ves, mirá en <strong>spam</strong> o <strong>promociones</strong>. El enlace vence en 1 hora.</div>
+        </div>
+      </div>
+      <a href="/index" class="link-abajo">Volver al sitio</a>
+    </div>
+  </div>
+</div>
+
+<script src="supabase-config.js"></script>
+<script>
+  const email = (new URLSearchParams(window.location.search).get('email') || '').trim();
+
+  if(email){
+    document.getElementById('correoTxt').textContent = email;
+  }
+
+  function avisar(msg, tipo){
+    const el = document.getElementById('aviso');
+    if(!msg){ el.className = 'aviso'; el.textContent = ''; return; }
+    el.className = 'aviso show ' + (tipo || 'error');
+    el.textContent = msg;
+  }
+
+  async function protegerCuenta(){
+    if(!email){
+      return avisar('El enlace no trae ningún email. Entrá al sitio y usá "¿Olvidaste tu contraseña?".');
+    }
+
+    const btn = document.getElementById('btnProteger');
+    btn.disabled = true;
+    btn.textContent = 'ENVIANDO...';
+    avisar('');
+
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/recuperar'
+    });
+
+    btn.disabled = false;
+    btn.textContent = 'CAMBIAR MI CONTRASEÑA AHORA';
+
+    if(error){
+      const m = (error.message || '').toLowerCase();
+      if(m.includes('rate') || m.includes('too many')){
+        return avisar('Pediste el enlace hace poco. Esperá un minuto y probá de nuevo.');
+      }
+      return avisar(error.message);
+    }
+
+    document.getElementById('correoEnviado').textContent = email;
+    document.getElementById('paso1').style.display = 'none';
+    document.getElementById('paso2').style.display = 'block';
+  }
+
+  // Sin email en el enlace, avisamos al entrar
+  const espera = setInterval(function(){
+    if(typeof sb === 'undefined' || sb === null) return;
+    clearInterval(espera);
+    if(!email){
+      avisar('Este enlace no trae ningún email. Usá el botón del correo que recibiste.');
+    }
+  }, 50);
+</script>
+
+</body>
+</html>

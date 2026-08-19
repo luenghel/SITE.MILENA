@@ -96,6 +96,17 @@
     .codigo-box{width:42px;height:52px;font-size:21px}
     .codigo-inputs{gap:6px}
   }
+
+  .confiar-caja{display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:12px;margin:18px 0;cursor:pointer;transition:all 0.2s;text-align:left}
+  .confiar-caja:hover{background:rgba(255,245,240,0.07)}
+  .confiar-caja.on{background:rgba(212,163,86,0.1);border-color:rgba(212,163,86,0.4)}
+  .confiar-box{width:22px;height:22px;border-radius:6px;border:1.5px solid rgba(255,245,240,0.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+  .confiar-caja.on .confiar-box{background:linear-gradient(135deg,#EFB85C,#DDA63F);border-color:#DDA63F}
+  .confiar-box svg{opacity:0;transition:opacity 0.2s}
+  .confiar-caja.on .confiar-box svg{opacity:1}
+  .confiar-tit{font-size:13.5px;font-weight:500}
+  .confiar-sub{font-size:11.5px;color:rgba(255,245,240,0.55);margin-top:2px}
+
 </style>
 </head>
 <body>
@@ -226,6 +237,42 @@
 
 </div>
 
+<div class="tab-content" id="content-dospasos">
+  <div class="codigo-icon">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+  </div>
+  <h1 class="login-title serif">Confirmá que <span class="serif-it gradtext" style="font-size:30px">sos vos</span></h1>
+  <p class="login-subtitle">
+    Estás entrando desde un dispositivo nuevo.<br>
+    Te mandamos un código a<br>
+    <span class="codigo-email" id="dosPasosEmail"></span>
+  </p>
+
+  <div class="codigo-inputs" id="dosPasosInputs"></div>
+
+  <div class="confiar-caja" id="confiarCaja" onclick="this.classList.toggle('on')">
+    <div class="confiar-box">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div>
+      <div class="confiar-tit">Confiar en este dispositivo</div>
+      <div class="confiar-sub">No te vamos a pedir el código por 7 días</div>
+    </div>
+  </div>
+
+  <button class="cta-gold submit-btn" id="btn2Pasos" onclick="verificar2Pasos()">VERIFICAR Y ENTRAR</button>
+
+  <div class="reenviar-row">
+    ¿No te llegó? <button class="reenviar-btn" id="btnReenviar2P" onclick="reenviar2Pasos()">Reenviar código</button>
+  </div>
+
+  <button class="volver-btn" onclick="cancelar2Pasos()">← Usar otra cuenta</button>
+
+  <div class="spam-tip">
+    💡 Revisá también <strong>spam</strong> o <strong>promociones</strong>. El código vence en 10 minutos.
+  </div>
+</div>
+
 <script src="supabase-config.js"></script>
 <script src="password-fuerza.js"></script>
 <script>
@@ -263,8 +310,9 @@ function cambiarTab(tab){
   ocultarAlerta();
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.getElementById('content-' + tab).classList.add('active');
-  document.getElementById('tabsRow').style.display = (tab === 'codigo') ? 'none' : 'flex';
-  if(tab !== 'codigo'){
+  const ocultar = (tab === 'codigo' || tab === 'dospasos');
+  document.getElementById('tabsRow').style.display = ocultar ? 'none' : 'flex';
+  if(!ocultar){
     document.getElementById('tabEntrar').classList.toggle('active', tab === 'entrar');
     document.getElementById('tabRegistro').classList.toggle('active', tab === 'registro');
   }
@@ -331,6 +379,166 @@ async function hacerLogin(){
   await refrescarCacheSesion();
   mostrarAlerta('✓ Entrando...', 'success');
   window.location.href = '/index';
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// VERIFICACIÓN EN DOS PASOS
+// ═══════════════════════════════════════════════════════════════════
+
+const CANDIDATAS_2P = [
+  'verificacion-dos-pasos','dos-pasos','verificacion-2pasos',
+  'brave-api','brave-worker','brave-endpoint','brave-service','brave-processor',
+  'smart-api','smart-worker','smart-endpoint','smart-service'
+];
+
+let email2P = '';
+let pass2P = '';
+let CANT_2P = 6;
+
+function tokenDispositivo(){
+  try { return localStorage.getItem('cmm_disp') || null; } catch(e){ return null; }
+}
+function guardarTokenDispositivo(t){
+  try { if(t) localStorage.setItem('cmm_disp', t); } catch(e){}
+}
+
+async function llamar2Pasos(cuerpo){
+  const cab = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+    'apikey': SUPABASE_ANON_KEY
+  };
+
+  let guardada = null;
+  try { guardada = localStorage.getItem('cmm_func_2p'); } catch(e){}
+  const lista = guardada ? [guardada, ...CANDIDATAS_2P.filter(x => x !== guardada)] : CANDIDATAS_2P;
+
+  for(const nombre of lista){
+    try {
+      const r = await fetch(SUPABASE_URL + '/functions/v1/' + nombre, {
+        method:'POST', headers: cab, body: JSON.stringify(cuerpo)
+      });
+      if(r.status === 404) continue;
+      const d = await r.json().catch(() => ({}));
+      try { localStorage.setItem('cmm_func_2p', nombre); } catch(e){}
+      return { ok: r.ok, datos: d };
+    } catch(e){}
+  }
+  return { ok:false, datos:{}, noEncontrada:true };
+}
+
+// ─── Las cajitas del código ───
+function armarCajitas2P(){
+  const cont = document.getElementById('dosPasosInputs');
+  cont.innerHTML = '';
+  for(let i = 0; i < CANT_2P; i++){
+    const inp = document.createElement('input');
+    inp.className = 'codigo-box';
+    inp.type = 'text';
+    inp.inputMode = 'numeric';
+    inp.maxLength = 1;
+    cont.appendChild(inp);
+  }
+
+  const todas = cont.querySelectorAll('.codigo-box');
+  todas.forEach((box, idx) => {
+    box.addEventListener('input', e => {
+      e.target.value = e.target.value.replace(/\D/g,'').slice(-1);
+      e.target.classList.toggle('lleno', !!e.target.value);
+      if(e.target.value && idx < todas.length - 1) todas[idx + 1].focus();
+      if(leerCodigo2P().length === CANT_2P) verificar2Pasos();
+    });
+    box.addEventListener('keydown', e => {
+      if(e.key === 'Backspace' && !e.target.value && idx > 0){
+        todas[idx-1].focus(); todas[idx-1].value=''; todas[idx-1].classList.remove('lleno');
+      }
+    });
+    box.addEventListener('paste', e => {
+      e.preventDefault();
+      const t = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g,'');
+      t.slice(0, todas.length).split('').forEach((d,i) => {
+        todas[i].value = d; todas[i].classList.add('lleno');
+      });
+      if(t.length >= CANT_2P) verificar2Pasos();
+    });
+  });
+}
+
+function leerCodigo2P(){
+  return [...document.querySelectorAll('#dosPasosInputs .codigo-box')].map(b => b.value).join('');
+}
+function limpiarCodigo2P(){
+  document.querySelectorAll('#dosPasosInputs .codigo-box').forEach(b => {
+    b.value = ''; b.classList.remove('lleno');
+  });
+}
+
+function irAPantalla2Pasos(email){
+  document.getElementById('dosPasosEmail').textContent = email;
+  armarCajitas2P();
+  document.getElementById('confiarCaja').classList.add('on');
+  cambiarTab('dospasos');
+  setTimeout(() => document.querySelector('#dosPasosInputs .codigo-box')?.focus(), 200);
+}
+
+function cancelar2Pasos(){
+  email2P = ''; pass2P = '';
+  limpiarCodigo2P();
+  ocultarAlerta();
+  cambiarTab('entrar');
+}
+
+async function verificar2Pasos(){
+  const cod = leerCodigo2P();
+  if(cod.length !== CANT_2P) return mostrarAlerta('Completá los 6 dígitos');
+
+  ocultarAlerta();
+  cargando('btn2Pasos', 'VERIFICANDO');
+
+  const confiar = document.getElementById('confiarCaja').classList.contains('on');
+  const r = await llamar2Pasos({
+    accion: 'verificar',
+    email: email2P,
+    codigo: cod,
+    confiar: confiar
+  });
+
+  if(!r.ok || !r.datos.exito){
+    listo('btn2Pasos');
+    limpiarCodigo2P();
+    document.querySelector('#dosPasosInputs .codigo-box')?.focus();
+    return mostrarAlerta(r.datos.error || 'No pudimos verificar el código');
+  }
+
+  if(r.datos.token_dispositivo) guardarTokenDispositivo(r.datos.token_dispositivo);
+
+  // Recién ahora entramos de verdad
+  const { error } = await sb.auth.signInWithPassword({ email: email2P, password: pass2P });
+  if(error){
+    listo('btn2Pasos');
+    return mostrarAlerta(traducirError(error.message));
+  }
+
+  await refrescarCacheSesion();
+  pass2P = '';
+  mostrarAlerta('✓ Entrando...', 'success');
+  window.location.href = '/index';
+}
+
+async function reenviar2Pasos(){
+  const btn = document.getElementById('btnReenviar2P');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  const r = await llamar2Pasos({ accion: 'enviar', email: email2P });
+
+  btn.disabled = false;
+  btn.textContent = 'Reenviar código';
+
+  if(!r.ok || r.datos.error) return mostrarAlerta(r.datos.error || 'No pudimos reenviar el código');
+  limpiarCodigo2P();
+  mostrarAlerta('✓ Te mandamos un código nuevo', 'success');
 }
 
 // ─── REGISTRO ──────────────────────────────────────────────────────
