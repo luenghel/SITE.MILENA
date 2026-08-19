@@ -669,8 +669,13 @@ async function anotarseGratis(){
     return;
   }
 
+  // Le mandamos la bienvenida (si falla, no importa: ya tiene acceso)
+  if(typeof darBienvenida === 'function'){
+    darBienvenida(cursoGratisActual.id, user.id);
+  }
+
   if(btnTxt) btnTxt.textContent = '✓ ¡LISTO!';
-  setTimeout(() => window.location.reload(), 700);
+  setTimeout(() => window.location.reload(), 900);
 }
 
 function mostrarModal(logueada) {

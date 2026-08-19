@@ -371,3 +371,53 @@ function textoEspera(info) {
   }
   return 'Se libera en ' + info.dias + ' días';
 }
+
+
+// ═══════════════════════════════════════════════════════════
+// EMAIL DE BIENVENIDA AL INSCRIBIRSE
+// Se llama después de crear el registro de inscripción.
+// Si falla, no pasa nada: la persona ya tiene su acceso.
+// ═══════════════════════════════════════════════════════════
+
+const CANDIDATAS_AVISOS_JS = [
+  'AVISAR-CLASES', 'avisar-clases', 'avisar-clases-liberadas',
+  'quiet-api', 'quiet-worker', 'quiet-endpoint'
+];
+
+async function darBienvenida(cursoId, usuarioId) {
+  if (!sb || !cursoId || !usuarioId) return;
+
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const cab = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + (session?.access_token || SUPABASE_ANON_KEY),
+      'apikey': SUPABASE_ANON_KEY
+    };
+
+    // El nombre de la función lo tenemos guardado
+    let guardada = null;
+    try {
+      const { data } = await sb.from('ajustes').select('valor').eq('clave', 'func_avisos_clases').maybeSingle();
+      if (data && data.valor) guardada = data.valor.trim();
+    } catch (e) {}
+
+    const lista = guardada
+      ? [guardada, ...CANDIDATAS_AVISOS_JS.filter(x => x !== guardada)]
+      : CANDIDATAS_AVISOS_JS;
+
+    for (const nombre of lista) {
+      try {
+        const r = await fetch(SUPABASE_URL + '/functions/v1/' + nombre, {
+          method: 'POST',
+          headers: cab,
+          body: JSON.stringify({ accion: 'bienvenida', curso_id: cursoId, usuario_id: usuarioId })
+        });
+        if (r.status === 404) continue;
+        return;
+      } catch (e) {}
+    }
+  } catch (e) {
+    // Nunca frenamos la inscripción por un problema de email
+  }
+}

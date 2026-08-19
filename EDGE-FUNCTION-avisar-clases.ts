@@ -221,6 +221,86 @@ function plantillaCursoNuevo(nombre: string, curso: any) {
 }
 
 
+// ─── Email: bienvenida al inscribirse ──────────────────────────────
+function plantillaBienvenida(nombre: string, curso: any, primeraClase: any, totalClases: number) {
+  const saludo = escapar((nombre || '').split(' ')[0] || 'Hola')
+  const enlace = primeraClase
+    ? `${SITIO}/clase?curso=${encodeURIComponent(curso.slug)}&clase=${primeraClase.id}`
+    : `${SITIO}/curso-detalle?id=${encodeURIComponent(curso.slug)}`
+
+  const portada = curso.foto_portada
+    ? `<tr><td align="center" style="padding-bottom:24px">
+         <img src="${curso.foto_portada}" alt="" width="220"
+              style="display:block;width:220px;max-width:100%;border-radius:14px;border:0">
+       </td></tr>`
+    : ''
+
+  return `<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0E0509">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0E0509;padding:32px 16px">
+ <tr><td align="center">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+         style="max-width:520px;background:#2D0A18;border-radius:18px;padding:34px 30px;font-family:Georgia,serif;text-align:center">
+
+   <tr><td style="padding-bottom:22px;text-align:left">
+     <div style="font-size:11px;letter-spacing:0.22em;color:#E8B8C4;font-family:Arial,sans-serif">MILENA MACHADO</div>
+     <div style="font-size:12px;color:rgba(255,245,240,0.45);font-family:Arial,sans-serif;margin-top:3px">Creando Mentes Millonarias</div>
+   </td></tr>
+
+   <tr><td style="padding-bottom:16px">
+     <div style="font-size:44px">🎉</div>
+   </td></tr>
+
+   <tr><td style="padding-bottom:10px">
+     <h1 style="margin:0;font-size:26px;font-weight:500;color:#FFF5F0">¡Bienvenida, ${saludo}!</h1>
+   </td></tr>
+
+   <tr><td style="padding-bottom:24px">
+     <p style="margin:0;font-size:15px;line-height:1.6;color:rgba(255,245,240,0.8);font-family:Arial,sans-serif">
+       Ya estás inscripta en<br>
+       <strong style="color:#FAC775;font-size:17px">${escapar(curso.titulo)}</strong>
+     </p>
+   </td></tr>
+
+   ${portada}
+
+   ${primeraClase ? `
+   <tr><td style="padding-bottom:22px">
+     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+            style="background:rgba(255,245,240,0.04);border-radius:12px;padding:16px;text-align:left">
+       <tr><td style="font-size:10px;letter-spacing:0.16em;color:rgba(255,245,240,0.45);font-family:Arial,sans-serif;padding-bottom:6px">EMPEZÁ POR ACÁ</td></tr>
+       <tr><td style="font-size:15px;color:#FFF5F0;font-family:Arial,sans-serif">▶ ${escapar(primeraClase.titulo)}</td></tr>
+       ${totalClases ? `<tr><td style="font-size:12px;color:rgba(255,245,240,0.5);font-family:Arial,sans-serif;padding-top:6px">El curso tiene ${totalClases} clase${totalClases === 1 ? '' : 's'} en total</td></tr>` : ''}
+     </table>
+   </td></tr>` : ''}
+
+   <tr><td align="center" style="padding-bottom:26px">
+     <a href="${enlace}" style="display:inline-block;padding:17px 38px;background:#DDA63F;color:#2E0C05;text-decoration:none;border-radius:8px;font-size:13px;font-weight:bold;letter-spacing:0.14em;font-family:Arial,sans-serif">
+       EMPEZAR AHORA
+     </a>
+   </td></tr>
+
+   <tr><td style="padding-bottom:22px">
+     <p style="margin:0;font-size:13px;line-height:1.6;color:rgba(255,245,240,0.6);font-family:Arial,sans-serif">
+       Cualquier duda, escribinos respondiendo este correo.<br>
+       Estamos para acompañarte.
+     </p>
+   </td></tr>
+
+   <tr><td style="border-top:1px solid rgba(255,245,240,0.1);padding-top:20px;text-align:left">
+     <p style="margin:0;font-size:11.5px;color:rgba(255,245,240,0.45);font-family:Arial,sans-serif">
+       Guardá este correo: tenés el enlace directo a tu curso.
+     </p>
+   </td></tr>
+
+  </table>
+ </td></tr>
+</table>
+</body></html>`
+}
+
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
 
@@ -265,6 +345,61 @@ Deno.serve(async (req) => {
       } catch (e) {
         return { ok: false, error: String(e?.message || e) }
       }
+    }
+
+    // ═══ BIENVENIDA: alguien se acaba de inscribir ═══
+    if (accion === 'bienvenida') {
+      const cursoId = cuerpo.curso_id
+      const usuarioId = cuerpo.usuario_id
+      if (!cursoId || !usuarioId) return json({ error: 'Faltan datos' }, 400)
+
+      // ¿Ya le dimos la bienvenida a este curso?
+      const { data: ya } = await supabase.from('avisos_clases')
+        .select('id').eq('usuario_id', usuarioId).eq('curso_id', cursoId).is('clase_id', null).maybeSingle()
+      if (ya) return json({ exito: true, ya_enviado: true })
+
+      const { data: perfil } = await supabase.from('perfiles')
+        .select('email, nombre, recibir_novedades').eq('id', usuarioId).maybeSingle()
+      if (!perfil || !perfil.email) return json({ exito: true, enviados: 0 })
+
+      const { data: curso } = await supabase.from('cursos').select('*').eq('id', cursoId).maybeSingle()
+      if (!curso) return json({ error: 'No encontramos el curso' }, 404)
+
+      // La primera clase, para darle un punto de partida
+      const { data: mods } = await supabase.from('modulos')
+        .select('id, orden').eq('curso_id', cursoId).eq('publicado', true).order('orden', { ascending: true })
+
+      let primera = null
+      let total = 0
+      const { data: todasClases } = await supabase.from('clases')
+        .select('id, titulo, orden, modulo_id').eq('curso_id', cursoId).eq('publicado', true)
+
+      total = (todasClases || []).length
+      for (const m of (mods || [])) {
+        const delMod = (todasClases || [])
+          .filter((x: any) => x.modulo_id === m.id)
+          .sort((a: any, b: any) => (a.orden || 0) - (b.orden || 0))
+        if (delMod.length > 0) { primera = delMod[0]; break }
+      }
+
+      const r = await mandar(
+        perfil.email,
+        `¡Bienvenida a ${curso.titulo}!`,
+        plantillaBienvenida(perfil.nombre || '', curso, primera, total)
+      )
+
+      // Dejamos constancia (clase_id vacío = fue la bienvenida)
+      await supabase.from('avisos_clases').insert({
+        usuario_id: usuarioId,
+        clase_id: null,
+        curso_id: cursoId,
+        email: perfil.email,
+        enviado: r.ok,
+        detalle_error: r.ok ? null : (r.error || null),
+      })
+
+      if (!r.ok) return json({ error: r.error || 'No se pudo enviar' }, 400)
+      return json({ exito: true, enviados: 1 })
     }
 
     // ═══ CLASE NUEVA: avisamos a quienes tienen el curso ═══

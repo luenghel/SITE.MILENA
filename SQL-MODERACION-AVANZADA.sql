@@ -124,7 +124,8 @@ create policy "Equipo modera comentarios"
   using (public.es_equipo());
 
 -- ─── 5. MÉTRICAS DE PARTICIPACIÓN POR MIEMBRO ──────────────────────
-create or replace view public.metricas_miembros as
+drop view if exists public.metricas_miembros;
+create view public.metricas_miembros as
 select
   p.id,
   p.nombre,

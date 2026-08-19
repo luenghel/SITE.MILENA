@@ -130,7 +130,10 @@ $$;
 grant execute on function public.fecha_liberacion_clase(uuid, uuid) to authenticated;
 
 -- ─── 5. LAS QUE SE LIBERARON Y NO SE AVISARON ──────────────────────
-create or replace view public.clases_por_avisar as
+-- La borramos primero: al cambiar sus columnas, "create or replace" falla
+drop view if exists public.clases_por_avisar;
+
+create view public.clases_por_avisar as
 select
   co.usuario_id,
   p.email,

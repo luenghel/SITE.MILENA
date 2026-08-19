@@ -93,7 +93,8 @@ create policy "Equipo ve avisos de clases"
   on public.avisos_clases for select using (public.es_equipo());
 
 -- ─── 4. QUÉ CLASES SE LIBERARON HOY Y NO SE AVISARON ───────────────
-create or replace view public.clases_por_avisar as
+drop view if exists public.clases_por_avisar;
+create view public.clases_por_avisar as
 select
   co.usuario_id,
   p.email,

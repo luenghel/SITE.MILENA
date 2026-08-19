@@ -245,8 +245,12 @@
       }
     }
 
+    if(typeof darBienvenida === 'function'){
+      darBienvenida(cursoActual.id, user.id);
+    }
+
     btnText.textContent = '✓ ¡Listo!';
-    setTimeout(() => { window.location.href = '/curso-detalle?id=' + cursoSlug; }, 700);
+    setTimeout(() => { window.location.href = '/curso-detalle?id=' + cursoSlug; }, 900);
   }
 
   async function iniciarPago() {
