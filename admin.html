@@ -3369,6 +3369,82 @@ body{visibility:hidden}
     renderCarruseles();
   }
 
+  // ─── Vista previa de las imágenes del banner ───
+  function pintarPreviewCarrusel(base, url){
+    const vacio = document.getElementById(base + 'Empty');
+    const prev = document.getElementById(base + 'Preview');
+    if(!vacio || !prev) return;
+    if(url){
+      vacio.style.display = 'none';
+      prev.style.display = 'block';
+      prev.innerHTML = '<div class="image-uploader-preview" style="background-image:url(\'' + url + '\')"></div>';
+    } else {
+      vacio.style.display = '';
+      prev.style.display = 'none';
+      prev.innerHTML = '';
+    }
+  }
+
+  // ─── Traduce los errores de subida ───
+  function explicarErrorSubida(err){
+    const m = String(err || '').toLowerCase();
+    if(m.includes('bucket not found') || m.includes('not found')){
+      return 'No existe el depósito de imágenes. Creá el bucket <strong>imagenes</strong> en Supabase → Storage, marcándolo como público.';
+    }
+    if(m.includes('row-level security') || m.includes('policy') || m.includes('unauthorized') || m.includes('403')){
+      return 'No tenés permiso para subir. Corré el archivo <strong>SQL-REPARAR-IMAGENES.sql</strong> en Supabase.';
+    }
+    if(m.includes('payload too large') || m.includes('413')){
+      return 'La imagen pesa demasiado. Probá con una de menos de 5 MB.';
+    }
+    if(m.includes('failed to fetch')){
+      return 'Sin conexión con el servidor. Revisá tu internet.';
+    }
+    return err || 'Error desconocido';
+  }
+
+  // ─── Subir la imagen de celular ───
+  async function subirFotoCarruselMovil(event){
+    const file = event.target.files[0];
+    if(!file) return;
+    estadoCarrusel('');
+
+    if(typeof subirImagen !== 'function'){
+      return estadoCarrusel('<strong>Falta actualizar el sitio.</strong><br>Volvé a subir el ZIP completo a GitHub.', 'error');
+    }
+
+    const vacio = document.getElementById('carruselMovilEmpty');
+    vacio.innerHTML = '<div class="image-uploading"><div class="upload-spinner"></div> Subiendo...</div>';
+    estadoCarrusel('Subiendo la imagen de celular...', 'trabajando');
+
+    const r = await subirImagen(file, 'carruseles');
+    if(r.exito){
+      document.getElementById('carruselMovilUrl').value = r.url;
+      pintarPreviewCarrusel('carruselMovil', r.url);
+      estadoCarrusel('✓ Imagen de celular lista', 'ok');
+    } else {
+      vacio.innerHTML = '<div class="image-uploader-text">Subir la versión vertical</div>';
+      estadoCarrusel('<strong>No se pudo subir.</strong><br>' + explicarErrorSubida(r.error), 'error');
+    }
+    event.target.value = '';
+  }
+
+  // ─── Eliminar un banner desde la lista ───
+  async function borrarBannerDirecto(id){
+    const b = carruseles.find(x => x.id === id);
+    if(!confirm('¿Eliminar el banner "' + (b?.titulo || 'sin nombre') + '"?\n\nNo se puede deshacer.')) return;
+
+    const { error } = await sb.from('carruseles').delete().eq('id', id);
+    if(error){
+      alert('No se pudo eliminar.\n\n' + error.message +
+        '\n\nSi menciona "policy" o "row-level security", corré SQL-REPARAR-IMAGENES.sql en Supabase.');
+      return;
+    }
+
+    mostrarToast('✓ Banner eliminado');
+    await cargarCarruseles();
+  }
+
   function renderCarruseles() {
     const grid = document.getElementById('carruselesGrid');
     if (carruseles.length === 0) {
@@ -3453,22 +3529,27 @@ body{visibility:hidden}
   async function subirFotoCarrusel(event) {
     const file = event.target.files[0];
     if (!file) return;
+    estadoCarrusel('');
+
+    if(typeof subirImagen !== 'function'){
+      return estadoCarrusel('<strong>Falta actualizar el sitio.</strong><br>El archivo supabase-config.js está viejo. Volvé a subir el ZIP completo a GitHub.', 'error');
+    }
 
     const empty = document.getElementById('carruselFotoEmpty');
-    const preview = document.getElementById('carruselFotoPreview');
-
     empty.innerHTML = '<div class="image-uploading"><div class="upload-spinner"></div> Subiendo...</div>';
+    estadoCarrusel('Subiendo la imagen...', 'trabajando');
 
     const result = await subirImagen(file, 'carruseles');
 
     if (result.exito) {
       document.getElementById('carruselFotoUrl').value = result.url;
       pintarPreviewCarrusel('carruselFoto', result.url);
-      mostrarToast('✓ Imagen de computadora subida');
+      estadoCarrusel('✓ Imagen de computadora lista', 'ok');
     } else {
-      mostrarToast('Error: ' + result.error, true);
       empty.innerHTML = '<div class="image-uploader-text">Subir la versión apaisada</div>';
+      estadoCarrusel('<strong>No se pudo subir.</strong><br>' + explicarErrorSubida(result.error), 'error');
     }
+    event.target.value = '';
   }
 
   function estadoCarrusel(txt, tipo){
@@ -4491,14 +4572,6 @@ body{visibility:hidden}
     if(error) return mostrarToast('Error: ' + error.message, true);
     mostrarToast(valor ? '🙈 Publicación oculta de la comunidad' : 'Publicación visible de nuevo');
     await cargarModeracion();
-  }
-
-  async function modAprobar(postId){
-    const { error } = await sb.rpc('aprobar_post', { p_post_id: postId });
-    if(error) return mostrarToast('Error: ' + error.message, true);
-    mostrarToast('✓ Publicación aprobada y visible de nuevo');
-    await cargarModeracion();
-    await cargarAlumnas();
   }
 
   async function modConfirmar(postId){
