@@ -78,8 +78,10 @@
 
   /* HERO */
   /* ═══ HERO: solo el banner y el botón · 2.5:1 (1920×768) ═══ */
-  /* El alto lo define la imagen, no un valor fijo */
-  .hero{position:relative;overflow:hidden;width:100%;background:#1A0A12;line-height:0}
+  /* El alto lo define la imagen. Mientras carga, reservamos el espacio
+     para que la página no salte y los cursos no aparezcan primero. */
+  .hero{position:relative;overflow:hidden;width:100%;background:#1A0A12;line-height:0;aspect-ratio:2.5/1;max-height:88vh}
+  .hero.medido{aspect-ratio:auto}
   .hero-espaciador{display:block;width:100%;height:auto;max-height:88vh;object-fit:cover;visibility:hidden;transition:height 0.5s ease}
   /* Si todavía no hay banners, un alto de respaldo */
   .hero.sin-banner{aspect-ratio:2.5/1;min-height:340px}
@@ -124,7 +126,6 @@
   .hero-tags{display:flex;gap:22px;align-items:center;margin-top:32px;font-size:12px;letter-spacing:0.13em}
   .hero-tags .quiet{color:rgba(255,245,240,0.45)}
   .hero-tags .strong{color:#FFF5F0;font-weight:500}
-  .hero-cta{margin-top:32px;width:380px;padding:20px 36px;font-size:13.5px;font-weight:500;border-radius:14px;letter-spacing:0.2em;display:block}
 
   /* SECTION */
   section.row-section{padding:40px 40px 0;max-width:1400px;margin:0 auto}
@@ -236,7 +237,8 @@
   .logo-text{font-size:11px;letter-spacing:0.16em}
 
   /* ═══ HERO EN CELULAR · imagen vertical 4:5 (1080×1350) ═══ */
-  .hero{max-height:none;min-height:0}
+  .hero{aspect-ratio:4/5;max-height:none;min-height:0}
+  .hero.medido{aspect-ratio:auto}
   .hero-espaciador{max-height:none}
   .hero.sin-banner{aspect-ratio:4/5;min-height:0}
   .hero-encima{padding:0 18px 22px}
@@ -307,12 +309,6 @@
     padding:26px 20px calc(26px + var(--safe-bot,0px));
     margin-top:30px;
   }
-}
-
-  .vende{font-size:36px}
-  .poster{width:152px}
-  .vertical-card{flex:0 0 136px}
-}
 
   /* Nada se sale de la pantalla en celular */
   @media (max-width:900px){
@@ -331,10 +327,6 @@
   .hero{max-height:none}
   .hero-inner{max-width:100%}
   .hero-badge{margin-bottom:12px}
-  .hero-desc{margin-top:14px;font-size:14.5px}
-  .hero-tags{margin-top:16px;font-size:10px;gap:12px}
-  .hero-cta{margin-top:20px;padding:16px 20px}
-  .hero-dots{bottom:12px;right:16px}
 }
 
 
@@ -638,17 +630,26 @@
       : '';
     const dotColor = esGratis ? '#5DCAA5' : '#D4A356';
 
+    // Si el curso tiene foto de portada, se usa esa; si no, el color
+    const fondoCard = curso.foto_portada
+      ? "background-image:url('" + curso.foto_portada + "');background-size:cover;background-position:center"
+      : "background:" + gradient;
+
+    const destino = esExterno ? curso.enlace_externo : ('/curso-detalle?id=' + curso.slug);
+    const target = esExterno ? ' target="_blank" rel="noopener"' : '';
+
     const iconHTML = necesitaCandado
       ? '<div class="top-icon" style="background:rgba(212,163,86,0.2);border:0.5px solid rgba(212,163,86,0.55)"><svg width="11" height="11" viewBox="0 0 24 24" fill="#FAC775"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#FAC775" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="#FAC775" stroke-width="2" fill="none" stroke-linecap="round"/></svg></div>'
       : '<div class="top-icon" style="background:rgba(14,5,9,0.55);border:0.5px solid rgba(255,245,240,0.22)"><svg width="10" height="10" viewBox="0 0 24 24" fill="#FFF5F0"><path d="M8 5v14l11-7z"/></svg></div>';
 
     return `
       <div class="poster-item">
-        <a href="/curso-detalle?id=${curso.slug}" class="poster-hover poster">
+        <a href="${destino}"${target} class="poster-hover poster">
           <div class="poster-shadow" style="${fondoCard}">
+            ${curso.foto_portada ? '' : `
             <div style="position:absolute;width:130px;height:130px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>
             <div style="position:absolute;width:100px;height:100px;right:-15px;top:30px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 70%)"></div>
-            <div class="silhouette"></div>
+            <div class="silhouette"></div>`}
             <div class="scrim"></div>
             <div class="poster-inner">
               ${iconHTML}
@@ -746,10 +747,14 @@
   // así cada banner se muestra completo sin recortarse
   function ajustarAlto(i){
     const esp = document.getElementById('heroEspaciador');
+    const hero = document.getElementById('heroBanner');
     const s = principalSlides[i];
     if(!esp || !s) return;
     const url = imagenDe(s);
-    if(esp.getAttribute('src') !== url) esp.setAttribute('src', url);
+    if(esp.getAttribute('src') === url) return;
+
+    esp.onload = function(){ hero?.classList.add('medido'); };
+    esp.setAttribute('src', url);
   }
 
   // El botón cambia según el banner que se esté viendo
