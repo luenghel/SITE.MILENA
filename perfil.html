@@ -157,6 +157,9 @@
   .ins-op-ico{font-size:15px}
   .ins-vacio{font-size:12px;color:rgba(255,245,240,0.45);padding:12px;background:rgba(255,245,240,0.03);border-radius:10px;line-height:1.5}
 
+
+  .insignia-img{width:44px;height:44px;object-fit:contain;display:block}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -392,17 +395,40 @@ body{visibility:hidden}
 let usuarioActual = null;
 let perfilActual = null;
 
-const CATALOGO_INSIGNIAS = [
-  { id:'bienvenida', emoji:'👋', hex:'hex-silver', nombre:'Bienvenida',      desc:'Te uniste a CMM',            rareza:'COMÚN',      clase:'rarity-common' },
-  { id:'primer_post', emoji:'✏️', hex:'hex-silver', nombre:'Primer post',    desc:'Posteaste en la comunidad',  rareza:'COMÚN',      clase:'rarity-common' },
-  { id:'primer_curso', emoji:'🎓', hex:'hex-silver', nombre:'Primer curso',  desc:'Comprate tu primer curso',   rareza:'COMÚN',      clase:'rarity-common' },
-  { id:'conversadora', emoji:'💬', hex:'hex-silver', nombre:'Conversadora',  desc:'10 comentarios en la comunidad', rareza:'RARA',   clase:'rarity-rare' },
-  { id:'constancia', emoji:'🔥', hex:'hex-silver', nombre:'Constancia',      desc:'10 publicaciones tuyas',     rareza:'RARA',       clase:'rarity-rare' },
-  { id:'top_voz', emoji:'⭐', hex:'hex-gold', nombre:'Top voz',              desc:'25 me gusta recibidos',      rareza:'ÉPICA',      clase:'rarity-epic' },
-  { id:'creadora', emoji:'✨', hex:'hex-gold', nombre:'Creadora',            desc:'25 publicaciones tuyas',     rareza:'ÉPICA',      clase:'rarity-epic' },
-  { id:'coleccionista', emoji:'📚', hex:'hex-gold', nombre:'Coleccionista',  desc:'3 cursos comprados',         rareza:'ÉPICA',      clase:'rarity-epic' },
-  { id:'mente_cmm', emoji:'💎', hex:'hex-diamond', nombre:'Mente CMM',       desc:'Tenés el curso principal',   rareza:'LEGENDARIA', clase:'rarity-legendary' }
-];
+// Las insignias se cargan desde la base, así se pueden editar desde el admin
+let CATALOGO_INSIGNIAS = [];
+
+const ESTILO_RAREZA = {
+  comun:      { txt:'COMÚN',      hex:'hex-silver',  clase:'rarity-common' },
+  rara:       { txt:'RARA',       hex:'hex-silver',  clase:'rarity-rare' },
+  epica:      { txt:'ÉPICA',      hex:'hex-gold',    clase:'rarity-epic' },
+  legendaria: { txt:'LEGENDARIA', hex:'hex-diamond', clase:'rarity-legendary' }
+};
+
+async function cargarCatalogo(){
+  const { data, error } = await sb.from('insignias')
+    .select('*').eq('activa', true).order('orden', { ascending: true });
+
+  if(error || !data){
+    CATALOGO_INSIGNIAS = [];
+    return;
+  }
+
+  CATALOGO_INSIGNIAS = data.map(i => {
+    const r = ESTILO_RAREZA[i.rareza] || ESTILO_RAREZA.comun;
+    return {
+      id: i.id,
+      clave: i.clave,
+      emoji: i.icono || '⭐',
+      imagen: i.imagen_url || null,
+      nombre: i.nombre,
+      desc: i.descripcion || '',
+      rareza: r.txt,
+      hex: r.hex,
+      clase: r.clase
+    };
+  });
+}
 
 const NIVELES = [
   { n:1, nombre:'INICIANDO',  min:0 },
@@ -754,12 +780,24 @@ async function guardarPerfil(){
 
 function renderInsignias(conseguidas){
   const grid = document.getElementById('insigniasGrid');
+  if(CATALOGO_INSIGNIAS.length === 0){
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:rgba(255,245,240,0.5)">' +
+      '<div style="font-size:38px;opacity:0.35;margin-bottom:10px">🏅</div>Todavía no hay insignias cargadas</div>';
+    return;
+  }
+
   grid.innerHTML = CATALOGO_INSIGNIAS.map(i => {
     const tiene = conseguidas.has(i.id);
+    const contenido = tiene
+      ? (i.imagen
+          ? '<img src="' + i.imagen + '" class="insignia-img" alt="">'
+          : i.emoji)
+      : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.4)" stroke-width="1.6" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+
     return `
       <div class="insignia ${tiene ? '' : 'locked'}">
         <div class="hexagon ${tiene ? i.hex : 'hex-locked'}">
-          ${tiene ? i.emoji : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.4)" stroke-width="1.6" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>'}
+          ${contenido}
         </div>
         <div class="insignia-name">${i.nombre}</div>
         <div class="insignia-desc">${i.desc}</div>
@@ -825,16 +863,17 @@ async function cargarDatos(){
   // Diamantes = puntos de actividad
   const diamantes = nCursos*100 + nPosts*10 + nComentarios*5 + nLikesRecibidos*2;
 
-  // Insignias conseguidas
-  const conseguidas = new Set(['bienvenida']);
-  if(nPosts >= 1) conseguidas.add('primer_post');
-  if(nCursos >= 1) conseguidas.add('primer_curso');
-  if(nComentarios >= 10) conseguidas.add('conversadora');
-  if(nPosts >= 10) conseguidas.add('constancia');
-  if(nLikesRecibidos >= 25) conseguidas.add('top_voz');
-  if(nPosts >= 25) conseguidas.add('creadora');
-  if(nCursos >= 3) conseguidas.add('coleccionista');
-  if(tieneCMM) conseguidas.add('mente_cmm');
+  // Traemos las insignias que se pueden ganar
+  await cargarCatalogo();
+
+  // Que se otorguen las automáticas que correspondan
+  try { await sb.rpc('revisar_mis_insignias'); } catch(e){}
+
+  // Las que realmente tiene, según la base
+  const conseguidas = new Set();
+  const { data: mias } = await sb.from('usuario_insignias')
+    .select('insignia_id').eq('usuario_id', usuarioActual.id);
+  (mias || []).forEach(x => conseguidas.add(x.insignia_id));
 
   document.getElementById('stInsignias').textContent = conseguidas.size;
   document.getElementById('stCursos').textContent = nCursos;
