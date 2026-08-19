@@ -623,6 +623,9 @@ let insigniaElegida = null;
 async function cargarMisInsignias(){
   if(!sb || !usuarioActual) return;
 
+  // Por si se ganó alguna nueva
+  try { await sb.rpc('revisar_mis_insignias'); } catch(e){}
+
   const { data } = await sb.from('usuario_insignias')
     .select('insignia_id, insignias(id, nombre, icono, color, activa)')
     .eq('usuario_id', usuarioActual.id);

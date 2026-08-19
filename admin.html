@@ -954,6 +954,21 @@
   .ins-color-op:hover{transform:scale(1.1)}
   .ins-color-op.sel{border-color:#FFF5F0;transform:scale(1.12)}
 
+
+  .acc-insignias{padding:14px 15px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:12px;margin-bottom:16px}
+  .acc-ins-cab{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px;flex-wrap:wrap}
+  .acc-ins-tit{font-size:12.5px;font-weight:500}
+  .acc-ins-revisar{padding:6px 11px;background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.38);border-radius:8px;color:#FAC775;font-size:10.5px;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .acc-ins-revisar:hover{background:rgba(212,163,86,0.24)}
+  .acc-ins-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:11px}
+  .acc-ins-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:14px;border:0.5px solid;font-size:11px}
+  .acc-ins-quitar{background:none;border:none;color:inherit;opacity:0.5;cursor:pointer;font-size:13px;line-height:1;padding:0 0 0 3px;font-family:inherit}
+  .acc-ins-quitar:hover{opacity:1}
+  .acc-ins-vacio{font-size:11.5px;color:rgba(255,245,240,0.45);margin-bottom:11px}
+  .acc-ins-dar{display:flex;gap:8px;align-items:center}
+  .acc-ins-btn{padding:9px 15px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.16);border-radius:9px;color:#FFF5F0;font-size:11.5px;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .acc-ins-btn:hover{background:rgba(212,163,86,0.18);border-color:rgba(212,163,86,0.45);color:#FAC775}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -2630,6 +2645,18 @@ body{visibility:hidden}
         <div class="form-label" style="margin-bottom:9px">MENSAJE (opcional)</div>
         <textarea class="form-textarea" id="accMensaje" placeholder="Algo más que quieras explicarle. Va en el email." style="margin-bottom:16px"></textarea>
 
+        <div class="acc-insignias">
+          <div class="acc-ins-cab">
+            <div class="acc-ins-tit">🏅 Insignias de esta persona</div>
+            <button type="button" class="acc-ins-revisar" onclick="revisarInsigniasDe()">Revisar automáticas</button>
+          </div>
+          <div id="accInsLista"></div>
+          <div class="acc-ins-dar">
+            <select class="form-select" id="accInsSelect" style="flex:1"></select>
+            <button type="button" class="acc-ins-btn" onclick="darInsignia()">Otorgar</button>
+          </div>
+        </div>
+
         <div class="acc-check on" id="accAvisar" onclick="this.classList.toggle('on')">
           <div class="acc-check-box">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -2954,7 +2981,11 @@ body{visibility:hidden}
         <h1 class="header-title">Las <span class="serif-it gradtext" style="font-size:34px">insignias</span></h1>
         <p class="header-sub">Distinciones que las alumnas muestran junto a su nombre.</p>
       </div>
-      <div class="header-actions">
+      <div class="header-actions" style="display:flex;gap:9px;flex-wrap:wrap">
+        <button class="btn-secondary" onclick="repartirInsignias()" id="btnRepartir">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+          Repartir a todas
+        </button>
         <button class="cta-gold btn-primary" onclick="abrirInsignia()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
           NUEVA INSIGNIA
@@ -3548,6 +3579,13 @@ body{visibility:hidden}
 
     insignias = data || [];
     document.getElementById('insigniasCount').textContent = insignias.filter(i => i.activa).length;
+
+    // Cuántas personas tienen cada una
+    const { data: otorgadas } = await sb.from('usuario_insignias').select('insignia_id');
+    const cuenta = {};
+    (otorgadas || []).forEach(x => { cuenta[x.insignia_id] = (cuenta[x.insignia_id] || 0) + 1; });
+    insignias.forEach(i => { i._cuantas = cuenta[i.id] || 0; });
+
     renderInsignias();
   }
 
@@ -3581,10 +3619,36 @@ body{visibility:hidden}
           (i.tipo === 'automatica' && i.cantidad
             ? 'Con ' + i.cantidad + ' ' + (criterios[i.criterio] || i.criterio)
             : 'La otorgás vos') +
+          ' · <strong style="color:' + color + '">' + (i._cuantas || 0) + ' la tienen</strong>' +
           (i.activa ? '' : ' · apagada') +
         '</div>' +
       '</div>';
     }).join('');
+  }
+
+  async function repartirInsignias(){
+    const btn = document.getElementById('btnRepartir');
+    btn.disabled = true;
+    btn.textContent = 'Revisando...';
+
+    const { data, error } = await sb.rpc('otorgar_insignias', { p_usuario_id: null });
+
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg> Repartir a todas';
+
+    if(error){
+      return mostrarToast(
+        String(error.message).includes('does not exist')
+          ? 'Falta correr SQL-OTORGAR-INSIGNIAS.sql en Supabase'
+          : 'Error: ' + error.message, true);
+    }
+
+    const n = (data || []).length;
+    mostrarToast(n > 0
+      ? '✓ Otorgamos ' + n + ' insignia(s) nueva(s)'
+      : 'Todo al día: nadie ganó insignias nuevas');
+
+    await cargarInsignias();
   }
 
   function pintarPreviaIns(){
@@ -5406,6 +5470,101 @@ body{visibility:hidden}
   // ============================
   // ACCIONES SOBRE MIEMBROS
   // ============================
+  // ─── Insignias de una persona (en el modal de gestión) ───
+  let insigniasDeEsta = [];
+
+  async function cargarInsigniasDe(usuarioId){
+    const cont = document.getElementById('accInsLista');
+    const sel = document.getElementById('accInsSelect');
+    if(!cont) return;
+
+    const { data, error } = await sb.from('usuario_insignias')
+      .select('id, insignia_id').eq('usuario_id', usuarioId);
+
+    if(error){
+      cont.innerHTML = '<div class="acc-ins-vacio">' +
+        (String(error.message).includes('does not exist')
+          ? 'Falta correr SQL-INSIGNIAS-Y-PROXIMOS.sql'
+          : esc(error.message)) + '</div>';
+      return;
+    }
+
+    insigniasDeEsta = data || [];
+    const tieneIds = insigniasDeEsta.map(x => x.insignia_id);
+
+    // Las que ya tiene
+    if(insigniasDeEsta.length === 0){
+      cont.innerHTML = '<div class="acc-ins-vacio">Todavía no tiene ninguna</div>';
+    } else {
+      cont.innerHTML = '<div class="acc-ins-chips">' + insigniasDeEsta.map(ui => {
+        const i = insignias.find(x => x.id === ui.insignia_id);
+        if(!i) return '';
+        const col = i.color || '#FAC775';
+        return '<span class="acc-ins-chip" style="background:' + col + '1F;border-color:' + col + '66;color:' + col + '">' +
+          (i.icono || '⭐') + ' ' + esc(i.nombre) +
+          '<button class="acc-ins-quitar" onclick="quitarInsignia(\'' + ui.id + '\')" title="Quitar">×</button>' +
+        '</span>';
+      }).join('') + '</div>';
+    }
+
+    // Las que puede recibir
+    const faltantes = insignias.filter(i => i.activa !== false && !tieneIds.includes(i.id));
+    sel.innerHTML = faltantes.length === 0
+      ? '<option value="">Ya tiene todas</option>'
+      : '<option value="">Elegí una para otorgar...</option>' +
+        faltantes.map(i => '<option value="' + i.id + '">' + (i.icono || '⭐') + ' ' + esc(i.nombre) +
+          (i.tipo === 'automatica' ? ' (automática)' : '') + '</option>').join('');
+  }
+
+  async function darInsignia(){
+    const id = document.getElementById('accUsuarioId').value;
+    const insId = document.getElementById('accInsSelect').value;
+    if(!insId) return estadoAcc('Elegí una insignia de la lista', 'error');
+
+    const { error } = await sb.from('usuario_insignias').insert({
+      usuario_id: id, insignia_id: insId
+    });
+
+    if(error){
+      if(String(error.message).includes('duplicate')) return estadoAcc('Ya la tiene', 'trabajando');
+      return estadoAcc('No se pudo otorgar: ' + error.message, 'error');
+    }
+
+    const i = insignias.find(x => x.id === insId);
+    estadoAcc('✓ Le diste la insignia ' + (i ? i.icono + ' ' + esc(i.nombre) : ''), 'ok');
+    await cargarInsigniasDe(id);
+  }
+
+  async function quitarInsignia(registroId){
+    if(!confirm('¿Quitarle esta insignia?')) return;
+    const { error } = await sb.from('usuario_insignias').delete().eq('id', registroId);
+    if(error) return estadoAcc('No se pudo quitar: ' + error.message, 'error');
+    estadoAcc('Insignia quitada', 'trabajando');
+    await cargarInsigniasDe(document.getElementById('accUsuarioId').value);
+  }
+
+  async function revisarInsigniasDe(){
+    const id = document.getElementById('accUsuarioId').value;
+    estadoAcc('Revisando qué se ganó...', 'trabajando');
+
+    const { data, error } = await sb.rpc('otorgar_insignias', { p_usuario_id: id });
+
+    if(error){
+      return estadoAcc(
+        String(error.message).includes('does not exist')
+          ? 'Falta correr SQL-OTORGAR-INSIGNIAS.sql en Supabase.'
+          : 'Error: ' + error.message, 'error');
+    }
+
+    const n = (data || []).length;
+    estadoAcc(n > 0
+      ? '✓ Le otorgamos ' + n + ' insignia(s) nueva(s)'
+      : 'Ya tiene todas las que se ganó hasta ahora', n > 0 ? 'ok' : 'trabajando');
+
+    await cargarInsigniasDe(id);
+  }
+
+
   let accAccion = 'aviso';
 
   function abrirAcciones(id){
@@ -5455,6 +5614,7 @@ body{visibility:hidden}
     document.getElementById('btnAplicarAccion').textContent = 'APLICAR';
 
     estadoAcc('');
+    cargarInsigniasDe(id);
     document.getElementById('accionesModal').classList.add('show');
   }
 

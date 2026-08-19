@@ -1150,6 +1150,9 @@ const waitSupaCom = setInterval(async () => {
 
   await cargarCatalogoInsignias();
 
+  // Revisamos si se ganó alguna insignia nueva
+  try { await sb.rpc('revisar_mis_insignias'); } catch(e){}
+
   if(esAdmin) document.getElementById('chipAnuncio').style.display = '';
 
   // Miembro bloqueado: no puede publicar
