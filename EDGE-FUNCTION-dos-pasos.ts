@@ -145,11 +145,22 @@ Deno.serve(async (req) => {
     if (!email) return json({ error: 'Falta el email' }, 400)
 
     // ─── Buscar a la persona ───
-    const { data: perfil } = await admin
+    const { data: perfil, error: errPerfil } = await admin
       .from('perfiles')
       .select('id, nombre, email, dos_pasos')
       .ilike('email', email.trim())
       .maybeSingle()
+
+    if (errPerfil) {
+      const m = String(errPerfil.message || '')
+      if (m.includes('dos_pasos')) {
+        return json({
+          error: 'Falta correr SQL-DOS-PASOS.sql en Supabase (no existe la columna dos_pasos).',
+          requiere: false
+        }, 400)
+      }
+      return json({ error: 'Error al buscar el perfil: ' + m, requiere: false }, 400)
+    }
 
     if (!perfil) {
       // No confirmamos ni desmentimos que exista
@@ -163,6 +174,17 @@ Deno.serve(async (req) => {
     // ═══ REVISAR: ¿hace falta el código? ═══
     if (accion === 'revisar') {
       if (perfil.dos_pasos === false) return json({ requiere: false })
+
+      // Verificamos que exista la tabla de dispositivos
+      const { error: errTabla } = await admin
+        .from('dispositivos_confiables').select('id').limit(1)
+
+      if (errTabla && String(errTabla.message).includes('does not exist')) {
+        return json({
+          error: 'Falta correr SQL-DOS-PASOS.sql en Supabase (no existen las tablas).',
+          requiere: false
+        }, 400)
+      }
 
       if (token_dispositivo) {
         const th = await hashear(token_dispositivo)

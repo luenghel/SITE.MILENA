@@ -89,7 +89,7 @@ function plantilla(nombre: string, curso: string, clases: string[], slug: string
 
 
 // ─── Email: clase nueva en un curso ────────────────────────────────
-function plantillaClaseNueva(nombre: string, curso: string, clase: string, desc: string, slug: string, claseId: string) {
+function plantillaClaseNueva(nombre: string, curso: string, clase: string, desc: string, slug: string, claseId: string, mensaje: string) {
   const saludo = escapar((nombre || '').split(' ')[0] || 'Hola')
   const enlace = `${SITIO}/clase?curso=${encodeURIComponent(slug)}&clase=${claseId}`
 
@@ -122,7 +122,13 @@ function plantillaClaseNueva(nombre: string, curso: string, clase: string, desc:
      </p>
    </td></tr>
 
-   ${desc ? `<tr><td style="padding-bottom:24px">
+   ${mensaje ? `<tr><td style="padding-bottom:22px">
+     <div style="background:rgba(255,245,240,0.05);border-left:3px solid #FAC775;border-radius:8px;padding:16px 18px">
+       <p style="margin:0;font-size:14.5px;line-height:1.7;color:rgba(255,245,240,0.88);font-family:Arial,sans-serif">${escapar(mensaje).replace(/\n/g, '<br>')}</p>
+     </div>
+   </td></tr>` : ''}
+
+   ${(desc && !mensaje) ? `<tr><td style="padding-bottom:24px">
      <p style="margin:0;font-size:14.5px;line-height:1.65;color:rgba(255,245,240,0.8);font-family:Arial,sans-serif">${escapar(desc)}</p>
    </td></tr>` : ''}
 
@@ -148,7 +154,7 @@ function plantillaClaseNueva(nombre: string, curso: string, clase: string, desc:
 }
 
 // ─── Email: curso nuevo para toda la comunidad ─────────────────────
-function plantillaCursoNuevo(nombre: string, curso: any) {
+function plantillaCursoNuevo(nombre: string, curso: any, mensaje: string) {
   const saludo = escapar((nombre || '').split(' ')[0] || 'Hola')
   const enlace = `${SITIO}/curso-detalle?id=${encodeURIComponent(curso.slug)}`
   const esGratis = curso.acceso === 'gratis' || !curso.precio_gs
@@ -193,7 +199,13 @@ function plantillaCursoNuevo(nombre: string, curso: any) {
      <p style="margin:0;font-size:14.5px;color:#E8B8C4;font-family:Arial,sans-serif;font-style:italic">${escapar(curso.slogan)}</p>
    </td></tr>` : ''}
 
-   ${curso.descripcion ? `<tr><td style="padding-bottom:22px">
+   ${mensaje ? `<tr><td style="padding-bottom:22px">
+     <div style="background:rgba(255,245,240,0.05);border-radius:10px;padding:18px;text-align:left">
+       <p style="margin:0;font-size:14.5px;line-height:1.7;color:rgba(255,245,240,0.88);font-family:Arial,sans-serif">${escapar(mensaje).replace(/\n/g, '<br>')}</p>
+     </div>
+   </td></tr>` : ''}
+
+   ${(curso.descripcion && !mensaje) ? `<tr><td style="padding-bottom:22px">
      <p style="margin:0;font-size:14.5px;line-height:1.65;color:rgba(255,245,240,0.78);font-family:Arial,sans-serif">${escapar(curso.descripcion)}</p>
    </td></tr>` : ''}
 
@@ -433,8 +445,8 @@ Deno.serve(async (req) => {
       for (const p of gente) {
         const r = await mandar(
           p.email,
-          `Nueva clase: ${clase.titulo}`,
-          plantillaClaseNueva(p.nombre || '', clase.cursos.titulo, clase.titulo, clase.descripcion || '', clase.cursos.slug, clase.id)
+          (cuerpo.asunto && cuerpo.asunto.trim()) ? cuerpo.asunto.trim() : `Nueva clase: ${clase.titulo}`,
+          plantillaClaseNueva(p.nombre || '', clase.cursos.titulo, clase.titulo, clase.descripcion || '', clase.cursos.slug, clase.id, cuerpo.mensaje || '')
         )
         if (r.ok) ok++; else { mal++; if (!primerError) primerError = r.error || '' }
         await new Promise(res => setTimeout(res, 550))
@@ -442,6 +454,7 @@ Deno.serve(async (req) => {
 
       await supabase.from('anuncios_enviados').insert({
         tipo: 'clase_nueva', referencia_id: claseId, titulo: clase.titulo,
+        mensaje: cuerpo.mensaje || null,
         destinatarios: ok, fallidos: mal, detalle_error: primerError || null,
       })
 
@@ -477,8 +490,8 @@ Deno.serve(async (req) => {
       for (const p of gente) {
         const r = await mandar(
           p.email,
-          `Nuevo curso: ${curso.titulo}`,
-          plantillaCursoNuevo(p.nombre || '', curso)
+          (cuerpo.asunto && cuerpo.asunto.trim()) ? cuerpo.asunto.trim() : `Nuevo curso: ${curso.titulo}`,
+          plantillaCursoNuevo(p.nombre || '', curso, cuerpo.mensaje || '')
         )
         if (r.ok) ok++; else { mal++; if (!primerError) primerError = r.error || '' }
         await new Promise(res => setTimeout(res, 550))
@@ -486,6 +499,7 @@ Deno.serve(async (req) => {
 
       await supabase.from('anuncios_enviados').insert({
         tipo: 'curso_nuevo', referencia_id: cursoId, titulo: curso.titulo,
+        mensaje: cuerpo.mensaje || null,
         destinatarios: ok, fallidos: mal, detalle_error: primerError || null,
       })
 

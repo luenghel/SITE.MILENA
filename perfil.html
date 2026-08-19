@@ -149,6 +149,14 @@
   .pass-correo{padding:12px 14px;background:rgba(255,245,240,0.04);border-radius:10px;font-size:13px;color:rgba(255,245,240,0.8);text-align:center;margin-bottom:16px;word-break:break-all}
   .pass-correo strong{color:#FFF5F0}
 
+
+  .ins-elegir{display:flex;flex-wrap:wrap;gap:7px}
+  .ins-op{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);border-radius:18px;color:rgba(255,245,240,0.72);font-size:12px;cursor:pointer;font-family:inherit;transition:all 0.2s}
+  .ins-op:hover{background:rgba(255,245,240,0.09)}
+  .ins-op.sel{background:rgba(212,163,86,0.16);border-color:#FAC775;color:#FAC775}
+  .ins-op-ico{font-size:15px}
+  .ins-vacio{font-size:12px;color:rgba(255,245,240,0.45);padding:12px;background:rgba(255,245,240,0.03);border-radius:10px;line-height:1.5}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -325,6 +333,14 @@ body{visibility:hidden}
     <div class="edit-field">
       <label class="edit-label">SOBRE VOS (opcional)</label>
       <input class="edit-input" id="editBio" placeholder="Emprendedor · Asunción">
+    </div>
+
+    <div class="edit-field">
+      <label class="edit-label">INSIGNIA DESTACADA</label>
+      <div style="font-size:11.5px;color:rgba(255,245,240,0.5);margin-bottom:9px;line-height:1.45">
+        La que elijas aparece al lado de tu nombre en la comunidad
+      </div>
+      <div class="ins-elegir" id="insElegir"></div>
     </div>
 
     <div class="edit-field">
@@ -601,6 +617,46 @@ async function confirmarCrop(){
 }
 
 let generoElegido = 'x';
+let misInsignias = [];
+let insigniaElegida = null;
+
+async function cargarMisInsignias(){
+  if(!sb || !usuarioActual) return;
+
+  const { data } = await sb.from('usuario_insignias')
+    .select('insignia_id, insignias(id, nombre, icono, color, activa)')
+    .eq('usuario_id', usuarioActual.id);
+
+  misInsignias = (data || [])
+    .map(x => x.insignias)
+    .filter(x => x && x.activa !== false);
+
+  insigniaElegida = perfilActual.insignia_destacada || null;
+  pintarInsignias();
+}
+
+function pintarInsignias(){
+  const cont = document.getElementById('insElegir');
+  if(!cont) return;
+
+  if(misInsignias.length === 0){
+    cont.innerHTML = '<div class="ins-vacio">Todavía no ganaste ninguna insignia. Participá en la comunidad y van llegando solas.</div>';
+    return;
+  }
+
+  cont.innerHTML =
+    '<button type="button" class="ins-op ' + (!insigniaElegida ? 'sel' : '') + '" onclick="elegirInsignia(null)">Ninguna</button>' +
+    misInsignias.map(i =>
+      '<button type="button" class="ins-op ' + (insigniaElegida === i.id ? 'sel' : '') + '" onclick="elegirInsignia(\'' + i.id + '\')">' +
+        '<span class="ins-op-ico">' + (i.icono || '⭐') + '</span>' + escapeHtml(i.nombre) +
+      '</button>'
+    ).join('');
+}
+
+function elegirInsignia(id){
+  insigniaElegida = id;
+  pintarInsignias();
+}
 
 function elegirGenero(el){
   document.querySelectorAll('.genero-chip').forEach(x => x.classList.remove('selected'));
@@ -666,6 +722,7 @@ function abrirEditar(){
   generoElegido = perfilActual.genero || 'x';
   document.querySelectorAll('.genero-chip').forEach(x =>
     x.classList.toggle('selected', x.dataset.g === generoElegido));
+  cargarMisInsignias();
   document.getElementById('editBackdrop').classList.add('show');
 }
 function cerrarEditar(){ document.getElementById('editBackdrop').classList.remove('show'); }
@@ -677,12 +734,14 @@ async function guardarPerfil(){
   const { error } = await sb.from('perfiles').update({
     nombre: nombre,
     bio: bio || null,
-    genero: generoElegido
+    genero: generoElegido,
+    insignia_destacada: insigniaElegida
   }).eq('id', usuarioActual.id);
   if(error) return mostrarToast('Error: ' + error.message, true);
   perfilActual.nombre = nombre;
   perfilActual.bio = bio;
   perfilActual.genero = generoElegido;
+  perfilActual.insignia_destacada = insigniaElegida;
   document.getElementById('pfNombre').textContent = nombre;
   pintarAvatar();
   if(typeof refrescarCacheSesion === 'function') await refrescarCacheSesion();
@@ -793,7 +852,7 @@ const waitSupaPerfil = setInterval(async () => {
 
   const { data: perfil } = await sb
     .from('perfiles')
-    .select('id, nombre, email, rol, avatar_url, bio, genero')
+    .select('id, nombre, email, rol, avatar_url, bio, genero, insignia_destacada')
     .eq('id', user.id)
     .maybeSingle();
 

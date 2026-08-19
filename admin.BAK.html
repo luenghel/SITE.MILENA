@@ -914,46 +914,6 @@
   .pend-btn:disabled{background:rgba(255,245,240,0.08);color:rgba(255,245,240,0.45);cursor:not-allowed}
   @media (max-width:600px){ .pend-btn{width:100%} .pend-info{min-width:100%} }
 
-
-  .an-destino{padding:13px 15px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.3);border-radius:11px;font-size:12.5px;color:rgba(255,245,240,0.78);line-height:1.55;margin-bottom:18px}
-  .an-destino strong{color:#FAC775}
-  .an-ideas{margin-bottom:16px}
-  .an-ideas-tit{font-size:11px;color:rgba(255,245,240,0.5);margin-bottom:8px}
-  .an-idea{padding:7px 12px;margin:0 6px 6px 0;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);border-radius:16px;color:rgba(255,245,240,0.75);font-size:11.5px;cursor:pointer;font-family:inherit;transition:all 0.2s}
-  .an-idea:hover{background:rgba(212,163,86,0.15);border-color:rgba(212,163,86,0.4);color:#FAC775}
-  .an-previa{padding:14px 16px;background:rgba(255,245,240,0.03);border-radius:11px;font-size:12.5px;color:rgba(255,245,240,0.6);line-height:1.6;display:none}
-  .an-previa.show{display:block}
-  .an-previa strong{color:#FFF5F0}
-
-
-  .ins-aviso{display:flex;gap:11px;align-items:flex-start;padding:13px 15px;background:rgba(212,163,86,0.07);border:0.5px solid rgba(212,163,86,0.28);border-radius:11px;font-size:12.5px;color:rgba(255,245,240,0.72);line-height:1.55;margin-bottom:20px}
-  .ins-aviso strong{color:#FAC775}
-
-  .insignias-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px}
-  .ins-card{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:13px;padding:16px;cursor:pointer;transition:all 0.2s}
-  .ins-card:hover{background:rgba(255,245,240,0.06);border-color:rgba(212,163,86,0.4);transform:translateY(-2px)}
-  .ins-card.apagada{opacity:0.5}
-  .ins-card-top{display:flex;align-items:center;gap:11px;margin-bottom:10px}
-  .ins-card-ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0}
-  .ins-card-nom{font-size:14px;font-weight:500}
-  .ins-card-tipo{font-size:10px;letter-spacing:0.1em;margin-top:2px}
-  .ins-card-desc{font-size:11.5px;color:rgba(255,245,240,0.55);line-height:1.45;margin-bottom:9px}
-  .ins-card-pie{font-size:11px;color:rgba(255,245,240,0.4);padding-top:9px;border-top:0.5px solid rgba(255,245,240,0.07)}
-
-  .ins-previa{display:flex;align-items:center;justify-content:center;gap:9px;padding:20px;background:rgba(255,245,240,0.04);border-radius:12px;margin-bottom:18px}
-  .ins-previa-ico{font-size:26px}
-  .ins-previa-nom{font-size:15px;font-weight:500}
-
-  .ins-iconos{display:flex;flex-wrap:wrap;gap:6px}
-  .ins-ico-op{width:38px;height:38px;border-radius:10px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.12);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-  .ins-ico-op:hover{background:rgba(255,245,240,0.1)}
-  .ins-ico-op.sel{border-color:#FAC775;background:rgba(212,163,86,0.18)}
-
-  .ins-colores{display:flex;flex-wrap:wrap;gap:7px}
-  .ins-color-op{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all 0.2s}
-  .ins-color-op:hover{transform:scale(1.1)}
-  .ins-color-op.sel{border-color:#FFF5F0;transform:scale(1.12)}
-
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1335,11 +1295,6 @@ body{visibility:hidden}
       Ventas
       <span class="sidebar-badge dim" id="ventasCount">0</span>
     </a>
-    <a href="#" onclick="cambiarTab('insignias')" class="sidebar-item" id="nav-insignias">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="6"/><path d="M8.2 13.9 7 22l5-3 5 3-1.2-8.1"/></svg>
-      Insignias
-      <span class="sidebar-badge dim" id="insigniasCount">0</span>
-    </a>
     <a href="#" onclick="cambiarTab('moderacion')" class="sidebar-item" id="nav-moderacion">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="14" rx="2"/></svg>
       Comunidad
@@ -1664,30 +1619,6 @@ body{visibility:hidden}
               <option value="goteo">💧 De a una clase, cada X días</option>
             </select>
             <div class="form-help" id="ayudaLiberacion">Todas las clases quedan disponibles apenas compra.</div>
-          </div>
-
-          <div class="toggle-row form-grid-full" style="border:0.5px solid rgba(232,184,196,0.35);background:rgba(232,184,196,0.06)">
-            <div class="toggle-info">
-              <div class="toggle-label">🔮 Próximamente</div>
-              <div class="toggle-help">Se muestra en el catálogo como "viene pronto", sin poder comprarlo todavía</div>
-            </div>
-            <div class="toggle-switch" id="cursoProximamente" onclick="this.classList.toggle('on');cambiarProximamente()"></div>
-          </div>
-
-          <div class="form-field form-grid-full" id="camposProximamente" style="display:none">
-            <label class="form-label">QUÉ CONTARLES MIENTRAS TANTO</label>
-            <textarea class="form-textarea" id="cursoTextoProximo" style="min-height:110px"
-              placeholder="Un curso pensado para quienes ya venden pero quieren escalar. Vamos a ver embudos, contenido y automatización..."></textarea>
-            <div class="form-help">Es lo que lee quien toca el curso antes de que salga</div>
-
-            <label class="form-label" style="margin-top:14px">QUÉ VA A INCLUIR</label>
-            <textarea class="form-textarea" id="cursoQueIncluye" style="min-height:90px"
-              placeholder="8 módulos en video&#10;Plantillas descargables&#10;Sesión en vivo de preguntas"></textarea>
-            <div class="form-help">Una línea por punto</div>
-
-            <label class="form-label" style="margin-top:14px">CUÁNDO SALE (opcional)</label>
-            <input type="date" class="form-input" id="cursoFechaDisponible">
-            <div class="form-help">Si la ponés, se muestra la cuenta regresiva</div>
           </div>
 
           <div class="form-field form-grid-full">
@@ -2893,181 +2824,6 @@ body{visibility:hidden}
     </div>
   </div>
 
-  <!-- MODAL: ESCRIBIR EL ANUNCIO -->
-  <div class="curso-modal-backdrop" id="anuncioModal" style="z-index:10001">
-    <div class="curso-modal" style="max-width:520px">
-      <div class="curso-modal-header">
-        <div>
-          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px" id="anMetaTipo">ANUNCIO</div>
-          <h3 class="curso-modal-titulo serif" id="anTitulo">Escribí el mensaje</h3>
-        </div>
-        <button class="curso-modal-close" onclick="cerrarAnuncioModal()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <div class="curso-modal-body">
-        <input type="hidden" id="anTipo">
-        <input type="hidden" id="anRefId">
-
-        <div class="an-destino" id="anDestino"></div>
-
-        <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">ASUNTO DEL EMAIL</label>
-          <input type="text" class="form-input" id="anAsunto" placeholder="Se completa solo">
-          <div class="form-help">Es lo primero que se ve en la bandeja de entrada</div>
-        </div>
-
-        <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">TU MENSAJE</label>
-          <textarea class="form-textarea" id="anMensaje" style="min-height:150px"
-            placeholder="Contales de qué se trata, qué van a aprender, por qué les conviene entrar ahora..."></textarea>
-          <div class="form-help">Va destacado en el email. Si lo dejás vacío, usamos la descripción del curso.</div>
-        </div>
-
-        <div class="an-ideas">
-          <div class="an-ideas-tit">💡 Ideas rápidas</div>
-          <button type="button" class="an-idea" onclick="usarIdea(0)">Qué van a aprender</button>
-          <button type="button" class="an-idea" onclick="usarIdea(1)">Por qué ahora</button>
-          <button type="button" class="an-idea" onclick="usarIdea(2)">Invitación cálida</button>
-        </div>
-
-        <div class="an-previa" id="anPrevia"></div>
-      </div>
-
-      <div class="curso-modal-footer">
-        <div style="margin-left:auto;display:flex;gap:10px">
-          <button class="btn-secondary" onclick="cerrarAnuncioModal()">Cancelar</button>
-          <button class="cta-gold btn-save" id="btnEnviarAnuncio" onclick="enviarAnuncio()">ENVIAR</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================ -->
-  <!-- TAB: INSIGNIAS -->
-  <!-- ============================ -->
-  <div class="tab-content" id="content-insignias">
-    <div class="header-bar">
-      <div>
-        <div class="header-meta">RECONOCIMIENTOS</div>
-        <h1 class="header-title">Las <span class="serif-it gradtext" style="font-size:34px">insignias</span></h1>
-        <p class="header-sub">Distinciones que las alumnas muestran junto a su nombre.</p>
-      </div>
-      <div class="header-actions">
-        <button class="cta-gold btn-primary" onclick="abrirInsignia()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-          NUEVA INSIGNIA
-        </button>
-      </div>
-    </div>
-
-    <div class="ins-aviso">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01" stroke-linecap="round"/></svg>
-      <div>
-        Las <strong>automáticas</strong> se otorgan solas según lo que hace cada persona.
-        Las <strong>manuales</strong> las das vos, desde Alumnas → Gestionar.
-      </div>
-    </div>
-
-    <div class="insignias-grid" id="insigniasGrid"></div>
-  </div>
-
-  <!-- MODAL INSIGNIA -->
-  <div class="curso-modal-backdrop" id="insigniaModal">
-    <div class="curso-modal" style="max-width:480px">
-      <div class="curso-modal-header">
-        <div>
-          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">INSIGNIA</div>
-          <h3 class="curso-modal-titulo serif" id="insTituloModal">Nueva insignia</h3>
-        </div>
-        <button class="curso-modal-close" onclick="cerrarInsignia()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <div class="curso-modal-body">
-        <input type="hidden" id="insId">
-
-        <div class="ins-previa" id="insPrevia">
-          <span class="ins-previa-ico" id="insPreviaIco">⭐</span>
-          <span class="ins-previa-nom" id="insPreviaNom">Nombre</span>
-        </div>
-
-        <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">NOMBRE</label>
-          <input type="text" class="form-input" id="insNombre" placeholder="Voz activa" oninput="pintarPreviaIns()">
-        </div>
-
-        <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">DESCRIPCIÓN</label>
-          <input type="text" class="form-input" id="insDescripcion" placeholder="Publicó 10 mensajes en la comunidad">
-          <div class="form-help">Se ve al pasar el mouse sobre la insignia</div>
-        </div>
-
-        <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">ÍCONO</label>
-          <div class="ins-iconos" id="insIconos"></div>
-          <input type="text" class="form-input" id="insIcono" placeholder="⭐" maxlength="4" style="margin-top:8px" oninput="pintarPreviaIns()">
-        </div>
-
-        <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">COLOR</label>
-          <div class="ins-colores" id="insColores"></div>
-          <input type="hidden" id="insColor" value="#FAC775">
-        </div>
-
-        <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">CÓMO SE GANA</label>
-          <select class="form-select" id="insTipo" onchange="cambiarTipoInsignia()">
-            <option value="manual">✋ La doy yo, a mano</option>
-            <option value="automatica">⚙️ Se otorga sola</option>
-          </select>
-        </div>
-
-        <div id="insAuto" style="display:none">
-          <div class="form-grid">
-            <div class="form-field">
-              <label class="form-label">POR</label>
-              <select class="form-select" id="insCriterio" onchange="pintarAyudaIns()">
-                <option value="posts">Publicaciones</option>
-                <option value="comentarios">Comentarios</option>
-                <option value="likes">Diamantes dados</option>
-                <option value="cursos">Cursos inscriptos</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label class="form-label">CANTIDAD</label>
-              <input type="number" class="form-input" id="insCantidad" min="1" placeholder="10" oninput="pintarAyudaIns()">
-            </div>
-          </div>
-          <div class="form-help" id="insAyuda" style="margin-bottom:14px"></div>
-        </div>
-
-        <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">ORDEN</label>
-          <input type="number" class="form-input" id="insOrden" min="0" placeholder="1">
-        </div>
-
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <div class="toggle-label">Activa</div>
-            <div class="toggle-help">Si está apagada, nadie la puede ganar ni mostrar</div>
-          </div>
-          <div class="toggle-switch on" id="insActiva" onclick="this.classList.toggle('on')"></div>
-        </div>
-      </div>
-
-      <div class="curso-modal-footer">
-        <button class="btn-danger" id="btnBorrarIns" onclick="borrarInsignia()" style="display:none">ELIMINAR</button>
-        <div style="margin-left:auto;display:flex;gap:10px">
-          <button class="btn-secondary" onclick="cerrarInsignia()">Cancelar</button>
-          <button class="cta-gold btn-save" onclick="guardarInsignia()">GUARDAR</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </main>
 
 <!-- Toast -->
@@ -3284,11 +3040,6 @@ body{visibility:hidden}
       document.getElementById('cursoEnlaceExterno').value = c.enlace_externo || '';
       document.getElementById('cursoEtiqueta').value = c.etiqueta || '';
       document.getElementById('cursoNotaPrecio').value = c.nota_precio || '';
-      document.getElementById('cursoProximamente').classList.toggle('on', !!c.proximamente);
-      document.getElementById('cursoTextoProximo').value = c.texto_proximamente || '';
-      document.getElementById('cursoQueIncluye').value = c.que_incluye || '';
-      document.getElementById('cursoFechaDisponible').value = c.fecha_disponible
-        ? new Date(c.fecha_disponible).toISOString().slice(0,10) : '';
       document.getElementById('cursoLiberacion').value = c.modo_liberacion || 'inmediata';
       document.getElementById('cursoLanzamiento').value = c.fecha_lanzamiento
         ? new Date(c.fecha_lanzamiento).toISOString().slice(0,10) : '';
@@ -3328,10 +3079,6 @@ body{visibility:hidden}
       document.getElementById('cursoTipo').value = 'curso';
       document.getElementById('cursoSeccion').value = 'principal';
       document.getElementById('cursoAcceso').value = 'pago';
-      document.getElementById('cursoProximamente').classList.remove('on');
-      document.getElementById('cursoTextoProximo').value = '';
-      document.getElementById('cursoQueIncluye').value = '';
-      document.getElementById('cursoFechaDisponible').value = '';
       document.getElementById('cursoLiberacion').value = 'inmediata';
       document.getElementById('cursoLanzamiento').value = new Date().toISOString().slice(0,10);
       document.getElementById('cursoDiasLiberacion').value = '';
@@ -3346,7 +3093,6 @@ body{visibility:hidden}
 
     cambiarTipoCurso();
     cambiarLiberacion();
-    cambiarProximamente();
 
     // Resumen del contenido cargado
     const zona = document.getElementById('contenidoZona');
@@ -3430,12 +3176,6 @@ body{visibility:hidden}
       nota_precio: document.getElementById('cursoNotaPrecio').value.trim() || null,
       fecha_lanzamiento: document.getElementById('cursoLanzamiento').value
         ? new Date(document.getElementById('cursoLanzamiento').value + 'T00:00:00').toISOString()
-        : null,
-      proximamente: document.getElementById('cursoProximamente').classList.contains('on'),
-      texto_proximamente: document.getElementById('cursoTextoProximo').value.trim() || null,
-      que_incluye: document.getElementById('cursoQueIncluye').value.trim() || null,
-      fecha_disponible: document.getElementById('cursoFechaDisponible').value
-        ? new Date(document.getElementById('cursoFechaDisponible').value + 'T00:00:00').toISOString()
         : null,
       modo_liberacion: document.getElementById('cursoLiberacion').value,
       dias_liberacion: parseInt(document.getElementById('cursoDiasLiberacion').value) || 0,
@@ -3526,298 +3266,8 @@ body{visibility:hidden}
   }
 
   // ============================
-  // INSIGNIAS
-  // ============================
-  let insignias = [];
-
-  const ICONOS_DISPONIBLES = ['⭐','👑','🌱','💬','🔥','🤝','💎','📚','🎓','🏆','🌟','💪','✨','🚀','❤️','🦋','🌸','🎯','💡','🏅'];
-  const COLORES_DISPONIBLES = ['#FAC775','#E8B8C4','#9FE1CB','#FF8090','#C8A2C8','#7ABAF5','#F5A9B8','#A8E6A3'];
-
-  async function cargarInsignias(){
-    if(!sb) return;
-    const { data, error } = await sb.from('insignias').select('*').order('orden', { ascending: true });
-
-    if(error){
-      document.getElementById('insigniasGrid').innerHTML =
-        '<div style="grid-column:1/-1;padding:40px;text-align:center;color:#FF8090">' +
-        (String(error.message).includes('does not exist')
-          ? 'Falta crear la tabla. Corré SQL-INSIGNIAS-Y-PROXIMOS.sql en Supabase.'
-          : esc(error.message)) + '</div>';
-      return;
-    }
-
-    insignias = data || [];
-    document.getElementById('insigniasCount').textContent = insignias.filter(i => i.activa).length;
-    renderInsignias();
-  }
-
-  function renderInsignias(){
-    const grid = document.getElementById('insigniasGrid');
-    if(!grid) return;
-
-    if(insignias.length === 0){
-      grid.innerHTML = '<div style="grid-column:1/-1;padding:50px 20px;text-align:center;color:rgba(255,245,240,0.5)">' +
-        '<div style="font-size:42px;opacity:0.35;margin-bottom:12px">🏅</div>' +
-        '<div style="font-size:14px;margin-bottom:6px">Todavía no hay insignias</div>' +
-        '<div style="font-size:12px;color:rgba(255,245,240,0.4)">Creá la primera con el botón de arriba</div></div>';
-      return;
-    }
-
-    const criterios = { posts:'publicaciones', comentarios:'comentarios', likes:'diamantes dados', cursos:'cursos' };
-
-    grid.innerHTML = insignias.map(i => {
-      const color = i.color || '#FAC775';
-      return '<div class="ins-card ' + (i.activa ? '' : 'apagada') + '" onclick="abrirInsignia(\'' + i.id + '\')">' +
-        '<div class="ins-card-top">' +
-          '<div class="ins-card-ico" style="background:' + color + '22;border:0.5px solid ' + color + '66">' + (i.icono || '⭐') + '</div>' +
-          '<div style="min-width:0">' +
-            '<div class="ins-card-nom">' + esc(i.nombre) + '</div>' +
-            '<div class="ins-card-tipo" style="color:' + color + '">' +
-              (i.tipo === 'automatica' ? '⚙️ AUTOMÁTICA' : '✋ MANUAL') + '</div>' +
-          '</div>' +
-        '</div>' +
-        (i.descripcion ? '<div class="ins-card-desc">' + esc(i.descripcion) + '</div>' : '') +
-        '<div class="ins-card-pie">' +
-          (i.tipo === 'automatica' && i.cantidad
-            ? 'Con ' + i.cantidad + ' ' + (criterios[i.criterio] || i.criterio)
-            : 'La otorgás vos') +
-          (i.activa ? '' : ' · apagada') +
-        '</div>' +
-      '</div>';
-    }).join('');
-  }
-
-  function pintarPreviaIns(){
-    document.getElementById('insPreviaIco').textContent = document.getElementById('insIcono').value || '⭐';
-    document.getElementById('insPreviaNom').textContent = document.getElementById('insNombre').value || 'Nombre';
-    const color = document.getElementById('insColor').value;
-    document.getElementById('insPrevia').style.borderLeft = '3px solid ' + color;
-    document.getElementById('insPreviaNom').style.color = color;
-  }
-
-  function pintarIconos(){
-    const cont = document.getElementById('insIconos');
-    const actual = document.getElementById('insIcono').value;
-    cont.innerHTML = ICONOS_DISPONIBLES.map(ic =>
-      '<button type="button" class="ins-ico-op ' + (ic === actual ? 'sel' : '') + '" onclick="elegirIcono(\'' + ic + '\')">' + ic + '</button>'
-    ).join('');
-  }
-
-  function elegirIcono(ic){
-    document.getElementById('insIcono').value = ic;
-    pintarIconos();
-    pintarPreviaIns();
-  }
-
-  function pintarColores(){
-    const cont = document.getElementById('insColores');
-    const actual = document.getElementById('insColor').value;
-    cont.innerHTML = COLORES_DISPONIBLES.map(col =>
-      '<div class="ins-color-op ' + (col === actual ? 'sel' : '') + '" style="background:' + col + '" onclick="elegirColor(\'' + col + '\')"></div>'
-    ).join('');
-  }
-
-  function elegirColor(col){
-    document.getElementById('insColor').value = col;
-    pintarColores();
-    pintarPreviaIns();
-  }
-
-  function cambiarTipoInsignia(){
-    const t = document.getElementById('insTipo').value;
-    document.getElementById('insAuto').style.display = (t === 'automatica') ? '' : 'none';
-    pintarAyudaIns();
-  }
-
-  function pintarAyudaIns(){
-    const crit = document.getElementById('insCriterio').value;
-    const cant = parseInt(document.getElementById('insCantidad').value) || 0;
-    const textos = {
-      posts: 'publicaciones en la comunidad',
-      comentarios: 'comentarios',
-      likes: 'diamantes repartidos',
-      cursos: 'cursos en los que se inscribió'
-    };
-    document.getElementById('insAyuda').textContent = cant
-      ? 'Se otorga sola cuando llegue a ' + cant + ' ' + textos[crit] + '.'
-      : 'Poné cuántos hacen falta.';
-  }
-
-  function abrirInsignia(id){
-    document.getElementById('insId').value = id || '';
-    document.getElementById('insTituloModal').textContent = id ? 'Editar insignia' : 'Nueva insignia';
-    document.getElementById('btnBorrarIns').style.display = id ? '' : 'none';
-
-    if(id){
-      const i = insignias.find(x => x.id === id);
-      document.getElementById('insNombre').value = i?.nombre || '';
-      document.getElementById('insDescripcion').value = i?.descripcion || '';
-      document.getElementById('insIcono').value = i?.icono || '⭐';
-      document.getElementById('insColor').value = i?.color || '#FAC775';
-      document.getElementById('insTipo').value = i?.tipo || 'manual';
-      document.getElementById('insCriterio').value = i?.criterio || 'posts';
-      document.getElementById('insCantidad').value = i?.cantidad || '';
-      document.getElementById('insOrden').value = i?.orden ?? 0;
-      document.getElementById('insActiva').classList.toggle('on', i?.activa !== false);
-    } else {
-      document.getElementById('insNombre').value = '';
-      document.getElementById('insDescripcion').value = '';
-      document.getElementById('insIcono').value = '⭐';
-      document.getElementById('insColor').value = '#FAC775';
-      document.getElementById('insTipo').value = 'manual';
-      document.getElementById('insCriterio').value = 'posts';
-      document.getElementById('insCantidad').value = '';
-      document.getElementById('insOrden').value = insignias.length + 1;
-      document.getElementById('insActiva').classList.add('on');
-    }
-
-    pintarIconos();
-    pintarColores();
-    pintarPreviaIns();
-    cambiarTipoInsignia();
-    document.getElementById('insigniaModal').classList.add('show');
-  }
-
-  function cerrarInsignia(){ document.getElementById('insigniaModal').classList.remove('show'); }
-
-  async function guardarInsignia(){
-    const nombre = document.getElementById('insNombre').value.trim();
-    if(!nombre) return mostrarToast('Poné un nombre', true);
-
-    const tipo = document.getElementById('insTipo').value;
-    const datos = {
-      nombre: nombre,
-      descripcion: document.getElementById('insDescripcion').value.trim() || null,
-      icono: document.getElementById('insIcono').value || '⭐',
-      color: document.getElementById('insColor').value,
-      tipo: tipo,
-      criterio: tipo === 'automatica' ? document.getElementById('insCriterio').value : null,
-      cantidad: tipo === 'automatica' ? (parseInt(document.getElementById('insCantidad').value) || 1) : 0,
-      orden: parseInt(document.getElementById('insOrden').value) || 0,
-      activa: document.getElementById('insActiva').classList.contains('on')
-    };
-
-    if(tipo === 'automatica' && !datos.cantidad){
-      return mostrarToast('Poné cuántos hacen falta para ganarla', true);
-    }
-
-    const id = document.getElementById('insId').value;
-    const r = id
-      ? await sb.from('insignias').update(datos).eq('id', id)
-      : await sb.from('insignias').insert(datos);
-
-    if(r.error) return mostrarToast('Error: ' + r.error.message, true);
-
-    mostrarToast(id ? '✓ Insignia actualizada' : '✓ Insignia creada');
-    cerrarInsignia();
-    await cargarInsignias();
-  }
-
-  async function borrarInsignia(){
-    const id = document.getElementById('insId').value;
-    if(!id) return;
-    const i = insignias.find(x => x.id === id);
-    if(!confirm('¿Eliminar la insignia "' + (i?.nombre || '') + '"?\n\nSe la va a quitar a todas las que la tengan.')) return;
-
-    const { error } = await sb.from('insignias').delete().eq('id', id);
-    if(error) return mostrarToast('Error: ' + error.message, true);
-
-    mostrarToast('Insignia eliminada');
-    cerrarInsignia();
-    await cargarInsignias();
-  }
-
-  // ============================
   // ANUNCIOS POR EMAIL
   // ============================
-  // ─── Modal para escribir el anuncio ───
-  const IDEAS = [
-    'En esta clase vas a aprender a [tema].\n\nEs uno de los pasos que más cambia los resultados, porque [motivo].\n\nTe espero adentro.',
-    'Preparé esto pensando en el momento del año en que estamos.\n\nSi venís postergando [problema], este es el contenido que te va a destrabar.',
-    'Quería contarte algo que preparé con mucho cariño.\n\nEspero que te sirva tanto como me sirvió a mí cuando lo aprendí.\n\nUn abrazo,\nMilena'
-  ];
-
-  function usarIdea(i){
-    const t = document.getElementById('anMensaje');
-    t.value = IDEAS[i] || '';
-    t.focus();
-  }
-
-  function abrirAnuncioModal(tipo, id, titulo){
-    document.getElementById('anTipo').value = tipo;
-    document.getElementById('anRefId').value = id;
-
-    const esCurso = (tipo === 'curso_nuevo');
-    const n = esCurso ? alumnas.length : null;
-
-    document.getElementById('anMetaTipo').textContent = esCurso ? 'ANUNCIAR CURSO' : 'AVISAR CLASE NUEVA';
-    document.getElementById('anTitulo').textContent = esCurso ? 'Anunciar a la comunidad' : 'Avisar a las alumnas';
-
-    document.getElementById('anDestino').innerHTML = esCurso
-      ? '📢 Va a <strong>' + n + ' persona(s) registradas</strong>, hayan comprado o no.<br>Se trata de: <strong>' + esc(titulo) + '</strong>'
-      : '✉️ Va a <strong>las alumnas inscriptas</strong> en ese curso.<br>Se trata de: <strong>' + esc(titulo) + '</strong>';
-
-    document.getElementById('anAsunto').value = esCurso
-      ? 'Nuevo curso: ' + titulo
-      : 'Nueva clase: ' + titulo;
-
-    document.getElementById('anMensaje').value = '';
-    document.getElementById('anPrevia').className = 'an-previa';
-    document.getElementById('btnEnviarAnuncio').textContent = esCurso ? '📢 ANUNCIAR' : '📧 AVISAR';
-    document.getElementById('btnEnviarAnuncio').disabled = false;
-
-    document.getElementById('anuncioModal').classList.add('show');
-    setTimeout(() => document.getElementById('anMensaje').focus(), 200);
-  }
-
-  function cerrarAnuncioModal(){
-    document.getElementById('anuncioModal').classList.remove('show');
-  }
-
-  async function enviarAnuncio(){
-    const tipo = document.getElementById('anTipo').value;
-    const id = document.getElementById('anRefId').value;
-    const asunto = document.getElementById('anAsunto').value.trim();
-    const mensaje = document.getElementById('anMensaje').value.trim();
-    const esCurso = (tipo === 'curso_nuevo');
-
-    if(!asunto) return mostrarToast('Escribí el asunto del email', true);
-
-    const cuantos = esCurso ? alumnas.length : 'las alumnas del curso';
-    if(!confirm('¿Enviar ahora?\n\nVa a ' + cuantos + (esCurso ? ' persona(s)' : '') + '.\nUn email enviado no se puede corregir.')) return;
-
-    const btn = document.getElementById('btnEnviarAnuncio');
-    btn.disabled = true;
-    btn.textContent = 'ENVIANDO...';
-
-    const cuerpo = esCurso
-      ? { accion: 'curso_nuevo', curso_id: id, asunto: asunto, mensaje: mensaje }
-      : { accion: 'clase_nueva', clase_id: id, asunto: asunto, mensaje: mensaje };
-
-    const r = await llamarAvisos(cuerpo);
-
-    btn.disabled = false;
-    btn.textContent = esCurso ? '📢 ANUNCIAR' : '📧 AVISAR';
-
-    if(r.noEncontrada){
-      const p = document.getElementById('anPrevia');
-      p.className = 'an-previa show';
-      p.innerHTML = '<strong style="color:#FF8090">No encontré la función.</strong><br>Configurala arriba, en ⚙️ Funciones de Supabase.';
-      return;
-    }
-    if(!r.ok || !r.datos.exito){
-      const p = document.getElementById('anPrevia');
-      p.className = 'an-previa show';
-      p.innerHTML = '<strong style="color:#FF8090">No se pudo enviar.</strong><br>' + esc(r.datos.error || 'Error desconocido');
-      return;
-    }
-
-    mostrarToast('✓ Enviado a ' + r.datos.enviados + (esCurso ? ' persona(s)' : ' alumna(s)'));
-    cerrarAnuncioModal();
-    await cargarAnuncios();
-    renderAnunciosPendientes();
-  }
-
   // ─── Lista de cursos y clases sin anunciar ───
   let todasLasClases = [];
 
@@ -4037,15 +3487,12 @@ body{visibility:hidden}
   }
 
   // ─── Enviar ───
-  function anunciarClaseNueva(){
+  async function anunciarClaseNueva(){
     const id = document.getElementById('claseId').value;
     if(!id) return mostrarToast('Guardá la clase antes de avisar', true);
-    abrirAnuncioModal('clase_nueva', id, document.getElementById('claseTitulo').value.trim());
-  }
 
-  async function _viejoAnunciarClase(){
-    const id = document.getElementById('claseId').value;
     const titulo = document.getElementById('claseTitulo').value.trim();
+    if(!confirm('¿Avisar a las alumnas del curso que "' + titulo + '" ya está disponible?\n\nUn email enviado no se puede deshacer.')) return;
 
     const btn = document.getElementById('btnAnunciarClase');
     btn.disabled = true;
@@ -4067,15 +3514,13 @@ body{visibility:hidden}
     pintarAnuncioClase(id);
   }
 
-  function anunciarCursoNuevo(){
+  async function anunciarCursoNuevo(){
     const id = document.getElementById('cursoId').value;
     if(!id) return mostrarToast('Guardá el curso antes de anunciarlo', true);
-    abrirAnuncioModal('curso_nuevo', id, document.getElementById('cursoTitulo').value.trim());
-  }
 
-  async function _viejoAnunciarCurso(){
-    const id = document.getElementById('cursoId').value;
     const titulo = document.getElementById('cursoTitulo').value.trim();
+    const n = alumnas.length;
+    if(!confirm('¿Anunciar "' + titulo + '" a las ' + n + ' personas registradas?\n\nUn email enviado no se puede deshacer. Revisá el título, la descripción y la portada antes.')) return;
 
     const btn = document.getElementById('btnAnunciarCurso');
     btn.disabled = true;
@@ -4158,11 +3603,6 @@ body{visibility:hidden}
     const zona = document.getElementById('contenidoZona');
     const id = document.getElementById('cursoId').value;
     zona.style.display = (t === 'curso' && id) ? '' : 'none';
-  }
-
-  function cambiarProximamente(){
-    const on = document.getElementById('cursoProximamente').classList.contains('on');
-    document.getElementById('camposProximamente').style.display = on ? '' : 'none';
   }
 
   function cambiarLiberacion(){

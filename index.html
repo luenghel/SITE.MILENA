@@ -467,6 +467,9 @@
 
   .muestra-chip{position:absolute;bottom:10px;right:10px;display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:8px;background:rgba(93,202,165,0.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:0.5px solid rgba(93,202,165,0.5);color:#9FE1CB;font-size:10px;font-weight:600;z-index:3;white-space:nowrap}
 
+
+  .proximo-chip{position:absolute;top:10px;left:10px;padding:6px 12px;border-radius:8px;background:rgba(184,41,74,0.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:0.5px solid rgba(232,184,196,0.6);color:#FFF5F0;font-size:10px;font-weight:700;letter-spacing:0.1em;z-index:4}
+
 </style>
 </head>
 <body>
@@ -859,7 +862,8 @@
     const esGratis = acceso === 'gratis';
     const esExterno = !!curso.enlace_externo;
     // Aunque sea gratis, hasta que no se anote va con candado
-    const necesitaCandado = !esExterno && (!user || !tieneCompra);
+    const esProximo = !!curso.proximamente;
+    const necesitaCandado = !esExterno && !esProximo && (!user || !tieneCompra);
     const nMuestra = (window.clasesMuestra || {})[curso.id] || 0;
     const titulo = curso.titulo;
     const tituloHTML = titulo.includes(' ') && titulo.length > 18
@@ -896,6 +900,7 @@
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2.6" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
                 ${esGratis ? 'GRATIS' : 'Gs ' + (curso.precio_gs || 0).toLocaleString('es-PY')}
               </div>` : ''}
+            ${esProximo ? `<div class="proximo-chip">🔮 PRÓXIMAMENTE</div>` : ''}
             ${(necesitaCandado && nMuestra > 0) ? `
               <div class="muestra-chip">▶ ${nMuestra} clase${nMuestra === 1 ? '' : 's'} gratis</div>` : ''}
             ${(!necesitaCandado && tieneCompra) ? `

@@ -276,6 +276,13 @@
   .aviso-liberacion{padding:13px 15px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.3);border-radius:11px;font-size:12.5px;color:rgba(255,245,240,0.75);line-height:1.55;margin-bottom:16px}
   .aviso-liberacion strong{color:#FAC775}
 
+
+  .prox-badge{display:inline-block;padding:6px 14px;background:rgba(184,41,74,0.3);border:1px solid rgba(232,184,196,0.5);border-radius:20px;color:#E8B8C4;font-size:10px;font-weight:700;letter-spacing:0.14em;margin-bottom:16px}
+  .prox-slogan{font-size:15px;color:#E8B8C4;font-style:italic;margin:0 0 14px;font-family:Georgia,serif}
+  .prox-cuenta{display:inline-block;padding:8px 16px;background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.4);border-radius:10px;color:#FAC775;font-size:13px;font-weight:600;margin-bottom:18px}
+  .prox-texto{font-size:14.5px;line-height:1.65;color:rgba(255,245,240,0.8);margin:0 0 20px;white-space:pre-wrap}
+  .prox-nota{font-size:12px;color:rgba(255,245,240,0.55);margin-top:12px;line-height:1.5;min-height:18px}
+
 </style>
 </head>
 <body>
@@ -678,6 +685,124 @@ async function anotarseGratis(){
   setTimeout(() => window.location.reload(), 900);
 }
 
+// ─── Curso que viene pronto ───
+let cursoProximo = null;
+
+function mostrarProximamente(curso, user){
+  cursoProximo = curso;
+
+  const modal = document.getElementById('compraModal');
+  const esc2 = t => { const d = document.createElement('div'); d.textContent = t || ''; return d.innerHTML; };
+
+  // Cuánto falta
+  let cuenta = '';
+  if(curso.fecha_disponible){
+    const faltan = Math.ceil((new Date(curso.fecha_disponible).getTime() - Date.now()) / 86400000);
+    if(faltan > 1) cuenta = 'Faltan ' + faltan + ' días';
+    else if(faltan === 1) cuenta = 'Sale mañana';
+    else if(faltan === 0) cuenta = 'Sale hoy';
+    else cuenta = 'Muy pronto';
+  }
+
+  const puntos = (curso.que_incluye || '')
+    .split('\n').map(x => x.trim()).filter(Boolean);
+
+  const cuerpo = modal.querySelector('.compra-modal-body');
+  cuerpo.innerHTML = `
+    <div class="prox-badge">🔮 PRÓXIMAMENTE</div>
+
+    <h2 class="compra-modal-title serif" style="margin-bottom:8px">${esc2(curso.titulo)}</h2>
+    ${curso.slogan ? `<p class="prox-slogan">${esc2(curso.slogan)}</p>` : ''}
+    ${cuenta ? `<div class="prox-cuenta">${cuenta}</div>` : ''}
+
+    ${curso.texto_proximamente ? `<p class="prox-texto">${esc2(curso.texto_proximamente).replace(/\n/g,'<br>')}</p>` : ''}
+
+    ${puntos.length ? `
+      <div class="compra-includes">
+        <div class="compra-includes-label">QUÉ VA A INCLUIR</div>
+        <div class="compra-includes-list">
+          ${puntos.map(p => `
+            <div class="compra-includes-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              ${esc2(p)}
+            </div>`).join('')}
+        </div>
+      </div>` : ''}
+
+    <button class="cta-gold compra-modal-cta" id="btnAvisame" onclick="avisameCuandoSalga()" style="width:100%;margin-top:8px">
+      <span id="btnAvisameTxt">🔔 AVISAME CUANDO SALGA</span>
+    </button>
+
+    <div class="prox-nota" id="proxNota"></div>
+
+    <button class="compra-modal-back" onclick="window.location.href='/cursos'">
+      ← Volver al catálogo
+    </button>
+  `;
+
+  // La portada
+  const poster = modal.querySelector('.compra-modal-poster');
+  if(poster && curso.foto_portada){
+    poster.style.backgroundImage = "url('" + curso.foto_portada + "')";
+    poster.style.backgroundSize = 'cover';
+    poster.style.backgroundPosition = 'center';
+    const cont = poster.querySelector('.compra-modal-poster-content');
+    if(cont) cont.style.display = 'none';
+  } else if(poster){
+    const t = poster.querySelector('.compra-modal-poster-title');
+    if(t) t.textContent = curso.titulo;
+    const cat = poster.querySelector('.compra-modal-poster-cat');
+    if(cat) cat.textContent = (curso.categoria || 'PRÓXIMAMENTE').toUpperCase();
+  }
+
+  modal.classList.add('show');
+
+  // Si ya se anotó, lo mostramos
+  if(user) revisarInteres(curso.id, user.id);
+}
+
+async function revisarInteres(cursoId, usuarioId){
+  const { data } = await sb.from('interesados_curso')
+    .select('id').eq('curso_id', cursoId).eq('usuario_id', usuarioId).maybeSingle();
+  if(data){
+    const b = document.getElementById('btnAvisameTxt');
+    if(b) b.textContent = '✓ TE VAMOS A AVISAR';
+    document.getElementById('btnAvisame').disabled = true;
+    document.getElementById('proxNota').textContent = 'Ya estás en la lista. Te escribimos apenas salga.';
+  }
+}
+
+async function avisameCuandoSalga(){
+  if(!cursoProximo) return;
+
+  const { data: { user } } = await sb.auth.getUser();
+  if(!user){
+    window.location.href = '/login?curso=' + encodeURIComponent(cursoProximo.slug);
+    return;
+  }
+
+  const btn = document.getElementById('btnAvisame');
+  const txt = document.getElementById('btnAvisameTxt');
+  btn.disabled = true;
+  txt.textContent = 'ANOTANDO...';
+
+  const { error } = await sb.from('interesados_curso').insert({
+    curso_id: cursoProximo.id,
+    usuario_id: user.id,
+    email: user.email
+  });
+
+  if(error && !String(error.message).includes('duplicate')){
+    btn.disabled = false;
+    txt.textContent = '🔔 AVISAME CUANDO SALGA';
+    document.getElementById('proxNota').textContent = 'No pudimos anotarte: ' + error.message;
+    return;
+  }
+
+  txt.textContent = '✓ TE VAMOS A AVISAR';
+  document.getElementById('proxNota').textContent = 'Listo. Te escribimos apenas salga.';
+}
+
 function mostrarModal(logueada) {
   const modal = document.getElementById('compraModal');
   const subtitle = document.getElementById('modalSubtitle');
@@ -751,8 +876,19 @@ const checkAccess = setInterval(async () => {
 
     const accesoCurso = curso.acceso || (curso.precio_gs ? 'pago' : 'gratis');
 
+    if (curso.proximamente) {
+      mostrarProximamente(curso, null);
+      return;
+    }
+
     if (!user) {
       mostrarModal(false);
+      return;
+    }
+
+    // ─── Curso que todavía no salió ───
+    if (curso.proximamente) {
+      mostrarProximamente(curso, user);
       return;
     }
 

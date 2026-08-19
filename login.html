@@ -376,6 +376,46 @@ async function hacerLogin(){
     return mostrarAlerta(traducirError(error.message));
   }
 
+  // ─── ¿Hace falta verificación en dos pasos? ───
+  const chequeo = await llamar2Pasos({
+    accion: 'revisar',
+    email: email,
+    token_dispositivo: tokenDispositivo()
+  });
+
+  // Si la función avisa que falta algo, lo mostramos en la consola
+  if(chequeo.datos && chequeo.datos.error){
+    console.warn('[2 pasos] ' + chequeo.datos.error);
+  }
+  if(chequeo.noEncontrada){
+    console.warn('[2 pasos] No se encontró la función. Configurala en Admin → Newsletter → ⚙️ Funciones.');
+  }
+
+  if(chequeo.ok && chequeo.datos && chequeo.datos.requiere){
+    // Cerramos la sesión hasta que confirme el código
+    await sb.auth.signOut();
+
+    email2P = email;
+    pass2P = pass;
+
+    const envio = await llamar2Pasos({ accion: 'enviar', email: email });
+    listo('btnLogin');
+
+    if(!envio.ok || (envio.datos && envio.datos.error)){
+      // Si el email falla, no la dejamos afuera: entramos igual
+      const reintento = await sb.auth.signInWithPassword({ email: email, password: pass });
+      if(!reintento.error){
+        await refrescarCacheSesion();
+        window.location.href = '/index';
+        return;
+      }
+      return mostrarAlerta((envio.datos && envio.datos.error) || 'No pudimos enviarte el código');
+    }
+
+    irAPantalla2Pasos(email);
+    return;
+  }
+
   await refrescarCacheSesion();
   mostrarAlerta('✓ Entrando...', 'success');
   window.location.href = '/index';
