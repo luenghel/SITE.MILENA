@@ -7031,13 +7031,19 @@ body{visibility:hidden}
       cargarArticulos(),
       cargarVentas(),
       cargarModeracion(),
-      cargarEnvios()
+      cargarEnvios(),
+      cargarInsignias(),
+      cargarAnuncios(),
+      cargarFunciones(),
+      cargarClasesParaAnuncio(),
+      cargarHashtags()
     ]);
 
     // El newsletter necesita saber quiénes tienen cuenta
     await cargarNewsletter();
 
     await cargarDashboard();
+    renderAnunciosPendientes();
 
     marcarCargando(false);
     guardarNumeros();
