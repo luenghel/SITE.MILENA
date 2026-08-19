@@ -403,6 +403,28 @@ function guardarTokenDispositivo(t){
   try { if(t) localStorage.setItem('cmm_disp', t); } catch(e){}
 }
 
+let nombreFunc2P = null;
+
+// Primero preguntamos a la base cómo se llama la función
+async function obtenerNombre2P(){
+  if(nombreFunc2P) return nombreFunc2P;
+
+  try {
+    const { data } = await sb.from('ajustes').select('valor').eq('clave','func_dos_pasos').maybeSingle();
+    if(data && data.valor){
+      nombreFunc2P = data.valor.trim();
+      return nombreFunc2P;
+    }
+  } catch(e){}
+
+  try {
+    const g = localStorage.getItem('cmm_func_2p');
+    if(g){ nombreFunc2P = g; return g; }
+  } catch(e){}
+
+  return null;
+}
+
 async function llamar2Pasos(cuerpo){
   const cab = {
     'Content-Type': 'application/json',
@@ -410,9 +432,10 @@ async function llamar2Pasos(cuerpo){
     'apikey': SUPABASE_ANON_KEY
   };
 
-  let guardada = null;
-  try { guardada = localStorage.getItem('cmm_func_2p'); } catch(e){}
-  const lista = guardada ? [guardada, ...CANDIDATAS_2P.filter(x => x !== guardada)] : CANDIDATAS_2P;
+  const configurada = await obtenerNombre2P();
+  const lista = configurada
+    ? [configurada, ...CANDIDATAS_2P.filter(x => x !== configurada)]
+    : CANDIDATAS_2P;
 
   for(const nombre of lista){
     try {
@@ -421,10 +444,15 @@ async function llamar2Pasos(cuerpo){
       });
       if(r.status === 404) continue;
       const d = await r.json().catch(() => ({}));
+      nombreFunc2P = nombre;
       try { localStorage.setItem('cmm_func_2p', nombre); } catch(e){}
+      console.log('[2 pasos] usando la función:', nombre);
       return { ok: r.ok, datos: d };
     } catch(e){}
   }
+
+  console.warn('[2 pasos] NO ENCONTRAMOS LA FUNCIÓN. ' +
+    'Configurá su nombre en Admin → Alumnas → botón Configurar.');
   return { ok:false, datos:{}, noEncontrada:true };
 }
 

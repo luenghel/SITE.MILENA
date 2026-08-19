@@ -216,6 +216,17 @@ function guardarUrlFuncion(nombre) {
   try { localStorage.setItem('cmm_func_admin', nombre); } catch(e) {}
 }
 
+let _nombreFuncAdmin = null;
+
+async function nombreFuncionAdmin() {
+  if (_nombreFuncAdmin) return _nombreFuncAdmin;
+  try {
+    const { data } = await sb.from('ajustes').select('valor').eq('clave', 'func_admin').maybeSingle();
+    if (data && data.valor) { _nombreFuncAdmin = data.valor.trim(); return _nombreFuncAdmin; }
+  } catch(e) {}
+  return urlFuncionGuardada();
+}
+
 async function llamarFuncionAdmin(cuerpo) {
   if (!sb) return { ok: false, status: 0, datos: {}, noEncontrada: true };
 
@@ -226,7 +237,7 @@ async function llamarFuncionAdmin(cuerpo) {
     'apikey': SUPABASE_ANON_KEY
   };
 
-  const guardada = urlFuncionGuardada();
+  const guardada = await nombreFuncionAdmin();
   const lista = guardada
     ? [guardada, ...CANDIDATAS_FUNC_ADM.filter(x => x !== guardada)]
     : CANDIDATAS_FUNC_ADM;

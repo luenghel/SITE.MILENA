@@ -857,6 +857,28 @@
   .avisos-caja{display:flex;align-items:center;gap:14px;padding:16px 18px;background:rgba(212,163,86,0.07);border:0.5px solid rgba(212,163,86,0.3);border-radius:13px;margin-bottom:30px;flex-wrap:wrap}
   @media (max-width:600px){.avisos-caja .art-envio-btn{width:100%}}
 
+
+  .funcs-caja{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:14px;padding:20px;margin-bottom:30px}
+  .funcs-cab{display:flex;align-items:flex-start;gap:14px;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap}
+  .func-fila{display:flex;align-items:center;gap:11px;padding:11px 0;border-top:0.5px solid rgba(255,245,240,0.06);flex-wrap:wrap}
+  .func-info{flex:1;min-width:180px}
+  .func-nom{font-size:13px;font-weight:500}
+  .func-des{font-size:11.5px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .func-input{width:190px;padding:9px 12px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.15);border-radius:9px;color:#FFF5F0;font-size:12.5px;outline:none;font-family:ui-monospace,monospace}
+  .func-input:focus{border-color:rgba(212,163,86,0.5)}
+  .func-btn{padding:9px 16px;border-radius:9px;border:none;background:rgba(212,163,86,0.18);border:0.5px solid rgba(212,163,86,0.4);color:#FAC775;font-size:11.5px;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .func-btn:hover{background:rgba(212,163,86,0.3)}
+  .func-ayuda{font-size:11.5px;color:rgba(255,245,240,0.5);margin-top:14px;padding-top:14px;border-top:0.5px solid rgba(255,245,240,0.06);line-height:1.5}
+  .func-ayuda code{background:rgba(255,245,240,0.08);padding:2px 6px;border-radius:4px;font-size:11px}
+  .func-estado{margin-top:10px;font-size:12px;display:none}
+  .func-estado.show{display:block}
+  .func-estado.ok{color:#9FE1CB}
+  .func-estado.error{color:#FF8090}
+  @media (max-width:700px){
+    .func-fila{flex-direction:column;align-items:stretch}
+    .func-input,.func-btn{width:100%}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -2104,6 +2126,61 @@ body{visibility:hidden}
         <div class="kpi-value" id="newsEstado" style="font-size:15px;font-family:inherit">—</div>
         <div class="kpi-sub" id="newsEstadoSub">Verificando…</div>
       </div>
+    </div>
+
+    <!-- Nombres de las Edge Functions -->
+    <div class="funcs-caja">
+      <div class="funcs-cab">
+        <div>
+          <div style="font-size:13.5px;font-weight:500">⚙️ Funciones de Supabase</div>
+          <div style="font-size:11.5px;color:rgba(255,245,240,0.55);margin-top:3px;line-height:1.5">
+            Supabase les pone nombres al azar. Pegá acá el que le tocó a cada una,
+            así el sitio las encuentra desde cualquier dispositivo.
+          </div>
+        </div>
+        <button class="btn-secondary" onclick="cargarFunciones()">Recargar</button>
+      </div>
+
+      <div class="func-fila">
+        <div class="func-info">
+          <div class="func-nom">🔐 Verificación en dos pasos</div>
+          <div class="func-des">El código que llega al entrar desde un equipo nuevo</div>
+        </div>
+        <input class="func-input" id="funcDosPasos" placeholder="ej: brave-api">
+        <button class="func-btn" onclick="guardarFuncion('func_dos_pasos','funcDosPasos')">Guardar</button>
+      </div>
+
+      <div class="func-fila">
+        <div class="func-info">
+          <div class="func-nom">👥 Gestión de miembros</div>
+          <div class="func-des">Avisos, bloqueos y eliminación de cuentas</div>
+        </div>
+        <input class="func-input" id="funcAdmin" placeholder="ej: clever-processor">
+        <button class="func-btn" onclick="guardarFuncion('func_admin','funcAdmin')">Guardar</button>
+      </div>
+
+      <div class="func-fila">
+        <div class="func-info">
+          <div class="func-nom">📨 Newsletter</div>
+          <div class="func-des">Envío de artículos a los suscriptores</div>
+        </div>
+        <input class="func-input" id="funcNewsletter" placeholder="ej: bright-api">
+        <button class="func-btn" onclick="guardarFuncion('func_newsletter','funcNewsletter')">Guardar</button>
+      </div>
+
+      <div class="func-fila">
+        <div class="func-info">
+          <div class="func-nom">📚 Avisos de clases</div>
+          <div class="func-des">Email cuando se libera una clase nueva</div>
+        </div>
+        <input class="func-input" id="funcAvisos" placeholder="ej: quiet-worker">
+        <button class="func-btn" onclick="guardarFuncion('func_avisos_clases','funcAvisos')">Guardar</button>
+      </div>
+
+      <div class="func-ayuda">
+        💡 El nombre está en <strong>Supabase → Edge Functions → columna URL</strong>, después de <code>/functions/v1/</code>
+      </div>
+      <div class="func-estado" id="funcEstado"></div>
     </div>
 
     <!-- Artículos listos para enviar -->
@@ -5176,6 +5253,82 @@ body{visibility:hidden}
     await cargarModeracion();
     await cargarDashboard();
     mostrarToast('✓ Datos actualizados');
+  }
+
+  // ============================
+  // NOMBRES DE LAS EDGE FUNCTIONS
+  // ============================
+  const CAMPOS_FUNC = {
+    func_dos_pasos: 'funcDosPasos',
+    func_admin: 'funcAdmin',
+    func_newsletter: 'funcNewsletter',
+    func_avisos_clases: 'funcAvisos'
+  };
+
+  function estadoFunc(msg, tipo){
+    const el = document.getElementById('funcEstado');
+    if(!el) return;
+    if(!msg){ el.className = 'func-estado'; el.textContent = ''; return; }
+    el.className = 'func-estado show ' + (tipo || 'ok');
+    el.textContent = msg;
+  }
+
+  async function cargarFunciones(){
+    if(!sb) return;
+    const { data, error } = await sb.from('ajustes').select('clave, valor');
+
+    if(error){
+      if(String(error.message).includes('does not exist')){
+        estadoFunc('Falta crear la tabla. Corré SQL-AJUSTES-FUNCIONES.sql en Supabase.', 'error');
+      }
+      return;
+    }
+
+    (data || []).forEach(a => {
+      const campo = CAMPOS_FUNC[a.clave];
+      if(campo && document.getElementById(campo)){
+        document.getElementById(campo).value = a.valor || '';
+      }
+    });
+  }
+
+  async function guardarFuncion(clave, campoId){
+    const input = document.getElementById(campoId);
+    let v = input.value.trim();
+
+    // Si pegaron la URL entera, nos quedamos con el último tramo
+    if(v.includes('/')) v = v.replace(/\/+$/, '').split('/').pop();
+    input.value = v;
+
+    if(!v) return estadoFunc('Escribí el nombre de la función', 'error');
+
+    const { error } = await sb.from('ajustes')
+      .upsert({ clave: clave, valor: v, actualizado_en: new Date().toISOString() }, { onConflict: 'clave' });
+
+    if(error) return estadoFunc('No se pudo guardar: ' + error.message, 'error');
+
+    // Probamos que responda
+    const { data: { session } } = await sb.auth.getSession();
+    let anda = false;
+    try {
+      const r = await fetch(SUPABASE_URL + '/functions/v1/' + v, {
+        method:'POST',
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization':'Bearer ' + (session?.access_token || SUPABASE_ANON_KEY),
+          'apikey': SUPABASE_ANON_KEY
+        },
+        body: JSON.stringify({})
+      });
+      anda = (r.status !== 404);
+    } catch(e){}
+
+    if(anda){
+      estadoFunc('✓ Guardado y funcionando: ' + v, 'ok');
+      try { localStorage.setItem('cmm_func_' + clave.replace('func_',''), v); } catch(e){}
+    } else {
+      estadoFunc('Guardado, pero esa función no responde. Revisá el nombre en Supabase.', 'error');
+    }
   }
 
   // ============================
