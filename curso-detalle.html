@@ -260,6 +260,14 @@
     .temario-btn{width:100%;justify-content:center}
   }
 
+
+  .mod-bloque{margin-bottom:20px}
+  .mod-bloque-tit{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:rgba(255,245,240,0.75);margin-bottom:10px;padding-top:6px}
+  .mod-bloque-num{width:24px;height:24px;border-radius:7px;background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.38);color:#FAC775;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .lesson-ico{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px}
+  .lesson-encurso{font-size:9.5px;letter-spacing:0.16em;color:#FAC775;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:6px}
+  .lesson-encurso .pt{width:5px;height:5px;border-radius:50%;background:#FAC775;display:inline-block}
+
 </style>
 </head>
 <body>
@@ -283,8 +291,8 @@
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
   </a>
   <div>
-    <div class="breadcrumb-meta">FORMACIÓN PRINCIPAL</div>
-    <h2 class="breadcrumb-title">Creando Mentes Millonarias</h2>
+    <div class="breadcrumb-meta" id="bcCategoria">CURSO</div>
+    <h2 class="breadcrumb-title" id="bcTitulo">Cargando...</h2>
   </div>
 </div>
 
@@ -298,10 +306,10 @@
       <div class="silhouette"></div>
       <div class="scrim"></div>
       <div class="course-poster-content">
-        <div class="course-poster-tag">CLASE 8 · 12 MÓDULOS</div>
-        <div class="course-poster-title">Embudos<br>que escalan</div>
+        <div class="course-poster-tag" id="posterTag"></div>
+        <div class="course-poster-title" id="posterTitulo"></div>
       </div>
-      <div class="course-poster-bottom">FORMACIÓN PRINCIPAL</div>
+      <div class="course-poster-bottom" id="posterPie"></div>
     </div>
 
     <a href="/clase" class="cta-gold course-cta">
@@ -323,103 +331,25 @@
     <div class="progress-card">
       <div class="progress-row">
         <span class="progress-label">PROGRESO</span>
-        <span class="progress-amt">7 de 12 clases</span>
+        <span class="progress-amt" id="progresoTxt">—</span>
       </div>
       <div class="progress-track">
-        <div class="progress-fill-multi"></div>
+        <div class="progress-fill-multi" id="progresoBarra" style="width:0%"></div>
       </div>
     </div>
   </div>
 
-  <!-- Columna derecha: lista de aulas -->
+  <!-- Columna derecha: el contenido real del curso -->
   <div class="aulas-card">
     <div class="aulas-header">
       <div>
-        <h3 class="aulas-title">Información General</h3>
-        <span class="aulas-count">Total de clases (7 de 12)</span>
+        <h3 class="aulas-title">Contenido del curso</h3>
+        <span class="aulas-count" id="aulasCount">Cargando...</span>
       </div>
     </div>
-
-    <!-- AULA COMPLETADA -->
-    <a href="/clase" class="lesson">
-      <div class="lesson-thumb" style="background:linear-gradient(135deg,#7A1B2E,#B8294A)">
-        <div class="lesson-thumb-overlay"></div>
-        <div class="lesson-status status-done">
-          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1A0A12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-        </div>
-      </div>
-      <div class="lesson-info">
-        <div class="lesson-title-text done">Bienvenida al curso</div>
-        <div class="lesson-meta done">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><polyline points="14 2 14 8 20 8" stroke-linejoin="round"/><path d="M20 13V8L14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
-          Contenido · 4 min
-        </div>
-      </div>
-    </a>
-
-    <!-- AULA ACTUAL -->
-    <a href="/clase" class="lesson current">
-      <div class="lesson-thumb" style="background:linear-gradient(135deg,#4A0F1E,#7A1B2E)">
-        <div class="lesson-status status-current">
-          <svg width="9" height="9" viewBox="0 0 24 24" fill="#3D1208"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-      </div>
-      <div class="lesson-info">
-        <div class="lesson-tag-row">
-          <span class="lesson-current-tag">EN CURSO</span>
-          <span style="width:4px;height:4px;border-radius:50%;background:#FAC775"></span>
-        </div>
-        <div class="lesson-title-text">Embudos que escalan</div>
-        <div class="lesson-meta current">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.6)" stroke-width="1.7"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-          Video · 18 min
-        </div>
-      </div>
-    </a>
-
-    <!-- AULA PENDIENTE -->
-    <a href="/clase" class="lesson">
-      <div class="lesson-thumb" style="background:linear-gradient(135deg,#3D1208,#7A1B2E)">
-        <div class="lesson-thumb-overlay"></div>
-      </div>
-      <div class="lesson-info">
-        <div class="lesson-title-text">Métricas que importan</div>
-        <div class="lesson-meta">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-          Video · 24 min
-        </div>
-      </div>
-    </a>
-
-    <!-- AULA TIPO ENLACE -->
-    <a href="#" class="lesson">
-      <div class="lesson-thumb" style="background:linear-gradient(135deg,#2D0A18,#4A0F1E);display:flex;align-items:center;justify-content:center">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8B8C4" stroke-width="1.7"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" stroke-linecap="round"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" stroke-linecap="round"/></svg>
-      </div>
-      <div class="lesson-info">
-        <div class="lesson-title-text">Plantillas descargables</div>
-        <div class="lesson-meta">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" stroke-linecap="round"/></svg>
-          Recurso · enlace externo
-        </div>
-      </div>
-    </a>
-
-    <!-- AULA TAREA -->
-    <a href="#" class="lesson">
-      <div class="lesson-thumb" style="background:linear-gradient(135deg,#3D1208,#5A0F2A);display:flex;align-items:center;justify-content:center">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#E8B8C4" stroke-width="1.7"><path d="M9 11l3 3L22 4" stroke-linecap="round"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke-linecap="round"/></svg>
-      </div>
-      <div class="lesson-info">
-        <div class="lesson-title-text">Tarea: Diseñá tu primer embudo</div>
-        <div class="lesson-meta">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><path d="M9 11l3 3L22 4" stroke-linecap="round"/></svg>
-          Tarea · entregable
-        </div>
-      </div>
-    </a>
-
+    <div id="listaAulas"></div>
   </div>
+
 </div>
 
 <footer class="main-footer">
@@ -762,6 +692,156 @@ const checkAccess = setInterval(async () => {
     await mostrarTemario(curso, user);
   }
 }, 100);
+</script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// CONTENIDO REAL DEL CURSO
+// ═══════════════════════════════════════════════════════════════════
+
+const ICO_CLASE = { video:'🎬', pdf:'📄', texto:'📝', enlace:'🔗', audio:'🎧' };
+
+function escC(t){
+  if(!t) return '';
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+async function pintarCursoReal(){
+  if(typeof sb === 'undefined' || !sb) return;
+
+  const slug = new URLSearchParams(window.location.search).get('id');
+  if(!slug) return;
+
+  const { data: curso } = await sb.from('cursos').select('*').eq('slug', slug).maybeSingle();
+  if(!curso) return;
+
+  const { data: { user } } = await sb.auth.getUser();
+
+  // ─── Encabezado ───
+  document.getElementById('bcCategoria').textContent = (curso.categoria || 'CURSO').toUpperCase();
+  document.getElementById('bcTitulo').textContent = curso.titulo;
+  document.getElementById('posterTitulo').textContent = curso.titulo;
+  document.getElementById('posterPie').textContent = (curso.categoria || '').toUpperCase();
+
+  // La portada real
+  const poster = document.querySelector('.course-poster');
+  if(poster && curso.foto_portada){
+    poster.style.backgroundImage = "url('" + curso.foto_portada + "')";
+    poster.style.backgroundSize = 'cover';
+    poster.style.backgroundPosition = 'center';
+    ['.glow1','.glow2','.silhouette'].forEach(s => {
+      const el = poster.querySelector(s);
+      if(el) el.style.display = 'none';
+    });
+    const t = document.getElementById('posterTitulo');
+    if(t) t.style.display = 'none';
+    const tag = document.getElementById('posterTag');
+    if(tag) tag.style.display = 'none';
+  }
+
+  // ─── Módulos y clases ───
+  const [rMod, rCla] = await Promise.all([
+    sb.from('modulos').select('*').eq('curso_id', curso.id).eq('publicado', true).order('orden', { ascending:true }),
+    sb.from('clases').select('*').eq('curso_id', curso.id).eq('publicado', true).order('orden', { ascending:true })
+  ]);
+
+  const modulos = rMod.data || [];
+  const clases = rCla.data || [];
+
+  document.getElementById('posterTag').textContent =
+    modulos.length + ' módulo' + (modulos.length === 1 ? '' : 's') + ' · ' + clases.length + ' clase' + (clases.length === 1 ? '' : 's');
+
+  // ─── Progreso ───
+  let progreso = {};
+  if(user){
+    const { data: prog } = await sb.from('progreso')
+      .select('clase_id, completada').eq('usuario_id', user.id).eq('curso_id', curso.id);
+    (prog || []).forEach(p => { if(p.completada) progreso[p.clase_id] = true; });
+  }
+
+  const hechas = clases.filter(x => progreso[x.id]).length;
+  const pct = clases.length ? Math.round((hechas / clases.length) * 100) : 0;
+
+  document.getElementById('progresoTxt').textContent =
+    clases.length ? (hechas + ' de ' + clases.length + ' clases') : 'Sin clases todavía';
+  document.getElementById('progresoBarra').style.width = pct + '%';
+
+  // ─── Lista de clases ───
+  const cont = document.getElementById('listaAulas');
+  const cuenta = document.getElementById('aulasCount');
+
+  if(clases.length === 0){
+    cuenta.textContent = 'Todavía sin contenido';
+    cont.innerHTML = '<div style="padding:44px 20px;text-align:center;color:rgba(255,245,240,0.45)">' +
+      '<div style="font-size:40px;opacity:0.35;margin-bottom:12px">📚</div>' +
+      '<div style="font-size:14px;margin-bottom:6px">Estamos preparando las clases</div>' +
+      '<div style="font-size:12px;color:rgba(255,245,240,0.35)">Muy pronto vas a poder empezar</div></div>';
+    return;
+  }
+
+  cuenta.textContent = 'Total de clases (' + hechas + ' de ' + clases.length + ')';
+
+  // Siguiente clase a ver
+  const planas = [];
+  modulos.forEach(m => clases.filter(x => x.modulo_id === m.id).forEach(x => planas.push(x)));
+  const siguiente = planas.find(x => !progreso[x.id]) || planas[0];
+
+  cont.innerHTML = modulos.map(function(m, i){
+    const cls = clases.filter(x => x.modulo_id === m.id);
+    if(cls.length === 0) return '';
+
+    return '<div class="mod-bloque">' +
+      '<div class="mod-bloque-tit">' +
+        '<span class="mod-bloque-num">' + (i + 1) + '</span>' +
+        escC(m.titulo) +
+      '</div>' +
+      cls.map(function(cl){
+        const hecha = !!progreso[cl.id];
+        const enCurso = siguiente && cl.id === siguiente.id;
+        const tipoTxt = cl.tipo === 'video' ? 'Video' :
+                        cl.tipo === 'pdf' ? 'Material' :
+                        cl.tipo === 'enlace' ? 'Enlace externo' : 'Contenido';
+
+        return '<a href="/clase?curso=' + encodeURIComponent(slug) + '&clase=' + cl.id + '" class="lesson">' +
+          '<div class="lesson-thumb" style="background:linear-gradient(135deg,#7A1B2E,#B8294A)">' +
+            '<div class="lesson-thumb-overlay"></div>' +
+            (hecha
+              ? '<div class="lesson-status status-done"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1A0A12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>'
+              : (enCurso
+                  ? '<div class="lesson-status status-current"><svg width="9" height="9" viewBox="0 0 24 24" fill="#1A0A12"><path d="M8 5v14l11-7z"/></svg></div>'
+                  : '<div class="lesson-ico">' + (ICO_CLASE[cl.tipo] || '🎬') + '</div>')) +
+          '</div>' +
+          '<div class="lesson-info">' +
+            (enCurso ? '<div class="lesson-encurso">EN CURSO <span class="pt"></span></div>' : '') +
+            '<div class="lesson-title-text' + (hecha ? ' done' : '') + '">' + escC(cl.titulo) + '</div>' +
+            '<div class="lesson-meta' + (hecha ? ' done' : '') + '">' + tipoTxt +
+              (cl.duracion_minutos ? ' · ' + cl.duracion_minutos + ' min' : '') +
+              (cl.gratis ? ' · muestra gratis' : '') +
+            '</div>' +
+          '</div>' +
+        '</a>';
+      }).join('') +
+    '</div>';
+  }).join('');
+
+  // El botón de abajo lleva a la clase correcta
+  const btn = document.querySelector('.continue-btn');
+  if(btn && siguiente){
+    btn.setAttribute('href', '/clase?curso=' + encodeURIComponent(slug) + '&clase=' + siguiente.id);
+    const txt = btn.querySelector('span') || btn;
+    if(hechas === 0) txt.textContent = 'EMPEZAR EL CURSO';
+    else if(hechas === clases.length) txt.textContent = 'REPASAR EL CURSO';
+    else txt.textContent = 'CONTINUAR APRENDIENDO';
+  }
+}
+
+const esperarCurso = setInterval(function(){
+  if(typeof sb === 'undefined' || sb === null) return;
+  clearInterval(esperarCurso);
+  pintarCursoReal();
+}, 50);
 </script>
 
 </body>
