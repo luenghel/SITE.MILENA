@@ -846,6 +846,13 @@
   .falta-foto{position:absolute;bottom:9px;left:9px;right:9px;text-align:center;font-size:10px;padding:5px;border-radius:6px;background:rgba(14,5,9,0.7);color:rgba(255,245,240,0.6);backdrop-filter:blur(6px)}
   .cursos-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
 
+
+  .enlaces-guia{margin-top:11px;padding:12px 14px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.1);border-radius:10px}
+  .eg-titulo{font-size:10px;letter-spacing:0.16em;color:rgba(255,245,240,0.45);font-weight:600;margin-bottom:9px}
+  .eg-chip{display:inline-block;padding:5px 11px;margin:0 5px 5px 0;background:rgba(212,163,86,0.12);border:0.5px solid rgba(212,163,86,0.35);border-radius:14px;color:#FAC775;font-size:11px;cursor:pointer;font-family:inherit;transition:all 0.2s}
+  .eg-chip:hover{background:rgba(212,163,86,0.25)}
+  .eg-nota{font-size:10.5px;color:rgba(255,245,240,0.4);margin-top:7px}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -2259,8 +2266,16 @@ body{visibility:hidden}
         <div class="form-field" style="margin-bottom:14px">
           <label class="form-label">ADÓNDE LLEVA</label>
           <input type="text" class="form-input" id="carruselLink" placeholder="/curso-detalle?id=cmm">
-          <div class="form-help">Al tocar la imagen y al tocar el botón se va a este enlace.<br>
-          Ejemplos: <strong>/cursos</strong> · <strong>/curso-detalle?id=cmm</strong> · <strong>/comunidad</strong> · o un enlace completo con https://</div>
+          <div class="form-help">Al tocar la imagen y al tocar el botón se va a este enlace.</div>
+          <div class="enlaces-guia">
+            <div class="eg-titulo">Enlaces que podés usar</div>
+            <button type="button" class="eg-chip" onclick="ponerEnlace('/cursos')">/cursos</button>
+            <button type="button" class="eg-chip" onclick="ponerEnlace('/comunidad')">/comunidad</button>
+            <button type="button" class="eg-chip" onclick="ponerEnlace('/blog')">/blog</button>
+            <button type="button" class="eg-chip" onclick="ponerEnlace('/login')">/login</button>
+            <div id="egCursos"></div>
+            <div class="eg-nota">También podés pegar un enlace externo completo (https://...)</div>
+          </div>
         </div>
 
         <div class="form-field" style="margin-bottom:14px">
@@ -3383,6 +3398,22 @@ body{visibility:hidden}
   }
 
   // ─── Vista previa con la proporción real de la imagen ───
+  window.ponerEnlace = function(v){
+    document.getElementById('carruselLink').value = v;
+    estadoCarrusel('Enlace puesto: ' + v, 'ok');
+  };
+
+  // Lista los cursos publicados como atajos
+  function pintarAtajosCursos(){
+    const cont = document.getElementById('egCursos');
+    if(!cont) return;
+    const pub = (cursos || []).filter(c => c.publicado).slice(0, 8);
+    if(pub.length === 0){ cont.innerHTML = ''; return; }
+    cont.innerHTML = pub.map(c =>
+      '<button type="button" class="eg-chip" onclick="ponerEnlace(\'/curso-detalle?id=' + esc(c.slug) + '\')">🎓 ' + esc(c.titulo) + '</button>'
+    ).join('');
+  }
+
   function pintarPreviewCarrusel(base, url){
     const vacio = document.getElementById(base + 'Empty');
     const prev = document.getElementById(base + 'Preview');
@@ -3548,6 +3579,7 @@ body{visibility:hidden}
       pintarPreviewCarrusel('carruselMovil', null);
     }
 
+    pintarAtajosCursos();
     document.getElementById('carruselModal').classList.add('show');
   }
 
