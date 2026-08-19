@@ -109,43 +109,40 @@
   /* Si todavía no hay banners, un alto de respaldo */
   .hero.sin-banner{aspect-ratio:2.5/1;min-height:340px}
   .hero.sin-banner .hero-espaciador{display:none}
-  /* Botón igual al de Luana: amarillo plano, sin degradado ni brillos
-     92 px desde la izquierda · 355 × 62 px · esquinas de 4 px */
+  /* Botón: nuestro dorado de siempre, con el tamaño y la posición
+     del de Luana → 355 x 62 px, pegado a la izquierda */
   .hero-encima{
     position:absolute;
-    left:0;right:0;bottom:0;
+    left:0;
+    bottom:0;
     z-index:4;
     padding:0 0 78px 92px;
     pointer-events:none;
-    display:flex;
-    justify-content:flex-start;
+    display:block;
+    width:auto;
+    max-width:none;
+    margin:0;
   }
   .hero-cta{
     pointer-events:auto;
-    display:inline-flex;
+    display:inline-flex !important;
     align-items:center;
     justify-content:center;
-    width:355px;
+    width:355px !important;
+    max-width:calc(100vw - 40px);
     height:62px;
-    padding:0 24px;
-
-    /* Amarillo plano, sin degradado */
-    background:#F5A800;
-    background-image:none;
-    color:#241500;
-    border:none;
-    box-shadow:none;
-
-    font-size:13px;
-    font-weight:700;
-    letter-spacing:0.14em;
-    border-radius:4px;
+    padding:0 24px !important;
+    margin:0 !important;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:0.16em;
+    border-radius:6px;
     text-decoration:none;
-    margin:0;
-    transition:background 0.2s, transform 0.2s;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    box-shadow:0 8px 24px rgba(0,0,0,0.3), inset 0 1.5px 0 rgba(255,255,255,0.5);
   }
-  .hero-cta:hover{background:#FFB81A;transform:translateY(-1px)}
-  .hero-cta:active{transform:translateY(0)}
   .hero-vacio{position:absolute;inset:0;z-index:2;display:none;align-items:center;justify-content:center;background:linear-gradient(135deg,#2D0A18,#1A0A12)}
   .hero-vacio.mostrar{display:flex}
   .hero-gradient{position:absolute;inset:0;background:linear-gradient(115deg,#4A152A 0%,#2D0A1A 45%,#1A0A12 75%,#0E0509 100%)}
@@ -280,7 +277,8 @@
   
 
 
-  /* MOBILE OPTIMIZADO */
+  /* ══════════ VERSIÓN CELULAR ══════════ */
+@media (max-width:900px){
   
 
 
@@ -293,8 +291,8 @@
   .hero.medido{aspect-ratio:auto}
   .hero-espaciador{max-height:none}
   .hero.sin-banner{aspect-ratio:4/5;min-height:0}
-  .hero-encima{padding:0 18px 22px}
-  .hero-cta{display:flex;width:100%;height:54px;padding:0 18px;font-size:11.5px;letter-spacing:0.12em;border-radius:4px;font-weight:700;background:#F5A800;color:#241500}
+  .hero-encima{padding:0 0 22px 18px}
+  .hero-cta{width:min(300px, calc(100vw - 36px)) !important;height:52px;padding:0 18px !important;font-size:11px;letter-spacing:0.13em;border-radius:6px}
   .hero-flechas{bottom:auto;top:16px;right:16px;gap:7px}
   .hero-flecha{width:38px;height:38px}
   .hero-flecha svg{width:15px;height:15px}
@@ -361,6 +359,7 @@
     padding:26px 20px calc(26px + var(--safe-bot,0px));
     margin-top:30px;
   }
+}
 
   /* Nada se sale de la pantalla en celular */
   @media (max-width:900px){
