@@ -309,14 +309,15 @@
     aspect-ratio:auto;
     max-height:none;
     min-height:0;
-    padding-top:112px;
+    /* El alto del menú lo mide el propio sitio (ver más abajo),
+       así funciona con sesión, sin sesión y en cualquier teléfono */
+    padding-top:var(--alto-menu, 112px);
     background:#0E0509;
   }
-  /* La imagen empieza debajo del menú */
-  .hero-carrusel{top:112px}
+  .hero-carrusel{top:var(--alto-menu, 112px)}
   .hero-espaciador{max-height:none}
-  .hero.sin-banner{aspect-ratio:auto;height:calc(112px + 75vw)}
-  .hero-vacio{top:112px}
+  .hero.sin-banner{aspect-ratio:auto;height:calc(var(--alto-menu, 112px) + 75vw)}
+  .hero-vacio{top:var(--alto-menu, 112px)}
 
   /* Botón centrado, con márgenes iguales a los costados */
   .hero-encima{
@@ -334,7 +335,16 @@
     letter-spacing:0.14em;
     border-radius:8px;
   }
-  .hero-flechas{bottom:auto;top:16px;right:16px;gap:7px}
+  /* Las flechas van DENTRO de la imagen, en su esquina superior derecha.
+     El hero reserva 112 px arriba para el menú, así que arrancamos
+     debajo de eso con una sangría de 14 px. */
+  .hero-flechas{
+    bottom:auto;
+    top:calc(var(--alto-menu, 112px) + 14px);
+    right:14px;
+    gap:8px;
+    z-index:6;
+  }
   .hero-flecha{width:38px;height:38px}
   .hero-flecha svg{width:15px;height:15px}
   .hero-dots{bottom:8px}
@@ -992,6 +1002,29 @@
       actualizarCarruselPrincipal();
     }
   });
+
+  // Medimos el alto real del menú, para que la imagen del banner
+  // empiece justo debajo sin que nada quede tapado
+  (function(){
+    var header = document.querySelector('.main-header');
+    if(!header) return;
+
+    function medir(){
+      var h = Math.round(header.getBoundingClientRect().height);
+      if(h > 0) document.documentElement.style.setProperty('--alto-menu', h + 'px');
+    }
+
+    medir();
+    window.addEventListener('resize', medir);
+    window.addEventListener('load', medir);
+    // El menú cambia cuando se confirma la sesión
+    setTimeout(medir, 300);
+    setTimeout(medir, 1200);
+
+    if(window.ResizeObserver){
+      new ResizeObserver(medir).observe(header);
+    }
+  })();
 
   // El menú se vuelve sólido cuando bajás
   (function(){
