@@ -1016,6 +1016,39 @@
   .sec-previa-tit{font-size:20px;font-family:Georgia,serif;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .sec-previa-sub{font-size:12.5px;color:rgba(255,245,240,0.5);margin-top:4px}
 
+
+  .pm-seccion{background:rgba(255,245,240,0.02);border:0.5px solid rgba(255,245,240,0.08);border-radius:15px;padding:22px;margin-bottom:24px}
+  .pm-cab{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+
+  .pm-fila{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.09);border-radius:12px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;flex-wrap:wrap}
+  .pm-fila:hover{background:rgba(255,245,240,0.06);border-color:rgba(212,163,86,0.35)}
+  .pm-fila.vencida{opacity:0.55}
+  .pm-fila.porvencer{border-color:rgba(212,163,86,0.45);background:rgba(212,163,86,0.06)}
+  .pm-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7A1B2E,#B8294A);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;flex-shrink:0;overflow:hidden}
+  .pm-avatar img{width:100%;height:100%;object-fit:cover}
+  .pm-info{flex:1;min-width:140px}
+  .pm-nom{font-size:13.5px;font-weight:500}
+  .pm-mail{font-size:11.5px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .pm-estado{font-size:11px;padding:5px 11px;border-radius:14px;white-space:nowrap;font-weight:500}
+  .pm-estado.activa{background:rgba(93,202,165,0.14);border:0.5px solid rgba(93,202,165,0.4);color:#9FE1CB}
+  .pm-estado.porvencer{background:rgba(212,163,86,0.16);border:0.5px solid rgba(212,163,86,0.45);color:#FAC775}
+  .pm-estado.vencida{background:rgba(255,59,71,0.12);border:0.5px solid rgba(255,59,71,0.35);color:#FF8090}
+  .pm-estado.cancelada{background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.15);color:rgba(255,245,240,0.5)}
+
+  .enc-fila{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.09);border-radius:12px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;flex-wrap:wrap}
+  .enc-fila:hover{background:rgba(255,245,240,0.06)}
+  .enc-fecha{width:56px;text-align:center;flex-shrink:0;padding:7px 0;background:rgba(212,163,86,0.12);border:0.5px solid rgba(212,163,86,0.35);border-radius:10px}
+  .enc-dia{font-size:19px;font-weight:600;color:#FAC775;line-height:1}
+  .enc-mes{font-size:9.5px;letter-spacing:0.1em;color:rgba(255,245,240,0.55);margin-top:2px}
+  .enc-info{flex:1;min-width:150px}
+  .enc-tit{font-size:13.5px;font-weight:500}
+  .enc-meta{font-size:11.5px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .enc-chip{font-size:10px;padding:4px 9px;border-radius:12px;white-space:nowrap}
+  .enc-chip.proximo{background:rgba(93,202,165,0.14);border:0.5px solid rgba(93,202,165,0.4);color:#9FE1CB}
+  .enc-chip.pasado{background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.12);color:rgba(255,245,240,0.45)}
+
+  .susc-vence{padding:12px 14px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.3);border-radius:10px;font-size:12.5px;color:#FAC775;margin-bottom:14px;line-height:1.5}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1401,6 +1434,11 @@ body{visibility:hidden}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="13" width="18" height="5" rx="1"/></svg>
       Filas del catálogo
       <span class="sidebar-badge dim" id="seccionesCount">0</span>
+    </a>
+    <a href="#" onclick="cambiarTab('premium')" class="sidebar-item" id="nav-premium">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.6 6.5L21 9.3l-4.8 4.4 1.3 6.6L12 17l-5.5 3.3 1.3-6.6L3 9.3l6.4-.8z"/></svg>
+      Premium
+      <span class="sidebar-badge" id="premiumCount">0</span>
     </a>
     <a href="#" onclick="cambiarTab('insignias')" class="sidebar-item" id="nav-insignias">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="6"/><path d="M8.2 13.9 7 22l5-3 5 3-1.2-8.1"/></svg>
@@ -3293,6 +3331,318 @@ body{visibility:hidden}
     </div>
   </div>
 
+  <!-- ============================ -->
+  <!-- TAB: COMUNIDAD PREMIUM -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-premium">
+    <div class="header-bar">
+      <div>
+        <div class="header-meta">SUSCRIPCIONES</div>
+        <h1 class="header-title">Comunidad <span class="serif-it gradtext" style="font-size:34px">Premium</span></h1>
+        <p class="header-sub">Quiénes tienen acceso exclusivo y cuándo vence.</p>
+      </div>
+      <div class="header-actions" style="display:flex;gap:9px;flex-wrap:wrap">
+        <button class="btn-secondary" onclick="abrirPlan()">⚙️ El plan</button>
+        <button class="cta-gold btn-primary" onclick="abrirSuscripcion()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          DAR ACCESO
+        </button>
+      </div>
+    </div>
+
+    <div class="kpi-grid" style="margin-bottom:26px">
+      <div class="kpi">
+        <div class="kpi-label">ACTIVAS</div>
+        <div class="kpi-valor" id="pmActivas">—</div>
+        <div class="kpi-sub">con acceso ahora</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">POR VENCER</div>
+        <div class="kpi-valor" id="pmPorVencer">—</div>
+        <div class="kpi-sub">en los próximos 7 días</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">VENCIDAS</div>
+        <div class="kpi-valor" id="pmVencidas">—</div>
+        <div class="kpi-sub">se pueden recuperar</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">POR MES</div>
+        <div class="kpi-valor" id="pmIngreso">—</div>
+        <div class="kpi-sub">si todas renuevan</div>
+      </div>
+    </div>
+
+    <!-- Encuentros -->
+    <div class="pm-seccion">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">Encuentros semanales</h3>
+          <p class="chart-subtitle">Los que ya programaste</p>
+        </div>
+        <button class="btn-secondary" onclick="abrirEncuentro()">+ Nuevo encuentro</button>
+      </div>
+      <div id="encuentrosLista"></div>
+    </div>
+
+    <!-- Interesadas -->
+    <div class="pm-seccion" id="zonaInteresadas" style="display:none">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">Quieren sumarse</h3>
+          <p class="chart-subtitle">Tocaron el botón en la página premium. Escribiles.</p>
+        </div>
+      </div>
+      <div id="interesadasLista"></div>
+    </div>
+
+    <!-- Suscriptoras -->
+    <div class="pm-seccion">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">Suscriptoras</h3>
+          <p class="chart-subtitle" id="pmSubtitulo">—</p>
+        </div>
+        <div class="filtros" style="margin:0">
+          <button class="filtro-btn active" onclick="filtrarPremium('todas', this)">Todas</button>
+          <button class="filtro-btn" onclick="filtrarPremium('activa', this)">Activas</button>
+          <button class="filtro-btn" onclick="filtrarPremium('porvencer', this)">Por vencer</button>
+          <button class="filtro-btn" onclick="filtrarPremium('vencida', this)">Vencidas</button>
+        </div>
+      </div>
+      <div id="premiumLista"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: DAR O EDITAR ACCESO -->
+  <div class="curso-modal-backdrop" id="suscripcionModal">
+    <div class="curso-modal" style="max-width:460px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">ACCESO PREMIUM</div>
+          <h3 class="curso-modal-titulo serif" id="suscTituloModal">Dar acceso</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarSuscripcion()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <input type="hidden" id="suscId">
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">¿A QUIÉN?</label>
+          <select class="form-select" id="suscUsuario"></select>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">CUÁNTOS MESES</label>
+            <select class="form-select" id="suscMeses" onchange="calcularVence()">
+              <option value="1">1 mes</option>
+              <option value="3">3 meses</option>
+              <option value="6">6 meses</option>
+              <option value="12">12 meses</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">MONTO (Gs)</label>
+            <input type="number" class="form-input" id="suscMonto" min="0" placeholder="150000">
+          </div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">CÓMO PAGÓ</label>
+          <select class="form-select" id="suscMetodo">
+            <option value="transferencia">Transferencia bancaria</option>
+            <option value="pagopar">Pagopar</option>
+            <option value="efectivo">Efectivo</option>
+            <option value="cortesia">Cortesía (sin cargo)</option>
+          </select>
+        </div>
+
+        <div class="susc-vence" id="suscVenceTxt"></div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">NOTA (opcional)</label>
+          <input type="text" class="form-input" id="suscNotas" placeholder="Pagó por transferencia el 20/08">
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">📧 Avisarle por email</div>
+            <div class="toggle-help">Le llega un correo contándole que ya tiene acceso</div>
+          </div>
+          <div class="toggle-switch on" id="suscAvisar" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <button class="btn-danger" id="btnCancelarSusc" onclick="cancelarSuscripcion()" style="display:none">CANCELAR ACCESO</button>
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarSuscripcion()">Cerrar</button>
+          <button class="cta-gold btn-save" onclick="guardarSuscripcion()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ENCUENTRO -->
+  <div class="curso-modal-backdrop" id="encuentroModal">
+    <div class="curso-modal" style="max-width:460px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">ENCUENTRO</div>
+          <h3 class="curso-modal-titulo serif" id="encTituloModal">Nuevo encuentro</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarEncuentro()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <input type="hidden" id="encId">
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">TÍTULO</label>
+          <input type="text" class="form-input" id="encTitulo" placeholder="Cómo armar tu primer anuncio que venda">
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">DE QUÉ SE TRATA</label>
+          <textarea class="form-textarea" id="encDescripcion" placeholder="Vamos a ver paso a paso cómo estructurar un anuncio..."></textarea>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">DÍA Y HORA</label>
+            <input type="datetime-local" class="form-input" id="encFecha">
+          </div>
+          <div class="form-field">
+            <label class="form-label">DURACIÓN (min)</label>
+            <input type="number" class="form-input" id="encDuracion" min="15" placeholder="60">
+          </div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">ENLACE DEL ENCUENTRO</label>
+          <input type="text" class="form-input" id="encEnlace" placeholder="https://meet.google.com/...">
+          <div class="form-help">Solo lo ven las suscriptoras premium</div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">GRABACIÓN (después del encuentro)</label>
+          <input type="text" class="form-input" id="encGrabacion" placeholder="https://youtube.com/...">
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Publicado</div>
+            <div class="toggle-help">Si está apagado, nadie lo ve</div>
+          </div>
+          <div class="toggle-switch on" id="encPublicado" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <button class="btn-danger" id="btnBorrarEnc" onclick="borrarEncuentro()" style="display:none">ELIMINAR</button>
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarEncuentro()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="guardarEncuentro()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EL PLAN -->
+  <div class="curso-modal-backdrop" id="planModal">
+    <div class="curso-modal" style="max-width:460px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">CONFIGURACIÓN</div>
+          <h3 class="curso-modal-titulo serif">El plan Premium</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarPlan()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <input type="hidden" id="planId">
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">NOMBRE</label>
+          <input type="text" class="form-input" id="planNombre" placeholder="Comunidad Premium">
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">DESCRIPCIÓN</label>
+          <textarea class="form-textarea" id="planDescripcion" placeholder="Estrategias exclusivas y encuentros semanales..."></textarea>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">VIDEO DE PRESENTACIÓN (opcional)</label>
+          <input type="text" class="form-input" id="planVideo" placeholder="https://youtube.com/watch?v=...">
+          <div class="form-help">Pegá el enlace de YouTube o Vimeo. Se muestra arriba de todo en la página.</div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">TEXTO DE LA PÁGINA (opcional)</label>
+          <textarea class="form-textarea" id="planContenido" style="min-height:150px"
+            placeholder="Contales qué van a encontrar adentro, cómo son los encuentros, para quién es..."></textarea>
+          <div class="form-help">Dejá una línea en blanco entre párrafos</div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">TEXTO DEL BOTÓN</label>
+            <input type="text" class="form-input" id="planTextoBoton" placeholder="QUIERO SER PREMIUM">
+          </div>
+          <div class="form-field">
+            <label class="form-label">ADÓNDE LLEVA (opcional)</label>
+            <input type="text" class="form-input" id="planEnlaceBoton" placeholder="https://wa.me/595...">
+          </div>
+        </div>
+        <div class="form-help" style="margin-bottom:14px">
+          Si dejás el enlace vacío, al tocarlo se anota el interés y vos la contactás desde acá.
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Mostrar el precio en la página</div>
+            <div class="toggle-help">Apagado, se habla del valor sin poner el número</div>
+          </div>
+          <div class="toggle-switch" id="planMostrarPrecio" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">PRECIO MENSUAL (Gs)</label>
+            <input type="number" class="form-input" id="planPrecio" min="0" placeholder="150000">
+          </div>
+          <div class="form-field">
+            <label class="form-label">PRECIO TACHADO (opcional)</label>
+            <input type="number" class="form-input" id="planAnterior" min="0" placeholder="250000">
+          </div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">QUÉ INCLUYE</label>
+          <textarea class="form-textarea" id="planBeneficios" style="min-height:130px"
+            placeholder="Encuentros semanales en vivo&#10;Estrategias exclusivas&#10;Análisis de campañas reales"></textarea>
+          <div class="form-help">Una línea por beneficio</div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarPlan()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="guardarPlan()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <!-- Toast -->
@@ -3963,6 +4313,444 @@ body{visibility:hidden}
     cerrarSeccion();
     await cargarSecciones();
     await cargarCursos();
+  }
+
+  // ============================
+  // COMUNIDAD PREMIUM
+  // ============================
+  let suscripciones = [];
+  let encuentros = [];
+  let planPremium = null;
+  let filtroPremium = 'todas';
+
+  async function cargarPremium(){
+    if(!sb) return;
+
+    // Vencemos las que ya pasaron
+    try { await sb.rpc('vencer_suscripciones'); } catch(e){}
+
+    const [rSusc, rEnc, rPlan] = await Promise.all([
+      sb.from('premium_activas').select('*'),
+      sb.from('encuentros').select('*').order('fecha', { ascending: false }),
+      sb.from('planes').select('*').eq('clave', 'premium').maybeSingle()
+    ]);
+
+    if(rSusc.error){
+      const cont = document.getElementById('premiumLista');
+      if(cont){
+        cont.innerHTML = '<div style="padding:40px;text-align:center;color:#FF8090">' +
+          (String(rSusc.error.message).includes('does not exist')
+            ? 'Falta crear las tablas. Corré SQL-COMUNIDAD-PREMIUM.sql en Supabase.'
+            : esc(rSusc.error.message)) + '</div>';
+      }
+      return;
+    }
+
+    suscripciones = rSusc.data || [];
+    encuentros = rEnc.data || [];
+    planPremium = rPlan.data || null;
+
+    const activas = suscripciones.filter(s => s.estado === 'activa');
+    document.getElementById('premiumCount').textContent = activas.length;
+
+    renderKpisPremium();
+    renderEncuentros();
+    renderPremium();
+    await cargarInteresadas();
+  }
+
+  function renderKpisPremium(){
+    const activas = suscripciones.filter(s => s.estado === 'activa');
+    const porVencer = activas.filter(s => s.dias_restantes !== null && s.dias_restantes <= 7);
+    const vencidas = suscripciones.filter(s => s.estado === 'vencida');
+    const ingreso = activas.reduce((t, s) => t + (s.monto_gs || 0), 0);
+
+    document.getElementById('pmActivas').textContent = activas.length;
+    document.getElementById('pmPorVencer').textContent = porVencer.length;
+    document.getElementById('pmVencidas').textContent = vencidas.length;
+    document.getElementById('pmIngreso').textContent = ingreso > 0 ? 'Gs ' + ingreso.toLocaleString('es-PY') : '—';
+  }
+
+  function estadoDe(s){
+    if(s.estado === 'cancelada') return { clave:'cancelada', txt:'Cancelada' };
+    if(s.estado === 'vencida') return { clave:'vencida', txt:'Vencida' };
+    if(s.dias_restantes !== null && s.dias_restantes <= 7){
+      return { clave:'porvencer', txt: s.dias_restantes === 0 ? 'Vence hoy' : 'Vence en ' + s.dias_restantes + 'd' };
+    }
+    return { clave:'activa', txt: s.dias_restantes !== null ? s.dias_restantes + ' días' : 'Sin vencimiento' };
+  }
+
+  function filtrarPremium(f, btn){
+    filtroPremium = f;
+    document.querySelectorAll('#content-premium .filtro-btn').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    renderPremium();
+  }
+
+  function renderPremium(){
+    const cont = document.getElementById('premiumLista');
+    if(!cont) return;
+
+    let lista = suscripciones;
+    if(filtroPremium === 'activa') lista = lista.filter(s => s.estado === 'activa');
+    else if(filtroPremium === 'vencida') lista = lista.filter(s => s.estado === 'vencida');
+    else if(filtroPremium === 'porvencer') lista = lista.filter(s => s.estado === 'activa' && s.dias_restantes !== null && s.dias_restantes <= 7);
+
+    document.getElementById('pmSubtitulo').textContent =
+      lista.length + ' de ' + suscripciones.length + ' suscripción(es)';
+
+    if(lista.length === 0){
+      cont.innerHTML = '<div class="vacio-suave"><div class="ico">⭐</div>' +
+        (suscripciones.length === 0 ? 'Todavía no hay suscriptoras' : 'Nada en este filtro') +
+        (suscripciones.length === 0
+          ? '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">Usá "DAR ACCESO" para sumar la primera</div>'
+          : '') + '</div>';
+      return;
+    }
+
+    cont.innerHTML = lista.map(s => {
+      const e = estadoDe(s);
+      const ini = (s.nombre || s.email || '?').charAt(0).toUpperCase();
+      return '<div class="pm-fila ' + e.clave + '" onclick="abrirSuscripcion(\'' + s.id + '\')">' +
+        '<div class="pm-avatar">' +
+          (s.avatar_url ? '<img src="' + s.avatar_url + '" alt="">' : ini) +
+        '</div>' +
+        '<div class="pm-info">' +
+          '<div class="pm-nom">' + esc(s.nombre || 'Sin nombre') + '</div>' +
+          '<div class="pm-mail">' + esc(s.email || '') + '</div>' +
+        '</div>' +
+        '<div style="font-size:11.5px;color:rgba(255,245,240,0.5);min-width:110px">' +
+          (s.monto_gs ? 'Gs ' + s.monto_gs.toLocaleString('es-PY') : 'Cortesía') +
+          '<br>' + (s.metodo_pago || '') +
+        '</div>' +
+        '<div class="pm-estado ' + e.clave + '">' + e.txt + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  let interesadas = [];
+
+  async function cargarInteresadas(){
+    const { data, error } = await sb.from('interesados_premium')
+      .select('*, perfiles(nombre, email, avatar_url)')
+      .eq('contactada', false)
+      .order('creado_en', { ascending: false });
+
+    if(error) return;
+    interesadas = data || [];
+    renderInteresadas();
+  }
+
+  function renderInteresadas(){
+    const zona = document.getElementById('zonaInteresadas');
+    const cont = document.getElementById('interesadasLista');
+    if(!zona || !cont) return;
+
+    if(interesadas.length === 0){ zona.style.display = 'none'; return; }
+    zona.style.display = '';
+
+    cont.innerHTML = interesadas.map(i => {
+      const p = i.perfiles || {};
+      const ini = (p.nombre || i.email || '?').charAt(0).toUpperCase();
+      const cuando = new Date(i.creado_en);
+      const dias = Math.floor((Date.now() - cuando.getTime()) / 86400000);
+      const hace = dias === 0 ? 'hoy' : (dias === 1 ? 'ayer' : 'hace ' + dias + ' días');
+
+      return '<div class="pm-fila porvencer">' +
+        '<div class="pm-avatar">' + (p.avatar_url ? '<img src="' + p.avatar_url + '" alt="">' : ini) + '</div>' +
+        '<div class="pm-info">' +
+          '<div class="pm-nom">' + esc(p.nombre || 'Sin nombre') + '</div>' +
+          '<div class="pm-mail">' + esc(p.email || i.email || '') + ' · ' + hace + '</div>' +
+        '</div>' +
+        '<button class="pend-btn" onclick="darAccesoA(\'' + i.usuario_id + '\')">DAR ACCESO</button>' +
+        '<button class="btn-secondary" style="padding:9px 14px;font-size:11px" onclick="marcarContactada(\'' + i.id + '\')">Ya la contacté</button>' +
+      '</div>';
+    }).join('');
+  }
+
+  function darAccesoA(usuarioId){
+    abrirSuscripcion();
+    setTimeout(() => {
+      const sel = document.getElementById('suscUsuario');
+      if(sel) sel.value = usuarioId;
+    }, 100);
+  }
+
+  async function marcarContactada(id){
+    const { error } = await sb.from('interesados_premium')
+      .update({ contactada: true }).eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast('Marcada como contactada');
+    await cargarInteresadas();
+  }
+
+  // ─── Encuentros ───
+  function renderEncuentros(){
+    const cont = document.getElementById('encuentrosLista');
+    if(!cont) return;
+
+    if(encuentros.length === 0){
+      cont.innerHTML = '<div class="vacio-suave"><div class="ico">📅</div>Todavía no programaste encuentros' +
+        '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">Son el corazón del premium: uno por semana</div></div>';
+      return;
+    }
+
+    const MESES = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+
+    cont.innerHTML = encuentros.slice(0, 10).map(e => {
+      const f = new Date(e.fecha);
+      const futuro = f.getTime() > Date.now();
+      const hora = f.toLocaleTimeString('es-PY', { hour:'2-digit', minute:'2-digit' });
+      return '<div class="enc-fila" onclick="abrirEncuentro(\'' + e.id + '\')">' +
+        '<div class="enc-fecha">' +
+          '<div class="enc-dia">' + f.getDate() + '</div>' +
+          '<div class="enc-mes">' + MESES[f.getMonth()] + '</div>' +
+        '</div>' +
+        '<div class="enc-info">' +
+          '<div class="enc-tit">' + esc(e.titulo) + '</div>' +
+          '<div class="enc-meta">' + hora + ' · ' + (e.duracion_minutos || 60) + ' min' +
+            (e.grabacion_url ? ' · 🎬 con grabación' : '') +
+            (e.publicado ? '' : ' · borrador') +
+          '</div>' +
+        '</div>' +
+        '<div class="enc-chip ' + (futuro ? 'proximo' : 'pasado') + '">' +
+          (futuro ? 'PRÓXIMO' : 'YA PASÓ') + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function abrirEncuentro(id){
+    document.getElementById('encId').value = id || '';
+    document.getElementById('encTituloModal').textContent = id ? 'Editar encuentro' : 'Nuevo encuentro';
+    document.getElementById('btnBorrarEnc').style.display = id ? '' : 'none';
+
+    if(id){
+      const e = encuentros.find(x => x.id === id);
+      document.getElementById('encTitulo').value = e?.titulo || '';
+      document.getElementById('encDescripcion').value = e?.descripcion || '';
+      document.getElementById('encFecha').value = e?.fecha ? new Date(e.fecha).toISOString().slice(0,16) : '';
+      document.getElementById('encDuracion').value = e?.duracion_minutos || 60;
+      document.getElementById('encEnlace').value = e?.enlace || '';
+      document.getElementById('encGrabacion').value = e?.grabacion_url || '';
+      document.getElementById('encPublicado').classList.toggle('on', e?.publicado !== false);
+    } else {
+      ['encTitulo','encDescripcion','encEnlace','encGrabacion'].forEach(f => document.getElementById(f).value = '');
+      // Por defecto, el próximo jueves a las 20:00
+      const d = new Date();
+      d.setDate(d.getDate() + ((4 - d.getDay() + 7) % 7 || 7));
+      d.setHours(20, 0, 0, 0);
+      document.getElementById('encFecha').value = new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,16);
+      document.getElementById('encDuracion').value = 60;
+      document.getElementById('encPublicado').classList.add('on');
+    }
+
+    document.getElementById('encuentroModal').classList.add('show');
+  }
+
+  function cerrarEncuentro(){ document.getElementById('encuentroModal').classList.remove('show'); }
+
+  async function guardarEncuentro(){
+    const titulo = document.getElementById('encTitulo').value.trim();
+    if(!titulo) return mostrarToast('Poné un título', true);
+
+    const fecha = document.getElementById('encFecha').value;
+    if(!fecha) return mostrarToast('Elegí día y hora', true);
+
+    const datos = {
+      titulo: titulo,
+      descripcion: document.getElementById('encDescripcion').value.trim() || null,
+      fecha: new Date(fecha).toISOString(),
+      duracion_minutos: parseInt(document.getElementById('encDuracion').value) || 60,
+      enlace: document.getElementById('encEnlace').value.trim() || null,
+      grabacion_url: document.getElementById('encGrabacion').value.trim() || null,
+      publicado: document.getElementById('encPublicado').classList.contains('on'),
+      solo_premium: true
+    };
+
+    const id = document.getElementById('encId').value;
+    const r = id
+      ? await sb.from('encuentros').update(datos).eq('id', id)
+      : await sb.from('encuentros').insert(datos);
+
+    if(r.error) return mostrarToast('Error: ' + r.error.message, true);
+
+    mostrarToast(id ? '✓ Encuentro actualizado' : '✓ Encuentro creado');
+    cerrarEncuentro();
+    await cargarPremium();
+  }
+
+  async function borrarEncuentro(){
+    const id = document.getElementById('encId').value;
+    if(!id) return;
+    if(!confirm('¿Eliminar este encuentro?')) return;
+
+    const { error } = await sb.from('encuentros').delete().eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+
+    mostrarToast('Encuentro eliminado');
+    cerrarEncuentro();
+    await cargarPremium();
+  }
+
+  // ─── Suscripciones ───
+  function calcularVence(){
+    const meses = parseInt(document.getElementById('suscMeses').value) || 1;
+    const d = new Date();
+    d.setMonth(d.getMonth() + meses);
+    document.getElementById('suscVenceTxt').innerHTML =
+      '📅 El acceso vence el <strong>' +
+      d.toLocaleDateString('es-PY', { day:'numeric', month:'long', year:'numeric' }) + '</strong>';
+  }
+
+  function abrirSuscripcion(id){
+    document.getElementById('suscId').value = id || '';
+    document.getElementById('suscTituloModal').textContent = id ? 'Editar acceso' : 'Dar acceso';
+    document.getElementById('btnCancelarSusc').style.display = id ? '' : 'none';
+
+    // Lista de personas
+    const sel = document.getElementById('suscUsuario');
+    const yaTienen = suscripciones.filter(s => s.estado === 'activa').map(s => s.usuario_id);
+
+    if(id){
+      const s = suscripciones.find(x => x.id === id);
+      sel.innerHTML = '<option value="' + s.usuario_id + '">' + esc(s.nombre || s.email) + '</option>';
+      sel.disabled = true;
+      document.getElementById('suscMonto').value = s.monto_gs || '';
+      document.getElementById('suscMetodo').value = s.metodo_pago || 'transferencia';
+      document.getElementById('suscNotas').value = s.notas || '';
+    } else {
+      const libres = (alumnas || []).filter(a => !yaTienen.includes(a.id));
+      sel.disabled = false;
+      sel.innerHTML = libres.length === 0
+        ? '<option value="">Todas ya tienen acceso</option>'
+        : '<option value="">Elegí a quién...</option>' +
+          libres.map(a => '<option value="' + a.id + '">' + esc(a.nombre || a.email) + '</option>').join('');
+      document.getElementById('suscMonto').value = planPremium?.precio_gs || 150000;
+      document.getElementById('suscMetodo').value = 'transferencia';
+      document.getElementById('suscNotas').value = '';
+    }
+
+    document.getElementById('suscMeses').value = '1';
+    document.getElementById('suscAvisar').classList.add('on');
+    calcularVence();
+    document.getElementById('suscripcionModal').classList.add('show');
+  }
+
+  function cerrarSuscripcion(){ document.getElementById('suscripcionModal').classList.remove('show'); }
+
+  async function guardarSuscripcion(){
+    const usuario = document.getElementById('suscUsuario').value;
+    if(!usuario) return mostrarToast('Elegí a quién darle acceso', true);
+
+    const meses = parseInt(document.getElementById('suscMeses').value) || 1;
+    const id = document.getElementById('suscId').value;
+
+    // Si ya tenía, sumamos desde donde vencía
+    let base = new Date();
+    if(id){
+      const s = suscripciones.find(x => x.id === id);
+      if(s && s.vence && new Date(s.vence) > base) base = new Date(s.vence);
+    }
+    const vence = new Date(base);
+    vence.setMonth(vence.getMonth() + meses);
+
+    const datos = {
+      usuario_id: usuario,
+      plan_id: planPremium?.id || null,
+      estado: 'activa',
+      vence: vence.toISOString(),
+      monto_gs: parseInt(document.getElementById('suscMonto').value) || 0,
+      metodo_pago: document.getElementById('suscMetodo').value,
+      notas: document.getElementById('suscNotas').value.trim() || null,
+      actualizado_en: new Date().toISOString()
+    };
+
+    const r = id
+      ? await sb.from('suscripciones').update(datos).eq('id', id)
+      : await sb.from('suscripciones').insert({ ...datos, inicio: new Date().toISOString() });
+
+    if(r.error) return mostrarToast('Error: ' + r.error.message, true);
+
+    mostrarToast(id ? '✓ Acceso extendido' : '✓ Acceso otorgado');
+
+    // El aviso por email
+    if(document.getElementById('suscAvisar').classList.contains('on')){
+      const persona = (alumnas || []).find(a => a.id === usuario);
+      if(persona?.email){
+        await llamarFuncionAdmin({
+          accion: 'aviso',
+          usuario_id: usuario,
+          asunto: '¡Bienvenida a la Comunidad Premium!',
+          mensaje: 'Ya tenés acceso a la Comunidad Premium hasta el ' +
+            vence.toLocaleDateString('es-PY', { day:'numeric', month:'long', year:'numeric' }) + '.\n\n' +
+            'Vas a poder participar de los encuentros semanales y ver las estrategias exclusivas ' +
+            'que no publicamos en la comunidad abierta.\n\n' +
+            'Entrá a la comunidad y buscá la sección Premium.'
+        }).catch(() => {});
+      }
+    }
+
+    cerrarSuscripcion();
+    await cargarPremium();
+  }
+
+  async function cancelarSuscripcion(){
+    const id = document.getElementById('suscId').value;
+    if(!id) return;
+    if(!confirm('¿Cancelar el acceso premium?\n\nVa a perder el acceso a los encuentros y al contenido exclusivo.')) return;
+
+    const { error } = await sb.from('suscripciones')
+      .update({ estado: 'cancelada', actualizado_en: new Date().toISOString() })
+      .eq('id', id);
+
+    if(error) return mostrarToast('Error: ' + error.message, true);
+
+    mostrarToast('Acceso cancelado');
+    cerrarSuscripcion();
+    await cargarPremium();
+  }
+
+  // ─── El plan ───
+  function abrirPlan(){
+    if(!planPremium) return mostrarToast('Corré SQL-COMUNIDAD-PREMIUM.sql primero', true);
+    document.getElementById('planId').value = planPremium.id;
+    document.getElementById('planNombre').value = planPremium.nombre || '';
+    document.getElementById('planDescripcion').value = planPremium.descripcion || '';
+    document.getElementById('planPrecio').value = planPremium.precio_gs || '';
+    document.getElementById('planAnterior').value = planPremium.precio_anterior_gs || '';
+    document.getElementById('planBeneficios').value = planPremium.beneficios || '';
+    document.getElementById('planVideo').value = planPremium.video_url || '';
+    document.getElementById('planContenido').value = planPremium.contenido || '';
+    document.getElementById('planTextoBoton').value = planPremium.texto_boton || '';
+    document.getElementById('planEnlaceBoton').value = planPremium.enlace_boton || '';
+    document.getElementById('planMostrarPrecio').classList.toggle('on', !!planPremium.mostrar_precio);
+    document.getElementById('planModal').classList.add('show');
+  }
+
+  function cerrarPlan(){ document.getElementById('planModal').classList.remove('show'); }
+
+  async function guardarPlan(){
+    const nombre = document.getElementById('planNombre').value.trim();
+    if(!nombre) return mostrarToast('Poné un nombre', true);
+
+    const { error } = await sb.from('planes').update({
+      nombre: nombre,
+      descripcion: document.getElementById('planDescripcion').value.trim() || null,
+      precio_gs: parseInt(document.getElementById('planPrecio').value) || 0,
+      precio_anterior_gs: parseInt(document.getElementById('planAnterior').value) || null,
+      beneficios: document.getElementById('planBeneficios').value.trim() || null,
+      video_url: document.getElementById('planVideo').value.trim() || null,
+      contenido: document.getElementById('planContenido').value.trim() || null,
+      texto_boton: document.getElementById('planTextoBoton').value.trim() || null,
+      enlace_boton: document.getElementById('planEnlaceBoton').value.trim() || null,
+      mostrar_precio: document.getElementById('planMostrarPrecio').classList.contains('on')
+    }).eq('id', document.getElementById('planId').value);
+
+    if(error) return mostrarToast('Error: ' + error.message, true);
+
+    mostrarToast('✓ Plan actualizado');
+    cerrarPlan();
+    await cargarPremium();
   }
 
   // ============================

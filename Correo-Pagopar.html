@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Correo para Pagopar · Milena Machado</title>
+<style>
+  body{margin:0;padding:0;background:#EDEEF0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+
+  /* Instrucciones — esto NO se copia */
+  .guia{max-width:720px;margin:0 auto;padding:26px 20px 0}
+  .guia-caja{background:#FFF;border:1px solid #DCDEE2;border-radius:12px;padding:22px 24px;margin-bottom:20px}
+  .guia-tit{font-size:15px;font-weight:600;color:#1A1A1A;margin:0 0 14px}
+  .guia-paso{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;color:#444;line-height:1.55;margin-bottom:10px}
+  .guia-num{width:21px;height:21px;border-radius:50%;background:#1A1A1A;color:#FFF;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .guia-nota{font-size:12.5px;color:#8A6D1F;background:#FFF8E1;border:1px solid #F0E0A8;border-radius:8px;padding:11px 13px;margin-top:14px;line-height:1.5}
+  .campo{background:#F5F6F8;border:1px solid #DCDEE2;border-radius:8px;padding:11px 13px;font-size:13.5px;color:#1A1A1A;margin-top:8px;word-break:break-all}
+  .campo b{color:#666;font-weight:500;font-size:11.5px;display:block;margin-bottom:4px;letter-spacing:0.04em}
+
+  .btn-copiar{display:inline-block;padding:11px 20px;background:#1A1A1A;color:#FFF;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:6px}
+  .btn-copiar:hover{background:#000}
+
+  .separador{max-width:720px;margin:0 auto;padding:6px 20px 14px;font-size:11.5px;color:#8B8F96;letter-spacing:0.1em;text-align:center}
+
+  /* ══ El correo en sí ══ */
+  #correo{
+    max-width:720px;margin:0 auto 40px;background:#FFFFFF;
+    border:1px solid #DCDEE2;border-radius:12px;padding:44px 48px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+    font-size:14.5px;line-height:1.65;color:#2B2B2B;
+  }
+
+  #correo .saludo{margin:0 0 18px}
+  #correo .intro{margin:0 0 28px}
+
+  #correo h3{
+    font-size:12px;letter-spacing:0.13em;color:#6B6F76;font-weight:600;
+    margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid #E4E6E9;
+  }
+  #correo h3:first-of-type{margin-top:0}
+
+  #correo table{width:100%;border-collapse:collapse;margin-bottom:4px}
+  #correo td{padding:7px 0;vertical-align:top;font-size:14px}
+  #correo td.et{width:210px;color:#6B6F76;padding-right:16px}
+  #correo td.va{color:#1A1A1A}
+  #correo td.va b{font-weight:600}
+
+  #correo .destacado{
+    background:#F7F8FA;border-left:3px solid #1A1A1A;
+    padding:16px 20px;margin:26px 0;font-size:14px;line-height:1.6;
+  }
+
+  #correo ol{margin:10px 0 0;padding-left:20px}
+  #correo ol li{padding:5px 0;font-size:14px}
+
+  #correo .firma{margin-top:34px;padding-top:22px;border-top:1px solid #E4E6E9;font-size:14px;line-height:1.6}
+  #correo .firma .nombre{font-weight:600;color:#1A1A1A;font-size:15px}
+  #correo .firma .dato{color:#6B6F76;font-size:13.5px}
+  #correo .firma a{color:#1A1A1A;text-decoration:none;border-bottom:1px solid #C9CCD1}
+
+  @media (max-width:600px){
+    #correo{padding:28px 22px;border-radius:0}
+    #correo td{display:block;padding:2px 0}
+    #correo td.et{width:auto;font-size:11.5px;letter-spacing:0.04em;padding-top:10px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ INSTRUCCIONES (no se copian) ══════════ -->
+<div class="guia">
+  <div class="guia-caja">
+    <p class="guia-tit">Cómo enviarlo</p>
+
+    <div class="guia-paso">
+      <div class="guia-num">1</div>
+      <div>Tocá el botón de abajo para copiar el mensaje ya formateado.</div>
+    </div>
+    <div class="guia-paso">
+      <div class="guia-num">2</div>
+      <div>Abrí Gmail desde el correo <b>registrado en Pagopar</b> y creá un mensaje nuevo.</div>
+    </div>
+    <div class="guia-paso">
+      <div class="guia-num">3</div>
+      <div>Pegá con <b>Ctrl+V</b>. Los títulos, negritas y la tabla se mantienen.</div>
+    </div>
+    <div class="guia-paso">
+      <div class="guia-num">4</div>
+      <div>Adjuntá los tres documentos y enviá.</div>
+    </div>
+
+    <button class="btn-copiar" onclick="copiarCorreo()">Copiar el mensaje</button>
+    <span id="avisoCopia" style="font-size:12.5px;color:#2E7D32;margin-left:10px"></span>
+
+    <div class="campo">
+      <b>PARA</b>
+      administracion@pagopar.com
+    </div>
+
+    <div class="campo">
+      <b>ASUNTO</b>
+      Habilitación de comercio y cobros recurrentes — Milena Gysel Machado Portillo (RUC 4578329-2)
+    </div>
+
+    <div class="guia-nota">
+      <b>Importante:</b> el correo tiene que salir de la casilla con la que se registró la cuenta
+      en Pagopar. Si sale de otra, no procesan la solicitud.
+    </div>
+  </div>
+</div>
+
+<div class="separador">— EL MENSAJE —</div>
+
+<!-- ══════════ EL CORREO ══════════ -->
+<div id="correo">
+
+  <p class="saludo">Estimados,</p>
+
+  <p class="intro">
+    Me dirijo a ustedes para solicitar la <b>habilitación de mi comercio</b> en Pagopar,
+    incluyendo la venta de <b>productos y servicios virtuales</b>, y los permisos para el uso de
+    la herramienta de <b>cobros recurrentes mediante débito automático</b>.
+  </p>
+
+  <h3>DATOS DEL COMERCIO</h3>
+  <table>
+    <tr>
+      <td class="et">Titular</td>
+      <td class="va"><b>Milena Gysel Machado Portillo</b></td>
+    </tr>
+    <tr>
+      <td class="et">RUC</td>
+      <td class="va"><b>4578329-2</b></td>
+    </tr>
+    <tr>
+      <td class="et">Dirección del comercio</td>
+      <td class="va">Ciudad del Este, Km 8½, lado Acaray,<br>
+          calle Kaaguy Poty, a 4 cuadras de la Internacional</td>
+    </tr>
+    <tr>
+      <td class="et">Canal de ventas</td>
+      <td class="va"><b>milenacmm.com</b><br>
+          Instagram: @milenamachado_cmm</td>
+    </tr>
+    <tr>
+      <td class="et">Producto / servicio</td>
+      <td class="va">Cursos de marketing y consultoría digital</td>
+    </tr>
+    <tr>
+      <td class="et">Rubro</td>
+      <td class="va">Prestación de servicios de marketing</td>
+    </tr>
+    <tr>
+      <td class="et">Transacciones mensuales</td>
+      <td class="va">Estimadas entre <b>Gs. 3.000.000</b> y <b>Gs. 8.000.000</b><br>
+          <span style="color:#6B6F76;font-size:13px">Estamos iniciando esta modalidad de venta, por lo que aún no contamos con un histórico.</span></td>
+    </tr>
+  </table>
+
+  <h3>CUENTA BANCARIA — UENO</h3>
+  <table>
+    <tr>
+      <td class="et">Titular</td>
+      <td class="va">Milena Gysel Machado Portillo</td>
+    </tr>
+    <tr>
+      <td class="et">RUC</td>
+      <td class="va">4578329-2</td>
+    </tr>
+    <tr>
+      <td class="et">N° de cuenta</td>
+      <td class="va"><b>619405490</b></td>
+    </tr>
+    <tr>
+      <td class="et">Alias</td>
+      <td class="va">4578329-2</td>
+    </tr>
+  </table>
+
+  <div class="destacado">
+    <b>Cobros recurrentes.</b> Solicito expresamente los permisos para el uso de la herramienta
+    de cobros recurrentes mediante débito automático. Adjunto el Anexo I a los Términos y
+    Condiciones Generales, completo y firmado, en formato PDF.
+  </div>
+
+  <h3>DOCUMENTOS ADJUNTOS</h3>
+  <ol>
+    <li>Constancia de RUC vigente</li>
+    <li>Cédula de identidad — ambas carillas</li>
+    <li>Anexo I firmado — Cobros recurrentes</li>
+  </ol>
+
+  <p style="margin-top:30px">
+    Quedo a disposición por cualquier información adicional que necesiten para avanzar
+    con el proceso de habilitación.
+  </p>
+
+  <p style="margin-top:16px">Desde ya, muchas gracias por su tiempo.</p>
+
+  <div class="firma">
+    <div class="nombre">Milena Gysel Machado Portillo</div>
+    <div class="dato">Creando Mentes Millonarias</div>
+    <div class="dato">RUC 4578329-2</div>
+    <div class="dato" style="margin-top:8px">
+      <a href="https://milenacmm.com">milenacmm.com</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function copiarCorreo(){
+  const el = document.getElementById('correo');
+  const rango = document.createRange();
+  rango.selectNode(el);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(rango);
+
+  try {
+    document.execCommand('copy');
+    const aviso = document.getElementById('avisoCopia');
+    aviso.textContent = '✓ Copiado — pegalo en Gmail con Ctrl+V';
+    setTimeout(() => { aviso.textContent = ''; }, 4000);
+  } catch(e) {
+    alert('No se pudo copiar solo. Seleccioná el mensaje con el mouse y copiá con Ctrl+C.');
+  }
+
+  sel.removeAllRanges();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comunidad Premium · Milena Machado</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1A0A12">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .glow-1{position:fixed;width:520px;height:520px;left:-180px;top:-160px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.16),transparent 65%);pointer-events:none;z-index:0}
+  .glow-2{position:fixed;width:400px;height:400px;right:-110px;bottom:-110px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.3),transparent 65%);pointer-events:none;z-index:0}
+
+  .envoltorio{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:60px 40px 80px}
+
+  /* Encabezado */
+  .cabecera{text-align:center;margin-bottom:48px}
+  .estrella{width:70px;height:70px;border-radius:20px;background:linear-gradient(135deg,rgba(212,163,86,0.22),rgba(212,163,86,0.06));border:0.5px solid rgba(212,163,86,0.45);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 22px}
+  .super{font-size:11px;letter-spacing:0.24em;color:#E8B8C4;margin-bottom:12px}
+  .titulo{font-family:Georgia,serif;font-size:46px;font-weight:500;line-height:1.1;margin:0 0 16px}
+  .titulo .it{font-style:italic;background:linear-gradient(135deg,#EFB85C,#DDA63F);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .bajada{font-size:16.5px;color:rgba(255,245,240,0.72);line-height:1.65;max-width:560px;margin:0 auto}
+
+  /* Beneficios */
+  .beneficios{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-bottom:44px}
+  .beneficio{display:flex;gap:13px;align-items:flex-start;padding:20px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:15px}
+  .beneficio-ico{width:34px;height:34px;border-radius:10px;background:rgba(212,163,86,0.15);border:0.5px solid rgba(212,163,86,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .beneficio-txt{font-size:14.5px;line-height:1.55;color:rgba(255,245,240,0.85)}
+
+  /* Video */
+  .marco-video{position:relative;width:100%;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#0E0509;border:0.5px solid rgba(255,245,240,0.12)}
+  .marco-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+  /* Texto libre */
+  .contenido-libre{font-size:15.5px;line-height:1.75;color:rgba(255,245,240,0.82);margin-bottom:40px;max-width:680px;margin-left:auto;margin-right:auto}
+  .contenido-libre p{margin:0 0 18px}
+  .contenido-libre p:last-child{margin-bottom:0}
+  .contenido-libre strong{color:#FFF5F0;font-weight:600}
+
+  /* Llamado a la acción */
+  .tarjeta-cta{background:linear-gradient(160deg,rgba(45,10,24,0.85),rgba(26,5,9,0.85));border:0.5px solid rgba(212,163,86,0.4);border-radius:22px;padding:38px 34px;text-align:center;margin-bottom:34px;backdrop-filter:blur(16px)}
+  .cta-texto{font-family:Georgia,serif;font-size:19px;line-height:1.5;color:rgba(255,245,240,0.88);margin-bottom:26px;max-width:420px;margin-left:auto;margin-right:auto}
+  .tarjeta-precio{background:linear-gradient(160deg,rgba(45,10,24,0.85),rgba(26,5,9,0.85));border:0.5px solid rgba(212,163,86,0.4);border-radius:22px;padding:38px 34px;text-align:center;margin-bottom:34px;backdrop-filter:blur(16px)}
+  .precio-anterior{font-size:17px;color:rgba(255,245,240,0.4);text-decoration:line-through;margin-bottom:6px}
+  .precio{font-family:Georgia,serif;font-size:46px;font-weight:500;color:#FAC775;line-height:1}
+  .precio-periodo{font-size:14px;color:rgba(255,245,240,0.6);margin-top:8px;margin-bottom:26px}
+  .btn-sumarme{display:inline-block;width:100%;max-width:360px;padding:19px;border-radius:12px;font-size:13px;font-weight:600;letter-spacing:0.14em;text-decoration:none;text-align:center}
+  .precio-nota{font-size:12.5px;color:rgba(255,245,240,0.5);margin-top:16px;line-height:1.55}
+
+  /* Encuentros */
+  .seccion-tit{font-family:Georgia,serif;font-size:26px;font-weight:500;margin:0 0 6px;text-align:center}
+  .seccion-sub{font-size:14px;color:rgba(255,245,240,0.6);text-align:center;margin:0 0 24px}
+
+  .encuentro{display:flex;gap:15px;align-items:center;padding:16px 18px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.09);border-radius:14px;margin-bottom:11px}
+  .enc-cal{width:58px;text-align:center;flex-shrink:0;padding:8px 0;background:rgba(212,163,86,0.12);border:0.5px solid rgba(212,163,86,0.35);border-radius:11px}
+  .enc-d{font-size:20px;font-weight:600;color:#FAC775;line-height:1}
+  .enc-m{font-size:9.5px;letter-spacing:0.1em;color:rgba(255,245,240,0.55);margin-top:2px}
+  .enc-t{font-size:14.5px;font-weight:500;margin-bottom:3px}
+  .enc-s{font-size:12.5px;color:rgba(255,245,240,0.55);line-height:1.5}
+
+  /* Preguntas */
+  .pregunta{border-bottom:0.5px solid rgba(255,245,240,0.08);padding:18px 0}
+  .pregunta-q{font-size:15px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;gap:14px;align-items:center}
+  .pregunta-q svg{flex-shrink:0;transition:transform 0.25s;opacity:0.5}
+  .pregunta.abierta .pregunta-q svg{transform:rotate(180deg)}
+  .pregunta-a{font-size:14px;color:rgba(255,245,240,0.7);line-height:1.65;max-height:0;overflow:hidden;transition:max-height 0.3s,padding 0.3s}
+  .pregunta.abierta .pregunta-a{max-height:300px;padding-top:12px}
+
+  .ya-sos{padding:20px;background:rgba(93,202,165,0.1);border:0.5px solid rgba(93,202,165,0.35);border-radius:15px;text-align:center;margin-bottom:30px}
+  .ya-sos-tit{font-size:16px;font-weight:500;color:#9FE1CB;margin-bottom:5px}
+  .ya-sos-sub{font-size:13.5px;color:rgba(255,245,240,0.7);line-height:1.5}
+
+  @media (max-width:900px){
+    .envoltorio{padding:36px 18px 60px}
+    .titulo{font-size:33px}
+    .bajada{font-size:15px}
+    .tarjeta-precio,.tarjeta-cta{padding:28px 20px}
+    .cta-texto{font-size:16.5px}
+    .contenido-libre{font-size:14.5px}
+    .precio{font-size:38px}
+    .beneficios{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-1"></div>
+<div class="glow-2"></div>
+
+<header class="main-header">
+  <div class="header-inner">
+    <a href="/index" class="logo">
+      <div class="logo-box">M</div>
+      <div class="logo-text">MILENA<br>MACHADO</div>
+    </a>
+    <nav class="nav-links" id="navLinks"></nav>
+    <div class="header-actions" id="headerActions"></div>
+  </div>
+</header>
+
+<div class="envoltorio">
+
+  <!-- Si ya es premium -->
+  <div id="yaSosPremium" style="display:none">
+    <div class="ya-sos">
+      <div class="ya-sos-tit">⭐ Ya sos parte del Premium</div>
+      <div class="ya-sos-sub" id="yaSosTxt"></div>
+    </div>
+  </div>
+
+  <div class="cabecera">
+    <div class="estrella">⭐</div>
+    <div class="super">ACCESO EXCLUSIVO</div>
+    <h1 class="titulo">Comunidad <span class="it">Premium</span></h1>
+    <p class="bajada" id="bajada">
+      La comunidad abierta es el punto de partida. Acá vamos más profundo:
+      estrategias que no publicamos en ningún otro lado y encuentros semanales
+      cerrados sobre ventas, marketing y anuncios digitales.
+    </p>
+  </div>
+
+  <div class="beneficios" id="beneficios"></div>
+
+  <!-- Video de Milena, si lo cargaste -->
+  <div id="zonaVideo" style="display:none;margin-bottom:40px">
+    <div class="marco-video">
+      <iframe id="videoPremium" allowfullscreen
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+    </div>
+  </div>
+
+  <!-- Texto libre -->
+  <div id="zonaContenido" class="contenido-libre" style="display:none"></div>
+
+  <!-- Llamado a la acción -->
+  <div class="tarjeta-cta">
+    <div id="zonaPrecio" style="display:none">
+      <div class="precio-anterior" id="precioAnterior" style="display:none"></div>
+      <div class="precio" id="precio">—</div>
+      <div class="precio-periodo" id="periodo">por mes</div>
+    </div>
+
+    <div id="ctaTexto" class="cta-texto">
+      Un espacio cerrado para las que quieren ir más a fondo.
+    </div>
+
+    <a href="#" class="cta-gold btn-sumarme" id="btnSumarme" onclick="sumarme(event)">
+      QUIERO SER PREMIUM
+    </a>
+
+    <p class="precio-nota">
+      Te escribimos para contarte cómo seguir.<br>
+      Sin permanencia mínima: podés dar de baja cuando quieras.
+    </p>
+  </div>  <!-- Próximos encuentros -->
+  <div id="zonaEncuentros" style="display:none;margin-bottom:44px">
+    <h2 class="seccion-tit">Los próximos encuentros</h2>
+    <p class="seccion-sub">Todas las semanas, en vivo y cerrado</p>
+    <div id="listaEncuentros"></div>
+  </div>
+
+  <!-- Preguntas -->
+  <div>
+    <h2 class="seccion-tit">Preguntas frecuentes</h2>
+    <p class="seccion-sub">Lo que más nos consultan</p>
+
+    <div class="pregunta" onclick="this.classList.toggle('abierta')">
+      <div class="pregunta-q">
+        ¿En qué se diferencia de la comunidad gratuita?
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="pregunta-a">
+        La comunidad abierta es un espacio para conocernos, hacer preguntas y compartir el camino.
+        El Premium es donde mostramos el detrás de escena: campañas reales con sus números,
+        estrategias que estamos probando, y un encuentro semanal para trabajar sobre tu caso puntual.
+      </div>
+    </div>
+
+    <div class="pregunta" onclick="this.classList.toggle('abierta')">
+      <div class="pregunta-q">
+        ¿Qué pasa si no puedo entrar a un encuentro?
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="pregunta-a">
+        Todos los encuentros quedan grabados y los podés ver cuando quieras,
+        mientras tu suscripción esté activa.
+      </div>
+    </div>
+
+    <div class="pregunta" onclick="this.classList.toggle('abierta')">
+      <div class="pregunta-q">
+        ¿Necesito tener un negocio andando?
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="pregunta-a">
+        No. Hay quienes están empezando y quienes ya venden y quieren escalar.
+        Los encuentros se adaptan a lo que traiga cada una.
+      </div>
+    </div>
+
+    <div class="pregunta" onclick="this.classList.toggle('abierta')">
+      <div class="pregunta-q">
+        ¿Cómo doy de baja?
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="pregunta-a">
+        Escribiéndonos. No hay permanencia mínima ni penalización.
+        Mantenés el acceso hasta que termine el mes que ya pagaste.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="main-footer">
+  Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
+</footer>
+
+<script src="supabase-config.js"></script>
+<script src="header-dinamico.js"></script>
+<script>
+  let plan = null;
+
+  const ICONOS = ['📅','🎯','📊','💬','🎬','⚡','💡','🚀'];
+
+  function esc(t){
+    const d = document.createElement('div');
+    d.textContent = t || '';
+    return d.innerHTML;
+  }
+
+  // Convierte el enlace de YouTube o Vimeo en uno que se pueda incrustar
+  function incrustarVideo(url){
+    if(!url) return null;
+    const u = url.trim();
+
+    let m = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/);
+    if(m) return 'https://www.youtube.com/embed/' + m[1] + '?rel=0';
+
+    m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    if(m) return 'https://player.vimeo.com/video/' + m[1];
+
+    if(u.includes('/embed/') || u.includes('player.')) return u;
+    return null;
+  }
+
+  async function cargarPagina(){
+    // El plan
+    const { data } = await sb.from('planes').select('*').eq('clave','premium').maybeSingle();
+    plan = data;
+
+    if(plan){
+      if(plan.titulo_pagina){
+        document.querySelector('.titulo').innerHTML =
+          esc(plan.titulo_pagina).replace(/(\S+)$/, '<span class="it">$1</span>');
+      }
+      if(plan.descripcion) document.getElementById('bajada').textContent = plan.descripcion;
+
+      // El video, si lo cargaste
+      const emb = incrustarVideo(plan.video_url);
+      if(emb){
+        document.getElementById('videoPremium').src = emb;
+        document.getElementById('zonaVideo').style.display = '';
+      }
+
+      // El texto libre
+      if(plan.contenido && plan.contenido.trim()){
+        document.getElementById('zonaContenido').innerHTML =
+          plan.contenido.split('\n\n').map(p =>
+            '<p>' + esc(p.trim()).replace(/\n/g, '<br>') + '</p>'
+          ).join('');
+        document.getElementById('zonaContenido').style.display = '';
+      }
+
+      // El botón
+      const btn = document.getElementById('btnSumarme');
+      btn.textContent = plan.texto_boton || 'QUIERO SER PREMIUM';
+
+      // El precio, solo si lo querés mostrar
+      if(plan.mostrar_precio && plan.precio_gs){
+        document.getElementById('zonaPrecio').style.display = '';
+        document.getElementById('ctaTexto').style.display = 'none';
+        document.getElementById('precio').textContent = 'Gs ' + plan.precio_gs.toLocaleString('es-PY');
+
+        if(plan.precio_anterior_gs){
+          const pa = document.getElementById('precioAnterior');
+          pa.textContent = 'Gs ' + plan.precio_anterior_gs.toLocaleString('es-PY');
+          pa.style.display = '';
+        }
+        document.getElementById('periodo').textContent =
+          plan.periodo === 'anual' ? 'por año' : 'por mes';
+      }
+
+      // Los beneficios
+      const puntos = (plan.beneficios || '').split('\n').map(x => x.trim()).filter(Boolean);
+      if(puntos.length){
+        document.getElementById('beneficios').innerHTML = puntos.map((p, i) =>
+          '<div class="beneficio">' +
+            '<div class="beneficio-ico">' + (ICONOS[i] || '✓') + '</div>' +
+            '<div class="beneficio-txt">' + esc(p) + '</div>' +
+          '</div>'
+        ).join('');
+      }
+    }
+
+    // ¿Ya es premium?
+    const { data: { user } } = await sb.auth.getUser();
+    if(user){
+      const { data: esP } = await sb.rpc('es_premium');
+      if(esP){
+        const { data: susc } = await sb.from('suscripciones')
+          .select('vence').eq('usuario_id', user.id).eq('estado','activa')
+          .order('vence', { ascending: false }).limit(1).maybeSingle();
+
+        document.getElementById('yaSosPremium').style.display = '';
+        document.getElementById('yaSosTxt').textContent = susc?.vence
+          ? 'Tu acceso está activo hasta el ' +
+            new Date(susc.vence).toLocaleDateString('es-PY', { day:'numeric', month:'long', year:'numeric' }) + '.'
+          : 'Tu acceso está activo.';
+
+        const btn = document.getElementById('btnSumarme');
+        btn.textContent = 'IR A LA COMUNIDAD';
+        btn.setAttribute('href', '/comunidad');
+        btn.onclick = null;
+      }
+    }
+
+    // Los próximos encuentros
+    const { data: encs } = await sb.from('encuentros')
+      .select('titulo, descripcion, fecha, duracion_minutos')
+      .eq('publicado', true)
+      .gte('fecha', new Date().toISOString())
+      .order('fecha', { ascending: true })
+      .limit(4);
+
+    if(encs && encs.length){
+      const MESES = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+      document.getElementById('zonaEncuentros').style.display = '';
+      document.getElementById('listaEncuentros').innerHTML = encs.map(e => {
+        const f = new Date(e.fecha);
+        const hora = f.toLocaleTimeString('es-PY', { hour:'2-digit', minute:'2-digit' });
+        return '<div class="encuentro">' +
+          '<div class="enc-cal">' +
+            '<div class="enc-d">' + f.getDate() + '</div>' +
+            '<div class="enc-m">' + MESES[f.getMonth()] + '</div>' +
+          '</div>' +
+          '<div style="flex:1;min-width:0">' +
+            '<div class="enc-t">' + esc(e.titulo) + '</div>' +
+            '<div class="enc-s">' + hora + ' · ' + (e.duracion_minutos || 60) + ' min' +
+              (e.descripcion ? '<br>' + esc(e.descripcion) : '') +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+  }
+
+  async function sumarme(ev){
+    ev.preventDefault();
+
+    const { data: { user } } = await sb.auth.getUser();
+    if(!user){
+      window.location.href = '/login?volver=' + encodeURIComponent('/premium');
+      return;
+    }
+
+    // Si configuraste un enlace propio, va ahí
+    if(plan && plan.enlace_boton && plan.enlace_boton.trim()){
+      const d = plan.enlace_boton.trim();
+      if(/^https?:\/\//i.test(d)) window.open(d, '_blank', 'noopener');
+      else window.location.href = d;
+      return;
+    }
+
+    // Si no, dejamos constancia del interés
+    try {
+      await sb.from('interesados_premium').insert({
+        usuario_id: user.id,
+        email: user.email
+      });
+    } catch(e){}
+
+    const btn = document.getElementById('btnSumarme');
+    btn.textContent = '✓ TE VAMOS A ESCRIBIR';
+    btn.style.pointerEvents = 'none';
+    document.querySelector('.precio-nota').innerHTML =
+      'Anotamos tu interés. Milena te va a escribir a <strong>' + esc(user.email) + '</strong> ' +
+      'para contarte cómo seguir.';
+  }
+
+  const espera = setInterval(function(){
+    if(typeof sb === 'undefined' || sb === null) return;
+    clearInterval(espera);
+    cargarPagina();
+  }, 50);
+</script>
+
+</body>
+</html>

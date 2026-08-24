@@ -278,7 +278,14 @@
     btnText.innerHTML = '<span class="loading-spinner"></span> Procesando...';
 
     try {
-      // Llamar a la Edge Function rapid-endpoint
+      // Quién está comprando: sin esto, después no sabemos a quién darle el curso
+      const { data: { user } } = await sb.auth.getUser();
+      if (!user) {
+        btn.disabled = false;
+        btnText.textContent = 'PAGAR AHORA';
+        return mostrarError('Iniciá sesión antes de comprar, así podemos darte el acceso.');
+      }
+
       const resp = await fetch('https://pdwooahpyustbqlrvlxz.supabase.co/functions/v1/rapid-endpoint', {
         method: 'POST',
         headers: {
@@ -292,10 +299,18 @@
           nombre: nombre,
           telefono: telefono,
           documento: documento,
+          usuario_id: user?.id || null,
         }),
       });
 
-      const data = await resp.json();
+      const crudo = await resp.text();
+      let data = {};
+      try {
+        data = crudo ? JSON.parse(crudo) : {};
+      } catch(e) {
+        console.error('[pago] respuesta rara:', crudo);
+        data = { error: 'El servidor de pagos respondió de forma inesperada. Probá de nuevo en un momento.' };
+      }
 
       if (data.exito && data.url_pago) {
         // Redirigir a Pagopar

@@ -224,6 +224,26 @@
 
   .ins-tag{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:12px;border:0.5px solid;font-size:10.5px;font-weight:500;margin-left:6px;white-space:nowrap;vertical-align:middle}
 
+
+  .pr-caja{display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(135deg,rgba(212,163,86,0.12),rgba(184,41,74,0.08));border:0.5px solid rgba(212,163,86,0.4);border-radius:15px;margin-bottom:20px;flex-wrap:wrap}
+  .pr-caja.activa{background:linear-gradient(135deg,rgba(93,202,165,0.1),rgba(212,163,86,0.06));border-color:rgba(93,202,165,0.35)}
+  .pr-icono{width:46px;height:46px;border-radius:13px;background:rgba(212,163,86,0.18);border:0.5px solid rgba(212,163,86,0.4);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+  .pr-caja.activa .pr-icono{background:rgba(93,202,165,0.14);border-color:rgba(93,202,165,0.4)}
+  .pr-tit{font-size:15px;font-weight:500;font-family:Georgia,serif;margin-bottom:3px}
+  .pr-sub{font-size:12.5px;color:rgba(255,245,240,0.65);line-height:1.5}
+  .pr-sub strong{color:#FAC775}
+  .pr-btn{padding:12px 20px;border-radius:10px;background:linear-gradient(135deg,#EFB85C,#DDA63F);color:#2E0C05;font-size:11.5px;font-weight:600;letter-spacing:0.1em;text-decoration:none;white-space:nowrap;transition:all 0.2s}
+  .pr-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+  .pr-nota{font-size:11.5px;color:rgba(255,245,240,0.5);max-width:150px;line-height:1.4}
+
+  .post.premium{border-color:rgba(212,163,86,0.35)}
+  .premium-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:12px;background:rgba(212,163,86,0.16);border:0.5px solid rgba(212,163,86,0.45);color:#FAC775;font-size:10px;font-weight:600;letter-spacing:0.06em;margin-left:7px;vertical-align:middle}
+
+  @media (max-width:600px){
+    .pr-caja{flex-direction:column;align-items:flex-start;text-align:left}
+    .pr-btn{width:100%;text-align:center}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -342,6 +362,8 @@ body{visibility:hidden}
   </div>
 
   <!-- FEED -->
+  <div id="bloquePremium"></div>
+
   <div id="feed">
     <div class="feed-loading">
       <div class="fspinner"></div>
@@ -744,6 +766,84 @@ function nombreDe(usuarioId){
 }
 
 let catalogoInsignias = {};
+let soyPremium = false;
+let planPremium = null;
+let proximoEncuentro = null;
+
+async function revisarPremium(){
+  try {
+    const { data } = await sb.rpc('es_premium');
+    soyPremium = !!data;
+  } catch(e){ soyPremium = false; }
+
+  try {
+    const { data } = await sb.from('planes').select('*').eq('clave','premium').maybeSingle();
+    planPremium = data || null;
+  } catch(e){}
+
+  try {
+    const { data } = await sb.from('encuentros')
+      .select('*').eq('publicado', true)
+      .gte('fecha', new Date().toISOString())
+      .order('fecha', { ascending: true }).limit(1).maybeSingle();
+    proximoEncuentro = data || null;
+  } catch(e){}
+
+  pintarBloquePremium();
+}
+
+// El bloque que invita a sumarse, o el del próximo encuentro
+function pintarBloquePremium(){
+  const cont = document.getElementById('bloquePremium');
+  if(!cont) return;
+
+  // Ya es premium: le mostramos el próximo encuentro
+  if(soyPremium){
+    if(!proximoEncuentro){
+      cont.innerHTML = '<div class="pr-caja activa">' +
+        '<div class="pr-icono">⭐</div>' +
+        '<div style="flex:1;min-width:180px">' +
+          '<div class="pr-tit">Sos parte del Premium</div>' +
+          '<div class="pr-sub">Pronto vamos a anunciar el próximo encuentro.</div>' +
+        '</div>' +
+      '</div>';
+      return;
+    }
+
+    const f = new Date(proximoEncuentro.fecha);
+    const faltan = Math.ceil((f.getTime() - Date.now()) / 86400000);
+    const cuando = faltan <= 0 ? 'hoy' : (faltan === 1 ? 'mañana' :
+      'el ' + f.toLocaleDateString('es-PY', { weekday:'long', day:'numeric', month:'long' }));
+    const hora = f.toLocaleTimeString('es-PY', { hour:'2-digit', minute:'2-digit' });
+
+    cont.innerHTML = '<div class="pr-caja activa">' +
+      '<div class="pr-icono">📅</div>' +
+      '<div style="flex:1;min-width:180px">' +
+        '<div class="pr-tit">' + escapeHtml(proximoEncuentro.titulo) + '</div>' +
+        '<div class="pr-sub">Nos vemos ' + cuando + ' a las ' + hora + '</div>' +
+      '</div>' +
+      (proximoEncuentro.enlace
+        ? '<a href="' + proximoEncuentro.enlace + '" target="_blank" rel="noopener" class="pr-btn">ENTRAR AL ENCUENTRO</a>'
+        : '<span class="pr-nota">El enlace se comparte antes de empezar</span>') +
+    '</div>';
+    return;
+  }
+
+  // No es premium: la invitación, sin hablar de precio
+  cont.innerHTML = '<div class="pr-caja">' +
+    '<div class="pr-icono">⭐</div>' +
+    '<div style="flex:1;min-width:180px">' +
+      '<div class="pr-tit">' + escapeHtml(planPremium?.nombre || 'Comunidad Premium') + '</div>' +
+      '<div class="pr-sub">' +
+        escapeHtml(planPremium?.descripcion ||
+          'Estrategias exclusivas y encuentros semanales cerrados sobre ventas, marketing y anuncios.') +
+      '</div>' +
+    '</div>' +
+    '<a href="/premium" class="pr-btn">' +
+      escapeHtml(planPremium?.texto_boton || 'QUIERO SER PREMIUM') +
+    '</a>' +
+  '</div>';
+}
 
 async function cargarCatalogoInsignias(){
   const { data } = await sb.from('insignias').select('id, nombre, icono, color').eq('activa', true);
@@ -1149,6 +1249,7 @@ const waitSupaCom = setInterval(async () => {
   esAdmin = ['admin','fundadora'].includes(perfilActual.rol);
 
   await cargarCatalogoInsignias();
+  await revisarPremium();
 
   // Revisamos si se ganó alguna insignia nueva
   try { await sb.rpc('revisar_mis_insignias'); } catch(e){}
