@@ -34,7 +34,8 @@ insert into public.ajustes (clave, valor) values
   ('func_dos_pasos',      'Edge-function-dos-pasos'),
   ('func_admin',          'clever-processor'),
   ('func_newsletter',     'bright-api'),
-  ('func_avisos_clases',  'AVISAR-CLASES')
+  ('func_avisos_clases',  'AVISAR-CLASES'),
+  ('func_consultar_pago', 'consultar-pago')
 on conflict (clave) do update set valor = excluded.valor, actualizado_en = now();
 
 -- ─── VERIFICACIÓN ──────────────────────────────────────────────────

@@ -86,6 +86,44 @@
     document.getElementById('resultButtons').innerHTML = botones;
   }
 
+  // Le preguntamos a Pagopar por el estado real del pedido
+  async function preguntarAPagopar(hash){
+    const CANDIDATAS = [
+      'consultar-pago', 'CONSULTAR-PAGO', 'estado-pago',
+      'rapid-service', 'rapid-api', 'rapid-processor'
+    ];
+
+    let guardada = null;
+    try {
+      const { data } = await sb.from('ajustes').select('valor').eq('clave','func_consultar_pago').maybeSingle();
+      if (data && data.valor) guardada = data.valor.trim();
+    } catch(e){}
+
+    const lista = guardada ? [guardada, ...CANDIDATAS.filter(x => x !== guardada)] : CANDIDATAS;
+
+    for (const nombre of lista) {
+      try {
+        const r = await fetch(SUPABASE_URL + '/functions/v1/' + nombre, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+            'apikey': SUPABASE_ANON_KEY,
+          },
+          body: JSON.stringify({ hash: hash }),
+        });
+        if (r.status === 404) continue;
+
+        const d = await r.json().catch(() => ({}));
+        console.log('[resultado] Pagopar dice:', d);
+        return !!d.pagado;
+      } catch(e){}
+    }
+
+    console.warn('[resultado] no encontramos la función de consulta');
+    return false;
+  }
+
   const waitSupa = setInterval(async () => {
     if (typeof sb !== 'undefined' && sb !== null) {
       clearInterval(waitSupa);
@@ -96,11 +134,26 @@
       }
 
       // Buscar la compra en nuestra base
-      const { data: compra } = await sb
+      let { data: compra } = await sb
         .from('compras')
         .select('*, cursos(titulo, slug)')
         .eq('pagopar_id', hashPedido)
         .maybeSingle();
+
+      // Si todavía figura pendiente, le preguntamos directamente a Pagopar.
+      // Así, aunque el aviso automático haya fallado, la compra se confirma igual.
+      if (!compra || compra.estado === 'pendiente') {
+        mostrarResultado('pending', 'Confirmando tu pago...', 'Estamos verificando con el medio de pago. Aguardá unos segundos.', '');
+
+        const confirmado = await preguntarAPagopar(hashPedido);
+
+        if (confirmado) {
+          const r = await sb.from('compras')
+            .select('*, cursos(titulo, slug)')
+            .eq('pagopar_id', hashPedido).maybeSingle();
+          if (r.data) compra = r.data;
+        }
+      }
 
       if (!compra) {
         mostrarResultado('pending', 'Procesando...', 'Tu pago está siendo procesado. Puede tardar unos minutos. Te avisaremos por email cuando se confirme.', '<a href="/index" class="cta-gold result-btn">VOLVER AL INICIO</a>');
