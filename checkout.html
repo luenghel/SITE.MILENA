@@ -312,6 +312,13 @@
         data = { error: 'El servidor de pagos respondió de forma inesperada. Probá de nuevo en un momento.' };
       }
 
+      // Si vino diagnóstico, lo dejamos en la consola para revisar
+      if (data.diagnostico) {
+        console.log('%c[PAGOPAR] Diagnóstico', 'font-weight:bold;color:#D4A356');
+        console.log(data.diagnostico);
+        console.log('Respuesta cruda de Pagopar:', data.diagnostico.respuesta_cruda);
+      }
+
       if (data.exito && data.url_pago) {
         // Redirigir a Pagopar
         window.location.href = data.url_pago;

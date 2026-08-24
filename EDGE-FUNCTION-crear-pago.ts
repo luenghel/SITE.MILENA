@@ -137,9 +137,12 @@ Deno.serve(async (req) => {
     }
 
     // ─── Llamar a Pagopar ───
+    // Si Pagopar te da otra dirección para pruebas, cambiala acá
+    const URL_PAGOPAR = 'https://api.pagopar.com/api/comercios/2.0/iniciar-transaccion'
+
     let respuesta: Response
     try {
-      respuesta = await fetch('https://api.pagopar.com/api/comercios/2.0/iniciar-transaccion', {
+      respuesta = await fetch(URL_PAGOPAR, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(pedido),
@@ -194,7 +197,19 @@ Deno.serve(async (req) => {
         ayuda = ' → La categoría del producto no es válida para tu comercio.'
       }
 
-      return responder({ error: 'Pagopar rechazó el pedido: ' + motivo + ayuda }, 400)
+      return responder({
+        error: 'Pagopar rechazó el pedido: ' + motivo + ayuda,
+        // Todo lo que nos dijo Pagopar, sin recortar
+        diagnostico: {
+          respuesta_cruda: crudo.slice(0, 800),
+          estado_http: respuesta.status,
+          url_usada: URL_PAGOPAR,
+          public_key_termina_en: PUBLIC_KEY.slice(-6),
+          private_key_largo: PRIVATE_KEY.length,
+          monto_enviado: montoStr,
+          id_pedido: idPedido,
+        }
+      }, 400)
     }
 
     // ─── El hash del pedido ───
