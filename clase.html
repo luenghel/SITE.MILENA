@@ -601,6 +601,8 @@ const esperarSupa = setInterval(async () => {
   }
 
   // Contenido
+  try { await sb.rpc('publicar_programados'); } catch(e){}
+
   const [rMod, rCla] = await Promise.all([
     sb.from('modulos').select('*').eq('curso_id', c.id).eq('publicado', true).order('orden', { ascending: true }),
     sb.from('clases').select('*').eq('curso_id', c.id).eq('publicado', true).order('orden', { ascending: true })

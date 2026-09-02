@@ -964,6 +964,9 @@ async function pintarCursoReal(){
     if(tag) tag.style.display = 'none';
   }
 
+  // Lo programado que ya llegó a su hora se publica solo
+  try { await sb.rpc('publicar_programados'); } catch(e){}
+
   // ─── Módulos y clases ───
   const [rMod, rCla] = await Promise.all([
     sb.from('modulos').select('*').eq('curso_id', curso.id).eq('publicado', true).order('orden', { ascending:true }),
@@ -973,8 +976,10 @@ async function pintarCursoReal(){
   const modulos = rMod.data || [];
   const clases = rCla.data || [];
 
-  document.getElementById('posterTag').textContent =
-    modulos.length + ' módulo' + (modulos.length === 1 ? '' : 's') + ' · ' + clases.length + ' clase' + (clases.length === 1 ? '' : 's');
+  document.getElementById('posterTag').textContent = [
+    modulos.length ? modulos.length + ' módulo' + (modulos.length === 1 ? '' : 's') : '',
+    clases.length ? clases.length + ' clase' + (clases.length === 1 ? '' : 's') : ''
+  ].filter(Boolean).join(' · ');
 
   // ─── Cuándo compró, para calcular la liberación ───
   let compra = null;

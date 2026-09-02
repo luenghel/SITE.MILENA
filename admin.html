@@ -1049,6 +1049,34 @@
 
   .susc-vence{padding:12px 14px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.3);border-radius:10px;font-size:12.5px;color:#FAC775;margin-bottom:14px;line-height:1.5}
 
+
+  .lib-aviso{padding:11px 13px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.28);border-radius:9px;font-size:12px;color:rgba(255,245,240,0.7);line-height:1.5;margin-top:12px}
+
+
+  .docs-caja{padding:15px 16px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:12px;margin-bottom:16px}
+  .docs-cab{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+  .docs-tit{font-size:13px;font-weight:500}
+  .docs-sub{font-size:11.5px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .docs-add{padding:8px 14px;background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.4);border-radius:9px;color:#FAC775;font-size:11.5px;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .docs-add:hover{background:rgba(212,163,86,0.24)}
+  .doc-fila{display:flex;align-items:center;gap:11px;padding:10px 12px;background:rgba(255,245,240,0.04);border-radius:9px;margin-bottom:7px}
+  .doc-ico{width:32px;height:32px;border-radius:8px;background:rgba(212,163,86,0.14);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .doc-info{flex:1;min-width:0}
+  .doc-nom{font-size:12.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .doc-peso{font-size:10.5px;color:rgba(255,245,240,0.45);margin-top:1px}
+  .doc-quitar{background:none;border:none;color:rgba(255,128,144,0.7);cursor:pointer;font-size:17px;padding:0 4px;font-family:inherit}
+  .doc-quitar:hover{color:#FF8090}
+  .docs-vacio{font-size:11.5px;color:rgba(255,245,240,0.45);padding:10px 0}
+
+
+  .chip-pub{display:inline-block;padding:4px 10px;border-radius:12px;font-size:9.5px;font-weight:600;letter-spacing:0.08em;white-space:nowrap;margin-top:5px}
+  .chip-pub.chico{font-size:9px;padding:3px 8px}
+  .chip-pub.publicado{background:rgba(93,202,165,0.14);border:0.5px solid rgba(93,202,165,0.4);color:#9FE1CB}
+  .chip-pub.borrador{background:rgba(255,159,64,0.14);border:0.5px solid rgba(255,159,64,0.45);color:#FFC48A}
+
+
+  .aviso-borradores{padding:12px 15px;background:rgba(255,159,64,0.1);border:0.5px solid rgba(255,159,64,0.4);border-radius:11px;font-size:12.5px;color:#FFC48A;margin-bottom:16px;line-height:1.5}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1760,21 +1788,10 @@ body{visibility:hidden}
             </div>
             <div class="form-help">Tocá ⚙️ para crear tus propias filas</div>
           </div>
-
-          <div class="form-field form-grid-full">
-            <label class="form-label">CUÁNDO SE LIBERAN LAS CLASES</label>
-            <select class="form-select" id="cursoLiberacion" onchange="cambiarLiberacion()">
-              <option value="inmediata">🔓 Todo de una, al comprar</option>
-              <option value="espera">⏳ Todo junto, unos días después</option>
-              <option value="goteo">💧 De a una clase, cada X días</option>
-            </select>
-            <div class="form-help" id="ayudaLiberacion">Todas las clases quedan disponibles apenas compra.</div>
-          </div>
-
           <div class="toggle-row form-grid-full" style="border:0.5px solid rgba(232,184,196,0.35);background:rgba(232,184,196,0.06)">
             <div class="toggle-info">
               <div class="toggle-label">🔮 Próximamente</div>
-              <div class="toggle-help">Se muestra en el catálogo como "viene pronto", sin poder comprarlo todavía</div>
+              <div class="toggle-help">Se muestra en el catálogo como "viene pronto", sin poder comprarlo</div>
             </div>
             <div class="toggle-switch" id="cursoProximamente" onclick="this.classList.toggle('on');cambiarProximamente()"></div>
           </div>
@@ -1782,32 +1799,24 @@ body{visibility:hidden}
           <div class="form-field form-grid-full" id="camposProximamente" style="display:none">
             <label class="form-label">QUÉ CONTARLES MIENTRAS TANTO</label>
             <textarea class="form-textarea" id="cursoTextoProximo" style="min-height:110px"
-              placeholder="Un curso pensado para quienes ya venden pero quieren escalar. Vamos a ver embudos, contenido y automatización..."></textarea>
-            <div class="form-help">Es lo que lee quien toca el curso antes de que salga</div>
+              placeholder="Un curso pensado para quienes ya venden pero quieren escalar..."></textarea>
 
             <label class="form-label" style="margin-top:14px">QUÉ VA A INCLUIR</label>
             <textarea class="form-textarea" id="cursoQueIncluye" style="min-height:90px"
-              placeholder="8 módulos en video&#10;Plantillas descargables&#10;Sesión en vivo de preguntas"></textarea>
+              placeholder="8 módulos en video&#10;Plantillas descargables"></textarea>
             <div class="form-help">Una línea por punto</div>
 
             <label class="form-label" style="margin-top:14px">CUÁNDO SALE (opcional)</label>
             <input type="date" class="form-input" id="cursoFechaDisponible">
-            <div class="form-help">Si la ponés, se muestra la cuenta regresiva</div>
           </div>
 
           <div class="form-field form-grid-full">
             <label class="form-label">FECHA DE LANZAMIENTO</label>
             <input type="date" class="form-input" id="cursoLanzamiento">
-            <div class="form-help">Se usa para las clases configuradas como "X días tras el lanzamiento"</div>
+            <div class="form-help">Se usa para los módulos configurados como "X días tras el lanzamiento"</div>
           </div>
 
-          <div class="form-field form-grid-full" id="campoDiasLiberacion" style="display:none">
-            <label class="form-label" id="labelDias">DÍAS</label>
-            <input type="number" class="form-input" id="cursoDiasLiberacion" min="1" max="365" placeholder="7">
-            <div class="form-help" id="ejemploDias"></div>
-          </div>
-
-          <div class="toggle-row form-grid-full" id="filaAvisoLiberacion" style="display:none">
+<div class="toggle-row form-grid-full" id="filaAvisoLiberacion">
             <div class="toggle-info">
               <div class="toggle-label">📧 Avisar por email al liberar</div>
               <div class="toggle-help">Cada vez que se libera una clase, le llega un correo</div>
@@ -1876,6 +1885,12 @@ body{visibility:hidden}
           </div>
 
           <div class="form-field">
+            <label class="form-label">PRECIO PARA PREMIUM (Gs)</label>
+            <input type="text" class="form-input" id="cursoPrecioPremium" placeholder="Sin descuento" oninput="formatearPrecio(this)" inputmode="numeric">
+            <div class="form-help">Lo que pagan las suscriptoras de la Comunidad Premium</div>
+          </div>
+
+          <div class="form-field">
             <label class="form-label">ETIQUETA (opcional)</label>
             <input type="text" class="form-input" id="cursoEtiqueta" placeholder="NUEVO · MÁS VENDIDO · INCLUIDO">
           </div>
@@ -1904,11 +1919,6 @@ body{visibility:hidden}
           <div class="form-field">
             <label class="form-label">DURACIÓN (minutos)</label>
             <input type="number" class="form-input" id="cursoDuracion" placeholder="494" min="0">
-          </div>
-
-          <div class="form-field">
-            <label class="form-label">ORDEN</label>
-            <input type="number" class="form-input" id="cursoOrden" placeholder="1" min="0">
           </div>
 
           <div class="form-field form-grid-full">
@@ -2783,6 +2793,7 @@ body{visibility:hidden}
       </div>
 
       <div class="curso-modal-body">
+        <div id="resumenBorradores" class="aviso-borradores" style="display:none"></div>
         <div id="listaModulos"></div>
         <button class="btn-agregar" onclick="abrirModulo()">＋ Agregar un módulo</button>
       </div>
@@ -2822,31 +2833,72 @@ body{visibility:hidden}
         </div>
 
         <div class="lib-caja">
-          <div class="lib-label">CUÁNDO SE LIBERA ESTE MÓDULO</div>
+          <div class="lib-label">CÓMO SE LIBERA ESTE MÓDULO</div>
           <div class="lib-opciones">
-            <button type="button" class="lib-op" data-m="heredar" onclick="elegirLibModulo(this)">
-              <span class="lib-op-tit">↑ Como diga el curso</span>
-              <span class="lib-op-sub">Usa la configuración general</span>
+            <button type="button" class="lib-op" data-t="modulo" onclick="elegirTipoModulo(this)">
+              <span class="lib-op-tit">📦 El módulo entero</span>
+              <span class="lib-op-sub">Todas sus clases se abren juntas</span>
             </button>
-            <button type="button" class="lib-op" data-m="inmediata" onclick="elegirLibModulo(this)">
-              <span class="lib-op-tit">🔓 Al inscribirse</span>
-              <span class="lib-op-sub">Disponible apenas se anota</span>
-            </button>
-            <button type="button" class="lib-op" data-m="inscripcion" onclick="elegirLibModulo(this)">
-              <span class="lib-op-tit">📅 X días tras inscribirse</span>
-              <span class="lib-op-sub">Cuenta desde que cada persona se anota</span>
-            </button>
-            <button type="button" class="lib-op" data-m="lanzamiento" onclick="elegirLibModulo(this)">
-              <span class="lib-op-tit">🚀 X días tras el lanzamiento</span>
-              <span class="lib-op-sub">Misma fecha para todas</span>
+            <button type="button" class="lib-op" data-t="clase" onclick="elegirTipoModulo(this)">
+              <span class="lib-op-tit">🎬 Clase por clase</span>
+              <span class="lib-op-sub">Cada clase decide cuándo se abre</span>
             </button>
           </div>
-          <div id="libModuloDias" style="display:none;margin-top:11px">
-            <label class="form-label">DÍAS</label>
-            <input type="number" class="form-input" id="moduloDiasLib" min="0" max="365" placeholder="7">
-            <div class="form-help" id="libModuloEj"></div>
+
+          <div id="modCuando" style="margin-top:14px">
+            <div class="lib-label">CUÁNDO SE ABRE</div>
+            <div class="lib-opciones">
+              <button type="button" class="lib-op" data-c="inmediata" onclick="elegirCuandoModulo(this)">
+                <span class="lib-op-tit">🔓 Al inscribirse</span>
+              </button>
+              <button type="button" class="lib-op" data-c="inscripcion" onclick="elegirCuandoModulo(this)">
+                <span class="lib-op-tit">📅 X días tras inscribirse</span>
+                <span class="lib-op-sub">Cada persona tiene su propio calendario</span>
+              </button>
+              <button type="button" class="lib-op" data-c="lanzamiento" onclick="elegirCuandoModulo(this)">
+                <span class="lib-op-tit">🚀 X días tras el lanzamiento</span>
+                <span class="lib-op-sub">Misma fecha para todas</span>
+              </button>
+              <button type="button" class="lib-op" data-c="fecha" onclick="elegirCuandoModulo(this)">
+                <span class="lib-op-tit">📆 En una fecha y hora exacta</span>
+                <span class="lib-op-sub">Lo programás y se abre solo</span>
+              </button>
+            </div>
+
+            <div id="modFechaCaja" style="display:none;margin-top:11px">
+              <label class="form-label">DÍA Y HORA</label>
+              <input type="datetime-local" class="form-input" id="moduloFecha" onchange="pintarModulo()">
+              <div class="form-help" id="modFechaEj"></div>
+
+              <div class="toggle-row" style="margin-top:11px">
+                <div class="toggle-info">
+                  <div class="toggle-label">Publicarlo solo al llegar la fecha</div>
+                  <div class="toggle-help">Podés dejarlo en borrador: se publica en el momento</div>
+                </div>
+                <div class="toggle-switch on" id="moduloPublicarEnFecha" onclick="this.classList.toggle('on')"></div>
+              </div>
+            </div>
+
+            <div id="modDiasCaja" style="display:none;margin-top:11px">
+              <label class="form-label">DÍAS</label>
+              <input type="number" class="form-input" id="moduloDiasLib" min="0" max="365" placeholder="7">
+              <div class="form-help" id="modEjemplo"></div>
+            </div>
+          </div>
+
+          <div id="modAvisoClase" class="lib-aviso" style="display:none">
+            Cada clase de este módulo va a tener su propio selector de fecha.
           </div>
         </div>
+
+        <div class="toggle-row" style="border-color:rgba(93,202,165,0.35);background:rgba(93,202,165,0.06)">
+          <div class="toggle-info">
+            <div class="toggle-label">🎁 Módulo de regalo</div>
+            <div class="toggle-help">Se puede ver sin comprar el curso. Ideal para que prueben antes.</div>
+          </div>
+          <div class="toggle-switch" id="moduloGratis" onclick="this.classList.toggle('on')"></div>
+        </div>
+
 
 
         <div class="toggle-row">
@@ -2854,7 +2906,7 @@ body{visibility:hidden}
             <div class="toggle-label">Publicado</div>
             <div class="toggle-help">Si está apagado, las alumnas no lo ven</div>
           </div>
-          <div class="toggle-switch on" id="moduloPublicado" onclick="this.classList.toggle('on')"></div>
+          <div class="toggle-switch on" id="moduloPublicado" onclick="this.classList.toggle('on');pintarChipEstado('modulo')"></div>
         </div>
       </div>
       <div class="curso-modal-footer">
@@ -2899,32 +2951,66 @@ body{visibility:hidden}
           </select>
         </div>
 
-        <div class="lib-caja">
-          <div class="lib-label">CUÁNDO SE LIBERA ESTA CLASE</div>
+        <div class="docs-caja" id="docsCaja">
+          <div class="docs-cab">
+            <div>
+              <div class="docs-tit">📎 Documentos de esta clase</div>
+              <div class="docs-sub" id="docsSub">Podés sumar todos los PDF que quieras</div>
+            </div>
+            <button type="button" class="docs-add" onclick="document.getElementById('docInput').click()">+ Agregar</button>
+            <input type="file" id="docInput" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" multiple style="display:none" onchange="subirDocumentos(event)">
+          </div>
+          <div id="docsLista"></div>
+        </div>
+
+        <div class="lib-caja" id="cajaLibClase">
+          <div class="lib-label">CUÁNDO SE ABRE ESTA CLASE</div>
           <div class="lib-opciones">
-            <button type="button" class="lib-op" data-m="heredar" onclick="elegirLibClase(this)">
-              <span class="lib-op-tit">↑ Como diga el módulo</span>
-              <span class="lib-op-sub">Hereda del módulo o del curso</span>
-            </button>
-            <button type="button" class="lib-op" data-m="inmediata" onclick="elegirLibClase(this)">
+            <button type="button" class="lib-op" data-c="inmediata" onclick="elegirCuandoClase(this)">
               <span class="lib-op-tit">🔓 Al inscribirse</span>
-              <span class="lib-op-sub">Disponible apenas se anota</span>
             </button>
-            <button type="button" class="lib-op" data-m="inscripcion" onclick="elegirLibClase(this)">
+            <button type="button" class="lib-op" data-c="inscripcion" onclick="elegirCuandoClase(this)">
               <span class="lib-op-tit">📅 X días tras inscribirse</span>
-              <span class="lib-op-sub">Cuenta desde que cada persona se anota</span>
             </button>
-            <button type="button" class="lib-op" data-m="lanzamiento" onclick="elegirLibClase(this)">
+            <button type="button" class="lib-op" data-c="lanzamiento" onclick="elegirCuandoClase(this)">
               <span class="lib-op-tit">🚀 X días tras el lanzamiento</span>
-              <span class="lib-op-sub">Misma fecha para todas</span>
+            </button>
+            <button type="button" class="lib-op" data-c="fecha" onclick="elegirCuandoClase(this)">
+              <span class="lib-op-tit">📆 En una fecha y hora exacta</span>
             </button>
           </div>
-          <div id="libClaseDias" style="display:none;margin-top:11px">
+
+          <div id="claseFechaCaja" style="display:none;margin-top:11px">
+            <label class="form-label">DÍA Y HORA</label>
+            <input type="datetime-local" class="form-input" id="claseFecha" onchange="pintarClase()">
+            <div class="form-help" id="claseFechaEj"></div>
+
+            <div class="toggle-row" style="margin-top:11px">
+              <div class="toggle-info">
+                <div class="toggle-label">Publicarla sola al llegar la fecha</div>
+                <div class="toggle-help">Podés dejarla en borrador</div>
+              </div>
+              <div class="toggle-switch on" id="clasePublicarEnFecha" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+
+          <div id="claseDiasCaja" style="display:none;margin-top:11px">
             <label class="form-label">DÍAS</label>
             <input type="number" class="form-input" id="claseDiasLib" min="0" max="365" placeholder="7">
-            <div class="form-help" id="libClaseEj"></div>
+            <div class="form-help" id="claseEjemplo"></div>
           </div>
         </div>
+
+        <div class="lib-aviso" id="avisoModuloBorrador" style="display:none;background:rgba(255,159,64,0.1);border-color:rgba(255,159,64,0.4)">
+          ⚠️ El módulo de esta clase está en <strong>borrador</strong>, así que la clase no se ve
+          aunque la publiques. Publicá primero el módulo.
+        </div>
+
+        <div class="lib-aviso" id="avisoModuloManda" style="display:none">
+          📦 Este módulo se libera <strong>entero</strong>, así que esta clase se abre junto con las demás.
+          Si querés fecha propia, cambiá el módulo a "clase por clase".
+        </div>
+
 
         <div class="form-field" id="campoVideo" style="margin-bottom:14px">
           <label class="form-label">ENLACE DEL VIDEO</label>
@@ -2985,7 +3071,7 @@ body{visibility:hidden}
             <div class="toggle-label">Publicada</div>
             <div class="toggle-help">Si está apagada, las alumnas no la ven</div>
           </div>
-          <div class="toggle-switch on" id="clasePublicada" onclick="this.classList.toggle('on')"></div>
+          <div class="toggle-switch on" id="clasePublicada" onclick="this.classList.toggle('on');pintarChipEstado('clase')"></div>
         </div>
       </div>
 
@@ -3773,6 +3859,7 @@ body{visibility:hidden}
   // GESTOR DE CURSOS
   // ============================
   let cursos = [];
+  let cursoOrdenAuto = 0;
   let cursoEditando = null;
   let gradientSeleccionado = 'linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)';
   let filtroCursos = 'todos';
@@ -3825,7 +3912,11 @@ body{visibility:hidden}
           <div class="curso-card-titulo">${c.titulo}</div>
           <div class="curso-card-meta">
             <span class="curso-card-precio ${c.precio_gs === 0 ? 'gratis' : ''}">${c.precio_gs === 0 ? 'GRATIS' : 'Gs ' + c.precio_gs.toLocaleString('es-PY')}</span>
-            <span class="curso-card-stats">${c.modulos_count || 0} mód · ${c.clases_count || 0} clases</span>
+            <span class="curso-card-stats">${[
+              c.modulos_count ? c.modulos_count + ' mód' : '',
+              c.clases_count ? c.clases_count + ' clase' + (c.clases_count === 1 ? '' : 's') : '',
+              c.duracion_horas ? c.duracion_horas + ' hs' : ''
+            ].filter(Boolean).join(' · ')}</span>
           </div>
         </div>
       </div>
@@ -3857,6 +3948,8 @@ body{visibility:hidden}
       document.getElementById('cursoSeccion').value = c.seccion || 'principal';
       document.getElementById('cursoAcceso').value = c.acceso || (c.precio_gs ? 'pago' : 'gratis');
       document.getElementById('cursoEnlaceExterno').value = c.enlace_externo || '';
+      document.getElementById('cursoPrecioPremium').value = c.precio_premium_gs
+        ? c.precio_premium_gs.toLocaleString('es-PY').replace(/,/g,'.') : '';
       document.getElementById('cursoEtiqueta').value = c.etiqueta || '';
       document.getElementById('cursoNotaPrecio').value = c.nota_precio || '';
       document.getElementById('cursoProximamente').classList.toggle('on', !!c.proximamente);
@@ -3864,17 +3957,15 @@ body{visibility:hidden}
       document.getElementById('cursoQueIncluye').value = c.que_incluye || '';
       document.getElementById('cursoFechaDisponible').value = c.fecha_disponible
         ? new Date(c.fecha_disponible).toISOString().slice(0,10) : '';
-      document.getElementById('cursoLiberacion').value = c.modo_liberacion || 'inmediata';
       document.getElementById('cursoLanzamiento').value = c.fecha_lanzamiento
         ? new Date(c.fecha_lanzamiento).toISOString().slice(0,10) : '';
-      document.getElementById('cursoDiasLiberacion').value = c.dias_liberacion || '';
       document.getElementById('cursoAvisarLiberacion').classList.toggle('on', c.avisar_liberacion !== false);
       document.getElementById('cursoPrecio').value = c.precio_gs ? c.precio_gs.toLocaleString('es-PY') : '';
       document.getElementById('cursoPrecioAnterior').value = c.precio_anterior_gs ? c.precio_anterior_gs.toLocaleString('es-PY') : '';
       document.getElementById('cursoModulos').value = c.modulos_count || 0;
       document.getElementById('cursoClases').value = c.clases_count || 0;
       document.getElementById('cursoDuracion').value = c.duracion_minutos || 0;
-      document.getElementById('cursoOrden').value = c.orden || 0;
+      cursoOrdenAuto = c.orden || 0;
       document.getElementById('cursoPublicado').classList.toggle('on', !!c.publicado);
       document.getElementById('cursoDestacado').classList.toggle('on', !!c.destacado_home);
       gradientSeleccionado = c.color_gradient || gradientSeleccionado;
@@ -3899,7 +3990,7 @@ body{visibility:hidden}
       }
     } else {
       // Limpiar para nuevo
-      ['cursoTitulo','cursoSlug','cursoDescripcion','cursoSlogan','cursoPrecio','cursoPrecioAnterior','cursoModulos','cursoClases','cursoDuracion','cursoOrden','cursoEnlaceExterno','cursoEtiqueta','cursoNotaPrecio'].forEach(f => document.getElementById(f).value = '');
+      ['cursoTitulo','cursoSlug','cursoDescripcion','cursoSlogan','cursoPrecio','cursoPrecioPremium','cursoPrecioAnterior','cursoModulos','cursoClases','cursoDuracion','cursoEnlaceExterno','cursoEtiqueta','cursoNotaPrecio'].forEach(f => document.getElementById(f).value = '');
       document.getElementById('cursoTipo').value = 'curso';
       document.getElementById('cursoSeccion').value = 'principal';
       document.getElementById('cursoAcceso').value = 'pago';
@@ -3907,9 +3998,7 @@ body{visibility:hidden}
       document.getElementById('cursoTextoProximo').value = '';
       document.getElementById('cursoQueIncluye').value = '';
       document.getElementById('cursoFechaDisponible').value = '';
-      document.getElementById('cursoLiberacion').value = 'inmediata';
       document.getElementById('cursoLanzamiento').value = new Date().toISOString().slice(0,10);
-      document.getElementById('cursoDiasLiberacion').value = '';
       document.getElementById('cursoAvisarLiberacion').classList.add('on');
       document.getElementById('cursoCategoria').value = 'FORMACIÓN';
       document.getElementById('cursoPublicado').classList.remove('on');
@@ -3920,7 +4009,6 @@ body{visibility:hidden}
     }
 
     cambiarTipoCurso();
-    cambiarLiberacion();
     cambiarProximamente();
 
     // Resumen del contenido cargado
@@ -3988,11 +4076,12 @@ body{visibility:hidden}
       descripcion: document.getElementById('cursoDescripcion').value.trim(),
       slogan: document.getElementById('cursoSlogan').value.trim(),
       precio_gs: limpiarPrecio(document.getElementById('cursoPrecio').value),
+      precio_premium_gs: limpiarPrecio(document.getElementById('cursoPrecioPremium').value) || null,
       precio_anterior_gs: limpiarPrecio(document.getElementById('cursoPrecioAnterior').value),
-      modulos_count: parseInt(document.getElementById('cursoModulos').value) || 0,
-      clases_count: parseInt(document.getElementById('cursoClases').value) || 0,
+      modulos_count: parseInt(document.getElementById('cursoModulos').value) || null,
+      clases_count: parseInt(document.getElementById('cursoClases').value) || null,
       duracion_minutos: parseInt(document.getElementById('cursoDuracion').value) || 0,
-      orden: parseInt(document.getElementById('cursoOrden').value) || 0,
+      orden: cursoOrdenAuto,
       color_gradient: gradientSeleccionado,
       publicado: document.getElementById('cursoPublicado').classList.contains('on'),
       destacado_home: document.getElementById('cursoDestacado').classList.contains('on'),
@@ -4012,8 +4101,6 @@ body{visibility:hidden}
       fecha_disponible: document.getElementById('cursoFechaDisponible').value
         ? new Date(document.getElementById('cursoFechaDisponible').value + 'T00:00:00').toISOString()
         : null,
-      modo_liberacion: document.getElementById('cursoLiberacion').value,
-      dias_liberacion: parseInt(document.getElementById('cursoDiasLiberacion').value) || 0,
       avisar_liberacion: document.getElementById('cursoAvisarLiberacion').classList.contains('on')
     };
 
@@ -5544,9 +5631,8 @@ body{visibility:hidden}
     document.getElementById('campoTexto').style.display   = (t === 'texto')  ? '' : 'none';
   }
 
-  document.getElementById('cursoDiasLiberacion')?.addEventListener('input', cambiarLiberacion);
-  document.getElementById('moduloDiasLib')?.addEventListener('input', pintarLibModulo);
-  document.getElementById('claseDiasLib')?.addEventListener('input', pintarLibClase);
+  document.getElementById('moduloDiasLib')?.addEventListener('input', pintarModulo);
+  document.getElementById('claseDiasLib')?.addEventListener('input', pintarClase);
 
   function cambiarTipoCurso(){
     const t = document.getElementById('cursoTipo').value;
@@ -5563,38 +5649,6 @@ body{visibility:hidden}
     document.getElementById('camposProximamente').style.display = on ? '' : 'none';
   }
 
-  function cambiarLiberacion(){
-    const modo = document.getElementById('cursoLiberacion').value;
-    const campo = document.getElementById('campoDiasLiberacion');
-    const fila = document.getElementById('filaAvisoLiberacion');
-    const ayuda = document.getElementById('ayudaLiberacion');
-    const label = document.getElementById('labelDias');
-    const ej = document.getElementById('ejemploDias');
-    const dias = parseInt(document.getElementById('cursoDiasLiberacion').value) || 7;
-
-    if(modo === 'inmediata'){
-      campo.style.display = 'none';
-      fila.style.display = 'none';
-      ayuda.textContent = 'Todas las clases quedan disponibles apenas compra.';
-      return;
-    }
-
-    campo.style.display = '';
-    fila.style.display = '';
-
-    if(modo === 'espera'){
-      label.textContent = 'DÍAS DE ESPERA';
-      ayuda.textContent = 'Al comprar no ve nada; pasados esos días se le libera el curso completo.';
-      ej.textContent = 'Ejemplo: con ' + dias + ' días, quien compra hoy empieza el ' +
-        new Date(Date.now() + dias * 86400000).toLocaleDateString('es-PY', { day:'numeric', month:'long' }) + '.';
-    } else {
-      label.textContent = 'DÍAS ENTRE CLASE Y CLASE';
-      ayuda.textContent = 'La primera clase se libera al comprar; las siguientes van apareciendo de a una.';
-      const n = parseInt(document.getElementById('cursoClases').value) || 10;
-      const total = (n - 1) * dias;
-      ej.textContent = 'Ejemplo: con ' + dias + ' día(s) y ' + n + ' clases, termina de liberarse en ' + total + ' días.';
-    }
-  }
 
   function cambiarAccesoCurso(){
     const a = document.getElementById('cursoAcceso').value;
@@ -5621,6 +5675,9 @@ body{visibility:hidden}
   }
 
   async function cargarContenido(){
+    // Lo que ya llegó a su fecha se publica solo
+    try { await sb.rpc('publicar_programados'); } catch(e){}
+
     if(!sb || !cursoContenidoId) return;
 
     const [rMod, rCla] = await Promise.all([
@@ -5636,18 +5693,50 @@ body{visibility:hidden}
     });
 
     renderContenido();
+    pintarResumenBorradores();
   }
 
   const ICONOS_CLASE = { video: '🎬', pdf: '📄', texto: '📝', enlace: '🔗', audio: '🎧' };
 
   // Muestra cómo está configurada la liberación
   function textoLib(x){
-    if(!x || !x.modo_liberacion || x.modo_liberacion === 'heredar') return '';
+    if(!x) return '';
+    if(x.gratis) return ' · 🎁 de regalo';
+    if(x.tipo_liberacion === 'clase') return ' · 🎬 clase por clase';
+
+    const cuando = x.cuando_libera || 'inmediata';
     const d = x.dias_liberacion || 0;
-    if(x.modo_liberacion === 'inmediata') return ' · 🔓 al inscribirse';
-    if(x.modo_liberacion === 'inscripcion') return ' · 📅 ' + d + 'd tras inscribirse';
-    if(x.modo_liberacion === 'lanzamiento') return ' · 🚀 ' + d + 'd tras lanzamiento';
+    if(cuando === 'inmediata') return '';
+    if(cuando === 'inscripcion') return ' · 📅 ' + d + 'd tras inscribirse';
+    if(cuando === 'lanzamiento') return ' · 🚀 ' + d + 'd tras lanzamiento';
+    if(cuando === 'fecha' && x.fecha_apertura){
+      const f = new Date(x.fecha_apertura);
+      const futuro = f.getTime() > Date.now();
+      return ' · 📆 ' + (futuro ? 'se abre ' : 'abierto desde ') +
+        f.toLocaleDateString('es-PY', { day:'numeric', month:'short' }) +
+        ' ' + f.toLocaleTimeString('es-PY', { hour:'2-digit', minute:'2-digit' });
+    }
     return '';
+  }
+
+  // Cuántos módulos y clases están sin publicar
+  function pintarResumenBorradores(){
+    const cont = document.getElementById('resumenBorradores');
+    if(!cont) return;
+
+    const modsBorrador = (modulos || []).filter(m => m.publicado === false).length;
+    const clasBorrador = (clases || []).filter(c => c.publicado === false).length;
+
+    if(modsBorrador === 0 && clasBorrador === 0){
+      cont.style.display = 'none';
+      return;
+    }
+
+    cont.style.display = '';
+    cont.innerHTML = '⚠️ Sin publicar: ' + [
+      modsBorrador ? modsBorrador + ' módulo' + (modsBorrador === 1 ? '' : 's') : '',
+      clasBorrador ? clasBorrador + ' clase' + (clasBorrador === 1 ? '' : 's') : ''
+    ].filter(Boolean).join(' y ') + '. Tus alumnas no las ven.';
   }
 
   function renderContenido(){
@@ -5674,8 +5763,14 @@ body{visibility:hidden}
           '<div class="modulo-num">' + (i + 1) + '</div>' +
           '<div class="modulo-info">' +
             '<div class="modulo-titulo">' + esc(m.titulo) + (m.publicado === false ? ' <span class="mini-badge borrador">BORRADOR</span>' : '') + '</div>' +
-            '<div class="modulo-meta">' + cls.length + ' clase' + (cls.length === 1 ? '' : 's') +
-              (min > 0 ? ' · ' + min + ' min' : '') + textoLib(m) + '</div>' +
+            '<div class="modulo-meta">' + [
+              cls.length ? cls.length + ' clase' + (cls.length === 1 ? '' : 's') : 'sin clases',
+              min > 0 ? min + ' min' : '',
+              textoLib(m).replace(/^ · /, '')
+            ].filter(Boolean).join(' · ') + '</div>' +
+            (m.publicado === false
+              ? '<span class="chip-pub borrador">✕ BORRADOR</span>'
+              : '<span class="chip-pub publicado">✓ PUBLICADO</span>') +
           '</div>' +
           '<button class="acc-btn-menu" onclick="event.stopPropagation();abrirModulo(\'' + m.id + '\')">Editar</button>' +
           '<svg class="modulo-flecha" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>' +
@@ -5688,11 +5783,14 @@ body{visibility:hidden}
                   '<div class="clase-ico">' + (ICONOS_CLASE[cl.tipo] || '🎬') + '</div>' +
                   '<div class="clase-info">' +
                     '<div class="clase-titulo">' + esc(cl.titulo) + '</div>' +
-                    '<div class="clase-meta">' +
-                      (cl.duracion_minutos ? cl.duracion_minutos + ' min' : 'sin duración') +
-                      (cl.tipo === 'video' && !cl.video_url ? ' · ⚠️ falta el video' : '') +
-                      textoLib(cl) +
-                    '</div>' +
+                    '<div class="clase-meta">' + [
+                      cl.duracion_minutos ? cl.duracion_minutos + ' min' : '',
+                      (cl.tipo === 'video' && !cl.video_url) ? '⚠️ falta el video' : '',
+                      textoLib(cl).replace(/^ · /, '')
+                    ].filter(Boolean).join(' · ') + '</div>' +
+                    (cl.publicado === false
+                      ? '<span class="chip-pub borrador chico">✕ BORRADOR</span>'
+                      : '<span class="chip-pub publicado chico">✓ PUBLICADA</span>') +
                   '</div>' +
                   '<div class="clase-badges">' +
                     (cl.gratis ? '<span class="mini-badge gratis">MUESTRA</span>' : '') +
@@ -5715,73 +5813,236 @@ body{visibility:hidden}
     document.getElementById('mod-' + id)?.classList.toggle('abierto');
   }
 
-  // ─── Selectores de liberación (solo una opción a la vez) ───
-  let libModuloModo = 'heredar';
-  let libClaseModo = 'heredar';
+  // Muestra el estado arriba del modal, y lo actualiza al tocar el interruptor
+  function pintarChipEstado(cual){
+    const esModulo = (cual === 'modulo');
+    const chip = document.getElementById(esModulo ? 'chipModulo' : 'chipClase');
+    const sw = document.getElementById(esModulo ? 'moduloPublicado' : 'clasePublicada');
+    if(!chip || !sw) return;
 
-  function elegirLibModulo(el){
-    document.querySelectorAll('#moduloModal .lib-op').forEach(x => x.classList.remove('sel'));
-    el.classList.add('sel');
-    libModuloModo = el.dataset.m;
-    pintarLibModulo();
+    const pub = sw.classList.contains('on');
+    chip.style.display = '';
+    chip.className = 'chip-pub ' + (pub ? 'publicado' : 'borrador');
+    chip.textContent = pub
+      ? (esModulo ? '✓ PUBLICADO' : '✓ PUBLICADA')
+      : '✕ BORRADOR · nadie lo ve todavía';
   }
 
-  function pintarLibModulo(){
-    const caja = document.getElementById('libModuloDias');
-    const ej = document.getElementById('libModuloEj');
-    const necesita = (libModuloModo === 'inscripcion' || libModuloModo === 'lanzamiento');
-    caja.style.display = necesita ? '' : 'none';
-    if(!necesita) return;
+  // ─── Documentos de la clase ───
+  let documentosClase = [];
+
+  const ICO_DOC = { pdf:'📕', doc:'📘', docx:'📘', xls:'📗', xlsx:'📗', ppt:'📙', pptx:'📙' };
+
+  async function cargarDocumentos(claseId){
+    documentosClase = [];
+    if(claseId){
+      const { data } = await sb.from('documentos')
+        .select('*').eq('clase_id', claseId).order('orden', { ascending: true });
+      documentosClase = data || [];
+    }
+    renderDocumentos();
+  }
+
+  function renderDocumentos(){
+    const cont = document.getElementById('docsLista');
+    if(!cont) return;
+
+    if(documentosClase.length === 0){
+      cont.innerHTML = '<div class="docs-vacio">Todavía no hay documentos</div>';
+      return;
+    }
+
+    cont.innerHTML = documentosClase.map((d, i) => {
+      const ext = (d.titulo || '').split('.').pop().toLowerCase();
+      return '<div class="doc-fila">' +
+        '<div class="doc-ico">' + (ICO_DOC[ext] || '📄') + '</div>' +
+        '<div class="doc-info">' +
+          '<div class="doc-nom">' + esc(d.titulo) + '</div>' +
+          '<div class="doc-peso">' + (d.tamano_kb ? (d.tamano_kb > 1024
+              ? (d.tamano_kb/1024).toFixed(1) + ' MB'
+              : d.tamano_kb + ' KB') : '') + '</div>' +
+        '</div>' +
+        '<button type="button" class="doc-quitar" onclick="quitarDocumento(' + i + ')" title="Quitar">×</button>' +
+      '</div>';
+    }).join('');
+  }
+
+  async function subirDocumentos(event){
+    const archivos = Array.from(event.target.files || []);
+    if(archivos.length === 0) return;
+
+    const cont = document.getElementById('docsLista');
+    cont.innerHTML = '<div class="docs-vacio">Subiendo ' + archivos.length + ' archivo(s)...</div>';
+
+    for(const file of archivos){
+      const r = await subirImagen(file, 'documentos');
+      if(r.exito){
+        documentosClase.push({
+          titulo: file.name,
+          archivo_url: r.url,
+          tipo: (file.name.split('.').pop() || 'pdf').toLowerCase(),
+          tamano_kb: Math.round(file.size / 1024),
+          orden: documentosClase.length,
+          _nuevo: true
+        });
+      } else {
+        mostrarToast('No se pudo subir ' + file.name + ': ' +
+          (typeof explicarErrorSubida === 'function' ? explicarErrorSubida(r.error) : r.error), true);
+      }
+    }
+
+    renderDocumentos();
+    event.target.value = '';
+    mostrarToast('✓ Documentos listos. Guardá la clase para conservarlos.');
+  }
+
+  function quitarDocumento(i){
+    const d = documentosClase[i];
+    if(!confirm('¿Quitar "' + (d?.titulo || '') + '"?')) return;
+    if(d && d.id) documentosClase[i]._borrar = true;
+    else documentosClase.splice(i, 1);
+    renderDocumentos();
+  }
+
+  // Se guardan junto con la clase
+  async function guardarDocumentos(claseId, cursoId){
+    for(const d of documentosClase){
+      if(d._borrar && d.id){
+        await sb.from('documentos').delete().eq('id', d.id);
+      } else if(d._nuevo){
+        await sb.from('documentos').insert({
+          clase_id: claseId,
+          curso_id: cursoId,
+          titulo: d.titulo,
+          archivo_url: d.archivo_url,
+          tipo: d.tipo,
+          tamano_kb: d.tamano_kb,
+          orden: d.orden
+        });
+      }
+    }
+  }
+
+  // ─── Liberación: el módulo decide, la clase obedece ───
+  let modTipo = 'modulo';
+  let modCuando = 'inmediata';
+  let claseCuando = 'inmediata';
+
+  function elegirTipoModulo(el){
+    document.querySelectorAll('#moduloModal .lib-op[data-t]').forEach(x => x.classList.remove('sel'));
+    el.classList.add('sel');
+    modTipo = el.dataset.t;
+    pintarModulo();
+  }
+
+  function elegirCuandoModulo(el){
+    document.querySelectorAll('#moduloModal .lib-op[data-c]').forEach(x => x.classList.remove('sel'));
+    el.classList.add('sel');
+    modCuando = el.dataset.c;
+    pintarModulo();
+  }
+
+  function pintarModulo(){
+    const esPorClase = (modTipo === 'clase');
+
+    // Si va clase por clase, el módulo no define fecha
+    document.getElementById('modCuando').style.display = esPorClase ? 'none' : '';
+    document.getElementById('modAvisoClase').style.display = esPorClase ? '' : 'none';
+
+    if(esPorClase) return;
+
+    const esFecha = (modCuando === 'fecha');
+    const necesitaDias = (modCuando === 'inscripcion' || modCuando === 'lanzamiento');
+
+    document.getElementById('modDiasCaja').style.display = necesitaDias ? '' : 'none';
+    document.getElementById('modFechaCaja').style.display = esFecha ? '' : 'none';
+
+    if(esFecha){
+      const v = document.getElementById('moduloFecha').value;
+      document.getElementById('modFechaEj').textContent = v
+        ? 'Se abre el ' + new Date(v).toLocaleString('es-PY',
+            { weekday:'long', day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' }) + '.'
+        : 'Elegí el día y la hora.';
+      return;
+    }
+
+    if(!necesitaDias) return;
 
     const d = parseInt(document.getElementById('moduloDiasLib').value) || 0;
-    if(libModuloModo === 'inscripcion'){
+    const ej = document.getElementById('modEjemplo');
+
+    if(modCuando === 'inscripcion'){
       ej.textContent = d === 0
-        ? 'Con 0 días se libera al inscribirse.'
-        : 'Quien se anote hoy lo ve el ' + new Date(Date.now() + d*86400000).toLocaleDateString('es-PY',{day:'numeric',month:'long'}) + '.';
+        ? 'Con 0 días se abre al inscribirse.'
+        : 'Quien se anote hoy lo ve el ' +
+          new Date(Date.now() + d*86400000).toLocaleDateString('es-PY',{day:'numeric',month:'long'}) + '.';
     } else {
-      const lanz = document.getElementById('cursoLanzamiento').value;
-      if(lanz){
-        const f = new Date(lanz + 'T00:00:00').getTime() + d*86400000;
-        ej.textContent = 'Se libera el ' + new Date(f).toLocaleDateString('es-PY',{day:'numeric',month:'long',year:'numeric'}) + ', para todas por igual.';
-      } else {
-        ej.textContent = 'Poné la fecha de lanzamiento del curso para ver el cálculo.';
-      }
+      const lanz = document.getElementById('cursoLanzamiento')?.value;
+      ej.textContent = lanz
+        ? 'Se abre el ' + new Date(new Date(lanz + 'T00:00:00').getTime() + d*86400000)
+            .toLocaleDateString('es-PY',{day:'numeric',month:'long',year:'numeric'}) + ', para todas por igual.'
+        : 'Poné la fecha de lanzamiento del curso para ver el cálculo.';
     }
   }
 
-  function elegirLibClase(el){
-    document.querySelectorAll('#claseModal .lib-op').forEach(x => x.classList.remove('sel'));
+  function elegirCuandoClase(el){
+    document.querySelectorAll('#claseModal .lib-op[data-c]').forEach(x => x.classList.remove('sel'));
     el.classList.add('sel');
-    libClaseModo = el.dataset.m;
-    pintarLibClase();
+    claseCuando = el.dataset.c;
+    pintarClase();
   }
 
-  function pintarLibClase(){
-    const caja = document.getElementById('libClaseDias');
-    const ej = document.getElementById('libClaseEj');
-    const necesita = (libClaseModo === 'inscripcion' || libClaseModo === 'lanzamiento');
-    caja.style.display = necesita ? '' : 'none';
-    if(!necesita) return;
+  function pintarClase(){
+    const esFecha = (claseCuando === 'fecha');
+    const necesitaDias = (claseCuando === 'inscripcion' || claseCuando === 'lanzamiento');
+
+    document.getElementById('claseDiasCaja').style.display = necesitaDias ? '' : 'none';
+    document.getElementById('claseFechaCaja').style.display = esFecha ? '' : 'none';
+
+    if(esFecha){
+      const v = document.getElementById('claseFecha').value;
+      document.getElementById('claseFechaEj').textContent = v
+        ? 'Se abre el ' + new Date(v).toLocaleString('es-PY',
+            { weekday:'long', day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' }) + '.'
+        : 'Elegí el día y la hora.';
+      return;
+    }
+
+    if(!necesitaDias) return;
 
     const d = parseInt(document.getElementById('claseDiasLib').value) || 0;
-    if(libClaseModo === 'inscripcion'){
+    const ej = document.getElementById('claseEjemplo');
+
+    if(claseCuando === 'inscripcion'){
       ej.textContent = d === 0
-        ? 'Con 0 días se libera al inscribirse.'
-        : 'Quien se anote hoy la ve el ' + new Date(Date.now() + d*86400000).toLocaleDateString('es-PY',{day:'numeric',month:'long'}) + '.';
+        ? 'Con 0 días se abre al inscribirse.'
+        : 'Quien se anote hoy la ve el ' +
+          new Date(Date.now() + d*86400000).toLocaleDateString('es-PY',{day:'numeric',month:'long'}) + '.';
     } else {
-      const lanz = document.getElementById('cursoLanzamiento').value;
-      if(lanz){
-        const f = new Date(lanz + 'T00:00:00').getTime() + d*86400000;
-        ej.textContent = 'Se libera el ' + new Date(f).toLocaleDateString('es-PY',{day:'numeric',month:'long',year:'numeric'}) + ', para todas por igual.';
-      } else {
-        ej.textContent = 'Poné la fecha de lanzamiento del curso para ver el cálculo.';
-      }
+      const lanz = document.getElementById('cursoLanzamiento')?.value;
+      ej.textContent = lanz
+        ? 'Se abre el ' + new Date(new Date(lanz + 'T00:00:00').getTime() + d*86400000)
+            .toLocaleDateString('es-PY',{day:'numeric',month:'long',year:'numeric'}) + '.'
+        : 'Poné la fecha de lanzamiento del curso.';
     }
   }
 
-  function marcarLib(contenedor, modo){
-    document.querySelectorAll(contenedor + ' .lib-op').forEach(x => {
-      x.classList.toggle('sel', x.dataset.m === (modo || 'heredar'));
+  // Si el módulo se libera entero, la clase no elige nada
+  function ajustarClaseSegunModulo(moduloId){
+    const m = (modulos || []).find(x => x.id === moduloId);
+    const mandaElModulo = !m || (m.tipo_liberacion || 'modulo') === 'modulo';
+
+    document.getElementById('cajaLibClase').style.display = mandaElModulo ? 'none' : '';
+    document.getElementById('avisoModuloManda').style.display = mandaElModulo ? '' : 'none';
+
+    // Si el módulo está en borrador, la clase no se ve aunque esté publicada
+    const enBorrador = m && m.publicado === false;
+    document.getElementById('avisoModuloBorrador').style.display = enBorrador ? '' : 'none';
+  }
+
+  function marcarSel(contenedor, attr, valor){
+    document.querySelectorAll(contenedor + ' .lib-op[data-' + attr + ']').forEach(x => {
+      x.classList.toggle('sel', x.dataset[attr] === valor);
     });
   }
 
@@ -5797,18 +6058,29 @@ body{visibility:hidden}
       document.getElementById('moduloDescripcion').value = m?.descripcion || '';
       document.getElementById('moduloOrden').value = m?.orden ?? 0;
       document.getElementById('moduloPublicado').classList.toggle('on', m?.publicado !== false);
-      libModuloModo = m?.modo_liberacion || 'heredar';
+      modTipo = m?.tipo_liberacion || 'modulo';
+      modCuando = m?.cuando_libera || 'inmediata';
       document.getElementById('moduloDiasLib').value = m?.dias_liberacion || '';
+      document.getElementById('moduloFecha').value = m?.fecha_apertura
+        ? new Date(new Date(m.fecha_apertura).getTime() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16) : '';
+      document.getElementById('moduloPublicarEnFecha').classList.toggle('on', m?.publicar_en_fecha !== false);
+      document.getElementById('moduloGratis').classList.toggle('on', !!m?.gratis);
     } else {
       document.getElementById('moduloTitulo').value = '';
       document.getElementById('moduloDescripcion').value = '';
       document.getElementById('moduloOrden').value = modulos.length + 1;
       document.getElementById('moduloPublicado').classList.add('on');
-      libModuloModo = 'heredar';
+      modTipo = 'modulo';
+      modCuando = 'inmediata';
       document.getElementById('moduloDiasLib').value = '';
+      document.getElementById('moduloFecha').value = '';
+      document.getElementById('moduloPublicarEnFecha').classList.add('on');
+      document.getElementById('moduloGratis').classList.remove('on');
     }
-    marcarLib('#moduloModal', libModuloModo);
-    pintarLibModulo();
+    marcarSel('#moduloModal', 't', modTipo);
+    marcarSel('#moduloModal', 'c', modCuando);
+    pintarModulo();
+    pintarChipEstado('modulo');
     document.getElementById('moduloModal').classList.add('show');
   }
 
@@ -5824,8 +6096,13 @@ body{visibility:hidden}
       descripcion: document.getElementById('moduloDescripcion').value.trim() || null,
       orden: parseInt(document.getElementById('moduloOrden').value) || 0,
       publicado: document.getElementById('moduloPublicado').classList.contains('on'),
-      modo_liberacion: libModuloModo,
-      dias_liberacion: parseInt(document.getElementById('moduloDiasLib').value) || 0
+      tipo_liberacion: modTipo,
+      cuando_libera: (modTipo === 'clase') ? 'inmediata' : modCuando,
+      dias_liberacion: (modTipo === 'clase') ? 0 : (parseInt(document.getElementById('moduloDiasLib').value) || 0),
+      fecha_apertura: (modTipo !== 'clase' && modCuando === 'fecha' && document.getElementById('moduloFecha').value)
+        ? new Date(document.getElementById('moduloFecha').value).toISOString() : null,
+      publicar_en_fecha: (modCuando === 'fecha') && document.getElementById('moduloPublicarEnFecha').classList.contains('on'),
+      gratis: document.getElementById('moduloGratis').classList.contains('on')
     };
 
     const id = document.getElementById('moduloId').value;
@@ -5876,8 +6153,11 @@ body{visibility:hidden}
       document.getElementById('claseArchivoUrl').value = cl?.archivo_url || '';
       document.getElementById('claseGratis').classList.toggle('on', !!cl?.gratis);
       document.getElementById('clasePublicada').classList.toggle('on', cl?.publicado !== false);
-      libClaseModo = cl?.modo_liberacion || 'heredar';
+      claseCuando = cl?.cuando_libera || 'inmediata';
       document.getElementById('claseDiasLib').value = cl?.dias_liberacion || '';
+      document.getElementById('claseFecha').value = cl?.fecha_apertura
+        ? new Date(new Date(cl.fecha_apertura).getTime() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16) : '';
+      document.getElementById('clasePublicarEnFecha').classList.toggle('on', cl?.publicar_en_fecha !== false);
 
       if(cl?.archivo_url){
         document.getElementById('claseArchivoEmpty').style.display = 'none';
@@ -5897,11 +6177,16 @@ body{visibility:hidden}
       document.getElementById('clasePublicada').classList.add('on');
       document.getElementById('claseArchivoEmpty').style.display = '';
       document.getElementById('claseArchivoNombre').style.display = 'none';
-      libClaseModo = 'heredar';
+      claseCuando = 'inmediata';
       document.getElementById('claseDiasLib').value = '';
+      document.getElementById('claseFecha').value = '';
+      document.getElementById('clasePublicarEnFecha').classList.add('on');
     }
-    marcarLib('#claseModal', libClaseModo);
-    pintarLibClase();
+    marcarSel('#claseModal', 'c', claseCuando);
+    pintarClase();
+    ajustarClaseSegunModulo(moduloId);
+    cargarDocumentos(claseId || null);
+    pintarChipEstado('clase');
 
     cambiarTipoClase();
     revisarVideo();
@@ -5961,16 +6246,23 @@ body{visibility:hidden}
       orden: parseInt(document.getElementById('claseOrden').value) || 0,
       gratis: document.getElementById('claseGratis').classList.contains('on'),
       publicado: document.getElementById('clasePublicada').classList.contains('on'),
-      modo_liberacion: libClaseModo,
-      dias_liberacion: parseInt(document.getElementById('claseDiasLib').value) || 0
+      cuando_libera: claseCuando,
+      dias_liberacion: parseInt(document.getElementById('claseDiasLib').value) || 0,
+      fecha_apertura: (claseCuando === 'fecha' && document.getElementById('claseFecha').value)
+        ? new Date(document.getElementById('claseFecha').value).toISOString() : null,
+      publicar_en_fecha: (claseCuando === 'fecha') && document.getElementById('clasePublicarEnFecha').classList.contains('on')
     };
 
     const id = document.getElementById('claseId').value;
     const r = id
       ? await sb.from('clases').update(datos).eq('id', id)
-      : await sb.from('clases').insert(datos);
+      : await sb.from('clases').insert(datos).select('id').single();
 
     if(r.error) return mostrarToast('Error: ' + r.error.message, true);
+
+    // Los documentos van con la clase
+    const idClase = id || r.data?.id;
+    if(idClase) await guardarDocumentos(idClase, cursoContenidoId);
 
     mostrarToast(id ? '✓ Clase actualizada' : '✓ Clase creada');
     cerrarClase();

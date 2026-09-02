@@ -278,67 +278,54 @@ async function avisarCambioPassword(detalle) {
 
 
 // ═══════════════════════════════════════════════════════════
-// LIBERACIÓN PROGRAMADA DE CLASES
+// LIBERACIÓN DE CLASES
 //
-// Tres formas, se elige UNA:
-//   inmediata    → apenas se inscribe
-//   inscripcion  → X días después de inscribirse
-//   lanzamiento  → X días después del lanzamiento del curso
+// Cada módulo decide UNA de dos cosas:
+//   'modulo' → se libera entero, cuando diga el módulo
+//   'clase'  → cada clase tiene su propia fecha
 //
-// Manda lo más específico: clase → módulo → curso.
+// Nunca se suman. Lo que diga el módulo manda.
 // ═══════════════════════════════════════════════════════════
 
-// Devuelve { modo, dias, origen } resolviendo la herencia
-function configLiberacion(clase, modulo, curso) {
-  if (clase && clase.modo_liberacion && clase.modo_liberacion !== 'heredar') {
-    return { modo: clase.modo_liberacion, dias: clase.dias_liberacion || 0, origen: 'clase' };
-  }
-  if (modulo && modulo.modo_liberacion && modulo.modo_liberacion !== 'heredar') {
-    return { modo: modulo.modo_liberacion, dias: modulo.dias_liberacion || 0, origen: 'modulo' };
-  }
-  return { modo: null, dias: 0, origen: 'curso' };
-}
+// Cuándo se libera esta clase. null = todavía no se inscribió
+function fechaLiberacion(clase, modulo, curso, compra) {
+  // De regalo: siempre disponible
+  if ((modulo && modulo.gratis) || (clase && clase.gratis)) return 0;
 
-// Cuándo se libera esta clase para esta persona. null = no se sabe (no inscripta)
-function fechaLiberacion(clase, modulo, curso, compra, todasLasClases, modulos) {
-  const cfg = configLiberacion(clase, modulo, curso);
+  const tipo = (modulo && modulo.tipo_liberacion) || 'modulo';
+
+  // Si el módulo se libera entero, manda el módulo. Si no, la clase.
+  const cuando = (tipo === 'modulo')
+    ? ((modulo && modulo.cuando_libera) || 'inmediata')
+    : ((clase && clase.cuando_libera) || 'inmediata');
+
+  const dias = (tipo === 'modulo')
+    ? ((modulo && modulo.dias_liberacion) || 0)
+    : ((clase && clase.dias_liberacion) || 0);
+
+  const fechaFija = (tipo === 'modulo')
+    ? (modulo && modulo.fecha_apertura)
+    : (clase && clase.fecha_apertura);
+
   const inscripcion = compra && compra.pagado_en ? new Date(compra.pagado_en).getTime() : null;
   const lanzamiento = curso && curso.fecha_lanzamiento
     ? new Date(curso.fecha_lanzamiento).getTime()
     : (curso && curso.creado_en ? new Date(curso.creado_en).getTime() : Date.now());
 
-  // ─── Configuración propia de la clase o del módulo ───
-  if (cfg.modo) {
-    if (cfg.modo === 'inmediata') return inscripcion || Date.now();
-    if (cfg.modo === 'inscripcion') {
-      if (!inscripcion) return null;
-      return inscripcion + cfg.dias * 86400000;
-    }
-    if (cfg.modo === 'lanzamiento') {
-      return lanzamiento + cfg.dias * 86400000;
-    }
+  // Fecha exacta: la misma para todas
+  if (cuando === 'fecha') {
+    return fechaFija ? new Date(fechaFija).getTime() : Date.now();
   }
 
-  // ─── Si no, lo que diga el curso ───
-  const modoCurso = (curso && curso.modo_liberacion) || 'inmediata';
-  const diasCurso = (curso && curso.dias_liberacion) || 0;
+  if (cuando === 'inmediata') return inscripcion || Date.now();
 
-  if (modoCurso === 'espera') {
+  if (cuando === 'inscripcion') {
     if (!inscripcion) return null;
-    return inscripcion + diasCurso * 86400000;
+    return inscripcion + dias * 86400000;
   }
 
-  if (modoCurso === 'goteo') {
-    if (!inscripcion) return null;
-    const planas = [];
-    (modulos || []).forEach(m => {
-      (todasLasClases || [])
-        .filter(x => x.modulo_id === m.id)
-        .sort((a, b) => (a.orden || 0) - (b.orden || 0))
-        .forEach(x => planas.push(x));
-    });
-    const pos = planas.findIndex(x => x.id === clase.id);
-    return inscripcion + (pos < 0 ? 0 : pos) * (diasCurso || 1) * 86400000;
+  if (cuando === 'lanzamiento') {
+    return lanzamiento + dias * 86400000;
   }
 
   return inscripcion || Date.now();
@@ -347,77 +334,67 @@ function fechaLiberacion(clase, modulo, curso, compra, todasLasClases, modulos) 
 // ¿Ya está disponible?
 function claseDisponible(clase, curso, compra, todasLasClases, modulos) {
   const modulo = (modulos || []).find(m => m.id === clase.modulo_id) || null;
-  const cuando = fechaLiberacion(clase, modulo, curso, compra, todasLasClases, modulos);
+  const cuando = fechaLiberacion(clase, modulo, curso, compra);
 
   if (cuando === null) {
     return { libre: false, dias: 0, fecha: null, sinInscripcion: true };
   }
 
-  const faltan = Math.ceil((cuando - Date.now()) / 86400000);
+  // Contamos días de calendario, no bloques de 24 horas.
+  // Si no, "en 3 horas" podía decir "mañana".
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const dia = new Date(cuando); dia.setHours(0,0,0,0);
+  const faltan = Math.round((dia.getTime() - hoy.getTime()) / 86400000);
+
   return {
     libre: Date.now() >= cuando,
     dias: Math.max(0, faltan),
+    horas: Math.max(0, Math.ceil((cuando - Date.now()) / 3600000)),
     fecha: new Date(cuando)
   };
+}
+
+// ¿Esta clase se puede ver sin comprar el curso?
+function esDeRegalo(clase, modulos) {
+  if (clase && clase.gratis) return true;
+  const m = (modulos || []).find(x => x.id === clase.modulo_id);
+  return !!(m && m.gratis);
 }
 
 function textoEspera(info) {
   if (info.libre) return '';
   if (info.sinInscripcion) return 'Anotate para desbloquearla';
-  if (info.dias <= 0) return 'Se libera hoy';
-  if (info.dias === 1) return 'Se libera mañana';
+
   if (info.fecha) {
-    return 'Se libera el ' + info.fecha.toLocaleDateString('es-PY', { day: 'numeric', month: 'long' });
+    const f = info.fecha;
+    const hora = f.toLocaleTimeString('es-PY', { hour: '2-digit', minute: '2-digit' });
+    const tieneHora = (f.getHours() !== 0 || f.getMinutes() !== 0);
+
+    if (info.dias <= 0) {
+      if (info.horas && info.horas <= 6) {
+        return info.horas === 1 ? 'Se abre en 1 hora' : 'Se abre en ' + info.horas + ' horas';
+      }
+      return tieneHora ? 'Se abre hoy a las ' + hora : 'Se abre hoy';
+    }
+    if (info.dias === 1) return tieneHora ? 'Se abre mañana a las ' + hora : 'Se abre mañana';
+
+    return 'Se abre el ' + f.toLocaleDateString('es-PY', { day: 'numeric', month: 'long' }) +
+           (tieneHora ? ' a las ' + hora : '');
   }
-  return 'Se libera en ' + info.dias + ' días';
+
+  if (info.dias <= 0) return 'Se abre hoy';
+  if (info.dias === 1) return 'Se abre mañana';
+  return 'Se abre en ' + info.dias + ' días';
 }
 
-
-// ═══════════════════════════════════════════════════════════
-// EMAIL DE BIENVENIDA AL INSCRIBIRSE
-// Se llama después de crear el registro de inscripción.
-// Si falla, no pasa nada: la persona ya tiene su acceso.
-// ═══════════════════════════════════════════════════════════
-
-const CANDIDATAS_AVISOS_JS = [
-  'AVISAR-CLASES', 'avisar-clases', 'avisar-clases-liberadas',
-  'quiet-api', 'quiet-worker', 'quiet-endpoint'
-];
-
-async function darBienvenida(cursoId, usuarioId) {
-  if (!sb || !cursoId || !usuarioId) return;
-
-  try {
-    const { data: { session } } = await sb.auth.getSession();
-    const cab = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + (session?.access_token || SUPABASE_ANON_KEY),
-      'apikey': SUPABASE_ANON_KEY
+// El precio que le corresponde a esta persona
+function precioParaVos(curso, esPremium) {
+  if (esPremium && curso.precio_premium_gs) {
+    return {
+      precio: curso.precio_premium_gs,
+      normal: curso.precio_gs,
+      conDescuento: true
     };
-
-    // El nombre de la función lo tenemos guardado
-    let guardada = null;
-    try {
-      const { data } = await sb.from('ajustes').select('valor').eq('clave', 'func_avisos_clases').maybeSingle();
-      if (data && data.valor) guardada = data.valor.trim();
-    } catch (e) {}
-
-    const lista = guardada
-      ? [guardada, ...CANDIDATAS_AVISOS_JS.filter(x => x !== guardada)]
-      : CANDIDATAS_AVISOS_JS;
-
-    for (const nombre of lista) {
-      try {
-        const r = await fetch(SUPABASE_URL + '/functions/v1/' + nombre, {
-          method: 'POST',
-          headers: cab,
-          body: JSON.stringify({ accion: 'bienvenida', curso_id: cursoId, usuario_id: usuarioId })
-        });
-        if (r.status === 404) continue;
-        return;
-      } catch (e) {}
-    }
-  } catch (e) {
-    // Nunca frenamos la inscripción por un problema de email
   }
+  return { precio: curso.precio_gs, normal: null, conDescuento: false };
 }
