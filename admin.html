@@ -1077,6 +1077,9 @@
 
   .aviso-borradores{padding:12px 15px;background:rgba(255,159,64,0.1);border:0.5px solid rgba(255,159,64,0.4);border-radius:11px;font-size:12.5px;color:#FFC48A;margin-bottom:16px;line-height:1.5}
 
+
+  .contenido-btn:disabled{opacity:0.45;cursor:not-allowed}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -4015,15 +4018,23 @@ body{visibility:hidden}
     const zona = document.getElementById('contenidoZona');
     const resumen = document.getElementById('contenidoResumen');
     if(id){
+      // Se muestra recién cuando el curso ya existe
+      zona.style.display = '';
       const cur = cursos.find(x => x.id === id);
       const nm = cur?.modulos_count || 0;
       const nc = cur?.clases_count || 0;
       resumen.textContent = (nm || nc)
-        ? nm + ' módulo' + (nm === 1 ? '' : 's') + ' · ' + nc + ' clase' + (nc === 1 ? '' : 's')
+        ? [nm ? nm + ' módulo' + (nm === 1 ? '' : 's') : '',
+           nc ? nc + ' clase' + (nc === 1 ? '' : 's') : ''].filter(Boolean).join(' · ')
         : 'Todavía sin módulos ni clases';
     } else {
-      zona.style.display = 'none';
+      // Curso nuevo: todavía no se puede cargar contenido
+      zona.style.display = '';
+      resumen.innerHTML = '<span style="color:#FAC775">Guardá el curso primero y después vas a poder cargar módulos y clases.</span>';
+      document.querySelector('#contenidoZona .contenido-btn').disabled = true;
     }
+
+    if(id) document.querySelector('#contenidoZona .contenido-btn').disabled = false;
 
     pintarAnuncioCurso(id || null);
     document.getElementById('cursoModal').classList.add('show');
@@ -5495,7 +5506,15 @@ body{visibility:hidden}
     const btn = document.getElementById('btnAnunciarCurso');
     if(!zona) return;
 
-    if(!cursoId){ zona.style.display = 'none'; return; }
+    if(!cursoId){
+      // Curso nuevo: se puede anunciar recién cuando exista y esté publicado
+      zona.style.display = 'flex';
+      zona.className = 'anuncio-zona';
+      sub.textContent = 'Vas a poder anunciarlo cuando guardes y publiques el curso';
+      btn.disabled = true;
+      btn.textContent = '📢 ANUNCIAR';
+      return;
+    }
     zona.style.display = 'flex';
     zona.className = 'anuncio-zona';
 
