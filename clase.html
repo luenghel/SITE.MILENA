@@ -1,39 +1,4 @@
-<!DOC
-<!-- ═══ OPINIÓN SOBRE LA CLASE ═══ -->
-<div class="op-caja" id="opinionCaja" style="display:none">
-  <div class="op-tit">¿Cómo te resultó esta clase?</div>
-  <div class="op-sub">Nos ayuda a mejorar lo que grabamos. Nadie más ve tu respuesta.</div>
-  <div class="op-chips" id="opChips"></div>
-  <textarea class="op-texto" id="opComentario" placeholder="¿Querés contarnos algo más? (opcional)"></textarea>
-  <div class="op-pie">
-    <button class="cta-gold op-btn" onclick="guardarOpinion()" id="btnOpinion">ENVIAR</button>
-    <span class="op-estado" id="opEstado"></span>
-  </div>
-</div>
-
-<!-- ═══ COMENTARIOS ═══ -->
-<div class="com-zona" id="comentariosZona">
-  <div class="com-cab">
-    <h3 class="com-tit">Comentarios</h3>
-    <span class="com-cuenta" id="comCuenta"></span>
-  </div>
-
-  <div class="com-nuevo">
-    <textarea class="com-input" id="comTexto" placeholder="Escribí tu comentario o pregunta..."></textarea>
-    <div class="com-nuevo-pie">
-      <label class="com-check" onclick="this.classList.toggle('on')" id="comEsPregunta">
-        <span class="com-check-box">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="3.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </span>
-        Es una pregunta
-      </label>
-      <button class="cta-gold com-btn" onclick="publicarComentario()" id="btnComentar">PUBLICAR</button>
-    </div>
-  </div>
-
-  <div id="comLista"></div>
-</div>
-TYPE html>
+<!DOCTYPE html>
 <html lang="es-PY">
 <head>
 <meta charset="UTF-8">
@@ -245,7 +210,8 @@ body{visibility:hidden}
           <div id="listaMateriales"></div>
         </div>
 
-        <div class="clase-acciones">
+        
+<div class="clase-acciones">
           <button class="btn-completar" id="btnCompletar" onclick="alternarCompletada()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             <span id="btnCompletarTxt">MARCAR COMO VISTA</span>
@@ -259,6 +225,42 @@ body{visibility:hidden}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
           </button>
         </div>
+
+<!-- ═══ OPINIÓN SOBRE LA CLASE ═══ -->
+<div class="op-caja" id="opinionCaja" style="display:none">
+  <div class="op-tit">¿Cómo te resultó esta clase?</div>
+  <div class="op-sub">Nos ayuda a mejorar lo que grabamos. Nadie más ve tu respuesta.</div>
+  <div class="op-chips" id="opChips"></div>
+  <textarea class="op-texto" id="opComentario" placeholder="¿Querés contarnos algo más? (opcional)"></textarea>
+  <div class="op-pie">
+    <button class="cta-gold op-btn" onclick="guardarOpinion()" id="btnOpinion">ENVIAR</button>
+    <span class="op-estado" id="opEstado"></span>
+  </div>
+</div>
+
+<!-- ═══ COMENTARIOS ═══ -->
+<div class="com-zona" id="comentariosZona">
+  <div class="com-cab">
+    <h3 class="com-tit">Comentarios</h3>
+    <span class="com-cuenta" id="comCuenta"></span>
+  </div>
+
+  <div class="com-nuevo">
+    <textarea class="com-input" id="comTexto" placeholder="Escribí tu comentario o pregunta..."></textarea>
+    <div class="com-nuevo-pie">
+      <label class="com-check" onclick="this.classList.toggle('on')" id="comEsPregunta">
+        <span class="com-check-box">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="3.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+        Es una pregunta
+      </label>
+      <button class="cta-gold com-btn" onclick="publicarComentario()" id="btnComentar">PUBLICAR</button>
+    </div>
+  </div>
+
+  <div id="comLista"></div>
+</div>
+
       </div>
     </div>
 
@@ -459,6 +461,10 @@ async function abrirClase(id, empujarHistorial){
   }
 
   verPantalla('contenido');
+
+  // Los comentarios y la opinión de esta clase
+  cargarComentarios(cl.id);
+  cargarOpinion(cl.id);
 
   const mod = modulos.find(m => m.id === cl.modulo_id);
   document.getElementById('claseMeta').innerHTML =

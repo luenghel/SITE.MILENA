@@ -4389,40 +4389,6 @@ body{visibility:hidden}
   // ============================
   // El modal antiguo de secciones apunta al sistema nuevo
   function abrirSecciones(){ cambiarTab('secciones'); }
-  function cerrarSecciones(){
-    const m = document.getElementById('seccionesModal');
-    if(m) m.classList.remove('show');
-  }
-  function nuevaSeccion(){ abrirSeccion(); }
-  function cancelarSeccion(){ cerrarSeccion(); }
-
-
-  let secciones = [];
-
-  async function cargarSecciones(){
-    if(!sb) return;
-    const { data, error } = await sb.from('secciones').select('*').order('orden', { ascending: true });
-
-    if(error){
-      const cont = document.getElementById('seccionesLista');
-      if(cont){
-        cont.innerHTML = '<div style="padding:40px;text-align:center;color:#FF8090">' +
-          (String(error.message).includes('does not exist')
-            ? 'Falta crear la tabla. Corré SQL-SECCIONES.sql en Supabase.'
-            : esc(error.message)) + '</div>';
-      }
-      // Igual dejamos el selector usable
-      llenarSelectorSecciones();
-      return;
-    }
-
-    secciones = data || [];
-    const el = document.getElementById('seccionesCount');
-    if(el) el.textContent = secciones.filter(s => s.activa).length;
-
-    renderSecciones();
-    llenarSelectorSecciones();
-  }
 
   // El selector del curso se llena con las filas que existan
   function llenarSelectorSecciones(){
@@ -5824,29 +5790,6 @@ body{visibility:hidden}
     abrirAnuncioModal('clase_nueva', id, document.getElementById('claseTitulo').value.trim());
   }
 
-  async function _viejoAnunciarClase(){
-    const id = document.getElementById('claseId').value;
-    const titulo = document.getElementById('claseTitulo').value.trim();
-
-    const btn = document.getElementById('btnAnunciarClase');
-    btn.disabled = true;
-    btn.textContent = 'ENVIANDO...';
-
-    const r = await llamarAvisos({ accion: 'clase_nueva', clase_id: id });
-
-    if(r.noEncontrada){
-      btn.disabled = false; btn.textContent = '📧 AVISAR';
-      return mostrarToast('No encontré la función. Configurala en Newsletter → ⚙️ Funciones.', true);
-    }
-    if(!r.ok || !r.datos.exito){
-      btn.disabled = false; btn.textContent = '📧 AVISAR';
-      return mostrarToast(r.datos.error || 'No se pudo enviar', true);
-    }
-
-    mostrarToast('✓ Avisamos a ' + r.datos.enviados + ' alumna(s)');
-    await cargarAnuncios();
-    pintarAnuncioClase(id);
-  }
 
   function anunciarCursoNuevo(){
     const id = document.getElementById('cursoId').value;
@@ -5854,29 +5797,6 @@ body{visibility:hidden}
     abrirAnuncioModal('curso_nuevo', id, document.getElementById('cursoTitulo').value.trim());
   }
 
-  async function _viejoAnunciarCurso(){
-    const id = document.getElementById('cursoId').value;
-    const titulo = document.getElementById('cursoTitulo').value.trim();
-
-    const btn = document.getElementById('btnAnunciarCurso');
-    btn.disabled = true;
-    btn.textContent = 'ENVIANDO...';
-
-    const r = await llamarAvisos({ accion: 'curso_nuevo', curso_id: id });
-
-    if(r.noEncontrada){
-      btn.disabled = false; btn.textContent = '📢 ANUNCIAR';
-      return mostrarToast('No encontré la función. Configurala en Newsletter → ⚙️ Funciones.', true);
-    }
-    if(!r.ok || !r.datos.exito){
-      btn.disabled = false; btn.textContent = '📢 ANUNCIAR';
-      return mostrarToast(r.datos.error || 'No se pudo enviar', true);
-    }
-
-    mostrarToast('✓ Anunciado a ' + r.datos.enviados + ' persona(s)');
-    await cargarAnuncios();
-    pintarAnuncioCurso(id);
-  }
 
   // ============================
   // CONTENIDO DEL CURSO (módulos y clases)
