@@ -5725,7 +5725,12 @@ body{visibility:hidden}
     if(!cont) return;
 
     const modsBorrador = (modulos || []).filter(m => m.publicado === false).length;
-    const clasBorrador = (clases || []).filter(c => c.publicado === false).length;
+
+    // Las clases están agrupadas por módulo, no en una lista suelta
+    let clasBorrador = 0;
+    Object.values(clasesPorModulo || {}).forEach(lista => {
+      clasBorrador += (lista || []).filter(x => x.publicado === false).length;
+    });
 
     if(modsBorrador === 0 && clasBorrador === 0){
       cont.style.display = 'none';
