@@ -55,6 +55,12 @@ Deno.serve(async (req) => {
     if (!email) return responder({ error: 'Falta el email' }, 400)
     if (!nombre) return responder({ error: 'Falta el nombre' }, 400)
 
+    // Pagopar exige la cédula, solo números y de 5 a 24 dígitos
+    const doc = String(documento || '').replace(/[^0-9]/g, '')
+    if (doc.length < 5) {
+      return responder({ error: 'Necesitamos tu número de cédula (al menos 5 dígitos) para procesar el pago.' }, 400)
+    }
+
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
@@ -89,7 +95,16 @@ Deno.serve(async (req) => {
     }
 
     // ─── El pedido ───
-    // El monto va como texto, y el token se firma con ese mismo texto
+    // Pagopar exige entre Gs 1.000 y Gs 50.000.000
+    if (monto < 1000) {
+      return responder({ error: 'Pagopar no acepta cobros menores a Gs 1.000. Este curso cuesta Gs ' + monto + '.' }, 400)
+    }
+    if (monto > 50000000) {
+      return responder({ error: 'Pagopar no acepta cobros mayores a Gs 50.000.000.' }, 400)
+    }
+
+    // El token se firma con el monto en texto, pero el campo va como número.
+    // En PHP es strval(floatval(monto)): 5000 → "5000"
     const montoStr = String(monto)
     const idPedido = 'CMM-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7)
     const token = await sha1(PRIVATE_KEY + idPedido + montoStr)
@@ -101,19 +116,28 @@ Deno.serve(async (req) => {
     const pedido = {
       token: token,
       public_key: PUBLIC_KEY,
-      monto_total: montoStr,
+      monto_total: monto,
       tipo_pedido: 'VENTA-COMERCIO',
       fecha_maxima_pago: venceStr,
       id_pedido_comercio: idPedido,
       descripcion_resumen: String(curso.titulo).slice(0, 100),
+      // La documentación pide que este campo exista, aunque sea vacío
+      descripcion: String(curso.descripcion || curso.titulo).slice(0, 200),
       comprador: {
         ruc: '',
         email: String(email).trim(),
         ciudad: '1',
         nombre: String(nombre).trim(),
-        telefono: String(telefono || '').trim(),
+        telefono: (() => {
+          const t = String(telefono || '').replace(/[^0-9]/g, '')
+          if (!t) return ''
+          if (t.startsWith('595')) return '+' + t
+          if (t.startsWith('0')) return '+595' + t.slice(1)
+          return '+595' + t
+        })(),
         direccion: 'Paraguay',
-        documento: String(documento || '').trim(),
+        // Pagopar solo acepta números, entre 5 y 24 caracteres
+        documento: String(documento || '').replace(/[^0-9]/g, '').slice(0, 24),
         coordenadas: '',
         razon_social: String(nombre).trim(),
         tipo_documento: 'CI',

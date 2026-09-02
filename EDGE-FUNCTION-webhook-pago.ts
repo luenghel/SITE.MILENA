@@ -86,6 +86,11 @@ Deno.serve(async (req) => {
     const tokenRecibido = r.token
     const pagado = (r.pagado === true || r.pagado === 'true' || r.pagado === 1)
 
+    // Ojo: "pagado: false" NO quiere decir cancelado.
+    // Puede ser un pedido confirmado esperando el pago en una boca de cobranza.
+    // Solo se cancela si Pagopar lo dice con "cancelado: true".
+    const cancelado = (r.cancelado === true || r.cancelado === 'true' || r.cancelado === 1)
+
     if (!hashPedido) {
       console.error('[webhook] no vino el hash del pedido')
       return responder({ error: 'Falta el hash del pedido' }, 400)
@@ -141,12 +146,20 @@ Deno.serve(async (req) => {
           console.error('[webhook] la compra no tiene usuario o curso: no mandamos la bienvenida')
         }
       }
+    } else if (cancelado) {
+      // Cancelado de verdad
+      await supabase.from('compras').update({ estado: 'cancelado' }).eq('id', compra.id)
+      console.log('[webhook] compra cancelada:', compra.id)
+
+    } else if (compra.estado === 'pagado') {
+      // Estaba pagada y ahora dice que no: es una reversión
+      await supabase.from('compras').update({ estado: 'reversado' }).eq('id', compra.id)
+      console.log('[webhook] pago reversado:', compra.id)
+
     } else {
-      // Solo cancelamos si seguía pendiente
-      if (compra.estado === 'pendiente') {
-        await supabase.from('compras').update({ estado: 'cancelado' }).eq('id', compra.id)
-        console.log('[webhook] compra cancelada:', compra.id)
-      }
+      // Sigue pendiente: eligió pagar en una boca de cobranza y todavía no fue.
+      // No tocamos nada.
+      console.log('[webhook] pedido confirmado, esperando el pago:', compra.id)
     }
 
     // ─── Pagopar espera que le devolvamos su propio JSON ───

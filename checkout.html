@@ -286,6 +286,14 @@
         return mostrarError('Iniciá sesión antes de comprar, así podemos darte el acceso.');
       }
 
+      // Pagopar exige la cédula: solo números, al menos 5 dígitos
+      const docLimpio = String(documento || '').replace(/[^0-9]/g, '');
+      if (docLimpio.length < 5) {
+        btn.disabled = false;
+        btnText.textContent = 'IR A PAGAR';
+        return mostrarError('Necesitamos tu número de cédula para procesar el pago.');
+      }
+
       const resp = await fetch('https://pdwooahpyustbqlrvlxz.supabase.co/functions/v1/rapid-endpoint', {
         method: 'POST',
         headers: {

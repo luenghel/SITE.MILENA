@@ -11,6 +11,28 @@ create index if not exists compras_pagopar_pedido
 create index if not exists compras_pagopar_id
   on public.compras (pagopar_id);
 
+
+-- ─── Estados posibles de una compra ────────────────────────────────
+-- pendiente · pagado · cancelado · reversado
+-- Si tenías una restricción que no incluye "reversado", la ampliamos
+do $$
+begin
+  if exists (
+    select 1 from pg_constraint
+    where conname like '%compras%estado%' and contype = 'c'
+  ) then
+    execute (
+      select 'alter table public.compras drop constraint ' || conname
+      from pg_constraint
+      where conname like '%compras%estado%' and contype = 'c' limit 1
+    );
+  end if;
+end $$;
+
+alter table public.compras
+  add constraint compras_estado_valido
+  check (estado in ('pendiente','pagado','cancelado','reversado'));
+
 -- ─── VERIFICACIÓN ──────────────────────────────────────────────────
 select column_name
 from information_schema.columns

@@ -35,7 +35,8 @@ insert into public.ajustes (clave, valor) values
   ('func_admin',          'clever-processor'),
   ('func_newsletter',     'bright-api'),
   ('func_avisos_clases',  'AVISAR-CLASES'),
-  ('func_consultar_pago', 'consultar-pago')
+  ('func_consultar_pago', 'consultar-pago'),
+  ('func_diagnostico',    'diagnostico-pagopar')
 on conflict (clave) do update set valor = excluded.valor, actualizado_en = now();
 
 -- ─── VERIFICACIÓN ──────────────────────────────────────────────────

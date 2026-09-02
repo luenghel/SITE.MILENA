@@ -1080,6 +1080,22 @@
 
   .contenido-btn:disabled{opacity:0.45;cursor:not-allowed}
 
+
+  .pg-caja{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:14px;padding:18px 20px;margin-bottom:24px}
+  .pg-cab{display:flex;align-items:flex-start;gap:14px;justify-content:space-between;flex-wrap:wrap}
+  .pg-tit{font-size:13.5px;font-weight:500}
+  .pg-sub{font-size:12px;color:rgba(255,245,240,0.6);margin-top:3px;line-height:1.5}
+  .pg-resultado{margin-top:16px;padding-top:16px;border-top:0.5px solid rgba(255,245,240,0.08)}
+  .pg-conclusion{font-size:14px;font-weight:500;margin-bottom:6px;line-height:1.4}
+  .pg-conclusion.ok{color:#9FE1CB}
+  .pg-conclusion.mal{color:#FF8090}
+  .pg-conclusion.aviso{color:#FAC775}
+  .pg-quehacer{font-size:12.5px;color:rgba(255,245,240,0.7);line-height:1.55;margin-bottom:14px}
+  .pg-fila{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:0.5px solid rgba(255,245,240,0.06);font-size:12px}
+  .pg-fila-nom{flex:1;min-width:140px;color:rgba(255,245,240,0.75)}
+  .pg-fila-val{color:rgba(255,245,240,0.55);text-align:right;max-width:60%;word-break:break-word}
+  .pg-lista{margin-top:12px;padding:12px 14px;background:rgba(93,202,165,0.08);border:0.5px solid rgba(93,202,165,0.3);border-radius:10px;font-size:12px;color:rgba(255,245,240,0.75);line-height:1.7}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -2471,6 +2487,17 @@ body{visibility:hidden}
   <!-- TAB: VENTAS -->
   <!-- ============================ -->
   <div class="tab-content" id="content-ventas">
+    <div class="pg-caja">
+      <div class="pg-cab">
+        <div style="flex:1;min-width:200px">
+          <div class="pg-tit">💳 Estado de Pagopar</div>
+          <div class="pg-sub" id="pgResumen">Probá si las claves y el comercio están funcionando.</div>
+        </div>
+        <button class="btn-secondary" onclick="revisarPagopar()" id="btnPagopar">REVISAR</button>
+      </div>
+      <div id="pgDetalle"></div>
+    </div>
+
     <div class="header-bar">
       <div>
         <div class="header-meta">HISTORIAL</div>
@@ -4411,6 +4438,97 @@ body{visibility:hidden}
     cerrarSeccion();
     await cargarSecciones();
     await cargarCursos();
+  }
+
+  // ─── Diagnóstico de Pagopar ───
+  const CANDIDATAS_DIAG = [
+    'diagnostico-pagopar', 'DIAGNOSTICO-PAGOPAR', 'diagnostico',
+    'rapid-diag', 'rapid-check'
+  ];
+
+  async function revisarPagopar(){
+    const btn = document.getElementById('btnPagopar');
+    const det = document.getElementById('pgDetalle');
+    btn.disabled = true;
+    btn.textContent = 'REVISANDO...';
+    det.innerHTML = '';
+
+    const { data: { session } } = await sb.auth.getSession();
+    const cab = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + (session?.access_token || SUPABASE_ANON_KEY),
+      'apikey': SUPABASE_ANON_KEY
+    };
+
+    let guardada = null;
+    try {
+      const { data } = await sb.from('ajustes').select('valor').eq('clave','func_diagnostico').maybeSingle();
+      if(data && data.valor) guardada = data.valor.trim();
+    } catch(e){}
+
+    const lista = guardada ? [guardada, ...CANDIDATAS_DIAG.filter(x => x !== guardada)] : CANDIDATAS_DIAG;
+
+    let r = null;
+    for(const nombre of lista){
+      try {
+        const resp = await fetch(SUPABASE_URL + '/functions/v1/' + nombre, {
+          method:'POST', headers: cab, body: JSON.stringify({})
+        });
+        if(resp.status === 404) continue;
+        r = await resp.json().catch(() => null);
+        break;
+      } catch(e){}
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'REVISAR';
+
+    if(!r){
+      det.innerHTML = '<div class="pg-resultado"><div class="pg-conclusion mal">' +
+        'No encontré la función de diagnóstico</div>' +
+        '<div class="pg-quehacer">Creala en Supabase con el archivo EDGE-FUNCTION-diagnostico-pagopar.ts ' +
+        'y anotá su nombre en Newsletter → ⚙️ Funciones.</div></div>';
+      return;
+    }
+
+    const clase = r.conclusion?.startsWith('✅') ? 'ok'
+                : r.conclusion?.startsWith('❌') ? 'mal' : 'aviso';
+
+    let html = '<div class="pg-resultado">' +
+      '<div class="pg-conclusion ' + clase + '">' + esc(r.conclusion || '') + '</div>' +
+      '<div class="pg-quehacer">' + esc(r.que_hacer || r.detalle || '') + '</div>';
+
+    // Las formas de pago habilitadas
+    if(r.formas_de_pago && r.formas_de_pago.length){
+      html += '<div class="pg-lista"><strong>Formas de pago habilitadas:</strong><br>' +
+        r.formas_de_pago.map(f => '· ' + esc(f)).join('<br>') + '</div>';
+    }
+
+    // Las claves
+    if(r.claves){
+      html += '<div style="margin-top:14px;font-size:11px;letter-spacing:0.12em;color:rgba(255,245,240,0.45)">LAS CLAVES</div>';
+      html += '<div class="pg-fila"><div class="pg-fila-nom">Pública (termina en)</div>' +
+        '<div class="pg-fila-val">…' + esc(r.claves.publica_termina_en) + ' · ' + r.claves.publica_largo + ' caracteres</div></div>';
+      html += '<div class="pg-fila"><div class="pg-fila-nom">Privada</div>' +
+        '<div class="pg-fila-val">' + r.claves.privada_largo + ' caracteres</div></div>';
+      if(!r.claves.publica_limpia || !r.claves.privada_limpia){
+        html += '<div class="pg-fila"><div class="pg-fila-nom" style="color:#FF8090">⚠️ Espacios sobrantes</div>' +
+          '<div class="pg-fila-val">Volvé a copiar las claves sin espacios</div></div>';
+      }
+    }
+
+    // Cada prueba
+    if(r.pruebas){
+      html += '<div style="margin-top:14px;font-size:11px;letter-spacing:0.12em;color:rgba(255,245,240,0.45)">LAS PRUEBAS</div>';
+      r.pruebas.forEach(p => {
+        html += '<div class="pg-fila">' +
+          '<div class="pg-fila-nom">' + (p.ok ? '✅ ' : '❌ ') + esc(p.prueba) + '</div>' +
+          '<div class="pg-fila-val">' + esc(String(p.respuesta).slice(0, 150)) + '</div></div>';
+      });
+    }
+
+    html += '</div>';
+    det.innerHTML = html;
   }
 
   // ============================
