@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tu acceso · Milena Machado</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1A0A12">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body{display:flex;min-height:100vh;align-items:center;justify-content:center;padding:40px 20px}
+  .glow-1{position:fixed;width:480px;height:480px;left:-160px;top:-140px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.22),transparent 65%);pointer-events:none}
+  .glow-2{position:fixed;width:340px;height:340px;right:-90px;bottom:-90px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.35),transparent 65%);pointer-events:none}
+
+  .caja{position:relative;z-index:1;width:100%;max-width:460px}
+
+  .logo-row{display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:28px}
+  .logo-mark{width:46px;height:46px;border:0.5px solid rgba(255,245,240,0.55);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-size:23px;font-weight:500}
+  .logo-words{font-size:14px;line-height:1.15;letter-spacing:0.16em;font-weight:500}
+
+  .panel{background:linear-gradient(180deg,rgba(45,10,24,0.72),rgba(26,5,9,0.72));border:0.5px solid rgba(212,163,86,0.35);border-radius:20px;padding:34px 30px;backdrop-filter:blur(16px)}
+
+  .regalo{width:74px;height:74px;border-radius:21px;background:linear-gradient(135deg,rgba(212,163,86,0.24),rgba(212,163,86,0.07));border:0.5px solid rgba(212,163,86,0.45);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 20px}
+
+  .titulo{font-family:Georgia,serif;font-size:27px;font-weight:500;text-align:center;margin:0 0 10px;line-height:1.2}
+  .titulo .it{font-style:italic;background:linear-gradient(135deg,#EFB85C,#DDA63F);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .bajada{font-size:14.5px;color:rgba(255,245,240,0.72);text-align:center;line-height:1.6;margin:0 0 24px}
+
+  .mensaje{background:rgba(255,245,240,0.05);border-left:3px solid #FAC775;border-radius:9px;padding:14px 16px;font-size:14px;line-height:1.6;color:rgba(255,245,240,0.85);margin-bottom:22px;white-space:pre-wrap}
+
+  .regalos{background:rgba(255,245,240,0.04);border-radius:12px;padding:16px;margin-bottom:24px}
+  .regalos-tit{font-size:10px;letter-spacing:0.16em;color:rgba(255,245,240,0.45);margin-bottom:11px}
+  .regalo-item{display:flex;align-items:center;gap:10px;font-size:14px;color:rgba(255,245,240,0.88);padding:6px 0}
+  .regalo-ico{width:26px;height:26px;border-radius:8px;background:rgba(212,163,86,0.16);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+
+  .campo{margin-bottom:16px}
+  .etiqueta{font-size:10px;letter-spacing:0.16em;color:rgba(255,245,240,0.5);font-weight:600;margin-bottom:7px;display:block}
+  .entrada{width:100%;padding:14px 16px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.15);border-radius:11px;color:#FFF5F0;font-size:14.5px;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color 0.2s}
+  .entrada:focus{border-color:rgba(212,163,86,0.5)}
+  .entrada:disabled{opacity:0.6}
+  .ayuda{font-size:11.5px;color:rgba(255,245,240,0.45);margin-top:6px;line-height:1.45}
+
+  .boton{width:100%;padding:17px;border-radius:12px;font-size:12.5px;font-weight:600;letter-spacing:0.14em;border:none;cursor:pointer;font-family:inherit;margin-top:6px}
+  .boton:disabled{opacity:0.6;cursor:not-allowed}
+
+  .aviso{padding:13px 15px;border-radius:10px;font-size:13px;line-height:1.5;margin-bottom:18px;display:none}
+  .aviso.show{display:block}
+  .aviso.error{background:rgba(255,59,71,0.1);border:0.5px solid rgba(255,59,71,0.4);color:#FF8090}
+  .aviso.ok{background:rgba(93,202,165,0.1);border:0.5px solid rgba(93,202,165,0.4);color:#9FE1CB}
+
+  .cargando{text-align:center;padding:40px 20px;color:rgba(255,245,240,0.55);font-size:14px}
+</style>
+</head>
+<body>
+
+<div class="glow-1"></div>
+<div class="glow-2"></div>
+
+<div class="caja">
+  <div class="logo-row">
+    <div class="logo-mark">M</div>
+    <div class="logo-words">MILENA<br>MACHADO</div>
+  </div>
+
+  <div class="panel">
+    <div class="cargando" id="cargando">Buscando tu invitación...</div>
+
+    <div id="contenido" style="display:none">
+      <div class="regalo">🎁</div>
+
+      <h1 class="titulo">Tenés un <span class="it">acceso</span> esperándote</h1>
+      <p class="bajada" id="bajada">Creá tu contraseña y entrá.</p>
+
+      <div class="mensaje" id="mensaje" style="display:none"></div>
+
+      <div class="regalos" id="regalos" style="display:none">
+        <div class="regalos-tit">QUÉ INCLUYE</div>
+        <div id="regalosLista"></div>
+      </div>
+
+      <div class="aviso" id="aviso"></div>
+
+      <div class="campo">
+        <label class="etiqueta">TU EMAIL</label>
+        <input class="entrada" id="campoEmail" disabled>
+      </div>
+
+      <div class="campo" id="campoNombre">
+        <label class="etiqueta">TU NOMBRE</label>
+        <input class="entrada" id="entradaNombre" placeholder="Como querés que te llamemos">
+      </div>
+
+      <div class="campo" id="campoPass">
+        <label class="etiqueta">CREÁ TU CONTRASEÑA</label>
+        <input class="entrada" id="entradaPass" type="password" placeholder="Al menos 8 caracteres">
+        <div id="medidorPass"></div>
+      </div>
+
+      <button class="cta-gold boton" id="btnEntrar" onclick="aceptar()">CREAR MI CUENTA Y ENTRAR</button>
+    </div>
+
+    <div id="listo" style="display:none;text-align:center">
+      <div class="regalo" style="background:linear-gradient(135deg,rgba(93,202,165,0.22),rgba(93,202,165,0.07));border-color:rgba(93,202,165,0.45)">✓</div>
+      <h1 class="titulo">¡Todo <span class="it">listo</span>!</h1>
+      <p class="bajada" id="listoTexto"></p>
+      <a href="/cursos" class="cta-gold boton" style="display:block;text-decoration:none;text-align:center">IR A MIS CURSOS</a>
+    </div>
+  </div>
+</div>
+
+<script src="supabase-config.js"></script>
+<script src="password-fuerza.js"></script>
+<script>
+  const codigo = new URLSearchParams(window.location.search).get('c');
+  let invitacion = null;
+  let yaTieneCuenta = false;
+
+  function esc(t){
+    const d = document.createElement('div');
+    d.textContent = t || '';
+    return d.innerHTML;
+  }
+
+  function avisar(msg, tipo){
+    const el = document.getElementById('aviso');
+    if(!msg){ el.className = 'aviso'; return; }
+    el.className = 'aviso show ' + (tipo || 'error');
+    el.innerHTML = msg;
+  }
+
+  async function cargar(){
+    if(!codigo){
+      document.getElementById('cargando').innerHTML =
+        'Este enlace no es válido.<br><br><a href="/index" style="color:#FAC775">Ir al sitio</a>';
+      return;
+    }
+
+    const { data, error } = await sb.from('invitaciones')
+      .select('*').eq('codigo', codigo).maybeSingle();
+
+    if(error || !data){
+      document.getElementById('cargando').innerHTML =
+        'No encontramos esta invitación.<br><br><a href="/index" style="color:#FAC775">Ir al sitio</a>';
+      return;
+    }
+
+    invitacion = data;
+
+    if(data.usada){
+      document.getElementById('cargando').innerHTML =
+        'Esta invitación ya fue usada.<br><br><a href="/login" style="color:#FAC775">Iniciar sesión</a>';
+      return;
+    }
+
+    if(new Date(data.vence) < new Date()){
+      document.getElementById('cargando').innerHTML =
+        'Esta invitación venció.<br><br>Pedile una nueva a Milena.';
+      return;
+    }
+
+    // ¿Ya tiene cuenta?
+    const { data: perfil } = await sb.from('perfiles')
+      .select('id, nombre').ilike('email', data.email).maybeSingle();
+    yaTieneCuenta = !!perfil;
+
+    document.getElementById('campoEmail').value = data.email;
+    document.getElementById('entradaNombre').value = data.nombre || perfil?.nombre || '';
+
+    if(yaTieneCuenta){
+      document.getElementById('bajada').textContent =
+        'Ya tenés cuenta con este email. Entrá con tu contraseña de siempre para desbloquear el acceso.';
+      document.getElementById('campoNombre').style.display = 'none';
+      document.querySelector('#campoPass .etiqueta').textContent = 'TU CONTRASEÑA';
+      document.getElementById('entradaPass').placeholder = 'La que ya usás';
+      document.getElementById('btnEntrar').textContent = 'ENTRAR Y DESBLOQUEAR';
+    } else if(typeof crearMedidorPassword === 'function'){
+      crearMedidorPassword('entradaPass', 'medidorPass');
+    }
+
+    // El mensaje de Milena
+    if(data.mensaje){
+      const m = document.getElementById('mensaje');
+      m.textContent = data.mensaje;
+      m.style.display = '';
+    }
+
+    // Qué incluye
+    const items = [];
+    if(data.cursos && data.cursos.length){
+      const { data: cursos } = await sb.from('cursos')
+        .select('titulo').in('id', data.cursos);
+      (cursos || []).forEach(c => items.push({ ico:'🎓', txt: c.titulo }));
+    }
+    if(data.premium_meses > 0){
+      items.push({ ico:'⭐', txt: 'Comunidad Premium por ' + data.premium_meses +
+        (data.premium_meses === 1 ? ' mes' : ' meses') });
+    }
+
+    if(items.length){
+      document.getElementById('regalosLista').innerHTML = items.map(i =>
+        '<div class="regalo-item"><div class="regalo-ico">' + i.ico + '</div>' + esc(i.txt) + '</div>'
+      ).join('');
+      document.getElementById('regalos').style.display = '';
+    }
+
+    document.getElementById('cargando').style.display = 'none';
+    document.getElementById('contenido').style.display = '';
+  }
+
+  async function aceptar(){
+    const pass = document.getElementById('entradaPass').value;
+    const nombre = document.getElementById('entradaNombre').value.trim();
+
+    if(!pass) return avisar('Escribí tu contraseña');
+    if(!yaTieneCuenta && pass.length < 8) return avisar('La contraseña tiene que tener al menos 8 caracteres');
+    if(!yaTieneCuenta && !nombre) return avisar('Escribí tu nombre');
+
+    const btn = document.getElementById('btnEntrar');
+    btn.disabled = true;
+    btn.textContent = 'UN MOMENTO...';
+    avisar('');
+
+    let sesion = null;
+
+    if(yaTieneCuenta){
+      const { data, error } = await sb.auth.signInWithPassword({
+        email: invitacion.email, password: pass
+      });
+      if(error){
+        btn.disabled = false;
+        btn.textContent = 'ENTRAR Y DESBLOQUEAR';
+        return avisar('Esa contraseña no es correcta. <a href="/login" style="color:#FAC775">¿La olvidaste?</a>');
+      }
+      sesion = data;
+    } else {
+      const { data, error } = await sb.auth.signUp({
+        email: invitacion.email,
+        password: pass,
+        options: { data: { nombre: nombre } }
+      });
+
+      if(error){
+        btn.disabled = false;
+        btn.textContent = 'CREAR MI CUENTA Y ENTRAR';
+        return avisar('No pudimos crear tu cuenta: ' + error.message);
+      }
+
+      // Si pide confirmar el email, no hay sesión todavía
+      if(!data.session){
+        const { error: e2 } = await sb.auth.signInWithPassword({
+          email: invitacion.email, password: pass
+        });
+        if(e2){
+          btn.disabled = false;
+          return avisar('Tu cuenta se creó. Revisá tu correo para confirmarla y después ' +
+            '<a href="/invitacion?c=' + codigo + '" style="color:#FAC775">volvé a este enlace</a>.', 'ok');
+        }
+      }
+      sesion = data;
+
+      // Su nombre en el perfil
+      const { data: { user } } = await sb.auth.getUser();
+      if(user) await sb.from('perfiles').update({ nombre: nombre }).eq('id', user.id);
+    }
+
+    // Canjear
+    const { data: res, error: errC } = await sb.rpc('canjear_invitacion', { p_codigo: codigo });
+
+    if(errC || !res?.exito){
+      btn.disabled = false;
+      btn.textContent = yaTieneCuenta ? 'ENTRAR Y DESBLOQUEAR' : 'CREAR MI CUENTA Y ENTRAR';
+      return avisar(res?.error || errC?.message || 'No pudimos activar tu acceso');
+    }
+
+    const partes = [];
+    if(res.cursos > 0) partes.push(res.cursos + (res.cursos === 1 ? ' curso' : ' cursos'));
+    if(res.premium_meses > 0) partes.push('la Comunidad Premium por ' + res.premium_meses +
+      (res.premium_meses === 1 ? ' mes' : ' meses'));
+
+    document.getElementById('listoTexto').textContent = partes.length
+      ? 'Ya tenés ' + partes.join(' y ') + '. Que lo disfrutes.'
+      : 'Tu acceso está activo.';
+
+    document.getElementById('contenido').style.display = 'none';
+    document.getElementById('listo').style.display = '';
+  }
+
+  const espera = setInterval(function(){
+    if(typeof sb === 'undefined' || sb === null) return;
+    clearInterval(espera);
+    cargar();
+  }, 50);
+</script>
+
+</body>
+</html>

@@ -1096,6 +1096,42 @@
   .pg-fila-val{color:rgba(255,245,240,0.55);text-align:right;max-width:60%;word-break:break-word}
   .pg-lista{margin-top:12px;padding:12px 14px;background:rgba(93,202,165,0.08);border:0.5px solid rgba(93,202,165,0.3);border-radius:10px;font-size:12px;color:rgba(255,245,240,0.75);line-height:1.7}
 
+
+  .acceso-atajos{display:flex;flex-wrap:wrap;gap:6px}
+  .acceso-chip{padding:7px 13px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);border-radius:16px;color:rgba(255,245,240,0.75);font-size:11.5px;cursor:pointer;font-family:inherit;transition:all 0.2s}
+  .acceso-chip:hover{background:rgba(212,163,86,0.16);border-color:rgba(212,163,86,0.4);color:#FAC775}
+  .acceso-chip.sel{background:rgba(212,163,86,0.2);border-color:#FAC775;color:#FAC775}
+
+
+  .acc-invitar{padding:14px 15px;background:rgba(212,163,86,0.07);border:0.5px solid rgba(212,163,86,0.3);border-radius:12px;margin-bottom:16px}
+  .inv-aviso{padding:13px 15px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.3);border-radius:11px;font-size:12.5px;color:rgba(255,245,240,0.75);line-height:1.55;margin-bottom:18px}
+  .inv-cursos{display:flex;flex-direction:column;gap:7px;max-height:220px;overflow-y:auto}
+  .inv-curso{display:flex;align-items:center;gap:11px;padding:11px 13px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:10px;cursor:pointer;transition:all 0.2s}
+  .inv-curso:hover{background:rgba(255,245,240,0.07)}
+  .inv-curso.sel{background:rgba(212,163,86,0.12);border-color:rgba(212,163,86,0.45)}
+  .inv-check{width:19px;height:19px;border-radius:5px;border:1.5px solid rgba(255,245,240,0.28);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .inv-curso.sel .inv-check{background:linear-gradient(135deg,#EFB85C,#DDA63F);border-color:#DDA63F}
+  .inv-check svg{opacity:0}
+  .inv-curso.sel .inv-check svg{opacity:1}
+  .inv-curso-nom{font-size:13px;font-weight:500}
+  .inv-curso-sub{font-size:11px;color:rgba(255,245,240,0.5);margin-top:1px}
+  .inv-estado{font-size:12.5px;line-height:1.5;padding:11px 13px;border-radius:9px;display:none}
+  .inv-estado.show{display:block}
+  .inv-estado.ok{background:rgba(93,202,165,0.1);border:0.5px solid rgba(93,202,165,0.4);color:#9FE1CB}
+  .inv-estado.error{background:rgba(255,59,71,0.1);border:0.5px solid rgba(255,59,71,0.4);color:#FF8090}
+
+
+  .revisar-caja{padding:15px 17px;background:rgba(212,163,86,0.07);border:0.5px solid rgba(212,163,86,0.3);border-radius:12px;margin-bottom:16px}
+  .revisar-tit{font-size:13px;font-weight:500;margin-bottom:4px}
+  .revisar-sub{font-size:11.5px;color:rgba(255,245,240,0.55);margin-bottom:12px;line-height:1.5}
+  .revisar-fila{display:flex;align-items:center;gap:11px;padding:9px 0;border-top:0.5px solid rgba(255,245,240,0.07);font-size:12.5px;flex-wrap:wrap}
+  .revisar-nom{flex:1;min-width:140px}
+  .revisar-barra{width:110px;height:6px;border-radius:3px;background:rgba(255,245,240,0.08);overflow:hidden;flex-shrink:0}
+  .revisar-barra span{display:block;height:100%;background:linear-gradient(90deg,#5DCAA5,#9FE1CB)}
+  .revisar-barra.baja span{background:linear-gradient(90deg,#FF8090,#FFC48A)}
+  .revisar-dato{font-size:11.5px;color:rgba(255,245,240,0.5);min-width:80px;text-align:right}
+  .op-detalle{font-size:11.5px;color:rgba(255,245,240,0.6);margin-top:4px;width:100%;line-height:1.5}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1830,6 +1866,33 @@ body{visibility:hidden}
           </div>
 
           <div class="form-field form-grid-full">
+            <label class="form-label">CUÁNTO DURA EL ACCESO</label>
+            <div class="lib-opciones">
+              <button type="button" class="lib-op" data-a="dias" onclick="elegirAcceso(this)">
+                <span class="lib-op-tit">⏳ Por un tiempo</span>
+                <span class="lib-op-sub">Después tiene que renovar</span>
+              </button>
+              <button type="button" class="lib-op" data-a="permanente" onclick="elegirAcceso(this)">
+                <span class="lib-op-tit">♾️ Para siempre</span>
+                <span class="lib-op-sub">Lo compra una vez y es suyo</span>
+              </button>
+            </div>
+
+            <div id="cajaDiasAcceso" style="margin-top:11px">
+              <label class="form-label">DÍAS DE ACCESO</label>
+              <div class="acceso-atajos">
+                <button type="button" class="acceso-chip" onclick="ponerDiasAcceso(90)">3 meses</button>
+                <button type="button" class="acceso-chip" onclick="ponerDiasAcceso(180)">6 meses</button>
+                <button type="button" class="acceso-chip" onclick="ponerDiasAcceso(365)">1 año</button>
+                <button type="button" class="acceso-chip" onclick="ponerDiasAcceso(730)">2 años</button>
+              </div>
+              <input type="number" class="form-input" id="cursoDiasAcceso" min="1" max="3650" placeholder="365" style="margin-top:8px" oninput="pintarAcceso()">
+              <div class="form-help" id="accesoEjemplo"></div>
+            </div>
+            <input type="hidden" id="cursoTipoAcceso" value="dias">
+          </div>
+
+          <div class="form-field form-grid-full">
             <label class="form-label">FECHA DE LANZAMIENTO</label>
             <input type="date" class="form-input" id="cursoLanzamiento">
             <div class="form-help">Se usa para los módulos configurados como "X días tras el lanzamiento"</div>
@@ -2458,6 +2521,16 @@ body{visibility:hidden}
       <button class="art-envio-btn" onclick="enviarAvisosClases()" id="btnAvisosClases">REVISAR Y AVISAR</button>
     </div>
 
+    <div class="avisos-caja">
+      <div style="flex:1;min-width:200px">
+        <div style="font-size:13.5px;font-weight:500;margin-bottom:3px">💬 Respuestas a comentarios</div>
+        <div style="font-size:12px;color:rgba(255,245,240,0.6);line-height:1.5" id="avisosRespTxt">
+          Avisa por email a quien recibió una respuesta en su comentario.
+        </div>
+      </div>
+      <button class="art-envio-btn" onclick="enviarAvisosRespuestas()" id="btnAvisosResp">REVISAR Y AVISAR</button>
+    </div>
+
     <h3 class="chart-title" style="margin-bottom:4px">Suscriptores</h3>
     <p class="chart-subtitle" style="margin-bottom:14px">Quiénes reciben tus artículos</p>
 
@@ -2775,6 +2848,16 @@ body{visibility:hidden}
         <div class="form-label" style="margin-bottom:9px">MENSAJE (opcional)</div>
         <textarea class="form-textarea" id="accMensaje" placeholder="Algo más que quieras explicarle. Va en el email." style="margin-bottom:16px"></textarea>
 
+        <div class="acc-invitar">
+          <div class="acc-ins-cab">
+            <div class="acc-ins-tit">📨 Enviar acceso por email</div>
+            <button type="button" class="acc-ins-revisar" onclick="abrirInvitacion(document.getElementById('accUsuarioId').value)">DAR ACCESO</button>
+          </div>
+          <div style="font-size:11.5px;color:rgba(255,245,240,0.55);line-height:1.5">
+            Le llega un correo con un enlace. Al entrar crea su contraseña y ya tiene todo desbloqueado.
+          </div>
+        </div>
+
         <div class="acc-insignias">
           <div class="acc-ins-cab">
             <div class="acc-ins-tit">🏅 Insignias de esta persona</div>
@@ -2824,6 +2907,7 @@ body{visibility:hidden}
 
       <div class="curso-modal-body">
         <div id="resumenBorradores" class="aviso-borradores" style="display:none"></div>
+        <div id="clasesParaRevisar" class="revisar-caja" style="display:none"></div>
         <div id="listaModulos"></div>
         <button class="btn-agregar" onclick="abrirModulo()">＋ Agregar un módulo</button>
       </div>
@@ -3759,6 +3843,70 @@ body{visibility:hidden}
     </div>
   </div>
 
+  <!-- MODAL: ENVIAR ACCESO -->
+  <div class="curso-modal-backdrop" id="invitacionModal">
+    <div class="curso-modal" style="max-width:500px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">INVITACIÓN</div>
+          <h3 class="curso-modal-titulo serif">Enviar acceso</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarInvitacion()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <div class="inv-aviso">
+          Le va a llegar un correo con un enlace. Si todavía no tiene cuenta, la crea ahí mismo:
+          elige su contraseña, completa su perfil, y entra con todo desbloqueado.
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">EMAIL</label>
+          <input type="email" class="form-input" id="invEmail" placeholder="sofia@ejemplo.com">
+          <div class="form-help" id="invEmailAyuda"></div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">NOMBRE (opcional)</label>
+          <input type="text" class="form-input" id="invNombre" placeholder="Sofía">
+          <div class="form-help">Para saludarla por su nombre en el correo</div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">QUÉ LE DAMOS</label>
+          <div class="inv-cursos" id="invCursos"></div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">COMUNIDAD PREMIUM</label>
+          <select class="form-select" id="invPremium">
+            <option value="0">No incluir</option>
+            <option value="1">1 mes</option>
+            <option value="3">3 meses</option>
+            <option value="6">6 meses</option>
+            <option value="12">12 meses</option>
+          </select>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">MENSAJE (opcional)</label>
+          <textarea class="form-textarea" id="invMensaje" placeholder="Hola Sofía! Te dejo el acceso al curso como quedamos..."></textarea>
+        </div>
+
+        <div class="inv-estado" id="invEstado"></div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarInvitacion()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="enviarInvitacion()" id="btnInvitar">📨 ENVIAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <!-- Toast -->
@@ -3978,6 +4126,9 @@ body{visibility:hidden}
       document.getElementById('cursoSeccion').value = c.seccion || 'principal';
       document.getElementById('cursoAcceso').value = c.acceso || (c.precio_gs ? 'pago' : 'gratis');
       document.getElementById('cursoEnlaceExterno').value = c.enlace_externo || '';
+      tipoAcceso = c.tipo_acceso || 'dias';
+      document.getElementById('cursoTipoAcceso').value = tipoAcceso;
+      document.getElementById('cursoDiasAcceso').value = c.dias_acceso || 365;
       document.getElementById('cursoPrecioPremium').value = c.precio_premium_gs
         ? c.precio_premium_gs.toLocaleString('es-PY').replace(/,/g,'.') : '';
       document.getElementById('cursoEtiqueta').value = c.etiqueta || '';
@@ -4024,6 +4175,9 @@ body{visibility:hidden}
       document.getElementById('cursoTipo').value = 'curso';
       document.getElementById('cursoSeccion').value = 'principal';
       document.getElementById('cursoAcceso').value = 'pago';
+      tipoAcceso = 'dias';
+      document.getElementById('cursoTipoAcceso').value = 'dias';
+      document.getElementById('cursoDiasAcceso').value = 365;
       document.getElementById('cursoProximamente').classList.remove('on');
       document.getElementById('cursoTextoProximo').value = '';
       document.getElementById('cursoQueIncluye').value = '';
@@ -4040,6 +4194,8 @@ body{visibility:hidden}
 
     cambiarTipoCurso();
     cambiarProximamente();
+    marcarSel('#cursoModal', 'a', tipoAcceso);
+    pintarAcceso();
 
     // Resumen del contenido cargado
     const zona = document.getElementById('contenidoZona');
@@ -4115,6 +4271,9 @@ body{visibility:hidden}
       slogan: document.getElementById('cursoSlogan').value.trim(),
       precio_gs: limpiarPrecio(document.getElementById('cursoPrecio').value),
       precio_premium_gs: limpiarPrecio(document.getElementById('cursoPrecioPremium').value) || null,
+      tipo_acceso: tipoAcceso,
+      dias_acceso: (tipoAcceso === 'dias')
+        ? (parseInt(document.getElementById('cursoDiasAcceso').value) || 365) : null,
       precio_anterior_gs: limpiarPrecio(document.getElementById('cursoPrecioAnterior').value),
       modulos_count: parseInt(document.getElementById('cursoModulos').value) || null,
       clases_count: parseInt(document.getElementById('cursoClases').value) || null,
@@ -5831,6 +5990,7 @@ body{visibility:hidden}
 
     renderContenido();
     pintarResumenBorradores();
+    cargarSaludClases();
   }
 
   const ICONOS_CLASE = { video: '🎬', pdf: '📄', texto: '📝', enlace: '🔗', audio: '🎧' };
@@ -6063,6 +6223,111 @@ body{visibility:hidden}
         });
       }
     }
+  }
+
+  // ─── Cómo viene cada clase, según las opiniones ───
+  async function cargarSaludClases(){
+    const caja = document.getElementById('clasesParaRevisar');
+    if(!caja || !cursoContenidoId) return;
+
+    const { data, error } = await sb.from('salud_clases')
+      .select('*').eq('curso_id', cursoContenidoId);
+
+    if(error || !data){ caja.style.display = 'none'; return; }
+
+    // Solo las que tienen opiniones
+    const conOpiniones = data.filter(x => x.total_opiniones > 0);
+    if(conOpiniones.length === 0){ caja.style.display = 'none'; return; }
+
+    // Las que más señales de mejora tienen, primero
+    conOpiniones.sort((a, b) => {
+      const pa = a.senales_buenas + a.senales_mejora;
+      const pb = b.senales_buenas + b.senales_mejora;
+      const ra = pa ? a.senales_mejora / pa : 0;
+      const rb = pb ? b.senales_mejora / pb : 0;
+      return rb - ra;
+    });
+
+    caja.style.display = '';
+    caja.innerHTML =
+      '<div class="revisar-tit">📊 Qué opinan tus alumnas</div>' +
+      '<div class="revisar-sub">Las clases con más señales de mejora aparecen primero. ' +
+        'Sirve para saber qué conviene regrabar.</div>' +
+      conOpiniones.slice(0, 8).map(x => {
+        const total = x.senales_buenas + x.senales_mejora;
+        const pct = total ? Math.round((x.senales_buenas / total) * 100) : 0;
+        const floja = pct < 60;
+        return '<div class="revisar-fila">' +
+          '<div class="revisar-nom">' + esc(x.clase_titulo) + '</div>' +
+          '<div class="revisar-barra' + (floja ? ' baja' : '') + '"><span style="width:' + pct + '%"></span></div>' +
+          '<div class="revisar-dato">' + pct + '% · ' + x.total_opiniones + ' opinión' +
+            (x.total_opiniones === 1 ? '' : 'es') + '</div>' +
+          (x.con_comentario > 0
+            ? '<div class="op-detalle">💬 ' + x.con_comentario + ' dejaron un comentario · ' +
+              '<button class="com-accion" style="color:#FAC775" onclick="verOpiniones(\'' + x.clase_id + '\',\'' + esc(x.clase_titulo).replace(/'/g,"\\'") + '\')">leerlos</button></div>'
+            : '') +
+        '</div>';
+      }).join('');
+  }
+
+  async function verOpiniones(claseId, titulo){
+    const { data } = await sb.from('opiniones_clase')
+      .select('opciones, comentario, creado_en')
+      .eq('clase_id', claseId)
+      .not('comentario', 'is', null)
+      .order('creado_en', { ascending: false });
+
+    if(!data || data.length === 0) return mostrarToast('Sin comentarios todavía');
+
+    const texto = data.map((o, i) =>
+      (i+1) + '. ' + o.comentario + '\n   [' + (o.opciones || []).join(', ') + ']'
+    ).join('\n\n');
+
+    alert('Opiniones sobre "' + titulo + '"\n\n' + texto);
+  }
+
+  // ─── Cuánto dura el acceso ───
+  let tipoAcceso = 'dias';
+
+  function elegirAcceso(el){
+    document.querySelectorAll('#cursoModal .lib-op[data-a]').forEach(x => x.classList.remove('sel'));
+    el.classList.add('sel');
+    tipoAcceso = el.dataset.a;
+    document.getElementById('cursoTipoAcceso').value = tipoAcceso;
+    pintarAcceso();
+  }
+
+  function ponerDiasAcceso(d){
+    document.getElementById('cursoDiasAcceso').value = d;
+    pintarAcceso();
+  }
+
+  function pintarAcceso(){
+    const caja = document.getElementById('cajaDiasAcceso');
+    const ej = document.getElementById('accesoEjemplo');
+    if(!caja) return;
+
+    caja.style.display = (tipoAcceso === 'dias') ? '' : 'none';
+    if(tipoAcceso !== 'dias'){ return; }
+
+    const d = parseInt(document.getElementById('cursoDiasAcceso').value) || 0;
+
+    // Marcamos el atajo que coincida
+    document.querySelectorAll('.acceso-chip').forEach(ch => {
+      const n = parseInt(ch.textContent) || 0;
+      const dias = ch.textContent.includes('año') ? n * 365 : n * 30;
+      ch.classList.toggle('sel', dias === d);
+    });
+
+    if(!d){ ej.textContent = 'Poné cuántos días dura el acceso.'; return; }
+
+    const hasta = new Date(Date.now() + d * 86400000);
+    const texto = d >= 365
+      ? (d % 365 === 0 ? (d/365) + ' año' + (d/365 === 1 ? '' : 's') : d + ' días')
+      : (d % 30 === 0 ? (d/30) + ' meses' : d + ' días');
+
+    ej.textContent = texto + ': quien compre hoy tiene acceso hasta el ' +
+      hasta.toLocaleDateString('es-PY', { day:'numeric', month:'long', year:'numeric' }) + '.';
   }
 
   // ─── Liberación: el módulo decide, la clase obedece ───
@@ -7238,6 +7503,161 @@ body{visibility:hidden}
   // ============================
   // ACCIONES SOBRE MIEMBROS
   // ============================
+  async function enviarAvisosRespuestas(){
+    const btn = document.getElementById('btnAvisosResp');
+    const txt = document.getElementById('avisosRespTxt');
+    btn.disabled = true;
+    btn.textContent = 'REVISANDO...';
+
+    const r = await llamarAvisos({ accion: 'respuestas' });
+
+    btn.disabled = false;
+    btn.textContent = 'REVISAR Y AVISAR';
+
+    if(r.noEncontrada){
+      txt.innerHTML = '<span style="color:#FF8090">No encontré la función. Configurala arriba, en ⚙️ Funciones.</span>';
+      return;
+    }
+    if(!r.ok || (r.datos && r.datos.error)){
+      txt.innerHTML = '<span style="color:#FF8090">' + esc(r.datos?.error || 'No se pudo enviar') + '</span>';
+      return;
+    }
+
+    txt.innerHTML = r.datos.avisos === 0
+      ? '<span style="color:#9FE1CB">✓ Todo al día. No hay respuestas nuevas.</span>'
+      : '<span style="color:#9FE1CB">✓ Avisamos sobre ' + r.datos.avisos + ' respuesta(s)</span>';
+  }
+
+  // ─── Enviar acceso por email ───
+  let invCursosElegidos = [];
+
+  function abrirInvitacion(usuarioId){
+    invCursosElegidos = [];
+
+    // Si viene de "Gestionar", precargamos su email
+    if(usuarioId){
+      const a = (alumnas || []).find(x => x.id === usuarioId);
+      document.getElementById('invEmail').value = a?.email || '';
+      document.getElementById('invNombre').value = a?.nombre || '';
+      document.getElementById('invEmailAyuda').textContent = 'Ya tiene cuenta: solo le damos los accesos.';
+    } else {
+      document.getElementById('invEmail').value = '';
+      document.getElementById('invNombre').value = '';
+      document.getElementById('invEmailAyuda').textContent = 'Si no tiene cuenta, la crea con el enlace del correo.';
+    }
+
+    document.getElementById('invPremium').value = '0';
+    document.getElementById('invMensaje').value = '';
+    document.getElementById('invEstado').className = 'inv-estado';
+
+    // Los cursos publicados
+    const pub = (cursos || []).filter(x => x.publicado && !x.proximamente);
+    document.getElementById('invCursos').innerHTML = pub.length === 0
+      ? '<div style="font-size:12px;color:rgba(255,245,240,0.45);padding:10px">No hay cursos publicados</div>'
+      : pub.map(x =>
+          '<div class="inv-curso" onclick="tocarCursoInv(this, \'' + x.id + '\')">' +
+            '<div class="inv-check">' +
+              '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="3.4" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+            '</div>' +
+            '<div style="flex:1;min-width:0">' +
+              '<div class="inv-curso-nom">' + esc(x.titulo) + '</div>' +
+              '<div class="inv-curso-sub">' +
+                (x.precio_gs ? 'Gs ' + x.precio_gs.toLocaleString('es-PY') : 'Gratis') +
+                (x.tipo_acceso === 'dias' && x.dias_acceso ? ' · ' + x.dias_acceso + ' días de acceso' : ' · acceso permanente') +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        ).join('');
+
+    document.getElementById('invitacionModal').classList.add('show');
+  }
+
+  function cerrarInvitacion(){ document.getElementById('invitacionModal').classList.remove('show'); }
+
+  function tocarCursoInv(el, id){
+    el.classList.toggle('sel');
+    const i = invCursosElegidos.indexOf(id);
+    if(i >= 0) invCursosElegidos.splice(i, 1);
+    else invCursosElegidos.push(id);
+  }
+
+  function estadoInv(msg, tipo){
+    const el = document.getElementById('invEstado');
+    if(!msg){ el.className = 'inv-estado'; return; }
+    el.className = 'inv-estado show ' + (tipo || 'ok');
+    el.innerHTML = msg;
+  }
+
+  async function enviarInvitacion(){
+    const email = document.getElementById('invEmail').value.trim().toLowerCase();
+    if(!email || !email.includes('@')) return estadoInv('Escribí un email válido', 'error');
+
+    const premium = parseInt(document.getElementById('invPremium').value) || 0;
+    if(invCursosElegidos.length === 0 && premium === 0){
+      return estadoInv('Elegí al menos un curso o el acceso premium', 'error');
+    }
+
+    const btn = document.getElementById('btnInvitar');
+    btn.disabled = true;
+    btn.textContent = 'ENVIANDO...';
+    estadoInv('');
+
+    // Un código único para el enlace
+    const codigo = (crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random())
+      .replace(/-/g, '').slice(0, 24);
+
+    const { data: { user } } = await sb.auth.getUser();
+
+    const { error } = await sb.from('invitaciones').insert({
+      email: email,
+      nombre: document.getElementById('invNombre').value.trim() || null,
+      codigo: codigo,
+      cursos: invCursosElegidos,
+      premium_meses: premium,
+      mensaje: document.getElementById('invMensaje').value.trim() || null,
+      creada_por: user?.id || null
+    });
+
+    if(error){
+      btn.disabled = false;
+      btn.textContent = '📨 ENVIAR';
+      return estadoInv(String(error.message).includes('does not exist')
+        ? 'Falta correr SQL-COMENTARIOS-OPINIONES-INVITACIONES.sql'
+        : 'No se pudo crear: ' + error.message, 'error');
+    }
+
+    // El email
+    const r = await llamarAvisos({
+      accion: 'invitacion',
+      codigo: codigo,
+      email: email,
+      nombre: document.getElementById('invNombre').value.trim() || '',
+      mensaje: document.getElementById('invMensaje').value.trim() || '',
+      cursos: invCursosElegidos,
+      premium_meses: premium
+    });
+
+    btn.disabled = false;
+    btn.textContent = '📨 ENVIAR';
+
+    const enlace = window.location.origin + '/invitacion?c=' + codigo;
+
+    if(r.noEncontrada || !r.ok || (r.datos && r.datos.error)){
+      // El email falló, pero la invitación existe: le pasamos el enlace
+      estadoInv('La invitación quedó creada, pero no pudimos enviar el correo.<br><br>' +
+        '<strong>Pasale este enlace vos misma:</strong><br>' +
+        '<span style="word-break:break-all;color:#FAC775">' + enlace + '</span>', 'error');
+      return;
+    }
+
+    estadoInv('✓ Le enviamos el acceso a <strong>' + esc(email) + '</strong><br><br>' +
+      '<span style="font-size:11.5px;color:rgba(255,245,240,0.6)">Por las dudas, el enlace es:<br>' +
+      '<span style="word-break:break-all">' + enlace + '</span></span>', 'ok');
+
+    invCursosElegidos = [];
+    document.querySelectorAll('#invCursos .inv-curso').forEach(x => x.classList.remove('sel'));
+  }
+
   // ─── Insignias de una persona (en el modal de gestión) ───
   let insigniasDeEsta = [];
 

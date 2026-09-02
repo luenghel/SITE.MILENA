@@ -283,6 +283,16 @@
   .prox-texto{font-size:14.5px;line-height:1.65;color:rgba(255,245,240,0.8);margin:0 0 20px;white-space:pre-wrap}
   .prox-nota{font-size:12px;color:rgba(255,245,240,0.55);margin-top:12px;line-height:1.5;min-height:18px}
 
+
+  .acceso-caja{display:flex;align-items:center;gap:14px;padding:15px 18px;background:rgba(93,202,165,0.08);border:0.5px solid rgba(93,202,165,0.3);border-radius:13px;margin-bottom:16px;flex-wrap:wrap}
+  .acceso-caja.pronto{background:rgba(212,163,86,0.09);border-color:rgba(212,163,86,0.4)}
+  .acceso-caja.vencido{background:rgba(255,59,71,0.1);border-color:rgba(255,59,71,0.4)}
+  .acceso-ico{width:38px;height:38px;border-radius:11px;background:rgba(255,245,240,0.07);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+  .acceso-tit{font-size:14px;font-weight:500}
+  .acceso-sub{font-size:12px;color:rgba(255,245,240,0.6);margin-top:2px;line-height:1.45}
+  .acceso-btn{padding:11px 18px;border-radius:9px;background:linear-gradient(135deg,#EFB85C,#DDA63F);color:#2E0C05;font-size:11px;font-weight:600;letter-spacing:0.1em;text-decoration:none;white-space:nowrap}
+  @media (max-width:700px){ .acceso-caja{flex-direction:column;align-items:flex-start} .acceso-btn{width:100%;text-align:center} }
+
 </style>
 </head>
 <body>
@@ -353,6 +363,8 @@
       </div>
     </div>
   </div>
+
+  <div id="contadorAcceso" style="display:none"></div>
 
   <!-- Columna derecha: el contenido real del curso -->
   <div class="aulas-card">
@@ -685,6 +697,58 @@ async function anotarseGratis(){
   setTimeout(() => window.location.reload(), 900);
 }
 
+
+// ─── Contador de acceso ───
+function pintarContadorAcceso(curso, compra){
+  const zona = document.getElementById('contadorAcceso');
+  if(!zona) return;
+
+  // Sin compra, o acceso para siempre: no mostramos nada
+  if(!compra || !compra.acceso_hasta){
+    zona.style.display = 'none';
+    return;
+  }
+
+  const hasta = new Date(compra.acceso_hasta);
+  const faltan = Math.ceil((hasta.getTime() - Date.now()) / 86400000);
+  const venció = faltan <= 0;
+
+  zona.style.display = '';
+
+  if(venció){
+    zona.className = 'acceso-caja vencido';
+    zona.innerHTML =
+      '<div class="acceso-ico">⏳</div>' +
+      '<div style="flex:1;min-width:170px">' +
+        '<div class="acceso-tit">Tu acceso venció</div>' +
+        '<div class="acceso-sub">Terminó el ' +
+          hasta.toLocaleDateString('es-PY', { day:'numeric', month:'long', year:'numeric' }) +
+          '. Renovalo para seguir viendo las clases.</div>' +
+      '</div>' +
+      '<a href="/checkout?curso=' + encodeURIComponent(curso.slug) + '&renovar=1" class="acceso-btn">RENOVAR</a>';
+    return;
+  }
+
+  // Cerca de vencer: lo destacamos
+  const cerca = faltan <= 30;
+  zona.className = 'acceso-caja' + (cerca ? ' pronto' : '');
+
+  let texto;
+  if(faltan === 1) texto = 'Te queda 1 día';
+  else if(faltan <= 60) texto = 'Te quedan ' + faltan + ' días';
+  else if(faltan < 365) texto = 'Te quedan ' + Math.round(faltan/30) + ' meses';
+  else texto = 'Te queda ' + (faltan >= 700 ? Math.round(faltan/365) + ' años' : '1 año');
+
+  zona.innerHTML =
+    '<div class="acceso-ico">' + (cerca ? '⏳' : '✓') + '</div>' +
+    '<div style="flex:1;min-width:170px">' +
+      '<div class="acceso-tit">' + texto + ' de acceso</div>' +
+      '<div class="acceso-sub">Hasta el ' +
+        hasta.toLocaleDateString('es-PY', { day:'numeric', month:'long', year:'numeric' }) + '</div>' +
+    '</div>' +
+    (cerca ? '<a href="/checkout?curso=' + encodeURIComponent(curso.slug) + '&renovar=1" class="acceso-btn">RENOVAR</a>' : '');
+}
+
 // ─── Curso que viene pronto ───
 let cursoProximo = null;
 
@@ -985,10 +1049,13 @@ async function pintarCursoReal(){
   let compra = null;
   if(user){
     const { data: cmp } = await sb.from('compras')
-      .select('pagado_en, creado_en').eq('usuario_id', user.id)
+      .select('pagado_en, creado_en, acceso_hasta').eq('usuario_id', user.id)
       .eq('curso_id', curso.id).eq('estado','pagado').maybeSingle();
-    if(cmp) compra = { pagado_en: cmp.pagado_en || cmp.creado_en };
+    if(cmp) compra = { pagado_en: cmp.pagado_en || cmp.creado_en, acceso_hasta: cmp.acceso_hasta };
   }
+
+  // ─── Cuánto tiempo de acceso le queda ───
+  pintarContadorAcceso(curso, compra);
 
   // ─── Progreso ───
   let progreso = {};

@@ -1,4 +1,39 @@
-<!DOCTYPE html>
+<!DOC
+<!-- ═══ OPINIÓN SOBRE LA CLASE ═══ -->
+<div class="op-caja" id="opinionCaja" style="display:none">
+  <div class="op-tit">¿Cómo te resultó esta clase?</div>
+  <div class="op-sub">Nos ayuda a mejorar lo que grabamos. Nadie más ve tu respuesta.</div>
+  <div class="op-chips" id="opChips"></div>
+  <textarea class="op-texto" id="opComentario" placeholder="¿Querés contarnos algo más? (opcional)"></textarea>
+  <div class="op-pie">
+    <button class="cta-gold op-btn" onclick="guardarOpinion()" id="btnOpinion">ENVIAR</button>
+    <span class="op-estado" id="opEstado"></span>
+  </div>
+</div>
+
+<!-- ═══ COMENTARIOS ═══ -->
+<div class="com-zona" id="comentariosZona">
+  <div class="com-cab">
+    <h3 class="com-tit">Comentarios</h3>
+    <span class="com-cuenta" id="comCuenta"></span>
+  </div>
+
+  <div class="com-nuevo">
+    <textarea class="com-input" id="comTexto" placeholder="Escribí tu comentario o pregunta..."></textarea>
+    <div class="com-nuevo-pie">
+      <label class="com-check" onclick="this.classList.toggle('on')" id="comEsPregunta">
+        <span class="com-check-box">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="3.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+        Es una pregunta
+      </label>
+      <button class="cta-gold com-btn" onclick="publicarComentario()" id="btnComentar">PUBLICAR</button>
+    </div>
+  </div>
+
+  <div id="comLista"></div>
+</div>
+TYPE html>
 <html lang="es-PY">
 <head>
 <meta charset="UTF-8">
@@ -111,6 +146,59 @@
     .clase-acciones>*{width:100%;justify-content:center}
     .toast{left:16px;right:16px;bottom:16px;text-align:center}
   }
+
+  /* ═══ Opinión ═══ */
+  .op-caja{background:rgba(212,163,86,0.06);border:0.5px solid rgba(212,163,86,0.28);border-radius:15px;padding:20px;margin:24px 0}
+  .op-tit{font-family:Georgia,serif;font-size:17px;font-weight:500;margin-bottom:4px}
+  .op-sub{font-size:12.5px;color:rgba(255,245,240,0.55);margin-bottom:15px;line-height:1.5}
+  .op-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .op-chip{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);border-radius:20px;color:rgba(255,245,240,0.78);font-size:12.5px;cursor:pointer;font-family:inherit;transition:all 0.2s}
+  .op-chip:hover{background:rgba(255,245,240,0.09)}
+  .op-chip.sel{background:rgba(212,163,86,0.2);border-color:#FAC775;color:#FAC775}
+  .op-texto{width:100%;min-height:70px;padding:12px 14px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:11px;color:#FFF5F0;font-size:13.5px;font-family:inherit;resize:vertical;outline:none;box-sizing:border-box}
+  .op-texto:focus{border-color:rgba(212,163,86,0.45)}
+  .op-pie{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
+  .op-btn{padding:11px 22px;border-radius:10px;font-size:11.5px;font-weight:600;letter-spacing:0.1em;border:none;cursor:pointer;font-family:inherit}
+  .op-estado{font-size:12.5px;color:#9FE1CB}
+  .op-caja.enviada{background:rgba(93,202,165,0.07);border-color:rgba(93,202,165,0.3)}
+
+  /* ═══ Comentarios ═══ */
+  .com-zona{margin:30px 0 40px}
+  .com-cab{display:flex;align-items:baseline;gap:10px;margin-bottom:16px}
+  .com-tit{font-family:Georgia,serif;font-size:20px;font-weight:500;margin:0}
+  .com-cuenta{font-size:12.5px;color:rgba(255,245,240,0.5)}
+
+  .com-nuevo{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:13px;padding:15px;margin-bottom:20px}
+  .com-input{width:100%;min-height:70px;padding:11px 13px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:10px;color:#FFF5F0;font-size:13.5px;font-family:inherit;resize:vertical;outline:none;box-sizing:border-box}
+  .com-input:focus{border-color:rgba(212,163,86,0.45)}
+  .com-nuevo-pie{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:11px;flex-wrap:wrap}
+  .com-check{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:rgba(255,245,240,0.65);cursor:pointer}
+  .com-check-box{width:18px;height:18px;border-radius:5px;border:1.5px solid rgba(255,245,240,0.28);display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+  .com-check-box svg{opacity:0}
+  .com-check.on .com-check-box{background:linear-gradient(135deg,#EFB85C,#DDA63F);border-color:#DDA63F}
+  .com-check.on .com-check-box svg{opacity:1}
+  .com-btn{padding:10px 20px;border-radius:9px;font-size:11px;font-weight:600;letter-spacing:0.1em;border:none;cursor:pointer;font-family:inherit}
+
+  .com-item{padding:15px 0;border-top:0.5px solid rgba(255,245,240,0.07)}
+  .com-item.respuesta{margin-left:36px;padding-left:15px;border-left:2px solid rgba(212,163,86,0.25);border-top:none;padding-top:12px}
+  .com-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .com-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7A1B2E,#B8294A);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0;overflow:hidden}
+  .com-avatar img{width:100%;height:100%;object-fit:cover}
+  .com-nom{font-size:13.5px;font-weight:500}
+  .com-cuando{font-size:11.5px;color:rgba(255,245,240,0.45)}
+  .com-tag{font-size:9.5px;padding:3px 8px;border-radius:10px;letter-spacing:0.06em;font-weight:600}
+  .com-tag.pregunta{background:rgba(212,163,86,0.16);border:0.5px solid rgba(212,163,86,0.4);color:#FAC775}
+  .com-tag.equipo{background:rgba(184,41,74,0.25);border:0.5px solid rgba(232,184,196,0.45);color:#E8B8C4}
+  .com-tag.resuelto{background:rgba(93,202,165,0.14);border:0.5px solid rgba(93,202,165,0.4);color:#9FE1CB}
+  .com-texto{font-size:14px;line-height:1.6;color:rgba(255,245,240,0.85);white-space:pre-wrap;word-break:break-word}
+  .com-acciones{display:flex;gap:16px;margin-top:9px}
+  .com-accion{background:none;border:none;color:rgba(255,245,240,0.5);font-size:12px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px;padding:0}
+  .com-accion:hover{color:#FFF5F0}
+  .com-accion.activo{color:#FAC775}
+  .com-responder{margin-top:11px;display:none}
+  .com-responder.abierto{display:block}
+  .com-vacio{padding:30px 20px;text-align:center;color:rgba(255,245,240,0.45);font-size:13px}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -653,6 +741,299 @@ const esperarSupa = setInterval(async () => {
 
   await abrirClase(inicial, false);
 }, 40);
+
+// ═══════════════════════════════════════════════════════════════════
+// OPINIÓN SOBRE LA CLASE
+// ═══════════════════════════════════════════════════════════════════
+let opcionesOpinion = [];
+let opElegidas = [];
+let miOpinion = null;
+
+async function cargarOpinion(claseId){
+  const caja = document.getElementById('opinionCaja');
+  if(!caja || !usuario) return;
+
+  // Solo tiene sentido si puede ver la clase
+  if(!tieneAcceso){ caja.style.display = 'none'; return; }
+
+  if(opcionesOpinion.length === 0){
+    const { data } = await sb.from('opciones_opinion')
+      .select('*').eq('activa', true).order('orden', { ascending: true });
+    opcionesOpinion = data || [];
+  }
+  if(opcionesOpinion.length === 0){ caja.style.display = 'none'; return; }
+
+  const { data: mia } = await sb.from('opiniones_clase')
+    .select('*').eq('clase_id', claseId).eq('usuario_id', usuario.id).maybeSingle();
+
+  miOpinion = mia || null;
+  opElegidas = mia?.opciones || [];
+
+  caja.style.display = '';
+  caja.classList.toggle('enviada', !!mia);
+
+  document.getElementById('opChips').innerHTML = opcionesOpinion.map(o =>
+    '<button type="button" class="op-chip' + (opElegidas.includes(o.clave) ? ' sel' : '') +
+    '" onclick="tocarOpcion(\'' + o.clave + '\')">' +
+    (o.icono || '') + ' ' + esc(o.texto) + '</button>'
+  ).join('');
+
+  document.getElementById('opComentario').value = mia?.comentario || '';
+  document.getElementById('opEstado').textContent = mia ? '✓ Gracias por tu opinión' : '';
+  document.getElementById('btnOpinion').textContent = mia ? 'ACTUALIZAR' : 'ENVIAR';
+}
+
+function tocarOpcion(clave){
+  const i = opElegidas.indexOf(clave);
+  if(i >= 0) opElegidas.splice(i, 1);
+  else opElegidas.push(clave);
+
+  document.querySelectorAll('#opChips .op-chip').forEach((ch, k) => {
+    ch.classList.toggle('sel', opElegidas.includes(opcionesOpinion[k].clave));
+  });
+}
+
+async function guardarOpinion(){
+  if(!usuario || !claseActualId) return;
+
+  const comentario = document.getElementById('opComentario').value.trim();
+  if(opElegidas.length === 0 && !comentario){
+    document.getElementById('opEstado').textContent = 'Elegí al menos una opción';
+    return;
+  }
+
+  const btn = document.getElementById('btnOpinion');
+  btn.disabled = true;
+
+  const datos = {
+    clase_id: claseActualId,
+    curso_id: curso.id,
+    usuario_id: usuario.id,
+    opciones: opElegidas,
+    comentario: comentario || null
+  };
+
+  const r = miOpinion
+    ? await sb.from('opiniones_clase').update(datos).eq('id', miOpinion.id)
+    : await sb.from('opiniones_clase').insert(datos);
+
+  btn.disabled = false;
+
+  if(r.error){
+    document.getElementById('opEstado').textContent = 'No se pudo guardar';
+    return;
+  }
+
+  document.getElementById('opEstado').textContent = '✓ Gracias por tu opinión';
+  document.getElementById('opinionCaja').classList.add('enviada');
+  btn.textContent = 'ACTUALIZAR';
+  if(!miOpinion) miOpinion = datos;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// COMENTARIOS
+// ═══════════════════════════════════════════════════════════════════
+let comentarios = [];
+let misLikes = [];
+let perfilesCom = {};
+
+async function cargarComentarios(claseId){
+  const cont = document.getElementById('comLista');
+  if(!cont) return;
+
+  const { data, error } = await sb.from('comentarios_clase')
+    .select('*').eq('clase_id', claseId).eq('oculto', false)
+    .order('creado_en', { ascending: true });
+
+  if(error){
+    cont.innerHTML = '<div class="com-vacio">' +
+      (String(error.message).includes('does not exist')
+        ? 'Falta correr SQL-COMENTARIOS-OPINIONES-INVITACIONES.sql'
+        : 'No pudimos cargar los comentarios') + '</div>';
+    return;
+  }
+
+  comentarios = data || [];
+
+  // Quiénes escribieron
+  const ids = [...new Set(comentarios.map(x => x.usuario_id))];
+  if(ids.length){
+    const { data: perf } = await sb.from('perfiles')
+      .select('id, nombre, avatar_url, rol').in('id', ids);
+    perfilesCom = {};
+    (perf || []).forEach(p => { perfilesCom[p.id] = p; });
+  }
+
+  // Mis me gusta
+  if(usuario && comentarios.length){
+    const { data: lk } = await sb.from('likes_comentario')
+      .select('comentario_id').eq('usuario_id', usuario.id)
+      .in('comentario_id', comentarios.map(x => x.id));
+    misLikes = (lk || []).map(x => x.comentario_id);
+  }
+
+  // Cuántos me gusta tiene cada uno
+  const { data: todosLikes } = await sb.from('likes_comentario')
+    .select('comentario_id').in('comentario_id', comentarios.map(x => x.id).length ? comentarios.map(x => x.id) : ['0']);
+  const cuenta = {};
+  (todosLikes || []).forEach(l => { cuenta[l.comentario_id] = (cuenta[l.comentario_id] || 0) + 1; });
+  comentarios.forEach(x => { x._likes = cuenta[x.id] || 0; });
+
+  renderComentarios();
+}
+
+function cuandoFue(fecha){
+  const d = Math.floor((Date.now() - new Date(fecha).getTime()) / 60000);
+  if(d < 1) return 'recién';
+  if(d < 60) return 'hace ' + d + ' min';
+  const h = Math.floor(d/60);
+  if(h < 24) return 'hace ' + h + ' h';
+  const dd = Math.floor(h/24);
+  if(dd === 1) return 'ayer';
+  if(dd < 30) return 'hace ' + dd + ' días';
+  return new Date(fecha).toLocaleDateString('es-PY', { day:'numeric', month:'short' });
+}
+
+function renderComentarios(){
+  const cont = document.getElementById('comLista');
+  const cuenta = document.getElementById('comCuenta');
+  if(!cont) return;
+
+  cuenta.textContent = comentarios.length
+    ? comentarios.length + (comentarios.length === 1 ? ' comentario' : ' comentarios')
+    : '';
+
+  if(comentarios.length === 0){
+    cont.innerHTML = '<div class="com-vacio">Todavía nadie comentó.<br>Sé la primera en dejar tu pregunta o aporte.</div>';
+    return;
+  }
+
+  const principales = comentarios.filter(x => !x.responde_a);
+
+  cont.innerHTML = principales.map(c => {
+    const respuestas = comentarios.filter(x => x.responde_a === c.id);
+    return dibujarComentario(c, false) + respuestas.map(r => dibujarComentario(r, true)).join('');
+  }).join('');
+}
+
+function dibujarComentario(c, esRespuesta){
+  const p = perfilesCom[c.usuario_id] || {};
+  const ini = (p.nombre || '?').charAt(0).toUpperCase();
+  const esEquipo = ['admin','fundadora'].includes(p.rol);
+  const miLike = misLikes.includes(c.id);
+  const esMio = usuario && c.usuario_id === usuario.id;
+
+  return '<div class="com-item' + (esRespuesta ? ' respuesta' : '') + '">' +
+    '<div class="com-top">' +
+      '<div class="com-avatar">' + (p.avatar_url ? '<img src="' + p.avatar_url + '" alt="">' : ini) + '</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">' +
+          '<span class="com-nom">' + esc(p.nombre || 'Alguien') + '</span>' +
+          (esEquipo ? '<span class="com-tag equipo">💎 EQUIPO</span>' : '') +
+          (c.es_pregunta && !esRespuesta ? '<span class="com-tag ' + (c.resuelto ? 'resuelto' : 'pregunta') + '">' +
+            (c.resuelto ? '✓ RESUELTA' : '? PREGUNTA') + '</span>' : '') +
+        '</div>' +
+        '<div class="com-cuando">' + cuandoFue(c.creado_en) + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="com-texto">' + esc(c.texto) + '</div>' +
+    '<div class="com-acciones">' +
+      '<button class="com-accion' + (miLike ? ' activo' : '') + '" onclick="tocarLike(\'' + c.id + '\')">' +
+        (miLike ? '❤️' : '🤍') + (c._likes ? ' ' + c._likes : '') +
+      '</button>' +
+      (esRespuesta ? '' : '<button class="com-accion" onclick="abrirRespuesta(\'' + c.id + '\')">Responder</button>') +
+      (esMio ? '<button class="com-accion" onclick="borrarComentario(\'' + c.id + '\')">Borrar</button>' : '') +
+    '</div>' +
+    (esRespuesta ? '' :
+      '<div class="com-responder" id="resp-' + c.id + '">' +
+        '<textarea class="com-input" id="respTexto-' + c.id + '" placeholder="Escribí tu respuesta..."></textarea>' +
+        '<div style="margin-top:9px;display:flex;gap:9px">' +
+          '<button class="cta-gold com-btn" onclick="publicarRespuesta(\'' + c.id + '\')">RESPONDER</button>' +
+          '<button class="btn-secondary com-btn" onclick="abrirRespuesta(\'' + c.id + '\')">Cancelar</button>' +
+        '</div>' +
+      '</div>') +
+  '</div>';
+}
+
+function abrirRespuesta(id){
+  const el = document.getElementById('resp-' + id);
+  if(el) el.classList.toggle('abierto');
+}
+
+async function publicarComentario(){
+  const texto = document.getElementById('comTexto').value.trim();
+  if(!texto) return;
+  if(!usuario){ window.location.href = '/login'; return; }
+
+  const btn = document.getElementById('btnComentar');
+  btn.disabled = true;
+
+  const { error } = await sb.from('comentarios_clase').insert({
+    clase_id: claseActualId,
+    curso_id: curso.id,
+    usuario_id: usuario.id,
+    texto: texto,
+    es_pregunta: document.getElementById('comEsPregunta').classList.contains('on')
+  });
+
+  btn.disabled = false;
+  if(error) return alert('No se pudo publicar: ' + error.message);
+
+  document.getElementById('comTexto').value = '';
+  document.getElementById('comEsPregunta').classList.remove('on');
+  await cargarComentarios(claseActualId);
+}
+
+async function publicarRespuesta(padreId){
+  const el = document.getElementById('respTexto-' + padreId);
+  const texto = el?.value.trim();
+  if(!texto) return;
+  if(!usuario){ window.location.href = '/login'; return; }
+
+  const { error } = await sb.from('comentarios_clase').insert({
+    clase_id: claseActualId,
+    curso_id: curso.id,
+    usuario_id: usuario.id,
+    responde_a: padreId,
+    texto: texto
+  });
+
+  if(error) return alert('No se pudo responder: ' + error.message);
+
+  // Si el equipo responde una pregunta, la marcamos resuelta
+  const p = perfilesCom[usuario.id];
+  if(p && ['admin','fundadora'].includes(p.rol)){
+    await sb.from('comentarios_clase').update({ resuelto: true }).eq('id', padreId);
+  }
+
+  await cargarComentarios(claseActualId);
+}
+
+async function tocarLike(id){
+  if(!usuario){ window.location.href = '/login'; return; }
+
+  const tiene = misLikes.includes(id);
+  if(tiene){
+    await sb.from('likes_comentario').delete()
+      .eq('comentario_id', id).eq('usuario_id', usuario.id);
+    misLikes = misLikes.filter(x => x !== id);
+  } else {
+    await sb.from('likes_comentario').insert({ comentario_id: id, usuario_id: usuario.id });
+    misLikes.push(id);
+  }
+
+  const c = comentarios.find(x => x.id === id);
+  if(c) c._likes = Math.max(0, (c._likes || 0) + (tiene ? -1 : 1));
+  renderComentarios();
+}
+
+async function borrarComentario(id){
+  if(!confirm('¿Borrar tu comentario?')) return;
+  const { error } = await sb.from('comentarios_clase').delete().eq('id', id);
+  if(error) return alert('No se pudo borrar');
+  await cargarComentarios(claseActualId);
+}
+
 </script>
 
 </body>

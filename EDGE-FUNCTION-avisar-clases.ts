@@ -313,6 +313,140 @@ function plantillaBienvenida(nombre: string, curso: any, primeraClase: any, tota
 }
 
 
+// ─── Email: invitación con acceso ──────────────────────────────────
+function plantillaInvitacion(nombre: string, codigo: string, mensaje: string, items: string[]) {
+  const saludo = escapar((nombre || '').split(' ')[0] || 'Hola')
+  const enlace = `${SITIO}/invitacion?c=${encodeURIComponent(codigo)}`
+
+  const lista = items.map(i =>
+    `<tr><td style="padding:8px 0;border-bottom:1px solid rgba(255,245,240,0.08)">
+       <span style="color:#FAC775;margin-right:9px">✓</span>
+       <span style="color:rgba(255,245,240,0.9);font-size:14.5px;font-family:Arial,sans-serif">${escapar(i)}</span>
+     </td></tr>`
+  ).join('')
+
+  return `<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0E0509">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0E0509;padding:32px 16px">
+ <tr><td align="center">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+         style="max-width:520px;background:#2D0A18;border-radius:18px;padding:34px 30px;font-family:Georgia,serif">
+
+   <tr><td style="padding-bottom:22px">
+     <div style="font-size:11px;letter-spacing:0.22em;color:#E8B8C4;font-family:Arial,sans-serif">MILENA MACHADO</div>
+     <div style="font-size:12px;color:rgba(255,245,240,0.45);font-family:Arial,sans-serif;margin-top:3px">Creando Mentes Millonarias</div>
+   </td></tr>
+
+   <tr><td align="center" style="padding-bottom:14px"><div style="font-size:44px">🎁</div></td></tr>
+
+   <tr><td style="padding-bottom:12px">
+     <h1 style="margin:0;font-size:25px;font-weight:500;color:#FFF5F0;text-align:center">
+       ${saludo}, tenés un acceso esperándote
+     </h1>
+   </td></tr>
+
+   ${mensaje ? `<tr><td style="padding-bottom:22px">
+     <div style="background:rgba(255,245,240,0.05);border-left:3px solid #FAC775;border-radius:8px;padding:16px 18px">
+       <p style="margin:0;font-size:14.5px;line-height:1.7;color:rgba(255,245,240,0.88);font-family:Arial,sans-serif">${escapar(mensaje).replace(/\n/g, '<br>')}</p>
+     </div>
+   </td></tr>` : ''}
+
+   ${items.length ? `<tr><td style="padding-bottom:24px">
+     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+            style="background:rgba(255,245,240,0.04);border-radius:12px;padding:6px 16px">
+       <tr><td style="font-size:10px;letter-spacing:0.16em;color:rgba(255,245,240,0.45);font-family:Arial,sans-serif;padding:10px 0 4px">QUÉ INCLUYE</td></tr>
+       ${lista}
+     </table>
+   </td></tr>` : ''}
+
+   <tr><td align="center" style="padding-bottom:24px">
+     <a href="${enlace}" style="display:inline-block;padding:17px 38px;background:#DDA63F;color:#2E0C05;text-decoration:none;border-radius:8px;font-size:13px;font-weight:bold;letter-spacing:0.14em;font-family:Arial,sans-serif">
+       ACTIVAR MI ACCESO
+     </a>
+   </td></tr>
+
+   <tr><td style="padding-bottom:20px">
+     <p style="margin:0;font-size:13px;line-height:1.6;color:rgba(255,245,240,0.6);font-family:Arial,sans-serif;text-align:center">
+       Al tocar el botón vas a crear tu contraseña y entrar directo.
+     </p>
+   </td></tr>
+
+   <tr><td style="border-top:1px solid rgba(255,245,240,0.1);padding-top:20px">
+     <p style="margin:0;font-size:11.5px;color:rgba(255,245,240,0.45);font-family:Arial,sans-serif;line-height:1.6">
+       Este enlace es personal y vence en 30 días.<br>
+       Si no esperabas este correo, podés ignorarlo.
+     </p>
+   </td></tr>
+
+  </table>
+ </td></tr>
+</table>
+</body></html>`
+}
+
+// ─── Email: te respondieron un comentario ──────────────────────────
+function plantillaRespuesta(nombre: string, quien: string, miComentario: string,
+                            laRespuesta: string, clase: string, curso: string,
+                            slug: string, claseId: string) {
+  const saludo = escapar((nombre || '').split(' ')[0] || 'Hola')
+  const enlace = `${SITIO}/clase?curso=${encodeURIComponent(slug)}&clase=${claseId}`
+  const recortar = (t: string) => t.length > 180 ? t.slice(0, 180) + '…' : t
+
+  return `<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0E0509">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0E0509;padding:32px 16px">
+ <tr><td align="center">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+         style="max-width:520px;background:#2D0A18;border-radius:18px;padding:34px 30px;font-family:Georgia,serif">
+
+   <tr><td style="padding-bottom:20px">
+     <div style="font-size:11px;letter-spacing:0.22em;color:#E8B8C4;font-family:Arial,sans-serif">MILENA MACHADO</div>
+   </td></tr>
+
+   <tr><td style="padding-bottom:14px">
+     <h1 style="margin:0;font-size:22px;font-weight:500;color:#FFF5F0">
+       ${saludo}, respondieron tu comentario
+     </h1>
+     <p style="margin:8px 0 0;font-size:13px;color:rgba(255,245,240,0.55);font-family:Arial,sans-serif">
+       En <strong style="color:#FAC775">${escapar(clase)}</strong> · ${escapar(curso)}
+     </p>
+   </td></tr>
+
+   <tr><td style="padding-bottom:14px">
+     <div style="background:rgba(255,245,240,0.03);border-radius:9px;padding:13px 15px">
+       <div style="font-size:10px;letter-spacing:0.14em;color:rgba(255,245,240,0.4);font-family:Arial,sans-serif;margin-bottom:6px">DIJISTE</div>
+       <p style="margin:0;font-size:13.5px;line-height:1.55;color:rgba(255,245,240,0.6);font-family:Arial,sans-serif">${escapar(recortar(miComentario))}</p>
+     </div>
+   </td></tr>
+
+   <tr><td style="padding-bottom:24px">
+     <div style="background:rgba(212,163,86,0.1);border-left:3px solid #FAC775;border-radius:9px;padding:14px 16px">
+       <div style="font-size:10px;letter-spacing:0.14em;color:#FAC775;font-family:Arial,sans-serif;margin-bottom:6px">${escapar(quien).toUpperCase()} RESPONDIÓ</div>
+       <p style="margin:0;font-size:14.5px;line-height:1.65;color:rgba(255,245,240,0.9);font-family:Arial,sans-serif">${escapar(recortar(laRespuesta))}</p>
+     </div>
+   </td></tr>
+
+   <tr><td align="center" style="padding-bottom:24px">
+     <a href="${enlace}" style="display:inline-block;padding:15px 32px;background:#DDA63F;color:#2E0C05;text-decoration:none;border-radius:8px;font-size:12.5px;font-weight:bold;letter-spacing:0.13em;font-family:Arial,sans-serif">
+       VER LA CONVERSACIÓN
+     </a>
+   </td></tr>
+
+   <tr><td style="border-top:1px solid rgba(255,245,240,0.1);padding-top:18px">
+     <p style="margin:0;font-size:11px;font-family:Arial,sans-serif">
+       <a href="${SITIO}/baja?email={{EMAIL}}" style="color:rgba(255,245,240,0.5)">No quiero recibir estos avisos</a>
+     </p>
+   </td></tr>
+
+  </table>
+ </td></tr>
+</table>
+</body></html>`
+}
+
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
 
@@ -357,6 +491,70 @@ Deno.serve(async (req) => {
       } catch (e) {
         return { ok: false, error: String(e?.message || e) }
       }
+    }
+
+    // ═══ INVITACIÓN: le mandamos su acceso ═══
+    if (accion === 'invitacion') {
+      const { codigo, email, nombre, mensaje, cursos, premium_meses } = cuerpo
+      if (!codigo || !email) return json({ error: 'Faltan datos' }, 400)
+
+      // Qué le estamos dando
+      const items: string[] = []
+      if (Array.isArray(cursos) && cursos.length) {
+        const { data: cs } = await supabase.from('cursos').select('titulo').in('id', cursos)
+        ;(cs || []).forEach((x: any) => items.push(x.titulo))
+      }
+      if (premium_meses > 0) {
+        items.push('Comunidad Premium por ' + premium_meses + (premium_meses === 1 ? ' mes' : ' meses'))
+      }
+
+      const r = await mandar(
+        email,
+        'Tenés un acceso esperándote · Milena Machado',
+        plantillaInvitacion(nombre || '', codigo, mensaje || '', items)
+      )
+
+      if (!r.ok) return json({ error: r.error || 'No se pudo enviar' }, 400)
+      return json({ exito: true, enviados: 1 })
+    }
+
+    // ═══ RESPUESTAS A COMENTARIOS ═══
+    if (accion === 'respuestas') {
+      const { data: pendientes, error } = await supabase
+        .from('respuestas_por_avisar').select('*')
+
+      if (error) {
+        return json({
+          error: 'No pudimos leer las respuestas pendientes: ' + error.message +
+                 '. Puede que falte correr SQL-COMENTARIOS-OPINIONES-INVITACIONES.sql.'
+        }, 400)
+      }
+
+      const lista = pendientes || []
+      if (lista.length === 0) return json({ exito: true, avisos: 0, mensaje: 'No hay respuestas nuevas' })
+
+      let ok = 0, mal = 0
+      let primerError = ''
+
+      for (const p of lista) {
+        if (!p.email) continue
+
+        const r = await mandar(
+          p.email,
+          'Respondieron tu comentario en ' + p.clase_titulo,
+          plantillaRespuesta(p.nombre || '', p.quien_respondio || 'Alguien',
+            p.mi_comentario || '', p.la_respuesta || '',
+            p.clase_titulo || '', p.curso_titulo || '', p.curso_slug || '', p.clase_id)
+        )
+
+        await supabase.from('avisos_respuesta')
+          .update({ enviado: true }).eq('id', p.aviso_id)
+
+        if (r.ok) ok++; else { mal++; if (!primerError) primerError = r.error || '' }
+        await new Promise(res => setTimeout(res, 550))
+      }
+
+      return json({ exito: true, avisos: ok, fallidos: mal, detalle_error: primerError || null })
     }
 
     // ═══ BIENVENIDA: alguien se acaba de inscribir ═══

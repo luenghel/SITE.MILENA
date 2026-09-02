@@ -59,10 +59,12 @@ create policy "Equipo borra documentos" on public.documentos for delete using (p
 -- ─── 2. CUÁNTO DURA EL ACCESO ──────────────────────────────────────
 -- permanente → para siempre
 -- dias       → X días desde que compró
-alter table public.cursos add column if not exists tipo_acceso text default 'permanente';
-alter table public.cursos add column if not exists dias_acceso int;
+-- Por defecto, 1 año de acceso. Se cambia curso por curso.
+alter table public.cursos add column if not exists tipo_acceso text default 'dias';
+alter table public.cursos add column if not exists dias_acceso int default 365;
 
-update public.cursos set tipo_acceso = 'permanente' where tipo_acceso is null;
+update public.cursos set tipo_acceso = 'dias' where tipo_acceso is null;
+update public.cursos set dias_acceso = 365 where dias_acceso is null and tipo_acceso = 'dias';
 
 -- Cuándo se le vence el acceso a esta persona
 alter table public.compras add column if not exists acceso_hasta timestamptz;
