@@ -425,6 +425,13 @@ function pintarVideo(cl){
   zona.innerHTML = '';
 }
 
+// El enlace de una clase: corto si tiene número, largo si no
+function urlDeClase(cl){
+  const base = '/clase?curso=' + encodeURIComponent(cursoSlug);
+  if(!cl) return base;
+  return base + (cl.numero ? '&c=' + cl.numero : '&clase=' + encodeURIComponent(cl.id));
+}
+
 // ─── Pintar la clase completa ──────────────────────────────────────
 async function abrirClase(id, empujarHistorial){
   const cl = clasesPlanas.find(x => x.id === id);
@@ -434,11 +441,9 @@ async function abrirClase(id, empujarHistorial){
   claseActualId = id;
 
   // El enlace de arriba se actualiza, corto y lindo
-  if(cl.numero){
-    const nueva = '/clase?curso=' + encodeURIComponent(cursoSlug) + '&c=' + cl.numero;
-    if(window.location.pathname + window.location.search !== nueva){
-      history.replaceState(null, '', nueva);
-    }
+  const nueva = urlDeClase(cl);
+  if(window.location.pathname + window.location.search !== nueva){
+    history.replaceState(null, '', nueva);
   }
 
   // ¿Ya se liberó?
@@ -503,8 +508,7 @@ async function abrirClase(id, empujarHistorial){
   cerrarLista();
 
   if(empujarHistorial){
-    const url = '/clase?curso=' + encodeURIComponent(cursoSlug) + '&clase=' + encodeURIComponent(id);
-    history.pushState({ clase: id }, '', url);
+    history.pushState({ clase: id }, '', urlDeClase(cl));
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -667,7 +671,19 @@ function cerrarLista(){
 }
 
 window.addEventListener('popstate', e => {
-  const id = e.state?.clase || new URLSearchParams(window.location.search).get('clase');
+  // El botón atrás: puede venir por número corto o por código largo
+  let id = e.state?.clase;
+
+  if(!id){
+    const p = new URLSearchParams(window.location.search);
+    const num = p.get('c');
+    if(num){
+      const cl = clasesPlanas.find(x => String(x.numero) === String(num));
+      if(cl) id = cl.id;
+    }
+    if(!id) id = p.get('clase');
+  }
+
   if(id) abrirClase(id, false);
 });
 
