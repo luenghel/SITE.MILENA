@@ -324,7 +324,8 @@ body{visibility:hidden}
 
 const params = new URLSearchParams(window.location.search);
 const cursoSlug = params.get('curso');
-let claseActualId = params.get('clase');
+let claseActualId = params.get('clase');   // el código largo, si viene
+let claseNumero = params.get('c');          // el número corto
 
 let usuario = null;
 let curso = null;
@@ -431,6 +432,14 @@ async function abrirClase(id, empujarHistorial){
 
   claseActual = cl;
   claseActualId = id;
+
+  // El enlace de arriba se actualiza, corto y lindo
+  if(cl.numero){
+    const nueva = '/clase?curso=' + encodeURIComponent(cursoSlug) + '&c=' + cl.numero;
+    if(window.location.pathname + window.location.search !== nueva){
+      history.replaceState(null, '', nueva);
+    }
+  }
 
   // ¿Ya se liberó?
   const lib = estadoLiberacion(cl);
@@ -741,9 +750,20 @@ const esperarSupa = setInterval(async () => {
     return;
   }
 
-  let inicial = claseActualId && disponibles.find(x => x.id === claseActualId)
-    ? claseActualId
-    : (disponibles.find(x => !progreso[x.id]) || disponibles[0]).id;
+  // Puede venir por número corto (?c=3) o por el código largo (?clase=...)
+  let pedida = null;
+
+  if(claseNumero){
+    const porNumero = disponibles.find(x => String(x.numero) === String(claseNumero));
+    if(porNumero) pedida = porNumero.id;
+  }
+  if(!pedida && claseActualId){
+    const porId = disponibles.find(x => x.id === claseActualId);
+    if(porId) pedida = porId.id;
+  }
+
+  // Si no pidió ninguna, la primera sin ver
+  const inicial = pedida || (disponibles.find(x => !progreso[x.id]) || disponibles[0]).id;
 
   await abrirClase(inicial, false);
 }, 40);

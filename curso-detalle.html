@@ -576,7 +576,7 @@ async function mostrarTemario(curso, user){
             <h2 class="temario-h2 serif">${esc2(curso.titulo)}</h2>
             <div class="temario-prog-txt">${hechas} de ${total} clases · ${pct}% completado</div>
           </div>
-          <a href="/clase?curso=${encodeURIComponent(curso.slug)}${siguiente ? '&clase=' + siguiente.id : ''}" class="cta-gold temario-btn">
+          <a href="${enlaceClase(curso.slug, siguiente)}" class="cta-gold temario-btn">
             ${hechas === 0 ? 'EMPEZAR EL CURSO' : (hechas === total ? 'REPASAR' : 'SEGUIR DONDE QUEDÉ')}
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
@@ -598,7 +598,7 @@ async function mostrarTemario(curso, user){
                   </div>
                 </div>
                 ${cls.map(cl => `
-                  <a href="/clase?curso=${encodeURIComponent(curso.slug)}&clase=${cl.id}" class="tem-clase">
+                  <a href="${enlaceClase(curso.slug, cl)}" class="tem-clase">
                     <div class="tem-check ${progreso[cl.id] ? 'ok' : ''}">
                       ${progreso[cl.id]
                         ? '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
@@ -697,6 +697,14 @@ async function anotarseGratis(){
   setTimeout(() => window.location.reload(), 900);
 }
 
+
+
+// El enlace de una clase: corto si tiene número, largo si no
+function enlaceClase(slug, cl){
+  if(!cl) return '/clase?curso=' + encodeURIComponent(slug);
+  return '/clase?curso=' + encodeURIComponent(slug) +
+    (cl.numero ? '&c=' + cl.numero : '&clase=' + cl.id);
+}
 
 // ─── Contador de acceso ───
 function pintarContadorAcceso(curso, compra){
@@ -1133,7 +1141,7 @@ async function pintarCursoReal(){
           '</div>';
         }
 
-        return '<a href="/clase?curso=' + encodeURIComponent(slug) + '&clase=' + cl.id + '" class="lesson">' +
+        return '<a href="' + enlaceClase(slug, cl) + '" class="lesson">' +
           '<div class="lesson-thumb" style="background:linear-gradient(135deg,#7A1B2E,#B8294A)">' +
             '<div class="lesson-thumb-overlay"></div>' +
             (hecha
@@ -1159,7 +1167,7 @@ async function pintarCursoReal(){
   const btn = document.getElementById('btnContinuar');
   const btnTxt = document.getElementById('btnContinuarTxt');
   if(btn && btnTxt && siguiente){
-    btn.setAttribute('href', '/clase?curso=' + encodeURIComponent(slug) + '&clase=' + siguiente.id);
+    btn.setAttribute('href', enlaceClase(slug, siguiente));
     if(hechas === 0) btnTxt.textContent = 'EMPEZAR EL CURSO';
     else if(hechas === clases.length) btnTxt.textContent = 'REPASAR EL CURSO';
     else btnTxt.textContent = 'CONTINUAR DONDE QUEDÉ';
