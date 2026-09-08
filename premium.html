@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1A0A12">
-<link rel="stylesheet" href="styles.css?v=202609081723">
+<link rel="stylesheet" href="styles.css?v=202609081839">
 <style>
   .glow-1{position:fixed;width:520px;height:520px;left:-180px;top:-160px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.16),transparent 65%);pointer-events:none;z-index:0}
   .glow-2{position:fixed;width:400px;height:400px;right:-110px;bottom:-110px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.3),transparent 65%);pointer-events:none;z-index:0}
@@ -83,6 +83,23 @@
     .precio{font-size:38px}
     .beneficios{grid-template-columns:1fr}
   }
+
+  /* ── Paso previo antes de ir a pagar ── */
+  .prev-fondo{position:fixed;inset:0;background:rgba(10,3,6,0.82);backdrop-filter:blur(8px);z-index:900;display:none;align-items:center;justify-content:center;padding:20px}
+  .prev-fondo.abierto{display:flex}
+  .prev-caja{width:100%;max-width:420px;background:linear-gradient(160deg,#2D0A18,#1A0509);border:0.5px solid rgba(212,163,86,0.4);border-radius:20px;padding:30px 26px;box-shadow:0 24px 60px rgba(0,0,0,0.6);max-height:90vh;overflow-y:auto}
+  .prev-tit{font-family:Georgia,serif;font-size:23px;font-weight:500;margin:0 0 8px;letter-spacing:-0.015em}
+  .prev-sub{font-size:13.5px;color:rgba(255,245,240,0.66);line-height:1.55;margin:0 0 20px}
+  .prev-label{font-size:10px;letter-spacing:0.2em;color:rgba(255,245,240,0.5);font-weight:500;display:block;margin-bottom:8px}
+  .prev-mail{display:flex;align-items:center;gap:10px;background:rgba(212,163,86,0.1);border:0.5px solid rgba(212,163,86,0.45);border-radius:12px;padding:14px 15px;margin-bottom:8px}
+  .prev-mail-txt{flex:1;min-width:0;font-size:15px;color:#FAC775;font-weight:500;word-break:break-all;line-height:1.35}
+  .prev-copiar{flex-shrink:0;background:rgba(255,245,240,0.08);border:0.5px solid rgba(255,245,240,0.2);color:#FFF5F0;border-radius:9px;padding:8px 12px;font-size:11px;font-weight:600;letter-spacing:0.08em;cursor:pointer;font-family:inherit;transition:all 0.2s}
+  .prev-copiar:hover{background:rgba(255,245,240,0.15)}
+  .prev-aviso{display:flex;gap:9px;font-size:12.5px;color:rgba(255,245,240,0.6);line-height:1.5;margin:14px 0 22px}
+  .prev-aviso svg{flex-shrink:0;margin-top:2px}
+  .prev-ir{display:block;width:100%;padding:17px;border-radius:12px;font-size:12.5px;font-weight:600;letter-spacing:0.14em;text-align:center;text-decoration:none;border:none;cursor:pointer;font-family:inherit}
+  .prev-cancelar{display:block;width:100%;margin-top:12px;background:none;border:none;color:rgba(255,245,240,0.5);font-size:12.5px;cursor:pointer;font-family:inherit;padding:8px}
+  .prev-cancelar:hover{color:#FFF5F0}
 </style>
 </head>
 <body>
@@ -219,8 +236,8 @@
   Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
 </footer>
 
-<script src="supabase-config.js?v=202609081723"></script>
-<script src="header-dinamico.js?v=202609081723"></script>
+<script src="supabase-config.js?v=202609081839"></script>
+<script src="header-dinamico.js?v=202609081839"></script>
 <script>
   let plan = null;
 
@@ -306,6 +323,17 @@
       }
     }
 
+    // Si hay link de pago, la letra chica cambia: ya no "te escribimos",
+    // sino qué va a pasar de verdad cuando aprete el botón.
+    if(plan && plan.enlace_boton && plan.enlace_boton.trim()){
+      const nota = document.querySelector('.precio-nota');
+      if(nota){
+        nota.innerHTML =
+          'Se cobra automáticamente cada mes. Podés dar de baja cuando quieras.<br>' +
+          '<span style="color:#FAC775">Pagá con el mismo correo de tu cuenta y tu acceso se habilita al instante.</span>';
+      }
+    }
+
     // ¿Ya es premium?
     const { data: { user } } = await sb.auth.getUser();
     if(user){
@@ -329,9 +357,10 @@
     }
 
     // Los próximos encuentros
-    const { data: encs } = await sb.from('encuentros')
+    // Agenda pública: título y fecha, sin enlace ni grabación.
+    // Es una página de venta, la ve cualquiera.
+    const { data: encs } = await sb.from('encuentros_agenda')
       .select('titulo, descripcion, fecha, duracion_minutos')
-      .eq('publicado', true)
       .gte('fecha', new Date().toISOString())
       .order('fecha', { ascending: true })
       .limit(4);
@@ -358,6 +387,63 @@
     }
   }
 
+  // Guardamos a quién mandamos a Pagopar y con qué email.
+  // Es la red de seguridad: si allá se registra con otro email,
+  // el panel puede cruzar el pago con quien apretó el botón.
+  let miUsuario = null;
+  let destinoPago = null;
+
+  function cerrarPrevio(){
+    document.getElementById('prevFondo').classList.remove('abierto');
+  }
+
+  function copiarMail(){
+    const txt = document.getElementById('prevMail').textContent.trim();
+    const btn = document.getElementById('prevCopiar');
+    const listo = () => { btn.textContent = '✓ COPIADO'; setTimeout(() => btn.textContent = 'COPIAR', 2000); };
+
+    if(navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(txt).then(listo).catch(() => seleccionarMail());
+    } else {
+      seleccionarMail();
+    }
+  }
+
+  // Si el navegador no deja copiar, al menos se lo dejamos seleccionado
+  function seleccionarMail(){
+    const el = document.getElementById('prevMail');
+    const r = document.createRange();
+    r.selectNodeContents(el);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(r);
+    document.getElementById('prevCopiar').textContent = 'COPIALO';
+  }
+
+  async function irAPagar(){
+    const btn = document.getElementById('prevIr');
+    btn.disabled = true;
+    btn.textContent = 'ABRIENDO...';
+
+    // Dejamos constancia del intento antes de soltarla en Pagopar
+    if(miUsuario){
+      try {
+        await sb.from('intentos_suscripcion').insert({
+          usuario_id: miUsuario.id,
+          email: miUsuario.email
+        });
+      } catch(e){ /* si falla, seguimos igual: el pago es lo importante */ }
+    }
+
+    const d = (destinoPago || '').trim();
+    if(/^https?:\/\//i.test(d)) window.open(d, '_blank', 'noopener');
+    else window.location.href = d;
+
+    btn.disabled = false;
+    btn.textContent = 'CONTINUAR AL PAGO';
+    cerrarPrevio();
+  }
+
   async function sumarme(ev){
     ev.preventDefault();
 
@@ -367,11 +453,12 @@
       return;
     }
 
-    // Si configuraste un enlace propio, va ahí
+    // Si configuraste un enlace de pago, primero le mostramos su email
     if(plan && plan.enlace_boton && plan.enlace_boton.trim()){
-      const d = plan.enlace_boton.trim();
-      if(/^https?:\/\//i.test(d)) window.open(d, '_blank', 'noopener');
-      else window.location.href = d;
+      miUsuario = user;
+      destinoPago = plan.enlace_boton.trim();
+      document.getElementById('prevMail').textContent = user.email || '';
+      document.getElementById('prevFondo').classList.add('abierto');
       return;
     }
 
@@ -397,6 +484,32 @@
     cargarPagina();
   }, 50);
 </script>
+
+<!-- Paso previo: que se suscriba en Pagopar con el MISMO email de su cuenta -->
+<div class="prev-fondo" id="prevFondo">
+  <div class="prev-caja">
+    <h3 class="prev-tit">Usá este mismo correo</h3>
+    <p class="prev-sub">
+      Ahora vas a pagar en Pagopar. Registrate allá con <strong>el mismo correo</strong>
+      que usás acá, y tu acceso premium se habilita <strong>al instante</strong>.
+    </p>
+
+    <span class="prev-label">TU CORREO EN CMM</span>
+    <div class="prev-mail">
+      <div class="prev-mail-txt" id="prevMail">—</div>
+      <button class="prev-copiar" id="prevCopiar" onclick="copiarMail()">COPIAR</button>
+    </div>
+
+    <div class="prev-aviso">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+      <span>Si usás otro correo, tu acceso <strong>no se habilita solo</strong>: lo tenemos
+      que asociar a mano y puede demorar unas horas.</span>
+    </div>
+
+    <button class="cta-gold prev-ir" id="prevIr" onclick="irAPagar()">CONTINUAR AL PAGO</button>
+    <button class="prev-cancelar" onclick="cerrarPrevio()">Ahora no</button>
+  </div>
+</div>
 
 </body>
 </html>
