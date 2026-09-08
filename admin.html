@@ -8650,6 +8650,10 @@ body{visibility:hidden}
   }
 
   async function refrescarDashboard(){
+    if(typeof sb === 'undefined' || !sb){
+      mostrarToast('Todavía no conectamos con la base. Esperá unos segundos y probá de nuevo.', true);
+      return;
+    }
     mostrarToast('Actualizando...');
 
     // Si una carga falla, las demás siguen y el dashboard igual se actualiza
