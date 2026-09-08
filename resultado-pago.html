@@ -2,7 +2,7 @@
 <html lang="es-PY">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
 <title>Resultado del pago · Milena Machado</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -140,9 +140,13 @@
         .eq('pagopar_id', hashPedido)
         .maybeSingle();
 
-      // Si todavía figura pendiente, le preguntamos directamente a Pagopar.
-      // Así, aunque el aviso automático haya fallado, la compra se confirma igual.
+      // SIEMPRE consultamos el estado del pedido en Pagopar.
+      // Es el PASO 3 que Pagopar exige para habilitar producción: el comercio
+      // tiene que consultar el estado de un pedido. Si solo preguntáramos
+      // cuando la compra quedó pendiente, en un pago que el webhook confirma
+      // bien nunca se consultaría y el paso 3 queda sin cumplir.
       if (!compra || compra.estado === 'pendiente') {
+        // Todavía no está confirmada: mostramos el cartel de "verificando"
         mostrarResultado('pending', 'Confirmando tu pago...', 'Estamos verificando con el medio de pago. Aguardá unos segundos.', '');
 
         const confirmado = await preguntarAPagopar(hashPedido);
@@ -153,6 +157,9 @@
             .eq('pagopar_id', hashPedido).maybeSingle();
           if (r.data) compra = r.data;
         }
+      } else {
+        // Ya estaba confirmada: consultamos igual, en silencio, sin frenar la pantalla
+        preguntarAPagopar(hashPedido).catch(e => console.warn('[resultado] consulta silenciosa:', e));
       }
 
       if (!compra) {

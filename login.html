@@ -2,7 +2,7 @@
 <html lang="es-PY">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
 <title>Entrar · Milena Machado</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -506,11 +506,21 @@ function armarCajitas2P(){
     inp.className = 'codigo-box';
     inp.type = 'text';
     inp.inputMode = 'numeric';
+    inp.setAttribute('pattern', '[0-9]*');
+    // Solo la primera pide el autocompletado del SMS/mail: iOS lo reparte solo
+    inp.setAttribute('autocomplete', i === 0 ? 'one-time-code' : 'off');
     inp.maxLength = 1;
     cont.appendChild(inp);
   }
 
   const todas = cont.querySelectorAll('.codigo-box');
+  // En el celular, dejar la cajita visible arriba del teclado
+  todas.forEach(box => {
+    box.addEventListener('focus', () => {
+      if(window.innerWidth > 900) return;
+      setTimeout(() => box.scrollIntoView({ block: 'center', behavior: 'smooth' }), 300);
+    });
+  });
   todas.forEach((box, idx) => {
     box.addEventListener('input', e => {
       e.target.value = e.target.value.replace(/\D/g,'').slice(-1);
@@ -692,14 +702,21 @@ function armarCajitas(cantidad){
     inp.className = 'codigo-box';
     inp.type = 'text';
     inp.inputMode = 'numeric';
+    inp.setAttribute('pattern', '[0-9]*');
+    inp.setAttribute('autocomplete', i === 0 ? 'one-time-code' : 'off');
     inp.maxLength = 1;
     inp.dataset.i = i;
     cont.appendChild(inp);
   }
   // Con muchos dígitos, achicamos para que entren en el celular
   cont.style.gap = cantidad > 6 ? '5px' : '8px';
-  document.querySelectorAll('.codigo-box').forEach(b => {
+  document.querySelectorAll('#codigoInputs .codigo-box').forEach(b => {
     if(cantidad > 6){ b.style.width = '38px'; b.style.fontSize = '20px'; }
+    // En el celular, dejar la cajita visible arriba del teclado
+    b.addEventListener('focus', () => {
+      if(window.innerWidth > 900) return;
+      setTimeout(() => b.scrollIntoView({ block: 'center', behavior: 'smooth' }), 300);
+    });
   });
 
   conectarCajitas();

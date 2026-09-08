@@ -257,3 +257,33 @@ select optgroup{
   color:#FFF5F0;
 }
 select{color:#FFF5F0}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   FIX MÓVIL — sin zoom automático y sin desborde horizontal
+   iOS/Safari hace zoom SOLO si el campo tiene letra menor a 16px.
+   Todo lo de acá adentro corre únicamente en pantallas chicas:
+   el escritorio no se toca.
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 900px){
+
+  /* 1. Nada se sale de la pantalla */
+  html, body{
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* 2. El anti-zoom: todos los campos a 16px como mínimo.
+        Las .codigo-box quedan afuera: ya son de 20px o más a propósito. */
+  input:not(.codigo-box):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]),
+  textarea,
+  select{
+    font-size: 16px !important;
+  }
+
+  /* 3. Que ningún campo empuje el ancho de la pantalla */
+  input, textarea, select{
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}

@@ -2,7 +2,7 @@
 <html lang="es-PY">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
 <title>Panel Admin · Milena Machado</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -8361,6 +8361,19 @@ body{visibility:hidden}
     return 'Gs ' + (Number(n) || 0).toLocaleString('es-PY');
   }
 
+  // Accesos que NO son una venta: cursos gratis, invitaciones, cortesías.
+  // Entran igual a la tabla de compras, pero no son plata que entró.
+  const METODOS_SIN_PLATA = ['gratis','invitacion','invitación','cortesia','cortesía','manual','regalo'];
+
+  function esRegalo(v){
+    const m = (v.metodo_pago || '').toLowerCase().trim();
+    return METODOS_SIN_PLATA.includes(m) || (Number(v.monto_gs) || 0) <= 0;
+  }
+
+  function esVentaReal(v){
+    return !esRegalo(v);
+  }
+
   async function cargarVentas(){
     if(!sb) return;
 
@@ -8386,7 +8399,7 @@ body{visibility:hidden}
     }
     ventas.forEach(v => { v._persona = perfC[v.usuario_id] || null; });
 
-    const pagadas = ventas.filter(v => v.estado === 'pagado');
+    const pagadas = ventas.filter(v => v.estado === 'pagado').filter(esVentaReal);
     const pend = ventas.filter(v => v.estado === 'pendiente');
     const canc = ventas.filter(v => v.estado === 'cancelado');
     const total = pagadas.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
@@ -8433,7 +8446,7 @@ body{visibility:hidden}
         '<td>' + esc(nombreCompradora(v)) +
           (v._persona ? '<div class="al-email">' + esc(v._persona.email || '') + '</div>' : '') + '</td>' +
         '<td>' + esc(v.cursos?.titulo || '—') + '</td>' +
-        '<td style="font-family:Georgia,serif;color:#FAC775;white-space:nowrap">' + gs(v.monto_gs) + '</td>' +
+        '<td style="font-family:Georgia,serif;color:' + (esRegalo(v) ? 'rgba(255,245,240,0.45)' : '#FAC775') + ';white-space:nowrap">' + (esRegalo(v) ? 'Gratis' : gs(v.monto_gs)) + '</td>' +
         '<td>' + pillEstado(v.estado) + '</td>' +
         '<td style="color:rgba(255,245,240,0.55);font-size:12px;white-space:nowrap">' + fechaCorta(v.creado_en || v.pagado_en) + '</td>' +
       '</tr>'
@@ -8444,7 +8457,7 @@ body{visibility:hidden}
         '<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:9px">' +
           '<div style="min-width:0"><div class="al-nombre">' + esc(nombreCompradora(v)) + '</div>' +
           '<div class="al-email">' + esc(v.cursos?.titulo || '—') + '</div></div>' +
-          '<div style="font-family:Georgia,serif;color:#FAC775;white-space:nowrap">' + gs(v.monto_gs) + '</div>' +
+          '<div style="font-family:Georgia,serif;color:' + (esRegalo(v) ? 'rgba(255,245,240,0.45)' : '#FAC775') + ';white-space:nowrap">' + (esRegalo(v) ? 'Gratis' : gs(v.monto_gs)) + '</div>' +
         '</div>' +
         '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">' +
           pillEstado(v.estado) +
@@ -8486,10 +8499,19 @@ body{visibility:hidden}
   // ============================
   // DASHBOARD CON DATOS REALES
   // ============================
+  // Escribe en una tarjeta del dashboard sin romper todo si ese id no existe
+  function txtDash(id, valor){
+    const el = document.getElementById(id);
+    if(el) el.textContent = valor;
+    else console.warn('[dashboard] falta el elemento #' + id);
+  }
+
   async function cargarDashboard(){
     if(!sb) return;
 
-    const pagadas = ventas.filter(v => v.estado === 'pagado');
+    const cobradas = ventas.filter(v => v.estado === 'pagado');
+    const pagadas = cobradas.filter(esVentaReal);   // ventas de verdad
+    const regalos = cobradas.filter(esRegalo);      // gratis · invitación · cortesía
     const pend = ventas.filter(v => v.estado === 'pendiente');
     const total = pagadas.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
 
@@ -8499,18 +8521,19 @@ body{visibility:hidden}
     const delMes = pagadas.filter(v => new Date(v.pagado_en || v.creado_en).getTime() >= inicioMes);
     const totalMes = delMes.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
 
-    document.getElementById('dashIngresos').textContent = gs(total);
-    document.getElementById('dashIngresosMes').textContent = total > 0
+    txtDash('dashIngresos', gs(total));
+    txtDash('dashIngresosMes', total > 0
       ? gs(totalMes) + ' este mes'
-      : 'Sin ventas todavía';
-    document.getElementById('dashVentas').textContent = pagadas.length;
-    document.getElementById('dashVentasSub').textContent = pagadas.length > 0
-      ? delMes.length + ' este mes'
-      : 'Todavía ninguna';
-    document.getElementById('dashPendientes').textContent = pend.length;
-    document.getElementById('dashTicket').textContent = pagadas.length
+      : 'Sin ventas todavía');
+    txtDash('dashVentas', pagadas.length);
+    txtDash('dashVentasSub',
+      regalos.length > 0
+        ? (pagadas.length > 0 ? delMes.length + ' este mes · ' : '') + regalos.length + ' acceso(s) gratis aparte'
+        : (pagadas.length > 0 ? delMes.length + ' este mes' : 'Todavía ninguna'));
+    txtDash('dashPendientes', pend.length);
+    txtDash('dashTicket', pagadas.length
       ? gs(Math.round(total / pagadas.length))
-      : 'Gs 0';
+      : 'Gs 0');
 
     // Personas
     const nAlumnas = alumnas.length;
@@ -8519,48 +8542,49 @@ body{visibility:hidden}
     const compradoras = alumnas.filter(a => (a._compras || 0) > 0).length;
     const activas = alumnas.filter(a => (a._posts || 0) + (a._comentarios || 0) > 0).length;
 
-    document.getElementById('dashRegistradas').textContent = nAlumnas;
-    document.getElementById('dashRegistradasSub').textContent = nuevas > 0
+    txtDash('dashRegistradas', nAlumnas);
+    txtDash('dashRegistradasSub', nuevas > 0
       ? '+' + nuevas + ' en los últimos 30 días'
-      : 'Sin registros nuevos este mes';
-    document.getElementById('dashCompradoras').textContent = compradoras;
-    document.getElementById('dashConversion').textContent = nAlumnas > 0
+      : 'Sin registros nuevos este mes');
+    txtDash('dashCompradoras', compradoras);
+    txtDash('dashConversion', nAlumnas > 0
       ? Math.round((compradoras / nAlumnas) * 100) + '% de las registradas'
-      : '—';
-    document.getElementById('dashSubs').textContent = suscriptores.length;
-    document.getElementById('dashActivas').textContent = activas;
+      : '—');
+    txtDash('dashSubs', suscriptores.length);
+    txtDash('dashActivas', activas);
 
     // Contenido
     const cursosPub = cursos.filter(x => x.publicado).length;
     const artPub = articulos.filter(a => a.publicado).length;
-    document.getElementById('dashCursos').textContent = cursosPub;
-    document.getElementById('dashCursosSub').textContent = (cursos.length - cursosPub) + ' en borrador';
-    document.getElementById('dashArticulos').textContent = artPub;
-    document.getElementById('dashArticulosSub').textContent = (articulos.length - artPub) + ' en borrador';
-    document.getElementById('dashPosts').textContent = modPosts.length;
+    txtDash('dashCursos', cursosPub);
+    txtDash('dashCursosSub', (cursos.length - cursosPub) + ' en borrador');
+    txtDash('dashArticulos', artPub);
+    txtDash('dashArticulosSub', (articulos.length - artPub) + ' en borrador');
+    txtDash('dashPosts', modPosts.length);
 
     const nComents = Object.values(modComentarios).reduce((s, arr) => s + arr.length, 0);
-    document.getElementById('dashPostsSub').textContent = nComents + ' comentario' + (nComents === 1 ? '' : 's');
+    txtDash('dashPostsSub', nComents + ' comentario' + (nComents === 1 ? '' : 's'));
 
     // Por revisar: denuncias + publicaciones esperando aprobación
     const nDen = Object.values(modDenuncias).reduce((s, arr) => s + arr.length, 0);
     const nPend = modPosts.filter(p => p.pendiente_aprobacion).length;
     const porRevisar = nDen + nPend;
-    document.getElementById('dashPorRevisar').textContent = porRevisar;
-    document.getElementById('dashCardDenuncias').classList.toggle('alerta', porRevisar > 0);
-    document.getElementById('dashPorRevisarSub').textContent = porRevisar > 0
+    txtDash('dashPorRevisar', porRevisar);
+    document.getElementById('dashCardDenuncias')?.classList.toggle('alerta', porRevisar > 0);
+    txtDash('dashPorRevisarSub', porRevisar > 0
       ? nDen + ' denuncia(s) · ' + nPend + ' con enlace'
-      : 'Nada pendiente';
+      : 'Nada pendiente');
 
     // Saludo
     const yo = alumnas.find(a => a.id === yoSoyId);
-    if(yo) document.getElementById('dashNombre').textContent = (yo.nombre || 'vos').split(' ')[0];
-    document.getElementById('dashResumen').textContent = total > 0
+    if(yo) txtDash('dashNombre', (yo.nombre || 'vos').split(' ')[0]);
+    txtDash('dashResumen', total > 0
       ? 'Llevás ' + gs(total) + ' cobrados y ' + nAlumnas + ' persona' + (nAlumnas === 1 ? '' : 's') + ' registrada' + (nAlumnas === 1 ? '' : 's') + '.'
-      : 'Todavía no hubo ventas. Acá vas a ver los números cuando empiecen a llegar.';
+      : 'Todavía no hubo ventas. Acá vas a ver los números cuando empiecen a llegar.');
 
     // Últimas ventas
     const cont = document.getElementById('dashUltimasVentas');
+    if(!cont) return;
     const ultimas = ventas.slice(0, 6);
     if(ultimas.length === 0){
       cont.innerHTML = '<div class="vacio-suave"><div class="ico">💳</div>Todavía no hubo ventas' +
@@ -8573,7 +8597,7 @@ body{visibility:hidden}
             '<div style="font-size:11.5px;color:rgba(255,245,240,0.5)">' + esc(v.cursos?.titulo || '—') + ' · ' + fechaCorta(v.creado_en || v.pagado_en) + '</div>' +
           '</div>' +
           pillEstado(v.estado) +
-          '<span class="venta-monto">' + gs(v.monto_gs) + '</span>' +
+          '<span class="venta-monto"' + (esRegalo(v) ? ' style="color:rgba(255,245,240,0.45)"' : '') + '>' + (esRegalo(v) ? 'Gratis' : gs(v.monto_gs)) + '</span>' +
         '</div>'
       ).join('');
     }
@@ -8581,14 +8605,30 @@ body{visibility:hidden}
 
   async function refrescarDashboard(){
     mostrarToast('Actualizando...');
-    await cargarCursos();
-    await cargarAlumnas();
-    await cargarArticulos();
-    await cargarVentas();
-    await cargarNewsletter();
-    await cargarModeracion();
-    await cargarDashboard();
-    mostrarToast('✓ Datos actualizados');
+
+    // Si una carga falla, las demás siguen y el dashboard igual se actualiza
+    const pasos = [
+      ['cursos', cargarCursos],
+      ['alumnas', cargarAlumnas],
+      ['articulos', cargarArticulos],
+      ['ventas', cargarVentas],
+      ['newsletter', cargarNewsletter],
+      ['moderacion', cargarModeracion]
+    ];
+    const rotas = [];
+    for(const [nombre, fn] of pasos){
+      try { await fn(); }
+      catch(e){ rotas.push(nombre); console.error('[admin] falló cargar ' + nombre + ':', e); }
+    }
+
+    try { await cargarDashboard(); }
+    catch(e){ console.error('[admin] falló armar el dashboard:', e); }
+
+    guardarNumeros();
+
+    mostrarToast(rotas.length
+      ? 'Actualizado, pero fallaron: ' + rotas.join(', ')
+      : '✓ Datos actualizados', rotas.length > 0);
   }
 
   // ============================
@@ -8952,31 +8992,49 @@ body{visibility:hidden}
     const { data: { user } } = await sb.auth.getUser();
     yoSoyId = user?.id || null;
 
-    // Todo lo independiente, al mismo tiempo
-    await Promise.all([
-      cargarCursos(),
-      cargarCarruseles(),
-      cargarAlumnas(),
-      cargarArticulos(),
-      cargarVentas(),
-      cargarModeracion(),
-      cargarEnvios(),
-      cargarInsignias(),
-      cargarAnuncios(),
-      cargarFunciones(),
-      cargarClasesParaAnuncio(),
-      cargarHashtags(),
-      cargarSecciones()
-    ]);
+    // Todo lo independiente, al mismo tiempo.
+    // allSettled en vez de all: si una carga falla, las demás siguen
+    // y el dashboard igual se actualiza (antes se cortaba todo).
+    const tareas = [
+      ['cursos', cargarCursos],
+      ['carruseles', cargarCarruseles],
+      ['alumnas', cargarAlumnas],
+      ['articulos', cargarArticulos],
+      ['ventas', cargarVentas],
+      ['moderacion', cargarModeracion],
+      ['envios', cargarEnvios],
+      ['insignias', cargarInsignias],
+      ['anuncios', cargarAnuncios],
+      ['funciones', cargarFunciones],
+      ['clases-anuncio', cargarClasesParaAnuncio],
+      ['hashtags', cargarHashtags],
+      ['secciones', cargarSecciones]
+    ];
+
+    const res = await Promise.allSettled(tareas.map(t => t[1]()));
+    const rotas = [];
+    res.forEach((r, i) => {
+      if(r.status === 'rejected'){
+        rotas.push(tareas[i][0]);
+        console.error('[admin] falló cargar ' + tareas[i][0] + ':', r.reason);
+      }
+    });
 
     // El newsletter necesita saber quiénes tienen cuenta
-    await cargarNewsletter();
+    try { await cargarNewsletter(); }
+    catch(e){ rotas.push('newsletter'); console.error('[admin] falló cargar newsletter:', e); }
 
-    await cargarDashboard();
-    renderAnunciosPendientes();
+    try { await cargarDashboard(); }
+    catch(e){ console.error('[admin] falló armar el dashboard:', e); }
+
+    try { renderAnunciosPendientes(); } catch(e){ console.error(e); }
 
     marcarCargando(false);
     guardarNumeros();
+
+    if(rotas.length){
+      mostrarToast('Algunos datos no cargaron: ' + rotas.join(', ') + '. Probá Actualizar.', true);
+    }
 
     verificarEmailConfigurado();
   }, 40);
