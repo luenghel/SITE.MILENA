@@ -4387,6 +4387,37 @@ body{visibility:hidden}
   // ============================
   // FILAS DEL CATÁLOGO
   // ============================
+  // Estas dos faltaban: se llamaba a cargarSecciones() en tres lugares
+  // pero la función no existía. Eso tiraba el error
+  // "cargarSecciones is not defined" y cortaba TODA la carga del panel,
+  // por eso el dashboard se quedaba con los números viejos.
+  let secciones = [];
+
+  async function cargarSecciones(){
+    if(!sb) return;
+
+    const { data, error } = await sb
+      .from('secciones')
+      .select('*')
+      .order('orden', { ascending: true });
+
+    if(error){
+      console.error('[admin] no pudimos traer las filas del catálogo:', error.message);
+      secciones = [];
+    } else {
+      secciones = data || [];
+    }
+
+    const badge = document.getElementById('seccionesCount');
+    if(badge){
+      badge.textContent = secciones.length;
+      badge.classList.toggle('dim', secciones.length === 0);
+    }
+
+    renderSecciones();
+    llenarSelectorSecciones();
+  }
+
   // El modal antiguo de secciones apunta al sistema nuevo
   function abrirSecciones(){ cambiarTab('secciones'); }
 
@@ -9100,10 +9131,9 @@ body{visibility:hidden}
         window.location.replace('/index');
         return;
       }
-      // Mostrar la página
-      document.getElementById('auth-splash-style').remove();
-      const splash = document.getElementById('authSplash');
-      if (splash) splash.remove();
+      // Mostrar la página (puede que otro bloque ya los haya sacado)
+      document.getElementById('auth-splash-style')?.remove();
+      document.getElementById('authSplash')?.remove();
     }
   }, 50);
 })();

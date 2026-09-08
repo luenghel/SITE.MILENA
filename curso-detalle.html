@@ -542,6 +542,17 @@ async function mostrarTemario(curso, user){
 
   if(modulos.length === 0 || clases.length === 0) return;
 
+  // Cuándo compró, para poder calcular la liberación de las clases.
+  // Antes se usaba una variable "compra" que en esta función no existía:
+  // tiraba ReferenceError y el temario quedaba a medias.
+  let compra = null;
+  if(user){
+    const { data: cmp } = await sb.from('compras')
+      .select('pagado_en, creado_en, acceso_hasta').eq('usuario_id', user.id)
+      .eq('curso_id', curso.id).eq('estado','pagado').maybeSingle();
+    if(cmp) compra = { pagado_en: cmp.pagado_en || cmp.creado_en, acceso_hasta: cmp.acceso_hasta };
+  }
+
   // Progreso
   let progreso = {};
   if(user){
