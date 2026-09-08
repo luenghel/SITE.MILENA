@@ -10,7 +10,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1A0A12">
 
-<link rel="stylesheet" href="styles.css?v=202609081723">
+<link rel="stylesheet" href="styles.css?v=202609081839">
 <style>
   body{display:grid;grid-template-columns:240px 1fr;min-height:100vh;background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);color:#FFF5F0}
 
@@ -3585,6 +3585,17 @@ body{visibility:hidden}
       <div id="encuentrosLista"></div>
     </div>
 
+    <!-- Pagos que llegaron con un email desconocido -->
+    <div class="pm-seccion" id="zonaPagosSueltos" style="display:none">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">⚠️ Pagos sin asociar</h3>
+          <p class="chart-subtitle">Pagaron en Pagopar con un email que no coincide con ninguna cuenta. Asignalos y les damos el acceso.</p>
+        </div>
+      </div>
+      <div id="pagosSueltosLista"></div>
+    </div>
+
     <!-- Interesadas -->
     <div class="pm-seccion" id="zonaInteresadas" style="display:none">
       <div class="pm-cab">
@@ -4729,6 +4740,97 @@ body{visibility:hidden}
     renderEncuentros();
     renderPremium();
     await cargarInteresadas();
+    await cargarPagosSueltos();
+  }
+
+  // ─── Pagos que no pudimos cruzar con ninguna cuenta ───
+  let pagosSueltos = [];
+
+  async function cargarPagosSueltos(){
+    const zona = document.getElementById('zonaPagosSueltos');
+    if(!zona) return;
+
+    const { data, error } = await sb.from('pagos_para_asignar').select('*');
+
+    if(error){
+      // Si todavía no corriste el SQL, no molestamos
+      zona.style.display = 'none';
+      return;
+    }
+
+    pagosSueltos = data || [];
+    zona.style.display = pagosSueltos.length ? '' : 'none';
+    renderPagosSueltos();
+  }
+
+  function renderPagosSueltos(){
+    const cont = document.getElementById('pagosSueltosLista');
+    if(!cont) return;
+
+    cont.innerHTML = pagosSueltos.map(p => {
+      const cands = Array.isArray(p.candidatas) ? p.candidatas : [];
+
+      const botones = cands.length
+        ? cands.slice(0, 5).map(c =>
+            '<button class="btn-secondary" style="margin:0 8px 8px 0" ' +
+              'onclick="asignarPago(\'' + p.id + '\', \'' + c.usuario_id + '\')">' +
+              '✓ ' + esc(c.nombre || c.email || 'Sin nombre') +
+            '</button>'
+          ).join('')
+        : '<div style="font-size:12.5px;color:rgba(255,245,240,0.45);margin-bottom:8px">' +
+            'Nadie apretó el botón de Premium cerca de esta fecha. Buscala en la lista de abajo.' +
+          '</div>';
+
+      const opciones = (alumnas || []).slice()
+        .sort((x, y) => (x.nombre || '').localeCompare(y.nombre || ''))
+        .map(a => '<option value="' + a.id + '">' + esc((a.nombre || 'Sin nombre') + ' · ' + (a.email || '')) + '</option>')
+        .join('');
+
+      return '<div class="alumna-card" style="border-color:rgba(212,163,86,0.35)">' +
+        '<div style="margin-bottom:12px">' +
+          '<div class="al-nombre">' + esc(p.email_pagopar || 'Sin email') + '</div>' +
+          '<div class="al-email">' +
+            gs(p.monto_gs) + ' · ' + fechaCorta(p.creado_en) +
+            (p.nombre_pagopar ? ' · ' + esc(p.nombre_pagopar) : '') +
+          '</div>' +
+        '</div>' +
+        '<div style="font-size:10px;letter-spacing:0.16em;color:rgba(255,245,240,0.45);margin-bottom:9px">' +
+          'APRETARON PREMIUM POR ESAS FECHAS' +
+        '</div>' +
+        '<div>' + botones + '</div>' +
+        '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;' +
+             'border-top:0.5px solid rgba(255,245,240,0.08);padding-top:12px">' +
+          '<select class="form-input" id="selPago_' + p.id + '" style="flex:1;min-width:200px">' +
+            '<option value="">— Elegir a otra persona —</option>' + opciones +
+          '</select>' +
+          '<button class="btn-secondary" onclick="asignarPagoElegido(\'' + p.id + '\')">ASIGNAR</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function asignarPagoElegido(pagoId){
+    const sel = document.getElementById('selPago_' + pagoId);
+    if(!sel || !sel.value) return mostrarToast('Elegí a quién asignárselo', true);
+    asignarPago(pagoId, sel.value);
+  }
+
+  async function asignarPago(pagoId, usuarioId){
+    const quien = (alumnas || []).find(a => a.id === usuarioId);
+    const nombre = quien ? (quien.nombre || quien.email) : 'esta persona';
+
+    if(!confirm('¿Darle el acceso Premium a ' + nombre + '?\n\nSe le suma un mes desde hoy.')) return;
+
+    const { data, error } = await sb.rpc('asignar_pago_sin_cuenta', {
+      p_pago: pagoId,
+      p_usuario: usuarioId
+    });
+
+    if(error) return mostrarToast('No se pudo: ' + error.message, true);
+    if(data && data.exito === false) return mostrarToast(data.error || 'No se pudo asignar', true);
+
+    mostrarToast('✓ Acceso Premium asignado');
+    await cargarPremium();
   }
 
   function renderKpisPremium(){
@@ -9113,7 +9215,7 @@ body{visibility:hidden}
   }, 100);
 </script>
 
-<script src="supabase-config.js?v=202609081723"></script>
+<script src="supabase-config.js?v=202609081839"></script>
 <script>
 // Revelado inmediato: si el caché dice que hay sesión, mostramos la página
 // al instante y verificamos en segundo plano. Adiós a la espera.
@@ -9130,7 +9232,7 @@ body{visibility:hidden}
   }catch(e){}
 })();
 </script>
-<script src="header-dinamico.js?v=202609081723"></script>
+<script src="header-dinamico.js?v=202609081839"></script>
 <script>
 (function() {
   const checkAdmin = setInterval(async () => {
