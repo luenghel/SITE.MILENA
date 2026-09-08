@@ -398,3 +398,52 @@ function precioParaVos(curso, esPremium) {
   }
   return { precio: curso.precio_gs, normal: null, conDescuento: false };
 }
+
+
+// ═══════════════════════════════════════════════════════════════════
+// BIENVENIDA AL INSCRIBIRSE EN UN CURSO GRATIS
+// checkout.html y curso-detalle.html la llamaban, pero no existía:
+// por eso la inscripción gratis nunca mandaba el email de bienvenida.
+// (Las compras pagas sí lo mandan, desde el webhook de Pagopar.)
+// ═══════════════════════════════════════════════════════════════════
+const CANDIDATAS_AVISOS = ['AVISAR-CLASES', 'avisar-clases', 'avisos-clases'];
+
+async function darBienvenida(cursoId, usuarioId) {
+  if (!sb || !cursoId || !usuarioId) return false;
+
+  let guardada = null;
+  try {
+    const { data } = await sb.from('ajustes')
+      .select('valor').eq('clave', 'func_avisos_clases').maybeSingle();
+    if (data && data.valor) guardada = data.valor.trim();
+  } catch (e) {}
+
+  const lista = guardada
+    ? [guardada, ...CANDIDATAS_AVISOS.filter(x => x !== guardada)]
+    : CANDIDATAS_AVISOS;
+
+  let cabeceras = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+    'apikey': SUPABASE_ANON_KEY
+  };
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.access_token) cabeceras['Authorization'] = 'Bearer ' + session.access_token;
+  } catch (e) {}
+
+  for (const nombre of lista) {
+    try {
+      const r = await fetch(SUPABASE_URL + '/functions/v1/' + nombre, {
+        method: 'POST',
+        headers: cabeceras,
+        body: JSON.stringify({ accion: 'bienvenida', curso_id: cursoId, usuario_id: usuarioId })
+      });
+      if (r.status === 404) continue;
+      return r.ok;
+    } catch (e) {}
+  }
+
+  console.warn('[bienvenida] no encontramos la función de avisos');
+  return false;
+}
