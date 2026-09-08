@@ -8363,11 +8363,16 @@ body{visibility:hidden}
 
   // Accesos que NO son una venta: cursos gratis, invitaciones, cortesías.
   // Entran igual a la tabla de compras, pero no son plata que entró.
-  const METODOS_SIN_PLATA = ['gratis','invitacion','invitación','cortesia','cortesía','manual','regalo'];
+  const METODOS_SIN_PLATA = ['gratis','invitacion','invitación','cortesia','cortesía','regalo'];
+  const METODOS_CON_PLATA  = ['pagopar','transferencia','efectivo','tarjeta','giro'];
 
+  // Es regalo SOLO si el método de pago lo dice. Nunca lo deducimos del monto:
+  // si el monto viniera mal, una venta real quedaría escondida.
   function esRegalo(v){
     const m = (v.metodo_pago || '').toLowerCase().trim();
-    return METODOS_SIN_PLATA.includes(m) || (Number(v.monto_gs) || 0) <= 0;
+    if(METODOS_CON_PLATA.includes(m)) return false;   // venta real, pase lo que pase
+    if(METODOS_SIN_PLATA.includes(m)) return true;
+    return (Number(v.monto_gs) || 0) <= 0;            // método desconocido: decide el monto
   }
 
   function esVentaReal(v){
@@ -8398,6 +8403,16 @@ body{visibility:hidden}
       (pp || []).forEach(p => { perfC[p.id] = p; });
     }
     ventas.forEach(v => { v._persona = perfC[v.usuario_id] || null; });
+
+    // Diagnóstico: en la consola del navegador (F12) se ve fila por fila
+    // qué trajo la base y cómo la clasificamos.
+    console.table(ventas.map(v => ({
+      curso: v.cursos?.titulo || '—',
+      monto_gs: v.monto_gs,
+      estado: v.estado,
+      metodo_pago: v.metodo_pago,
+      clasificada_como: esRegalo(v) ? 'REGALO (no suma)' : 'VENTA REAL'
+    })));
 
     const pagadas = ventas.filter(v => v.estado === 'pagado').filter(esVentaReal);
     const pend = ventas.filter(v => v.estado === 'pendiente');
@@ -8624,7 +8639,7 @@ body{visibility:hidden}
     try { await cargarDashboard(); }
     catch(e){ console.error('[admin] falló armar el dashboard:', e); }
 
-    guardarNumeros();
+    if(!rotas.length) guardarNumeros();
 
     mostrarToast(rotas.length
       ? 'Actualizado, pero fallaron: ' + rotas.join(', ')
@@ -8951,8 +8966,10 @@ body{visibility:hidden}
   function guardarNumeros(){
     try {
       const nums = {};
+      // Solo guardamos las tarjetas del dashboard. Las de Ventas se leen
+      // siempre en vivo: si guardáramos un valor viejo, taparía el real.
       document.querySelectorAll('.kpi-value, .sidebar-badge').forEach(el => {
-        if(el.id) nums[el.id] = el.textContent;
+        if(el.id && el.id.indexOf('dash') === 0) nums[el.id] = el.textContent;
       });
       localStorage.setItem(CACHE_NUMS, JSON.stringify(nums));
     } catch(e){}
@@ -9030,7 +9047,8 @@ body{visibility:hidden}
     try { renderAnunciosPendientes(); } catch(e){ console.error(e); }
 
     marcarCargando(false);
-    guardarNumeros();
+    // Solo guardamos los números si cargó todo bien
+    if(!rotas.length) guardarNumeros();
 
     if(rotas.length){
       mostrarToast('Algunos datos no cargaron: ' + rotas.join(', ') + '. Probá Actualizar.', true);
