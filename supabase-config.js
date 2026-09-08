@@ -406,10 +406,13 @@ function precioParaVos(curso, esPremium) {
 // por eso la inscripción gratis nunca mandaba el email de bienvenida.
 // (Las compras pagas sí lo mandan, desde el webhook de Pagopar.)
 // ═══════════════════════════════════════════════════════════════════
-const CANDIDATAS_AVISOS = ['AVISAR-CLASES', 'avisar-clases', 'avisos-clases'];
-
 async function darBienvenida(cursoId, usuarioId) {
-  if (!sb || !cursoId || !usuarioId) return false;
+  if (typeof sb === 'undefined' || !sb || !cursoId || !usuarioId) return false;
+
+  // Ojo: la lista va ADENTRO de la función a propósito.
+  // Si se declara como const suelta acá arriba, choca con la que ya existe
+  // en admin.html y ese choque rompe TODO este archivo (y con él, sb).
+  const candidatas = ['AVISAR-CLASES', 'avisar-clases', 'avisos-clases'];
 
   let guardada = null;
   try {
@@ -419,8 +422,8 @@ async function darBienvenida(cursoId, usuarioId) {
   } catch (e) {}
 
   const lista = guardada
-    ? [guardada, ...CANDIDATAS_AVISOS.filter(x => x !== guardada)]
-    : CANDIDATAS_AVISOS;
+    ? [guardada, ...candidatas.filter(x => x !== guardada)]
+    : candidatas;
 
   let cabeceras = {
     'Content-Type': 'application/json',
