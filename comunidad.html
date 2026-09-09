@@ -10,7 +10,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1A0A12">
 
-<link rel="stylesheet" href="styles.css?v=202609081839">
+<link rel="stylesheet" href="styles.css?v=202609091424">
 <style>
   .page-hero{padding:40px 32px 24px;text-align:center;position:relative;overflow:hidden}
   .page-hero-glow-1{position:absolute;width:400px;height:400px;left:-100px;top:-100px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.25),transparent 65%);pointer-events:none}
@@ -284,11 +284,6 @@ body{visibility:hidden}
   <div class="filters-bar">
     <div class="filters-chips" id="filtrosChips">
       <button class="fchip active" data-cat="todos" onclick="filtrarCat(this)">General</button>
-      <button class="fchip" data-cat="anuncios" onclick="filtrarCat(this)">📌 Anuncios</button>
-      <button class="fchip" data-cat="consejos" onclick="filtrarCat(this)">💡 Consejos</button>
-      <button class="fchip" data-cat="avances" onclick="filtrarCat(this)">🚀 Avances</button>
-      <button class="fchip" data-cat="preguntas" onclick="filtrarCat(this)">❓ Preguntas</button>
-      <button class="fchip" data-cat="logros" onclick="filtrarCat(this)">🏆 Logros</button>
     </div>
     <div class="search-wrap">
       <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
@@ -349,11 +344,6 @@ body{visibility:hidden}
       <div class="opc-label">CATEGORÍA</div>
       <div class="cat-chips" id="catChips">
         <button class="cat-chip selected" data-cat="general" onclick="elegirCategoria(this)" type="button">General</button>
-        <button class="cat-chip" data-cat="consejos" onclick="elegirCategoria(this)" type="button">💡 Consejo</button>
-        <button class="cat-chip" data-cat="avances" onclick="elegirCategoria(this)" type="button">🚀 Avance</button>
-        <button class="cat-chip" data-cat="preguntas" onclick="elegirCategoria(this)" type="button">❓ Pregunta</button>
-        <button class="cat-chip" data-cat="logros" onclick="elegirCategoria(this)" type="button">🏆 Logro</button>
-        <button class="cat-chip" data-cat="anuncios" onclick="elegirCategoria(this)" type="button" id="chipAnuncio" style="display:none">📌 Anuncio</button>
       </div>
 
       <div class="opc-label" style="margin-top:14px">ETIQUETAS</div>
@@ -441,7 +431,7 @@ body{visibility:hidden}
   <span id="toastText">Post publicado</span>
 </div>
 
-<script src="supabase-config.js?v=202609081839"></script>
+<script src="supabase-config.js?v=202609091424"></script>
 <script>
 // Revelado inmediato: si el caché dice que hay sesión, mostramos la página
 // al instante y verificamos en segundo plano. Adiós a la espera.
@@ -458,7 +448,7 @@ body{visibility:hidden}
   }catch(e){}
 })();
 </script>
-<script src="header-dinamico.js?v=202609081839"></script>
+<script src="header-dinamico.js?v=202609091424"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════════
 // COMUNIDAD CMM - conectada a Supabase
@@ -543,19 +533,77 @@ function toggleOpciones(){
   btn.classList.toggle('abierto', abierto);
 }
 
+// ─── Las categorías salen de la base, no del código ───
+// Se administran en el panel: Etiquetas → Categorías de la comunidad
+let categorias = [];
+
+function nombreCategoria(clave){
+  const c = categorias.find(x => x.clave === clave);
+  return c ? etiquetaCat(c) : clave;
+}
+
+function etiquetaCat(c){
+  return (c.emoji ? c.emoji + ' ' : '') + c.nombre;
+}
+
+async function cargarCategorias(){
+  try {
+    const { data } = await sb.from('categorias')
+      .select('*').eq('activa', true).order('orden', { ascending: true });
+    categorias = data || [];
+  } catch(e){ categorias = []; }
+
+  // Si la tabla todavía no existe, dejamos las de siempre para no romper nada
+  if(!categorias.length){
+    categorias = [
+      { clave:'general',   nombre:'General',  emoji:null, solo_equipo:false },
+      { clave:'consejos',  nombre:'Consejo',  emoji:'💡', solo_equipo:false },
+      { clave:'avances',   nombre:'Avance',   emoji:'🚀', solo_equipo:false },
+      { clave:'preguntas', nombre:'Pregunta', emoji:'❓', solo_equipo:false },
+      { clave:'logros',    nombre:'Logro',    emoji:'🏆', solo_equipo:false },
+      { clave:'anuncios',  nombre:'Anuncio',  emoji:'📌', solo_equipo:true  }
+    ];
+  }
+
+  pintarCategorias();
+}
+
+function pintarCategorias(){
+  // Los filtros de arriba: "General" es el "todos"
+  const filtros = document.getElementById('filtrosChips');
+  if(filtros){
+    const activo = filtroCategoria;
+    filtros.innerHTML =
+      '<button class="fchip' + (activo === 'todos' ? ' active' : '') + '" data-cat="todos" ' +
+        'onclick="filtrarCat(this)">General</button>' +
+      categorias
+        .filter(c => c.clave !== 'general')
+        .map(c =>
+          '<button class="fchip' + (activo === c.clave ? ' active' : '') + '" data-cat="' + escapeHtml(c.clave) + '" ' +
+            'onclick="filtrarCat(this)">' + escapeHtml(etiquetaCat(c)) + '</button>'
+        ).join('');
+  }
+
+  // Los del compositor: las de "solo equipo" únicamente si sos del equipo
+  const chips = document.getElementById('catChips');
+  if(chips){
+    chips.innerHTML = categorias
+      .filter(c => !c.solo_equipo || esAdmin)
+      .map(c =>
+        '<button class="cat-chip' + (categoriaPost === c.clave ? ' selected' : '') + '" ' +
+          'data-cat="' + escapeHtml(c.clave) + '" onclick="elegirCategoria(this)" type="button">' +
+          escapeHtml(c.clave === 'general' ? 'General' : etiquetaCat(c)) +
+        '</button>'
+      ).join('');
+  }
+}
+
 // Muestra en el botón lo que hay elegido, para no tener que abrir el panel
 function actualizarResumenOpciones(){
   const btn = document.getElementById('btnOpciones');
   const txt = document.getElementById('opcionesTxt');
-  const nombres = {
-    general: 'Etiquetar',
-    consejos: '💡 Consejo',
-    avances: '🚀 Avance',
-    preguntas: '❓ Pregunta',
-    logros: '🏆 Logro',
-    anuncios: '📌 Anuncio'
-  };
-  let etiqueta = nombres[categoriaPost] || 'Etiquetar';
+  const cat = categorias.find(c => c.clave === categoriaPost);
+  let etiqueta = (!cat || cat.clave === 'general') ? 'Etiquetar' : etiquetaCat(cat);
   if(hashtagsSeleccionados.length){
     etiqueta = (categoriaPost === 'general' ? '' : etiqueta + ' · ') + hashtagsSeleccionados.length + ' etiq.';
   }
@@ -945,7 +993,7 @@ function renderFeed(){
             </div>
             <div class="post-meta">
               <span>${tiempoRelativo(p.creado_en)}</span>
-              ${p.categoria && p.categoria !== 'general' ? '<span>·</span><span>' + escapeHtml(p.categoria) + '</span>' : ''}
+              ${p.categoria && p.categoria !== 'general' ? '<span>·</span><span>' + escapeHtml(nombreCategoria(p.categoria)) + '</span>' : ''}
             </div>
           </div>
           ${(puedeBorrar || esAdmin) ? `
@@ -1259,7 +1307,7 @@ const waitSupaCom = setInterval(async () => {
   // Revisamos si se ganó alguna insignia nueva
   try { await sb.rpc('revisar_mis_insignias'); } catch(e){}
 
-  if(esAdmin) document.getElementById('chipAnuncio').style.display = '';
+  // (las categorías de "solo equipo" las muestra pintarCategorias, según el rol)
 
   // Miembro bloqueado: no puede publicar
   if(perfilActual.bloqueado){
@@ -1286,6 +1334,7 @@ const waitSupaCom = setInterval(async () => {
   document.getElementById('auth-splash-style')?.remove();
   document.getElementById('authSplash')?.remove();
 
+  await cargarCategorias();
   await cargarHashtagsDisponibles();
   await cargarFeed();
 }, 50);

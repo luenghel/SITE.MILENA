@@ -10,7 +10,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1A0A12">
 
-<link rel="stylesheet" href="styles.css?v=202609081839">
+<link rel="stylesheet" href="styles.css?v=202609091424">
 <style>
   body{display:grid;grid-template-columns:240px 1fr;min-height:100vh;background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);color:#FFF5F0}
 
@@ -2073,6 +2073,18 @@ body{visibility:hidden}
       </div>
     </div>
 
+    <!-- ── CATEGORÍAS DE LA COMUNIDAD ── -->
+    <div class="pm-seccion" style="margin-bottom:26px">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">Categorías de la comunidad</h3>
+          <p class="chart-subtitle">Los botones que se ven arriba del feed: General, Anuncios, Consejos…</p>
+        </div>
+        <button class="btn-secondary" onclick="abrirCategoria()">+ Nueva categoría</button>
+      </div>
+      <div id="categoriasLista"></div>
+    </div>
+
     <div class="hashtags-info">
       <div class="hashtags-info-icon">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/></svg>
@@ -3448,6 +3460,70 @@ body{visibility:hidden}
     <div id="seccionesLista"></div>
   </div>
 
+  <!-- MODAL CATEGORÍA DE LA COMUNIDAD -->
+  <div class="curso-modal-backdrop" id="categoriaModal">
+    <div class="curso-modal" style="max-width:440px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">CATEGORÍA DE LA COMUNIDAD</div>
+          <h3 class="curso-modal-titulo serif" id="catTituloModal">Nueva categoría</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarCategoria()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <input type="hidden" id="catId">
+
+        <div style="padding:16px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:12px;margin-bottom:18px;text-align:center">
+          <div style="font-size:10px;letter-spacing:0.18em;color:rgba(255,245,240,0.4);margin-bottom:9px">ASÍ SE VA A VER</div>
+          <span id="catPrevia" style="display:inline-block;padding:9px 16px;border-radius:20px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.18);font-size:13px">General</span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group" style="flex:0 0 90px">
+            <label class="form-label">EMOJI</label>
+            <input type="text" class="form-input" id="catEmoji" maxlength="4" placeholder="💡" style="text-align:center;font-size:20px" oninput="pintarPreviaCat()">
+          </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">NOMBRE</label>
+            <input type="text" class="form-input" id="catNombre" placeholder="Consejo" oninput="pintarPreviaCat()">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">ORDEN</label>
+          <input type="number" class="form-input" id="catOrden" value="1" min="1">
+          <div style="font-size:11.5px;color:rgba(255,245,240,0.45);margin-top:6px">El 1 va primero, después el 2, y así.</div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Solo el equipo publica acá</div>
+            <div class="toggle-help">Las alumnas la ven en los filtros, pero no pueden elegirla al publicar</div>
+          </div>
+          <div class="toggle-switch" id="catSoloEquipo" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Activa</div>
+            <div class="toggle-help">Si la apagás, deja de verse sin borrar los posts que ya la usan</div>
+          </div>
+          <div class="toggle-switch on" id="catActiva" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <button class="btn-danger" id="btnBorrarCat" onclick="borrarCategoria()" style="display:none">Eliminar</button>
+        <div style="flex:1"></div>
+        <button class="btn-secondary" onclick="cerrarCategoria()">Cancelar</button>
+        <button class="cta-gold" onclick="guardarCategoria()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL FILA -->
   <div class="curso-modal-backdrop" id="seccionModal">
     <div class="curso-modal" style="max-width:460px">
@@ -3963,6 +4039,156 @@ body{visibility:hidden}
   // HASHTAGS conectados a Supabase
   // ============================================
   let hashtags = [];
+
+  // ═══════════════════════════════════════════════
+  // CATEGORÍAS DE LA COMUNIDAD
+  // Los botones de arriba del feed. Antes estaban
+  // escritos a mano en comunidad.html.
+  // ═══════════════════════════════════════════════
+  let categorias = [];
+
+  async function cargarCategorias(){
+    if(!sb) return;
+
+    const { data, error } = await sb.from('categorias')
+      .select('*').order('orden', { ascending: true });
+
+    if(error){
+      const cont = document.getElementById('categoriasLista');
+      if(cont){
+        cont.innerHTML = '<div class="vacio-suave"><div class="ico">🏷️</div>' +
+          (String(error.message).includes('does not exist')
+            ? 'Falta crear la tabla. Corré SQL-COMUNIDAD-CATEGORIAS.sql en Supabase.'
+            : esc(error.message)) + '</div>';
+      }
+      return;
+    }
+
+    categorias = data || [];
+    renderCategorias();
+  }
+
+  function renderCategorias(){
+    const cont = document.getElementById('categoriasLista');
+    if(!cont) return;
+
+    if(categorias.length === 0){
+      cont.innerHTML = '<div class="vacio-suave"><div class="ico">🏷️</div>' +
+        'Todavía no hay categorías' +
+        '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">' +
+        'Creá la primera con el botón de arriba</div></div>';
+      return;
+    }
+
+    cont.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:9px">' +
+      categorias.map(c => {
+        const apagada = !c.activa;
+        return '<button onclick="abrirCategoria(\'' + c.id + '\')" ' +
+          'style="display:inline-flex;align-items:center;gap:7px;padding:10px 15px;border-radius:20px;' +
+            'background:' + (apagada ? 'rgba(255,245,240,0.03)' : 'rgba(212,163,86,0.1)') + ';' +
+            'border:0.5px solid ' + (apagada ? 'rgba(255,245,240,0.12)' : 'rgba(212,163,86,0.4)') + ';' +
+            'color:' + (apagada ? 'rgba(255,245,240,0.4)' : '#FFF5F0') + ';' +
+            'font-size:13px;font-family:inherit;cursor:pointer;' +
+            (apagada ? 'text-decoration:line-through;' : '') + '">' +
+          (c.emoji ? esc(c.emoji) + ' ' : '') + esc(c.nombre) +
+          (c.solo_equipo ? '<span style="font-size:9.5px;letter-spacing:0.1em;color:#FAC775;' +
+            'border:0.5px solid rgba(212,163,86,0.4);border-radius:8px;padding:2px 6px">EQUIPO</span>' : '') +
+        '</button>';
+      }).join('') +
+    '</div>' +
+    '<div style="font-size:12px;color:rgba(255,245,240,0.4);margin-top:14px">' +
+      'Tocá cualquiera para editarla. Las tachadas están apagadas.' +
+    '</div>';
+  }
+
+  function pintarPreviaCat(){
+    const emoji = document.getElementById('catEmoji').value.trim();
+    const nombre = document.getElementById('catNombre').value.trim() || 'Sin nombre';
+    document.getElementById('catPrevia').textContent = (emoji ? emoji + ' ' : '') + nombre;
+  }
+
+  function abrirCategoria(id){
+    const c = categorias.find(x => x.id === id) || null;
+
+    document.getElementById('catId').value = c ? c.id : '';
+    document.getElementById('catTituloModal').textContent = c ? 'Editar categoría' : 'Nueva categoría';
+    document.getElementById('catEmoji').value = c ? (c.emoji || '') : '';
+    document.getElementById('catNombre').value = c ? c.nombre : '';
+    document.getElementById('catOrden').value = c ? (c.orden || 1) : (categorias.length + 1);
+    document.getElementById('catSoloEquipo').classList.toggle('on', !!(c && c.solo_equipo));
+    document.getElementById('catActiva').classList.toggle('on', c ? !!c.activa : true);
+
+    // La categoría "general" es la base del sistema: no se borra ni se apaga
+    const esGeneral = c && c.clave === 'general';
+    document.getElementById('btnBorrarCat').style.display = (c && !esGeneral) ? '' : 'none';
+
+    pintarPreviaCat();
+    document.getElementById('categoriaModal').classList.add('show');
+  }
+
+  function cerrarCategoria(){
+    document.getElementById('categoriaModal').classList.remove('show');
+  }
+
+  // De "Consejos de venta" sale la clave "consejos-de-venta"
+  function claveDesde(texto){
+    return (texto || '')
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 40);
+  }
+
+  async function guardarCategoria(){
+    const id = document.getElementById('catId').value;
+    const nombre = document.getElementById('catNombre').value.trim();
+
+    if(!nombre) return mostrarToast('Ponele un nombre', true);
+
+    const datos = {
+      nombre: nombre,
+      emoji: document.getElementById('catEmoji').value.trim() || null,
+      orden: parseInt(document.getElementById('catOrden').value) || 1,
+      activa: document.getElementById('catActiva').classList.contains('on'),
+      solo_equipo: document.getElementById('catSoloEquipo').classList.contains('on')
+    };
+
+    let error;
+    if(id){
+      // La clave nunca cambia: los posts viejos la tienen guardada
+      ({ error } = await sb.from('categorias').update(datos).eq('id', id));
+    } else {
+      let clave = claveDesde(nombre);
+      if(!clave) clave = 'cat-' + Date.now();
+      if(categorias.some(c => c.clave === clave)) clave += '-' + (categorias.length + 1);
+      datos.clave = clave;
+      ({ error } = await sb.from('categorias').insert(datos));
+    }
+
+    if(error) return mostrarToast('No se pudo guardar: ' + error.message, true);
+
+    cerrarCategoria();
+    mostrarToast('✓ Categoría guardada');
+    await cargarCategorias();
+  }
+
+  async function borrarCategoria(){
+    const id = document.getElementById('catId').value;
+    const c = categorias.find(x => x.id === id);
+    if(!c) return;
+
+    if(!confirm('¿Eliminar la categoría "' + c.nombre + '"?\n\n' +
+      'Los posts que ya la tenían van a pasar a General.\n' +
+      'Si solo querés esconderla, apagá "Activa" en vez de borrarla.')) return;
+
+    const { error } = await sb.from('categorias').delete().eq('id', id);
+    if(error) return mostrarToast('No se pudo borrar: ' + error.message, true);
+
+    cerrarCategoria();
+    mostrarToast('✓ Categoría eliminada');
+    await cargarCategorias();
+  }
 
   async function cargarHashtags() {
     if (!sb) return;
@@ -9211,11 +9437,12 @@ body{visibility:hidden}
     if (typeof sb !== 'undefined' && sb !== null) {
       clearInterval(waitSupa);
       cargarHashtags();
+      cargarCategorias();
     }
   }, 100);
 </script>
 
-<script src="supabase-config.js?v=202609081839"></script>
+<script src="supabase-config.js?v=202609091424"></script>
 <script>
 // Revelado inmediato: si el caché dice que hay sesión, mostramos la página
 // al instante y verificamos en segundo plano. Adiós a la espera.
@@ -9232,7 +9459,7 @@ body{visibility:hidden}
   }catch(e){}
 })();
 </script>
-<script src="header-dinamico.js?v=202609081839"></script>
+<script src="header-dinamico.js?v=202609091424"></script>
 <script>
 (function() {
   const checkAdmin = setInterval(async () => {
