@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1A0A12">
-<link rel="stylesheet" href="styles.css?v=202609091424">
+<link rel="stylesheet" href="styles.css?v=202609091550">
 <style>
   .glow-1{position:fixed;width:520px;height:520px;left:-180px;top:-160px;border-radius:50%;background:radial-gradient(circle,rgba(212,163,86,0.16),transparent 65%);pointer-events:none;z-index:0}
   .glow-2{position:fixed;width:400px;height:400px;right:-110px;bottom:-110px;border-radius:50%;background:radial-gradient(circle,rgba(184,41,74,0.3),transparent 65%);pointer-events:none;z-index:0}
@@ -236,8 +236,8 @@
   Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
 </footer>
 
-<script src="supabase-config.js?v=202609091424"></script>
-<script src="header-dinamico.js?v=202609091424"></script>
+<script src="supabase-config.js?v=202609091550"></script>
+<script src="header-dinamico.js?v=202609091550"></script>
 <script>
   let plan = null;
 
@@ -275,6 +275,7 @@
           esc(plan.titulo_pagina).replace(/(\S+)$/, '<span class="it">$1</span>');
       }
       if(plan.descripcion) document.getElementById('bajada').textContent = plan.descripcion;
+      if(plan.texto_cta) document.getElementById('ctaTexto').textContent = plan.texto_cta;
 
       // El video, si lo cargaste
       const emb = incrustarVideo(plan.video_url);

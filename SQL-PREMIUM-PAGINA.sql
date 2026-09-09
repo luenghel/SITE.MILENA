@@ -58,3 +58,14 @@ select clave, nombre, mostrar_precio,
   case when video_url is null then 'sin video' else 'con video' end as video,
   case when contenido is null then 'sin texto' else 'con texto' end as contenido
 from public.planes;
+
+
+-- ═══════════════════════════════════════════════════════════════════
+-- AGREGADO: la frase que va arriba del botón
+-- (antes estaba escrita a mano en premium.html)
+-- ═══════════════════════════════════════════════════════════════════
+alter table public.planes add column if not exists texto_cta text;
+
+update public.planes
+set texto_cta = coalesce(texto_cta, 'Un espacio cerrado para las que quieren ir más a fondo.')
+where clave = 'premium';
