@@ -10,7 +10,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1A0A12">
 
-<link rel="stylesheet" href="styles.css?v=202609091424">
+<link rel="stylesheet" href="styles.css?v=202609091550">
 <style>
   .page-hero{padding:40px 32px 24px;text-align:center;position:relative;overflow:hidden}
   .page-hero-glow-1{position:absolute;width:400px;height:400px;left:-100px;top:-100px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.25),transparent 65%);pointer-events:none}
@@ -431,7 +431,7 @@ body{visibility:hidden}
   <span id="toastText">Post publicado</span>
 </div>
 
-<script src="supabase-config.js?v=202609091424"></script>
+<script src="supabase-config.js?v=202609091550"></script>
 <script>
 // Revelado inmediato: si el caché dice que hay sesión, mostramos la página
 // al instante y verificamos en segundo plano. Adiós a la espera.
@@ -448,7 +448,7 @@ body{visibility:hidden}
   }catch(e){}
 })();
 </script>
-<script src="header-dinamico.js?v=202609091424"></script>
+<script src="header-dinamico.js?v=202609091550"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════════
 // COMUNIDAD CMM - conectada a Supabase
@@ -553,16 +553,10 @@ async function cargarCategorias(){
     categorias = data || [];
   } catch(e){ categorias = []; }
 
-  // Si la tabla todavía no existe, dejamos las de siempre para no romper nada
-  if(!categorias.length){
-    categorias = [
-      { clave:'general',   nombre:'General',  emoji:null, solo_equipo:false },
-      { clave:'consejos',  nombre:'Consejo',  emoji:'💡', solo_equipo:false },
-      { clave:'avances',   nombre:'Avance',   emoji:'🚀', solo_equipo:false },
-      { clave:'preguntas', nombre:'Pregunta', emoji:'❓', solo_equipo:false },
-      { clave:'logros',    nombre:'Logro',    emoji:'🏆', solo_equipo:false },
-      { clave:'anuncios',  nombre:'Anuncio',  emoji:'📌', solo_equipo:true  }
-    ];
+  // Solo se ven las categorías que ustedes crean en el panel.
+  // Si todavía no hay ninguna, queda únicamente "General".
+  if(!categorias.some(c => c.clave === 'general')){
+    categorias.unshift({ clave:'general', nombre:'General', emoji:null, solo_equipo:false });
   }
 
   pintarCategorias();

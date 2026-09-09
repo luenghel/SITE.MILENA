@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<title>En vivo · Milena Machado</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1A0A12">
+
+<link rel="stylesheet" href="styles.css?v=202609091550">
+<style>
+  .vivo-wrap{max-width:1240px;margin:0 auto;padding:26px 24px 50px}
+
+  /* ── Cabecera ── */
+  .vivo-cab{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+  .vivo-tit{font-family:Georgia,serif;font-size:30px;font-weight:500;letter-spacing:-0.02em;margin:0 0 5px;line-height:1.15}
+  .vivo-sub{font-size:13.5px;color:rgba(255,245,240,0.6);line-height:1.5;margin:0}
+
+  .pill{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.14em;white-space:nowrap}
+  .pill-vivo{background:rgba(255,59,71,0.16);border:0.5px solid rgba(255,59,71,0.5);color:#FF8090}
+  .pill-vivo .punto{width:7px;height:7px;border-radius:50%;background:#FF3B47;animation:latir 1.4s ease-in-out infinite}
+  @keyframes latir{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.45;transform:scale(0.8)}}
+  .pill-replay{background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.45);color:#FAC775}
+  .pill-equipo{background:rgba(93,202,165,0.12);border:0.5px solid rgba(93,202,165,0.4);color:#9FE1CB}
+
+  /* ── El armado: video + chat ── */
+  .vivo-grid{display:grid;grid-template-columns:1fr 350px;gap:20px;align-items:start}
+
+  .video-caja{position:relative;width:100%;aspect-ratio:16/9;background:#0B0307;border:0.5px solid rgba(255,245,240,0.1);border-radius:16px;overflow:hidden}
+  .video-caja iframe,.video-caja video{width:100%;height:100%;border:none;display:block}
+  .video-vacio{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:30px}
+  .video-vacio .ico{font-size:38px;opacity:0.5}
+  .video-vacio .txt{font-size:14.5px;color:rgba(255,245,240,0.6);max-width:340px;line-height:1.55}
+
+  .bajo-video{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;
+    padding:13px 16px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:12px}
+  .bajo-txt{font-size:12.5px;color:rgba(255,245,240,0.6);flex:1;min-width:180px;line-height:1.5}
+
+  /* ── Chat ── */
+  .chat{display:flex;flex-direction:column;height:min(72vh,640px);
+    background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:16px;overflow:hidden}
+  .chat-cab{padding:14px 16px;border-bottom:0.5px solid rgba(255,245,240,0.08);display:flex;align-items:center;gap:9px}
+  .chat-cab-tit{font-size:12.5px;font-weight:600;letter-spacing:0.12em;color:rgba(255,245,240,0.75)}
+  .chat-cuerpo{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:13px;scroll-behavior:smooth}
+  .chat-vacio{margin:auto;text-align:center;font-size:12.5px;color:rgba(255,245,240,0.35);line-height:1.6;padding:20px}
+
+  .msj{display:flex;gap:9px;align-items:flex-start}
+  .msj-av{width:29px;height:29px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;color:#3D1208;background-size:cover;background-position:center}
+  .msj-cuerpo{min-width:0;flex:1}
+  .msj-nom{font-size:12px;font-weight:600;color:#FAC775;margin-bottom:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .msj-nom .tag{font-size:8.5px;letter-spacing:0.1em;padding:1.5px 5px;border-radius:6px;
+    background:rgba(212,163,86,0.18);border:0.5px solid rgba(212,163,86,0.4)}
+  .msj-txt{font-size:13.5px;line-height:1.45;color:rgba(255,245,240,0.9);word-wrap:break-word;overflow-wrap:anywhere}
+  .msj-hora{font-size:10px;color:rgba(255,245,240,0.3);margin-top:3px}
+  .msj.propio .msj-nom{color:#9FE1CB}
+
+  .chat-pie{padding:12px 14px;border-top:0.5px solid rgba(255,245,240,0.08)}
+  .chat-form{display:flex;gap:9px;align-items:flex-end}
+  .chat-input{flex:1;padding:11px 13px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.15);
+    border-radius:11px;color:#FFF5F0;font-size:14px;font-family:inherit;outline:none;resize:none;max-height:90px;line-height:1.4}
+  .chat-input:focus{border-color:rgba(212,163,86,0.5)}
+  .chat-enviar{flex-shrink:0;width:40px;height:40px;border-radius:11px;border:none;cursor:pointer;
+    background:linear-gradient(135deg,#EFB85C,#DDA63F);display:flex;align-items:center;justify-content:center}
+  .chat-enviar:disabled{opacity:0.4;cursor:not-allowed}
+  .chat-aviso{font-size:11px;color:rgba(255,245,240,0.4);margin-top:7px;text-align:center}
+
+  /* ── Solo el equipo ── */
+  .panel-equipo{margin-top:16px;padding:14px 16px;background:rgba(93,202,165,0.06);
+    border:0.5px solid rgba(93,202,165,0.28);border-radius:12px;display:none}
+  .panel-equipo.ver{display:block}
+  .pe-tit{font-size:10px;letter-spacing:0.18em;color:#9FE1CB;margin-bottom:9px}
+  .pe-datos{display:flex;gap:22px;flex-wrap:wrap}
+  .pe-dato .n{font-family:Georgia,serif;font-size:26px;color:#FFF5F0;line-height:1}
+  .pe-dato .l{font-size:11px;color:rgba(255,245,240,0.5);margin-top:3px}
+
+  /* ── Sin acceso ── */
+  .sin-acceso{max-width:460px;margin:60px auto;text-align:center;padding:38px 30px;
+    background:rgba(255,245,240,0.03);border:0.5px solid rgba(212,163,86,0.3);border-radius:20px}
+  .sa-ico{font-size:40px;margin-bottom:16px}
+  .sa-tit{font-family:Georgia,serif;font-size:25px;font-weight:500;margin:0 0 10px}
+  .sa-txt{font-size:14px;color:rgba(255,245,240,0.65);line-height:1.6;margin:0 0 24px}
+
+  /* ═══════════════════════════════════════════════════════════
+     CELULAR — la pantalla se comporta como una app:
+     el video arriba fijo, el chat ocupa todo lo demás,
+     y lo único que se mueve son los mensajes.
+     ═══════════════════════════════════════════════════════════ */
+  @media (max-width:980px){
+
+    body.modo-vivo{height:100dvh;overflow:hidden;display:flex;flex-direction:column}
+    body.modo-vivo .main-header{flex:0 0 auto;position:static}
+
+    body.modo-vivo .vivo-wrap{flex:1;min-height:0;max-width:100%;padding:0;display:flex;flex-direction:column}
+
+    /* Título compacto, en una sola línea con el cartel */
+    body.modo-vivo .vivo-cab{flex:0 0 auto;margin:0;gap:10px;align-items:center;
+      padding:11px 15px 10px;border-bottom:0.5px solid rgba(255,245,240,0.06)}
+    body.modo-vivo .vivo-tit{font-size:17px;margin:0;line-height:1.25}
+    body.modo-vivo .vivo-sub{display:none}
+    .pill{padding:5px 11px;font-size:10px}
+
+    body.modo-vivo .vivo-grid{flex:1;min-height:0;display:flex;flex-direction:column;gap:0}
+    body.modo-vivo .col-video{flex:0 0 auto}
+
+    /* El video, de borde a borde */
+    body.modo-vivo .video-caja{border-radius:0;border-left:none;border-right:none}
+    body.modo-vivo .bajo-video,
+    body.modo-vivo .panel-equipo{margin:0;border-radius:0;border-left:none;border-right:none;padding:11px 15px}
+    body.modo-vivo .panel-equipo{border-top:none}
+    body.modo-vivo .pe-datos{gap:18px}
+    body.modo-vivo .pe-dato .n{font-size:20px}
+    body.modo-vivo .pe-tit{margin-bottom:7px}
+
+    /* El chat se come todo el espacio que queda */
+    body.modo-vivo .chat{flex:1;min-height:0;height:auto;border-radius:0;
+      border-left:none;border-right:none;border-bottom:none}
+
+    /* ── Legibilidad: todo más grande ── */
+    .chat-cuerpo{padding:15px;gap:16px}
+    .msj-av{width:33px;height:33px;font-size:13px}
+    .msj-nom{font-size:13px}
+    .msj-txt{font-size:15.5px;line-height:1.5}
+    .msj-hora{font-size:11px}
+    .chat-cab{padding:12px 15px}
+    .chat-cab-tit{font-size:13px}
+    .chat-vacio{font-size:14px}
+
+    .chat-pie{padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px))}
+    .chat-input{font-size:16px;padding:12px 14px}   /* 16px = el iPhone no hace zoom */
+    .chat-enviar{width:46px;height:46px}
+    .chat-aviso{display:none}
+
+    .sin-acceso{margin:34px 16px;padding:32px 22px}
+    .sa-tit{font-size:22px}
+    .sa-txt{font-size:15px}
+  }
+</style>
+
+<style id="auth-splash-style">
+body{visibility:hidden}
+.auth-splash{position:fixed;inset:0;background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);z-index:9999;display:flex;align-items:center;justify-content:center;visibility:visible}
+.auth-splash-spinner{width:40px;height:40px;border:2px solid rgba(212,163,86,0.2);border-top-color:#FAC775;border-radius:50%;animation:spin 0.8s linear infinite}
+</style>
+</head>
+<body>
+<div class="auth-splash" id="authSplash"><div class="auth-splash-spinner"></div></div>
+
+<header class="main-header">
+  <div class="header-inner">
+    <a href="/index" class="logo">
+      <div class="logo-box">M</div>
+      <div class="logo-text">MILENA<br>MACHADO</div>
+    </a>
+    <nav class="nav-links" id="navLinks"></nav>
+    <div class="header-actions" id="headerActions"></div>
+  </div>
+</header>
+
+<!-- ═══ SIN ACCESO ═══ -->
+<div id="zonaSinAcceso" style="display:none">
+  <div class="sin-acceso">
+    <div class="sa-ico">🔒</div>
+    <h2 class="sa-tit">Los encuentros son del Premium</h2>
+    <p class="sa-txt" id="saTxt">
+      Las transmisiones en vivo son parte de la Comunidad Premium.
+      Sumate y entrá a todos los encuentros.
+    </p>
+    <a href="/premium" class="cta-gold" style="display:inline-block;padding:15px 30px;border-radius:12px;text-decoration:none;font-size:12.5px;font-weight:600;letter-spacing:0.14em">
+      VER LA COMUNIDAD PREMIUM
+    </a>
+  </div>
+</div>
+
+<!-- ═══ LA TRANSMISIÓN ═══ -->
+<div class="vivo-wrap" id="zonaVivo" style="display:none">
+
+  <div class="vivo-cab">
+    <div style="flex:1;min-width:220px">
+      <h1 class="vivo-tit" id="tituloVivo">—</h1>
+      <p class="vivo-sub" id="descVivo"></p>
+    </div>
+    <div id="zonaPill"></div>
+  </div>
+
+  <div class="vivo-grid">
+
+    <!-- Video -->
+    <div class="col-video">
+      <div class="video-caja" id="videoCaja">
+        <div class="video-vacio" id="videoVacio">
+          <div class="ico">📡</div>
+          <div class="txt" id="videoVacioTxt">Preparando la transmisión…</div>
+        </div>
+      </div>
+
+      <div class="bajo-video" id="bajoVideo" style="display:none">
+        <div class="bajo-txt" id="bajoTxt"></div>
+      </div>
+
+      <!-- Solo el equipo -->
+      <div class="panel-equipo" id="panelEquipo">
+        <div class="pe-tit">SOLO USTEDES VEN ESTO</div>
+        <div class="pe-datos">
+          <div class="pe-dato">
+            <div class="n" id="peConectadas">0</div>
+            <div class="l">mirando ahora</div>
+          </div>
+          <div class="pe-dato">
+            <div class="n" id="peMensajes">0</div>
+            <div class="l">mensajes en el chat</div>
+          </div>
+          <div class="pe-dato">
+            <div class="n" id="pePico">0</div>
+            <div class="l">pico de conectadas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat -->
+    <div class="chat">
+      <div class="chat-cab">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.4 8.4 0 0 1-3.8-.9L3 21l2-4.9a8.4 8.4 0 0 1-.9-3.8 8.4 8.4 0 0 1 8.4-9 8.4 8.4 0 0 1 8.5 8.2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="chat-cab-tit">EL CHAT</span>
+      </div>
+
+      <div class="chat-cuerpo" id="chatCuerpo">
+        <div class="chat-vacio" id="chatVacio">
+          Todavía no escribió nadie.<br>Arrancá vos.
+        </div>
+      </div>
+
+      <div class="chat-pie">
+        <form class="chat-form" onsubmit="enviarMensaje(event)">
+          <textarea class="chat-input" id="chatInput" rows="1" maxlength="400"
+                    placeholder="Escribí algo…" oninput="crecerInput(this)"
+                    onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();enviarMensaje(event)}"></textarea>
+          <button class="chat-enviar" id="chatBtn" type="submit" aria-label="Enviar">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </button>
+        </form>
+        <div class="chat-aviso" id="chatAviso">Se ve solo dentro del Premium</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="supabase-config.js?v=202609091550"></script>
+<script src="header-dinamico.js?v=202609091550"></script>
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// TRANSMISIÓN EN VIVO — solo para la Comunidad Premium
+//
+// El video se enchufa acá abajo, en pintarVideo(). Hoy funciona con
+// una URL de prueba que se carga desde el panel, así podés ver toda
+// la pantalla andando antes de contratar el servicio de streaming.
+// ═══════════════════════════════════════════════════════════════════
+
+let yo = null;
+let esEquipo = false;
+let soyPremium = false;
+let trans = null;          // la transmisión que se está mostrando
+let canal = null;          // el canal de Realtime
+let mensajes = [];
+let perfiles = {};         // caché de nombres y avatares
+let picoConectadas = 0;
+
+const esc = t => { const d = document.createElement('div'); d.textContent = t == null ? '' : t; return d.innerHTML; };
+
+function colorDe(nombre){
+  const tonos = ['#E8B8C4','#FAC775','#9FE1CB','#C9A7E8','#F0A87C','#8FC7E8'];
+  let h = 0;
+  for(let i = 0; i < (nombre||'').length; i++) h = (nombre.charCodeAt(i) + ((h << 5) - h)) | 0;
+  return tonos[Math.abs(h) % tonos.length];
+}
+
+function inicial(n){ return (n || '?').trim().charAt(0).toUpperCase(); }
+
+function hora(iso){
+  try { return new Date(iso).toLocaleTimeString('es-PY', { hour:'2-digit', minute:'2-digit' }); }
+  catch(e){ return ''; }
+}
+
+// Convierte lo que pegues en el panel a la forma que se puede embeber.
+// Sirve para youtube.com/watch, youtu.be, /live/, Vimeo o un archivo .mp4
+function aEmbebido(url){
+  const u = (url || '').trim();
+
+  // Archivo de video directo
+  if(/\.(mp4|webm|ogg|m3u8)(\?|$)/i.test(u)) return { tipo:'archivo', url:u };
+
+  // YouTube, en todas sus formas
+  const yt = u.match(/(?:youtube\.com\/(?:watch\?v=|live\/|embed\/|v\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/i);
+  if(yt){
+    return {
+      tipo: 'iframe',
+      url: 'https://www.youtube-nocookie.com/embed/' + yt[1] +
+           '?autoplay=1&rel=0&modestbranding=1&playsinline=1'
+    };
+  }
+
+  // Vimeo
+  const vm = u.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+  if(vm) return { tipo:'iframe', url:'https://player.vimeo.com/video/' + vm[1] };
+
+  // Cualquier otra cosa: la usamos tal cual
+  return { tipo:'iframe', url:u };
+}
+
+// ─── El video ──────────────────────────────────────────────────────
+function pintarVideo(){
+  const caja = document.getElementById('videoCaja');
+  const vacio = document.getElementById('videoVacio');
+  const txt = document.getElementById('videoVacioTxt');
+
+  // 1. Cuando contratemos el servicio de streaming, acá va el iframe
+  //    con el token firmado que devuelve la Edge Function.
+  //    Queda preparado, comentado, para no olvidarnos de dónde va:
+  //
+  //    const { data } = await sb.functions.invoke('token-vivo');
+  //    caja.innerHTML = '<iframe src="https://customer-XXXX.cloudflarestream.com/'
+  //                   + data.token + '/iframe" allowfullscreen></iframe>';
+  //    return;
+
+  // 2. El enlace que cargás desde el panel
+  const enlace = (trans && trans.video_url_prueba || '').trim();
+
+  if(enlace){
+    const emb = aEmbebido(enlace);
+    if(emb.tipo === 'archivo'){
+      caja.innerHTML = '<video src="' + esc(emb.url) + '" controls playsinline></video>';
+    } else {
+      caja.innerHTML = '<iframe src="' + esc(emb.url) + '" allowfullscreen ' +
+        'allow="autoplay; accelerometer; gyroscope; encrypted-media; picture-in-picture"></iframe>';
+    }
+    return;
+  }
+
+  // 3. Nada cargado todavía
+  vacio.style.display = '';
+  txt.textContent = trans && trans.estado === 'en_vivo'
+    ? 'La transmisión está por arrancar. Quedate en esta página, arranca sola.'
+    : 'Todavía no hay video cargado para este encuentro.';
+}
+
+// ─── El estado de arriba ───────────────────────────────────────────
+function pintarEstado(){
+  const zona = document.getElementById('zonaPill');
+  const bajo = document.getElementById('bajoVideo');
+  const bajoTxt = document.getElementById('bajoTxt');
+
+  document.getElementById('tituloVivo').textContent = trans.titulo || 'Encuentro';
+  document.getElementById('descVivo').textContent = trans.descripcion || '';
+
+  if(trans.estado === 'en_vivo'){
+    zona.innerHTML = '<span class="pill pill-vivo"><span class="punto"></span>EN VIVO</span>';
+    bajo.style.display = 'none';
+    return;
+  }
+
+  // Grabación: mostramos cuánto le queda
+  zona.innerHTML = '<span class="pill pill-replay">GRABACIÓN</span>';
+
+  if(trans.disponible_hasta){
+    bajo.style.display = '';
+    const actualizar = () => {
+      const faltan = new Date(trans.disponible_hasta).getTime() - Date.now();
+      if(faltan <= 0){
+        bajoTxt.innerHTML = '<strong>Esta grabación ya no está disponible.</strong>';
+        setTimeout(() => location.reload(), 2000);
+        return;
+      }
+      const h = Math.floor(faltan / 3600000);
+      const m = Math.floor((faltan % 3600000) / 60000);
+      bajoTxt.innerHTML = '⏳ Esta grabación queda disponible <strong>' +
+        (h > 0 ? h + ' hora' + (h === 1 ? '' : 's') + ' y ' : '') + m + ' minutos</strong> más.';
+    };
+    actualizar();
+    setInterval(actualizar, 60000);
+  }
+}
+
+// ─── El chat ───────────────────────────────────────────────────────
+function crecerInput(el){
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 90) + 'px';
+}
+
+function pintarMensajes(){
+  const cont = document.getElementById('chatCuerpo');
+  const vacio = document.getElementById('chatVacio');
+
+  if(mensajes.length === 0){
+    vacio.style.display = '';
+    return;
+  }
+  vacio.style.display = 'none';
+
+  const pegadoAbajo = cont.scrollHeight - cont.scrollTop - cont.clientHeight < 90;
+
+  cont.innerHTML = mensajes.map(m => {
+    const p = perfiles[m.usuario_id] || {};
+    const nombre = p.nombre || 'Alguien';
+    const propio = m.usuario_id === (yo && yo.id);
+    const av = p.avatar_url
+      ? 'background-image:url(\'' + esc(p.avatar_url) + '\')'
+      : 'background:' + colorDe(nombre);
+
+    return '<div class="msj' + (propio ? ' propio' : '') + '">' +
+      '<div class="msj-av" style="' + av + '">' + (p.avatar_url ? '' : esc(inicial(nombre))) + '</div>' +
+      '<div class="msj-cuerpo">' +
+        '<div class="msj-nom">' + esc(nombre) +
+          (['admin','fundadora'].includes(p.rol) ? '<span class="tag">EQUIPO</span>' : '') +
+        '</div>' +
+        '<div class="msj-txt">' + esc(m.texto) + '</div>' +
+        '<div class="msj-hora">' + hora(m.creado_en) + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  if(pegadoAbajo) cont.scrollTop = cont.scrollHeight;
+  document.getElementById('peMensajes').textContent = mensajes.length;
+}
+
+async function traerPerfilesDe(ids){
+  const faltan = ids.filter(i => i && !perfiles[i]);
+  if(!faltan.length) return;
+  const { data } = await sb.from('perfiles').select('id, nombre, avatar_url, rol').in('id', faltan);
+  (data || []).forEach(p => { perfiles[p.id] = p; });
+}
+
+async function cargarChat(){
+  const { data } = await sb.from('mensajes_vivo')
+    .select('*').eq('transmision_id', trans.id)
+    .order('creado_en', { ascending: true }).limit(200);
+
+  mensajes = data || [];
+  await traerPerfilesDe(mensajes.map(m => m.usuario_id));
+  pintarMensajes();
+}
+
+async function enviarMensaje(ev){
+  if(ev) ev.preventDefault();
+  const input = document.getElementById('chatInput');
+  const texto = input.value.trim();
+  if(!texto || !trans) return;
+
+  const btn = document.getElementById('chatBtn');
+  btn.disabled = true;
+  input.value = '';
+  crecerInput(input);
+
+  const { error } = await sb.from('mensajes_vivo').insert({
+    transmision_id: trans.id,
+    texto: texto
+  });
+
+  btn.disabled = false;
+  input.focus();
+
+  if(error){
+    document.getElementById('chatAviso').textContent = 'No se pudo enviar: ' + error.message;
+    input.value = texto;
+  }
+}
+
+// ─── Realtime: mensajes nuevos + quién está mirando ────────────────
+async function conectarRealtime(){
+  if(!trans) return;
+
+  canal = sb.channel('vivo:' + trans.id, {
+    config: { presence: { key: (yo && yo.id) || crypto.randomUUID() } }
+  });
+
+  canal
+    .on('postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'mensajes_vivo', filter: 'transmision_id=eq.' + trans.id },
+      async ({ new: m }) => {
+        if(mensajes.some(x => x.id === m.id)) return;
+        mensajes.push(m);
+        await traerPerfilesDe([m.usuario_id]);
+        pintarMensajes();
+      })
+    .on('presence', { event: 'sync' }, () => {
+      const cuantas = Object.keys(canal.presenceState()).length;
+      if(cuantas > picoConectadas) picoConectadas = cuantas;
+
+      // ⚠️ A propósito: este número SOLO se pinta si sos del equipo.
+      // Las espectadoras nunca ven cuántas personas hay.
+      if(esEquipo){
+        document.getElementById('peConectadas').textContent = cuantas;
+        document.getElementById('pePico').textContent = picoConectadas;
+      }
+    })
+    .subscribe(async (estado) => {
+      if(estado === 'SUBSCRIBED'){
+        await canal.track({ entro: Date.now() });
+      }
+    });
+}
+
+// ─── Arranque ──────────────────────────────────────────────────────
+function mostrarSinAcceso(texto){
+  document.getElementById('zonaVivo').style.display = 'none';
+  document.getElementById('zonaSinAcceso').style.display = '';
+  if(texto) document.getElementById('saTxt').textContent = texto;
+  document.getElementById('auth-splash-style')?.remove();
+  document.getElementById('authSplash')?.remove();
+}
+
+const espera = setInterval(async () => {
+  if(typeof sb === 'undefined' || sb === null) return;
+  clearInterval(espera);
+
+  const { data: { user } } = await sb.auth.getUser();
+  if(!user){
+    window.location.href = '/login?volver=' + encodeURIComponent('/vivo');
+    return;
+  }
+  yo = user;
+
+  const { data: perfil } = await sb.from('perfiles')
+    .select('id, nombre, avatar_url, rol').eq('id', user.id).maybeSingle();
+  if(perfil) perfiles[user.id] = perfil;
+  esEquipo = ['admin','fundadora'].includes(perfil?.rol);
+
+  try {
+    const { data } = await sb.rpc('es_premium');
+    soyPremium = !!data;
+  } catch(e){ soyPremium = false; }
+
+  if(!soyPremium && !esEquipo){
+    mostrarSinAcceso();
+    return;
+  }
+
+  // ¿Qué hay para mostrar?
+  let info = null;
+  try {
+    const { data, error } = await sb.rpc('transmision_actual');
+    if(error) throw error;
+    info = data;
+  } catch(e){
+    mostrarSinAcceso('No pudimos cargar la transmisión. Puede que falte correr SQL-TRANSMISIONES.sql en Supabase.');
+    return;
+  }
+
+  if(!info || !info.hay){
+    let txt = 'Por ahora no hay ninguna transmisión. Te avisamos cuando programemos la próxima.';
+    if(info && info.motivo === 'programada' && info.empieza_en){
+      const f = new Date(info.empieza_en);
+      txt = '"' + (info.titulo || 'El próximo encuentro') + '" arranca el ' +
+        f.toLocaleDateString('es-PY', { weekday:'long', day:'numeric', month:'long' }) +
+        ' a las ' + f.toLocaleTimeString('es-PY', { hour:'2-digit', minute:'2-digit' }) + '.';
+    }
+    document.getElementById('zonaVivo').style.display = 'none';
+    document.getElementById('zonaSinAcceso').style.display = '';
+    document.getElementById('saTxt').textContent = txt;
+    document.querySelector('.sa-ico').textContent = '📅';
+    document.querySelector('.sa-tit').textContent = 'Todavía no hay nada en vivo';
+    document.getElementById('auth-splash-style')?.remove();
+    document.getElementById('authSplash')?.remove();
+    return;
+  }
+
+  trans = info;
+  document.getElementById('zonaVivo').style.display = '';
+  document.body.classList.add('modo-vivo');   // en celular, pantalla completa tipo app
+  if(esEquipo) document.getElementById('panelEquipo').classList.add('ver');
+
+  pintarEstado();
+  pintarVideo();
+  await cargarChat();
+  await conectarRealtime();
+
+  document.getElementById('auth-splash-style')?.remove();
+  document.getElementById('authSplash')?.remove();
+}, 50);
+</script>
+
+</body>
+</html>

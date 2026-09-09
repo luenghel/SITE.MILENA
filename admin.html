@@ -10,7 +10,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1A0A12">
 
-<link rel="stylesheet" href="styles.css?v=202609091424">
+<link rel="stylesheet" href="styles.css?v=202609091550">
 <style>
   body{display:grid;grid-template-columns:240px 1fr;min-height:100vh;background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);color:#FFF5F0}
 
@@ -228,6 +228,10 @@
   .curso-modal-close:hover{background:rgba(255,245,240,0.12)}
 
   .curso-modal-body{padding:22px 26px}
+  .emoji-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:7px}
+  .emoji-op{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:21px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:10px;cursor:pointer;transition:all 0.18s;padding:0}
+  .emoji-op:hover{background:rgba(255,245,240,0.1);transform:translateY(-2px)}
+  .emoji-op.sel{background:rgba(212,163,86,0.18);border-color:#FAC775;box-shadow:0 0 0 2px rgba(212,163,86,0.2)}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
   .form-grid-full{grid-column:1/-1}
   .form-field{display:flex;flex-direction:column;gap:6px}
@@ -2314,6 +2318,13 @@ body{visibility:hidden}
         <button class="filter-btn active" onclick="filtrarAlumnas('todas', this)">Todas</button>
         <button class="filter-btn" onclick="filtrarAlumnas('compradoras', this)">Con compras</button>
         <button class="filter-btn" onclick="filtrarAlumnas('activas', this)">Activas en comunidad</button>
+        <button class="filter-btn" onclick="filtrarAlumnas('premium', this)">⭐ Premium</button>
+        <button class="filter-btn" onclick="filtrarAlumnas('quieren', this)">✋ Quieren Premium</button>
+        <button class="filter-btn" onclick="filtrarAlumnas('solocomunidad', this)">👥 Solo comunidad</button>
+        <select class="form-input" id="filtroCurso" onchange="filtrarPorCurso(this.value)"
+                style="width:auto;min-width:190px;padding:8px 12px;font-size:12.5px">
+          <option value="">Todos los cursos</option>
+        </select>
         <button class="filter-btn" onclick="filtrarAlumnas('equipo', this)">Equipo</button>
         <button class="filter-btn" onclick="filtrarAlumnas('bloqueadas', this)">🚫 Bloqueadas</button>
         <button class="filter-btn" onclick="filtrarAlumnas('denunciantes', this)">⚠️ Denuncian mucho</button>
@@ -2814,6 +2825,8 @@ body{visibility:hidden}
         <input type="hidden" id="accUsuarioId">
 
         <div class="acc-persona" id="accPersona"></div>
+
+        <div id="accPerfil" style="margin-bottom:20px"></div>
 
         <div class="form-label" style="margin-bottom:9px">QUÉ QUERÉS HACER</div>
         <div class="acc-tipo-row" id="accTipos">
@@ -3460,6 +3473,65 @@ body{visibility:hidden}
     <div id="seccionesLista"></div>
   </div>
 
+  <!-- MODAL TRANSMISIÓN EN VIVO -->
+  <div class="curso-modal-backdrop" id="transmisionModal">
+    <div class="curso-modal" style="max-width:520px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">TRANSMISIÓN EN VIVO</div>
+          <h3 class="curso-modal-titulo serif" id="traTituloModal">Nueva transmisión</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarTransmision()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <input type="hidden" id="traId">
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">TÍTULO</label>
+          <input type="text" class="form-input" id="traTitulo" placeholder="Encuentro semanal: anuncios que convierten">
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">DE QUÉ VA (opcional)</label>
+          <textarea class="form-textarea" id="traDescripcion" placeholder="Vamos a revisar campañas reales y ver qué cambiar."></textarea>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">CUÁNDO EMPIEZA</label>
+            <input type="datetime-local" class="form-input" id="traEmpieza">
+          </div>
+          <div class="form-field">
+            <label class="form-label">HORAS DE GRABACIÓN</label>
+            <input type="number" class="form-input" id="traHoras" value="24" min="1" max="720">
+          </div>
+        </div>
+        <div class="form-help" style="margin-bottom:14px">
+          Cuando termine, la grabación queda disponible esa cantidad de horas. Después se cierra sola.
+        </div>
+
+        <div class="form-field" style="margin-bottom:6px">
+          <label class="form-label">ENLACE DEL VIDEO</label>
+          <input type="text" class="form-input" id="traVideoPrueba" placeholder="https://youtube.com/watch?v=...">
+          <div class="form-help">
+            Pegá el enlace de tu transmisión de YouTube (poné el video como <strong>No listado</strong>).
+            También acepta Vimeo o un archivo .mp4 si después subís la grabación.
+          </div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <button class="btn-danger" id="btnBorrarTra" onclick="borrarTransmision()" style="display:none">Eliminar</button>
+        <div style="flex:1"></div>
+        <button class="btn-secondary" onclick="cerrarTransmision()">Cancelar</button>
+        <button class="cta-gold" onclick="guardarTransmision()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL CATEGORÍA DE LA COMUNIDAD -->
   <div class="curso-modal-backdrop" id="categoriaModal">
     <div class="curso-modal" style="max-width:440px">
@@ -3481,21 +3553,32 @@ body{visibility:hidden}
           <span id="catPrevia" style="display:inline-block;padding:9px 16px;border-radius:20px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.18);font-size:13px">General</span>
         </div>
 
-        <div class="form-row">
-          <div class="form-group" style="flex:0 0 90px">
-            <label class="form-label">EMOJI</label>
-            <input type="text" class="form-input" id="catEmoji" maxlength="4" placeholder="💡" style="text-align:center;font-size:20px" oninput="pintarPreviaCat()">
-          </div>
-          <div class="form-group" style="flex:1">
-            <label class="form-label">NOMBRE</label>
-            <input type="text" class="form-input" id="catNombre" placeholder="Consejo" oninput="pintarPreviaCat()">
+        <div class="form-field" style="margin-bottom:16px">
+          <label class="form-label">NOMBRE</label>
+          <input type="text" class="form-input" id="catNombre" placeholder="Consejo" oninput="pintarPreviaCat()">
+        </div>
+
+        <div class="form-field" style="margin-bottom:16px">
+          <label class="form-label">ÍCONO</label>
+          <div class="emoji-grid" id="emojiGrid"></div>
+          <div style="display:flex;gap:10px;align-items:center;margin-top:10px">
+            <input type="text" class="form-input" id="catEmoji" maxlength="4"
+                   placeholder="o pegá otro" style="flex:1;text-align:center;font-size:18px"
+                   oninput="pintarPreviaCat(); marcarEmojiElegido()">
+            <button class="btn-secondary" type="button" onclick="limpiarEmoji()">Sin ícono</button>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">ORDEN</label>
-          <input type="number" class="form-input" id="catOrden" value="1" min="1">
-          <div style="font-size:11.5px;color:rgba(255,245,240,0.45);margin-top:6px">El 1 va primero, después el 2, y así.</div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">ORDEN</label>
+            <input type="number" class="form-input" id="catOrden" value="1" min="1">
+          </div>
+          <div class="form-field" style="justify-content:flex-end">
+            <div style="font-size:11.5px;color:rgba(255,245,240,0.45);padding-bottom:11px">
+              El 1 va primero, después el 2, y así.
+            </div>
+          </div>
         </div>
 
         <div class="toggle-row">
@@ -3659,6 +3742,18 @@ body{visibility:hidden}
         <button class="btn-secondary" onclick="abrirEncuentro()">+ Nuevo encuentro</button>
       </div>
       <div id="encuentrosLista"></div>
+    </div>
+
+    <!-- Transmisiones en vivo -->
+    <div class="pm-seccion">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">Transmisiones en vivo</h3>
+          <p class="chart-subtitle">Solo las premium al día pueden verlas, en milenacmm.com/vivo</p>
+        </div>
+        <button class="btn-secondary" onclick="abrirTransmision()">+ Nueva transmisión</button>
+      </div>
+      <div id="transmisionesLista"></div>
     </div>
 
     <!-- Pagos que llegaron con un email desconocido -->
@@ -3880,6 +3975,12 @@ body{visibility:hidden}
           <div class="form-help">Dejá una línea en blanco entre párrafos</div>
         </div>
 
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">FRASE ARRIBA DEL BOTÓN</label>
+          <input type="text" class="form-input" id="planTextoCta" placeholder="Un espacio cerrado para las que quieren ir más a fondo.">
+          <div class="form-help">Solo se ve cuando el precio está oculto</div>
+        </div>
+
         <div class="form-grid">
           <div class="form-field">
             <label class="form-label">TEXTO DEL BOTÓN</label>
@@ -4041,6 +4142,174 @@ body{visibility:hidden}
   let hashtags = [];
 
   // ═══════════════════════════════════════════════
+  // TRANSMISIONES EN VIVO
+  // ═══════════════════════════════════════════════
+  let transmisiones = [];
+
+  async function cargarTransmisiones(){
+    const cont = document.getElementById('transmisionesLista');
+    if(!cont || !sb) return;
+
+    const { data, error } = await sb.from('transmisiones')
+      .select('*').order('empieza_en', { ascending: false, nullsFirst: false });
+
+    if(error){
+      cont.innerHTML = '<div class="vacio-suave"><div class="ico">📡</div>' +
+        (String(error.message).includes('does not exist')
+          ? 'Falta crear las tablas. Corré SQL-TRANSMISIONES.sql en Supabase.'
+          : esc(error.message)) + '</div>';
+      return;
+    }
+
+    transmisiones = data || [];
+    renderTransmisiones();
+  }
+
+  function renderTransmisiones(){
+    const cont = document.getElementById('transmisionesLista');
+    if(!cont) return;
+
+    if(transmisiones.length === 0){
+      cont.innerHTML = '<div class="vacio-suave"><div class="ico">📡</div>' +
+        'Todavía no programaste ninguna transmisión' +
+        '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">' +
+        'Creá la primera con el botón de arriba</div></div>';
+      return;
+    }
+
+    cont.innerHTML = transmisiones.slice(0, 10).map(t => {
+      let pill, acciones;
+
+      if(t.estado === 'en_vivo'){
+        pill = '<span class="est-pill" style="background:rgba(255,59,71,0.16);border:0.5px solid rgba(255,59,71,0.5);color:#FF8090">● EN VIVO</span>';
+        acciones = '<button class="btn-secondary" onclick="terminarTransmision(\'' + t.id + '\')">Terminar</button>';
+      } else if(t.estado === 'terminada'){
+        const hasta = t.fin_real
+          ? new Date(new Date(t.fin_real).getTime() + (t.horas_replay || 24) * 3600000)
+          : null;
+        const viva = hasta && hasta.getTime() > Date.now();
+        pill = viva
+          ? '<span class="est-pill" style="background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.45);color:#FAC775">GRABACIÓN</span>'
+          : '<span class="est-pill" style="background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.15);color:rgba(255,245,240,0.45)">CERRADA</span>';
+        acciones = '<button class="btn-secondary" onclick="arrancarTransmision(\'' + t.id + '\')">Volver a poner en vivo</button>';
+      } else {
+        pill = '<span class="est-pill" style="background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.18);color:rgba(255,245,240,0.6)">PROGRAMADA</span>';
+        acciones = '<button class="cta-gold" style="padding:8px 15px;border-radius:9px;font-size:11.5px;border:none;cursor:pointer" ' +
+                   'onclick="arrancarTransmision(\'' + t.id + '\')">▶ PONER EN VIVO</button>';
+      }
+
+      let cuando = t.empieza_en ? fechaCorta(t.empieza_en) : 'Sin fecha';
+      if(t.estado === 'terminada' && t.fin_real){
+        const hasta = new Date(new Date(t.fin_real).getTime() + (t.horas_replay || 24) * 3600000);
+        const faltan = hasta.getTime() - Date.now();
+        cuando += faltan > 0
+          ? ' · quedan ' + Math.max(1, Math.round(faltan / 3600000)) + ' h de grabación'
+          : ' · ya cerró';
+      }
+
+      return '<div class="alumna-card" style="margin-bottom:10px">' +
+        '<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">' +
+          '<div style="min-width:0;flex:1">' +
+            '<div class="al-nombre">' + esc(t.titulo) + '</div>' +
+            '<div class="al-email">' + esc(cuando) + '</div>' +
+          '</div>' +
+          pill +
+        '</div>' +
+        '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px">' +
+          acciones +
+          '<button class="btn-secondary" onclick="abrirTransmision(\'' + t.id + '\')">Editar</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function abrirTransmision(id){
+    const t = transmisiones.find(x => x.id === id) || null;
+
+    document.getElementById('traId').value = t ? t.id : '';
+    document.getElementById('traTituloModal').textContent = t ? 'Editar transmisión' : 'Nueva transmisión';
+    document.getElementById('traTitulo').value = t ? t.titulo : '';
+    document.getElementById('traDescripcion').value = t ? (t.descripcion || '') : '';
+    document.getElementById('traHoras').value = t ? (t.horas_replay || 24) : 24;
+    document.getElementById('traVideoPrueba').value = t ? (t.video_url_prueba || '') : '';
+
+    // datetime-local necesita el formato YYYY-MM-DDTHH:MM en hora local
+    let cuando = '';
+    if(t && t.empieza_en){
+      const d = new Date(t.empieza_en);
+      d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+      cuando = d.toISOString().slice(0, 16);
+    }
+    document.getElementById('traEmpieza').value = cuando;
+    document.getElementById('btnBorrarTra').style.display = t ? '' : 'none';
+
+    document.getElementById('transmisionModal').classList.add('show');
+  }
+
+  function cerrarTransmision(){
+    document.getElementById('transmisionModal').classList.remove('show');
+  }
+
+  async function guardarTransmision(){
+    const id = document.getElementById('traId').value;
+    const titulo = document.getElementById('traTitulo').value.trim();
+    if(!titulo) return mostrarToast('Ponele un título', true);
+
+    const cuando = document.getElementById('traEmpieza').value;
+
+    const datos = {
+      titulo: titulo,
+      descripcion: document.getElementById('traDescripcion').value.trim() || null,
+      empieza_en: cuando ? new Date(cuando).toISOString() : null,
+      horas_replay: parseInt(document.getElementById('traHoras').value) || 24,
+      video_url_prueba: document.getElementById('traVideoPrueba').value.trim() || null
+    };
+
+    const { error } = id
+      ? await sb.from('transmisiones').update(datos).eq('id', id)
+      : await sb.from('transmisiones').insert(datos);
+
+    if(error) return mostrarToast('No se pudo guardar: ' + error.message, true);
+
+    cerrarTransmision();
+    mostrarToast('✓ Transmisión guardada');
+    await cargarTransmisiones();
+  }
+
+  async function borrarTransmision(){
+    const id = document.getElementById('traId').value;
+    const t = transmisiones.find(x => x.id === id);
+    if(!t) return;
+    if(!confirm('¿Eliminar "' + t.titulo + '"?\n\nSe borran también los mensajes de su chat.')) return;
+
+    const { error } = await sb.from('transmisiones').delete().eq('id', id);
+    if(error) return mostrarToast('No se pudo borrar: ' + error.message, true);
+
+    cerrarTransmision();
+    mostrarToast('✓ Eliminada');
+    await cargarTransmisiones();
+  }
+
+  async function arrancarTransmision(id){
+    if(!confirm('¿Poner esta transmisión en vivo?\n\nLas premium la van a ver al instante en /vivo.')) return;
+    const { data, error } = await sb.rpc('arrancar_transmision', { p_id: id });
+    if(error) return mostrarToast('No se pudo: ' + error.message, true);
+    if(data && data.exito === false) return mostrarToast(data.error, true);
+    mostrarToast('🔴 En vivo');
+    await cargarTransmisiones();
+  }
+
+  async function terminarTransmision(id){
+    const t = transmisiones.find(x => x.id === id);
+    const horas = t ? (t.horas_replay || 24) : 24;
+    if(!confirm('¿Terminar la transmisión?\n\nLa grabación queda disponible ' + horas + ' horas más.')) return;
+    const { data, error } = await sb.rpc('terminar_transmision', { p_id: id });
+    if(error) return mostrarToast('No se pudo: ' + error.message, true);
+    mostrarToast('✓ Terminada. La grabación queda ' + horas + ' h');
+    await cargarTransmisiones();
+  }
+
+  // ═══════════════════════════════════════════════
   // CATEGORÍAS DE LA COMUNIDAD
   // Los botones de arriba del feed. Antes estaban
   // escritos a mano en comunidad.html.
@@ -4101,6 +4370,40 @@ body{visibility:hidden}
     '</div>';
   }
 
+  // Los íconos para elegir con un click
+  const EMOJIS_CAT = [
+    '📌','💡','🚀','❓','🏆','⭐','🔥','💎','📣','🎯',
+    '💬','📚','🎓','💰','📈','🎉','❤️','✨','🧠','⚡',
+    '🌱','🎁','📝','🔔','☕','🌟'
+  ];
+
+  function pintarSelectorEmojis(){
+    const cont = document.getElementById('emojiGrid');
+    if(!cont) return;
+    cont.innerHTML = EMOJIS_CAT.map(e =>
+      '<button type="button" class="emoji-op" onclick="elegirEmoji(\'' + e + '\')">' + e + '</button>'
+    ).join('');
+  }
+
+  function elegirEmoji(e){
+    document.getElementById('catEmoji').value = e;
+    marcarEmojiElegido();
+    pintarPreviaCat();
+  }
+
+  function limpiarEmoji(){
+    document.getElementById('catEmoji').value = '';
+    marcarEmojiElegido();
+    pintarPreviaCat();
+  }
+
+  function marcarEmojiElegido(){
+    const actual = document.getElementById('catEmoji').value.trim();
+    document.querySelectorAll('#emojiGrid .emoji-op').forEach(b => {
+      b.classList.toggle('sel', b.textContent.trim() === actual && actual !== '');
+    });
+  }
+
   function pintarPreviaCat(){
     const emoji = document.getElementById('catEmoji').value.trim();
     const nombre = document.getElementById('catNombre').value.trim() || 'Sin nombre';
@@ -4122,6 +4425,8 @@ body{visibility:hidden}
     const esGeneral = c && c.clave === 'general';
     document.getElementById('btnBorrarCat').style.display = (c && !esGeneral) ? '' : 'none';
 
+    pintarSelectorEmojis();
+    marcarEmojiElegido();
     pintarPreviaCat();
     document.getElementById('categoriaModal').classList.add('show');
   }
@@ -4967,6 +5272,7 @@ body{visibility:hidden}
     renderPremium();
     await cargarInteresadas();
     await cargarPagosSueltos();
+    await cargarTransmisiones();
   }
 
   // ─── Pagos que no pudimos cruzar con ninguna cuenta ───
@@ -5421,6 +5727,7 @@ body{visibility:hidden}
     document.getElementById('planBeneficios').value = planPremium.beneficios || '';
     document.getElementById('planVideo').value = planPremium.video_url || '';
     document.getElementById('planContenido').value = planPremium.contenido || '';
+    document.getElementById('planTextoCta').value = planPremium.texto_cta || '';
     document.getElementById('planTextoBoton').value = planPremium.texto_boton || '';
     document.getElementById('planEnlaceBoton').value = planPremium.enlace_boton || '';
     document.getElementById('planMostrarPrecio').classList.toggle('on', !!planPremium.mostrar_precio);
@@ -5441,6 +5748,7 @@ body{visibility:hidden}
       beneficios: document.getElementById('planBeneficios').value.trim() || null,
       video_url: document.getElementById('planVideo').value.trim() || null,
       contenido: document.getElementById('planContenido').value.trim() || null,
+      texto_cta: document.getElementById('planTextoCta').value.trim() || null,
       texto_boton: document.getElementById('planTextoBoton').value.trim() || null,
       enlace_boton: document.getElementById('planEnlaceBoton').value.trim() || null,
       mostrar_precio: document.getElementById('planMostrarPrecio').classList.contains('on')
@@ -7507,6 +7815,24 @@ body{visibility:hidden}
   // ============================
   let alumnas = [];
   let filtroAlumnas = 'todas';
+  let filtroCursoId = '';
+
+  function filtrarPorCurso(id){
+    filtroCursoId = id || '';
+    renderAlumnas();
+  }
+
+  // El selector se llena con los cursos que existan
+  function llenarFiltroCursos(){
+    const sel = document.getElementById('filtroCurso');
+    if(!sel) return;
+    const actual = sel.value;
+    sel.innerHTML = '<option value="">Todos los cursos</option>' +
+      (cursos || []).map(c =>
+        '<option value="' + c.id + '">🎓 ' + esc(c.titulo || 'Sin título') + '</option>'
+      ).join('');
+    if(actual) sel.value = actual;
+  }
   let buscaAlumnas = '';
   let yoSoyId = null;
 
@@ -7560,12 +7886,43 @@ body{visibility:hidden}
 
     alumnas = perfiles || [];
 
-    // Las tres consultas al mismo tiempo
-    const [rCompras, rPosts, rComs] = await Promise.all([
-      sb.from('compras').select('usuario_id, estado'),
+    // Todo lo que necesitamos para el perfil, de una sola vez
+    const [rCompras, rPosts, rComs, rSusc, rInt] = await Promise.all([
+      sb.from('compras').select('usuario_id, curso_id, estado, cursos(titulo)'),
       sb.from('posts').select('usuario_id'),
-      sb.from('comentarios').select('usuario_id')
+      sb.from('comentarios').select('usuario_id'),
+      sb.from('suscripciones').select('usuario_id, estado, vence'),
+      sb.from('interesados_premium').select('usuario_id, creado_en, contactada')
     ]);
+
+    // ¿Quién es premium hoy? Manda la fecha, igual que en el sitio
+    const premiumPorUsuario = {};
+    (rSusc.data || []).forEach(x => {
+      if(!x.usuario_id || x.estado === 'cancelada') return;
+      const alDia = !x.vence || new Date(x.vence).getTime() > Date.now();
+      if(alDia){
+        const actual = premiumPorUsuario[x.usuario_id];
+        if(!actual || (x.vence && new Date(x.vence) > new Date(actual))) {
+          premiumPorUsuario[x.usuario_id] = x.vence || 'sin-vencimiento';
+        }
+      }
+    });
+
+    // ¿Quién apretó "Quiero ser premium" y todavía no fue contactada?
+    const quierenPremium = {};
+    (rInt.data || []).forEach(x => {
+      if(x.usuario_id && !x.contactada) quierenPremium[x.usuario_id] = x.creado_en;
+    });
+
+    // Los títulos y los ids de lo que compró cada una
+    const cursosPorUsuario = {};
+    const idsPorUsuario = {};
+    (rCompras.data || []).forEach(x => {
+      if(x.estado !== 'pagado' || !x.usuario_id) return;
+      const t = x.cursos?.titulo;
+      if(t) (cursosPorUsuario[x.usuario_id] = cursosPorUsuario[x.usuario_id] || []).push(t);
+      if(x.curso_id) (idsPorUsuario[x.usuario_id] = idsPorUsuario[x.usuario_id] || []).push(x.curso_id);
+    });
 
     const compras = rCompras.data;
     const comprasPorUsuario = {};
@@ -7595,15 +7952,27 @@ body{visibility:hidden}
       a._likesRecib  = a.likes_recibidos    ?? 0;
       a._denHechas   = a.denuncias_hechas   ?? 0;
       a._denRecib    = a.denuncias_recibidas ?? 0;
+      a._premiumVence  = premiumPorUsuario[a.id] || null;
+      a._esPremium     = !!a._premiumVence;
+      a._quierePremium = quierenPremium[a.id] || null;
+      a._cursos        = cursosPorUsuario[a.id] || [];
+      a._cursoIds      = idsPorUsuario[a.id] || [];
     });
 
     document.getElementById('alumnasCount').textContent = alumnas.length;
+    llenarFiltroCursos();
     renderAlumnas();
   }
 
   function alumnaVisible(a){
     if(filtroAlumnas === 'compradoras' && a._compras === 0) return false;
     if(filtroAlumnas === 'activas' && (a._posts + a._comentarios) === 0) return false;
+    if(filtroAlumnas === 'premium' && !a._esPremium) return false;
+    if(filtroAlumnas === 'quieren' && (!a._quierePremium || a._esPremium)) return false;
+    // Solo comunidad: entró, pero no compró ningún curso ni es premium
+    if(filtroAlumnas === 'solocomunidad' && ((a._cursos || []).length > 0 || a._esPremium)) return false;
+    // Un curso puntual
+    if(filtroCursoId && !(a._cursoIds || []).includes(filtroCursoId)) return false;
     if(filtroAlumnas === 'equipo' && !['admin','fundadora'].includes(a.rol)) return false;
     if(filtroAlumnas === 'bloqueadas' && !a.bloqueado) return false;
     if(filtroAlumnas === 'denunciantes' && (a._denHechas || 0) < 3) return false;
@@ -7668,7 +8037,9 @@ body{visibility:hidden}
       return '<tr>' +
         '<td><div class="al-user">' + avatarAlumna(a) +
           '<div style="min-width:0"><div class="al-nombre">' + nombre + '</div>' +
-          '<div class="al-email">' + esc(a.email || '') + '</div></div></div></td>' +
+          '<div class="al-email">' + esc(a.email || '') + '</div>' +
+          (chipsAlumna(a) ? '<div style="margin-top:5px;display:flex;gap:5px;flex-wrap:wrap">' + chipsAlumna(a) + '</div>' : '') +
+          '</div></div></td>' +
         '<td>' + selectorRol(a) + '</td>' +
         '<td>' + (a._compras > 0
             ? '<span style="color:#9FE1CB;font-weight:500">' + a._compras + '</span>'
@@ -7693,6 +8064,7 @@ body{visibility:hidden}
         '<div class="alumna-card-top">' + avatarAlumna(a, 42) +
           '<div style="flex:1;min-width:0"><div class="al-nombre">' + nombre + '</div>' +
           '<div class="al-email">' + esc(a.email || '') + '</div></div></div>' +
+        (chipsAlumna(a) ? '<div style="margin:8px 0;display:flex;gap:6px;flex-wrap:wrap">' + chipsAlumna(a) + '</div>' : '') +
         '<div style="margin-bottom:10px">' + selectorRol(a) + '</div>' +
         '<div class="alumna-card-stats">' +
           '<span class="mini-stat">🎓 ' + a._compras + '</span>' +
@@ -7714,6 +8086,23 @@ body{visibility:hidden}
   }
 
   // Muestra si esta persona denuncia mucho o si la denuncian mucho
+  // Los distintivos que se ven al lado del nombre
+  function chipsAlumna(a){
+    let out = '';
+    if(a._esPremium){
+      const cuando = a._premiumVence === 'sin-vencimiento'
+        ? 'sin vencimiento'
+        : 'vence ' + fechaCorta(a._premiumVence);
+      out += '<span class="mini-stat" style="color:#FAC775;border-color:rgba(212,163,86,0.4)" ' +
+             'title="Premium · ' + cuando + '">⭐ Premium</span>';
+    }
+    if(a._quierePremium && !a._esPremium){
+      out += '<span class="mini-stat" style="color:#E8B8C4;border-color:rgba(232,184,196,0.4)" ' +
+             'title="Tocó el botón el ' + fechaCorta(a._quierePremium) + '">✋ Quiere Premium</span>';
+    }
+    return out;
+  }
+
   function insigniaDenuncias(a){
     const hechas = a._denHechas || 0;
     const recib = a._denRecib || 0;
@@ -8080,9 +8469,68 @@ body{visibility:hidden}
     document.getElementById('accAlerta').classList.remove('show');
     document.getElementById('btnAplicarAccion').textContent = 'APLICAR';
 
+    pintarPerfilMiembro(a);
+
     estadoAcc('');
     cargarInsigniasDe(id);
     document.getElementById('accionesModal').classList.add('show');
+  }
+
+  // La ficha completa de la persona: qué compró, si es premium, qué hace
+  function pintarPerfilMiembro(a){
+    const cont = document.getElementById('accPerfil');
+    if(!cont) return;
+
+    const dato = (etiqueta, valor, color) =>
+      '<div style="flex:1;min-width:120px">' +
+        '<div style="font-size:9.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.4);margin-bottom:4px">' + etiqueta + '</div>' +
+        '<div style="font-size:14px;color:' + (color || '#FFF5F0') + '">' + valor + '</div>' +
+      '</div>';
+
+    // Premium
+    let premium;
+    if(a._esPremium){
+      premium = a._premiumVence === 'sin-vencimiento'
+        ? '⭐ Sin vencimiento'
+        : '⭐ Hasta ' + fechaCorta(a._premiumVence);
+    } else if(a._quierePremium){
+      premium = '✋ Lo pidió el ' + fechaCorta(a._quierePremium);
+    } else {
+      premium = '—';
+    }
+
+    // Cursos, con nombre
+    const cursosTxt = a._cursos && a._cursos.length
+      ? a._cursos.map(t => '<div style="font-size:12.5px;color:rgba(255,245,240,0.8);' +
+          'padding:5px 0;border-bottom:0.5px solid rgba(255,245,240,0.06)">🎓 ' + esc(t) + '</div>').join('')
+      : '<div style="font-size:12.5px;color:rgba(255,245,240,0.35)">Todavía no compró ninguno</div>';
+
+    cont.innerHTML =
+      '<div style="background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.09);' +
+           'border-radius:13px;padding:16px 18px">' +
+
+        '<div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px">' +
+          dato('SE REGISTRÓ', fechaCorta(a.creado_en)) +
+          dato('PREMIUM', premium, a._esPremium ? '#FAC775' : (a._quierePremium ? '#E8B8C4' : 'rgba(255,245,240,0.35)')) +
+          dato('ROL', esc(a.rol || 'alumna')) +
+        '</div>' +
+
+        '<div style="font-size:9.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.4);margin-bottom:7px">' +
+          'CURSOS COMPRADOS (' + (a._cursos ? a._cursos.length : 0) + ')' +
+        '</div>' +
+        '<div style="margin-bottom:16px">' + cursosTxt + '</div>' +
+
+        '<div style="font-size:9.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.4);margin-bottom:7px">' +
+          'ACTIVIDAD EN LA COMUNIDAD' +
+        '</div>' +
+        '<div style="display:flex;gap:7px;flex-wrap:wrap">' +
+          '<span class="mini-stat" title="Publicaciones">✏️ ' + (a._posts || 0) + ' posts</span>' +
+          '<span class="mini-stat" title="Comentarios">💬 ' + (a._comentarios || 0) + '</span>' +
+          '<span class="mini-stat" title="Diamantes que dio">💎 ' + (a._likesDados || 0) + '</span>' +
+          '<span class="mini-stat" title="Diamantes recibidos">⭐ ' + (a._likesRecib || 0) + '</span>' +
+        '</div>' +
+
+      '</div>';
   }
 
   function cerrarAcciones(){
@@ -9442,7 +9890,7 @@ body{visibility:hidden}
   }, 100);
 </script>
 
-<script src="supabase-config.js?v=202609091424"></script>
+<script src="supabase-config.js?v=202609091550"></script>
 <script>
 // Revelado inmediato: si el caché dice que hay sesión, mostramos la página
 // al instante y verificamos en segundo plano. Adiós a la espera.
@@ -9459,7 +9907,7 @@ body{visibility:hidden}
   }catch(e){}
 })();
 </script>
-<script src="header-dinamico.js?v=202609091424"></script>
+<script src="header-dinamico.js?v=202609091550"></script>
 <script>
 (function() {
   const checkAdmin = setInterval(async () => {
