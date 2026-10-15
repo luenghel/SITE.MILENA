@@ -8525,6 +8525,7 @@ body{visibility:hidden}
   // ============================
   let enviosHechos = {};
   let emailConfigurado = false;
+  let motivoEmail = '';
 
   async function cargarEnvios(){
     if(!sb) return;
@@ -8561,8 +8562,8 @@ body{visibility:hidden}
       sub.textContent = 'Podés enviar artículos por email';
     } else {
       est.textContent = 'Sin configurar';
-      est.style.color = 'rgba(255,245,240,0.6)';
-      sub.textContent = 'Falta el dominio y la clave de Resend';
+      est.style.color = '#FF8090';
+      sub.textContent = motivoEmail || 'Falta el dominio y la clave de Resend';
     }
 
     renderArticulosParaEnviar();
@@ -9134,7 +9135,8 @@ body{visibility:hidden}
           '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
           'Enviado a ' + envio.destinatarios + ' · ' + fechaCorta(envio.enviado_en) + '</span>';
       } else if(!emailConfigurado){
-        derecha = '<button class="art-envio-btn" disabled title="Falta configurar el envío de emails">NO DISPONIBLE</button>';
+        derecha = '<button class="art-envio-btn" disabled title="' +
+          esc(motivoEmail || 'Falta configurar el envío de emails') + '">NO DISPONIBLE</button>';
       } else if(suscriptores.length === 0){
         derecha = '<button class="art-envio-btn" disabled title="No hay suscriptores">SIN SUSCRIPTORES</button>';
       } else {
