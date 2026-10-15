@@ -121,8 +121,6 @@ Deno.serve(async (req) => {
       fecha_maxima_pago: venceStr,
       id_pedido_comercio: idPedido,
       descripcion_resumen: String(curso.titulo).slice(0, 100),
-      // La documentación pide que este campo exista, aunque sea vacío
-      descripcion: String(curso.descripcion || curso.titulo).slice(0, 200),
       comprador: {
         ruc: '',
         email: String(email).trim(),
@@ -158,6 +156,28 @@ Deno.serve(async (req) => {
         vendedor_direccion_referencia: '',
         vendedor_direccion_coordenadas: '',
       }],
+    }
+
+    // ─── Revisar la estructura antes de mandarla ───
+    // Pagopar es estricto: exige exactamente 9 campos arriba,
+    // 11 en el comprador y 13 en cada item.
+    const nArriba = Object.keys(pedido).length
+    const nComprador = Object.keys(pedido.comprador).length
+    const nItem = Object.keys(pedido.compras_items[0]).length
+
+    if (nArriba !== 9 || nComprador !== 11 || nItem !== 13) {
+      console.error('[pagopar] estructura incorrecta:', { nArriba, nComprador, nItem })
+      return responder({
+        error: 'La estructura del pedido no es la que espera Pagopar.',
+        diagnostico: {
+          campos_arriba: nArriba + ' (deben ser 9)',
+          campos_comprador: nComprador + ' (deben ser 11)',
+          campos_item: nItem + ' (deben ser 13)',
+          arriba: Object.keys(pedido),
+          comprador: Object.keys(pedido.comprador),
+          item: Object.keys(pedido.compras_items[0]),
+        }
+      }, 500)
     }
 
     // ─── Llamar a Pagopar ───

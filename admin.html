@@ -2,7 +2,7 @@
 <html lang="es-PY">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panel Admin · Milena Machado</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -10,7 +10,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1A0A12">
 
-<link rel="stylesheet" href="styles.css?v=202609091550">
+<link rel="stylesheet" href="styles.css">
 <style>
   body{display:grid;grid-template-columns:240px 1fr;min-height:100vh;background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);color:#FFF5F0}
 
@@ -228,10 +228,6 @@
   .curso-modal-close:hover{background:rgba(255,245,240,0.12)}
 
   .curso-modal-body{padding:22px 26px}
-  .emoji-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:7px}
-  .emoji-op{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:21px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:10px;cursor:pointer;transition:all 0.18s;padding:0}
-  .emoji-op:hover{background:rgba(255,245,240,0.1);transform:translateY(-2px)}
-  .emoji-op.sel{background:rgba(212,163,86,0.18);border-color:#FAC775;box-shadow:0 0 0 2px rgba(212,163,86,0.2)}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
   .form-grid-full{grid-column:1/-1}
   .form-field{display:flex;flex-direction:column;gap:6px}
@@ -1135,6 +1131,39 @@
   .revisar-barra.baja span{background:linear-gradient(90deg,#FF8090,#FFC48A)}
   .revisar-dato{font-size:11.5px;color:rgba(255,245,240,0.5);min-width:80px;text-align:right}
   .op-detalle{font-size:11.5px;color:rgba(255,245,240,0.6);margin-top:4px;width:100%;line-height:1.5}
+
+
+  /* ═══ Editor de texto ═══ */
+  .editor{border:0.5px solid rgba(255,245,240,0.15);border-radius:12px;overflow:hidden;background:rgba(255,245,240,0.03)}
+  .editor-barra{display:flex;flex-wrap:wrap;gap:3px;padding:9px 10px;background:rgba(255,245,240,0.04);border-bottom:0.5px solid rgba(255,245,240,0.1)}
+  .eb{min-width:32px;height:30px;padding:0 9px;background:transparent;border:0.5px solid transparent;border-radius:7px;color:rgba(255,245,240,0.72);font-size:12.5px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;transition:all 0.15s}
+  .eb:hover{background:rgba(255,245,240,0.09);color:#FFF5F0}
+  .eb:active{transform:scale(0.94)}
+  .eb.destacado{background:rgba(212,163,86,0.14);border-color:rgba(212,163,86,0.35);color:#FAC775;font-size:11.5px}
+  .eb.destacado:hover{background:rgba(212,163,86,0.24)}
+  .eb-sep{width:1px;background:rgba(255,245,240,0.12);margin:4px 5px}
+  .eb-codigo{background:none;border:none;color:rgba(255,245,240,0.45);font-size:11px;cursor:pointer;font-family:inherit;text-decoration:underline}
+  .eb-codigo:hover{color:#FAC775}
+
+  .editor-area{min-height:260px;max-height:520px;overflow-y:auto;padding:16px 18px;color:#FFF5F0;font-size:14.5px;line-height:1.7;outline:none;font-family:inherit}
+  .editor-area:empty::before{content:attr(data-vacio);color:rgba(255,245,240,0.35)}
+  .editor-area p{margin:0 0 14px}
+  .editor-area h2{font-family:Georgia,serif;font-size:21px;font-weight:500;margin:22px 0 10px;color:#FFF5F0}
+  .editor-area h3{font-family:Georgia,serif;font-size:17px;font-weight:500;margin:18px 0 8px;color:rgba(255,245,240,0.92)}
+  .editor-area a{color:#FAC775;text-decoration:underline}
+  .editor-area ul{margin:0 0 14px;padding-left:22px}
+  .editor-area li{margin-bottom:6px}
+  .editor-area blockquote{margin:16px 0;padding:12px 16px;border-left:3px solid rgba(212,163,86,0.5);background:rgba(212,163,86,0.06);border-radius:0 8px 8px 0;font-style:italic;color:rgba(255,245,240,0.82)}
+  .editor-area strong,.editor-area b{color:#FFF5F0;font-weight:600}
+
+  .editor-pie{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px;background:rgba(255,245,240,0.03);border-top:0.5px solid rgba(255,245,240,0.08);font-size:11px;color:rgba(255,245,240,0.45)}
+
+  /* ═══ Modal del enlace ═══ */
+  .enl-previa{padding:12px 14px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.3);border-radius:10px;margin-bottom:16px;font-size:13px;line-height:1.55}
+  .enl-previa a{color:#FAC775}
+  .enl-atajos{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .enl-chip{padding:6px 11px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);border-radius:14px;color:rgba(255,245,240,0.75);font-size:11px;cursor:pointer;font-family:inherit}
+  .enl-chip:hover{background:rgba(212,163,86,0.16);border-color:rgba(212,163,86,0.4);color:#FAC775}
 
 </style>
 <style id="auth-splash-style">
@@ -2077,18 +2106,6 @@ body{visibility:hidden}
       </div>
     </div>
 
-    <!-- ── CATEGORÍAS DE LA COMUNIDAD ── -->
-    <div class="pm-seccion" style="margin-bottom:26px">
-      <div class="pm-cab">
-        <div>
-          <h3 class="chart-title" style="margin-bottom:2px">Categorías de la comunidad</h3>
-          <p class="chart-subtitle">Los botones que se ven arriba del feed: General, Anuncios, Consejos…</p>
-        </div>
-        <button class="btn-secondary" onclick="abrirCategoria()">+ Nueva categoría</button>
-      </div>
-      <div id="categoriasLista"></div>
-    </div>
-
     <div class="hashtags-info">
       <div class="hashtags-info-icon">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/></svg>
@@ -2218,7 +2235,34 @@ body{visibility:hidden}
 
           <div class="form-field form-grid-full">
             <label class="form-label">CONTENIDO COMPLETO</label>
-            <textarea class="form-textarea" id="articuloContenido" placeholder="Escribí el artículo acá. Doble salto de línea = párrafo nuevo." style="min-height:200px"></textarea>
+            <div class="editor">
+              <div class="editor-barra">
+                <button type="button" class="eb" onclick="fmt('bold')" title="Negrita (Ctrl+B)"><b>B</b></button>
+                <button type="button" class="eb" onclick="fmt('italic')" title="Cursiva (Ctrl+I)"><i>I</i></button>
+                <button type="button" class="eb" onclick="fmt('underline')" title="Subrayado"><u>U</u></button>
+                <span class="eb-sep"></span>
+                <button type="button" class="eb" onclick="fmtBloque('h2')" title="Título">H2</button>
+                <button type="button" class="eb" onclick="fmtBloque('h3')" title="Subtítulo">H3</button>
+                <button type="button" class="eb" onclick="fmtBloque('p')" title="Párrafo normal">¶</button>
+                <span class="eb-sep"></span>
+                <button type="button" class="eb" onclick="fmt('insertUnorderedList')" title="Lista">• —</button>
+                <button type="button" class="eb" onclick="fmtBloque('blockquote')" title="Cita">❝</button>
+                <span class="eb-sep"></span>
+                <button type="button" class="eb destacado" onclick="abrirEnlaceEditor()" title="Insertar enlace">🔗 Enlace</button>
+                <button type="button" class="eb" onclick="fmt('unlink')" title="Quitar enlace">⛓️‍💥</button>
+                <span class="eb-sep"></span>
+                <button type="button" class="eb" onclick="fmt('removeFormat')" title="Limpiar formato">✕ formato</button>
+              </div>
+
+              <div class="editor-area" id="articuloContenidoRico" contenteditable="true"
+                   data-vacio="Escribí el artículo acá. Usá la barra de arriba para dar formato."></div>
+
+              <div class="editor-pie">
+                <span id="editorInfo">0 palabras</span>
+                <button type="button" class="eb-codigo" onclick="verCodigo()">Ver el código</button>
+              </div>
+            </div>
+            <textarea id="articuloContenido" style="display:none"></textarea>
             <div class="form-help">Tip: doble Enter para separar párrafos. Soporta HTML básico (h2, h3, ul, li, strong, blockquote)</div>
           </div>
 
@@ -2318,13 +2362,6 @@ body{visibility:hidden}
         <button class="filter-btn active" onclick="filtrarAlumnas('todas', this)">Todas</button>
         <button class="filter-btn" onclick="filtrarAlumnas('compradoras', this)">Con compras</button>
         <button class="filter-btn" onclick="filtrarAlumnas('activas', this)">Activas en comunidad</button>
-        <button class="filter-btn" onclick="filtrarAlumnas('premium', this)">⭐ Premium</button>
-        <button class="filter-btn" onclick="filtrarAlumnas('quieren', this)">✋ Quieren Premium</button>
-        <button class="filter-btn" onclick="filtrarAlumnas('solocomunidad', this)">👥 Solo comunidad</button>
-        <select class="form-input" id="filtroCurso" onchange="filtrarPorCurso(this.value)"
-                style="width:auto;min-width:190px;padding:8px 12px;font-size:12.5px">
-          <option value="">Todos los cursos</option>
-        </select>
         <button class="filter-btn" onclick="filtrarAlumnas('equipo', this)">Equipo</button>
         <button class="filter-btn" onclick="filtrarAlumnas('bloqueadas', this)">🚫 Bloqueadas</button>
         <button class="filter-btn" onclick="filtrarAlumnas('denunciantes', this)">⚠️ Denuncian mucho</button>
@@ -2825,8 +2862,6 @@ body{visibility:hidden}
         <input type="hidden" id="accUsuarioId">
 
         <div class="acc-persona" id="accPersona"></div>
-
-        <div id="accPerfil" style="margin-bottom:20px"></div>
 
         <div class="form-label" style="margin-bottom:9px">QUÉ QUERÉS HACER</div>
         <div class="acc-tipo-row" id="accTipos">
@@ -3473,140 +3508,6 @@ body{visibility:hidden}
     <div id="seccionesLista"></div>
   </div>
 
-  <!-- MODAL TRANSMISIÓN EN VIVO -->
-  <div class="curso-modal-backdrop" id="transmisionModal">
-    <div class="curso-modal" style="max-width:520px">
-      <div class="curso-modal-header">
-        <div>
-          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">TRANSMISIÓN EN VIVO</div>
-          <h3 class="curso-modal-titulo serif" id="traTituloModal">Nueva transmisión</h3>
-        </div>
-        <button class="curso-modal-close" onclick="cerrarTransmision()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <div class="curso-modal-body">
-        <input type="hidden" id="traId">
-
-        <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">TÍTULO</label>
-          <input type="text" class="form-input" id="traTitulo" placeholder="Encuentro semanal: anuncios que convierten">
-        </div>
-
-        <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">DE QUÉ VA (opcional)</label>
-          <textarea class="form-textarea" id="traDescripcion" placeholder="Vamos a revisar campañas reales y ver qué cambiar."></textarea>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-field">
-            <label class="form-label">CUÁNDO EMPIEZA</label>
-            <input type="datetime-local" class="form-input" id="traEmpieza">
-          </div>
-          <div class="form-field">
-            <label class="form-label">HORAS DE GRABACIÓN</label>
-            <input type="number" class="form-input" id="traHoras" value="24" min="1" max="720">
-          </div>
-        </div>
-        <div class="form-help" style="margin-bottom:14px">
-          Cuando termine, la grabación queda disponible esa cantidad de horas. Después se cierra sola.
-        </div>
-
-        <div class="form-field" style="margin-bottom:6px">
-          <label class="form-label">ENLACE DEL VIDEO</label>
-          <input type="text" class="form-input" id="traVideoPrueba" placeholder="https://youtube.com/watch?v=...">
-          <div class="form-help">
-            Pegá el enlace de tu transmisión de YouTube (poné el video como <strong>No listado</strong>).
-            También acepta Vimeo o un archivo .mp4 si después subís la grabación.
-          </div>
-        </div>
-      </div>
-
-      <div class="curso-modal-footer">
-        <button class="btn-danger" id="btnBorrarTra" onclick="borrarTransmision()" style="display:none">Eliminar</button>
-        <div style="flex:1"></div>
-        <button class="btn-secondary" onclick="cerrarTransmision()">Cancelar</button>
-        <button class="cta-gold" onclick="guardarTransmision()">Guardar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL CATEGORÍA DE LA COMUNIDAD -->
-  <div class="curso-modal-backdrop" id="categoriaModal">
-    <div class="curso-modal" style="max-width:440px">
-      <div class="curso-modal-header">
-        <div>
-          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">CATEGORÍA DE LA COMUNIDAD</div>
-          <h3 class="curso-modal-titulo serif" id="catTituloModal">Nueva categoría</h3>
-        </div>
-        <button class="curso-modal-close" onclick="cerrarCategoria()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <div class="curso-modal-body">
-        <input type="hidden" id="catId">
-
-        <div style="padding:16px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:12px;margin-bottom:18px;text-align:center">
-          <div style="font-size:10px;letter-spacing:0.18em;color:rgba(255,245,240,0.4);margin-bottom:9px">ASÍ SE VA A VER</div>
-          <span id="catPrevia" style="display:inline-block;padding:9px 16px;border-radius:20px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.18);font-size:13px">General</span>
-        </div>
-
-        <div class="form-field" style="margin-bottom:16px">
-          <label class="form-label">NOMBRE</label>
-          <input type="text" class="form-input" id="catNombre" placeholder="Consejo" oninput="pintarPreviaCat()">
-        </div>
-
-        <div class="form-field" style="margin-bottom:16px">
-          <label class="form-label">ÍCONO</label>
-          <div class="emoji-grid" id="emojiGrid"></div>
-          <div style="display:flex;gap:10px;align-items:center;margin-top:10px">
-            <input type="text" class="form-input" id="catEmoji" maxlength="4"
-                   placeholder="o pegá otro" style="flex:1;text-align:center;font-size:18px"
-                   oninput="pintarPreviaCat(); marcarEmojiElegido()">
-            <button class="btn-secondary" type="button" onclick="limpiarEmoji()">Sin ícono</button>
-          </div>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-field">
-            <label class="form-label">ORDEN</label>
-            <input type="number" class="form-input" id="catOrden" value="1" min="1">
-          </div>
-          <div class="form-field" style="justify-content:flex-end">
-            <div style="font-size:11.5px;color:rgba(255,245,240,0.45);padding-bottom:11px">
-              El 1 va primero, después el 2, y así.
-            </div>
-          </div>
-        </div>
-
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <div class="toggle-label">Solo el equipo publica acá</div>
-            <div class="toggle-help">Las alumnas la ven en los filtros, pero no pueden elegirla al publicar</div>
-          </div>
-          <div class="toggle-switch" id="catSoloEquipo" onclick="this.classList.toggle('on')"></div>
-        </div>
-
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <div class="toggle-label">Activa</div>
-            <div class="toggle-help">Si la apagás, deja de verse sin borrar los posts que ya la usan</div>
-          </div>
-          <div class="toggle-switch on" id="catActiva" onclick="this.classList.toggle('on')"></div>
-        </div>
-      </div>
-
-      <div class="curso-modal-footer">
-        <button class="btn-danger" id="btnBorrarCat" onclick="borrarCategoria()" style="display:none">Eliminar</button>
-        <div style="flex:1"></div>
-        <button class="btn-secondary" onclick="cerrarCategoria()">Cancelar</button>
-        <button class="cta-gold" onclick="guardarCategoria()">Guardar</button>
-      </div>
-    </div>
-  </div>
-
   <!-- MODAL FILA -->
   <div class="curso-modal-backdrop" id="seccionModal">
     <div class="curso-modal" style="max-width:460px">
@@ -3742,29 +3643,6 @@ body{visibility:hidden}
         <button class="btn-secondary" onclick="abrirEncuentro()">+ Nuevo encuentro</button>
       </div>
       <div id="encuentrosLista"></div>
-    </div>
-
-    <!-- Transmisiones en vivo -->
-    <div class="pm-seccion">
-      <div class="pm-cab">
-        <div>
-          <h3 class="chart-title" style="margin-bottom:2px">Transmisiones en vivo</h3>
-          <p class="chart-subtitle">Solo las premium al día pueden verlas, en milenacmm.com/vivo</p>
-        </div>
-        <button class="btn-secondary" onclick="abrirTransmision()">+ Nueva transmisión</button>
-      </div>
-      <div id="transmisionesLista"></div>
-    </div>
-
-    <!-- Pagos que llegaron con un email desconocido -->
-    <div class="pm-seccion" id="zonaPagosSueltos" style="display:none">
-      <div class="pm-cab">
-        <div>
-          <h3 class="chart-title" style="margin-bottom:2px">⚠️ Pagos sin asociar</h3>
-          <p class="chart-subtitle">Pagaron en Pagopar con un email que no coincide con ninguna cuenta. Asignalos y les damos el acceso.</p>
-        </div>
-      </div>
-      <div id="pagosSueltosLista"></div>
     </div>
 
     <!-- Interesadas -->
@@ -3975,12 +3853,6 @@ body{visibility:hidden}
           <div class="form-help">Dejá una línea en blanco entre párrafos</div>
         </div>
 
-        <div class="form-field" style="margin-bottom:14px">
-          <label class="form-label">FRASE ARRIBA DEL BOTÓN</label>
-          <input type="text" class="form-input" id="planTextoCta" placeholder="Un espacio cerrado para las que quieren ir más a fondo.">
-          <div class="form-help">Solo se ve cuando el precio está oculto</div>
-        </div>
-
         <div class="form-grid">
           <div class="form-field">
             <label class="form-label">TEXTO DEL BOTÓN</label>
@@ -4095,6 +3967,53 @@ body{visibility:hidden}
     </div>
   </div>
 
+  <!-- MODAL: ENLACE -->
+  <div class="curso-modal-backdrop" id="enlaceModal" style="z-index:10002">
+    <div class="curso-modal" style="max-width:460px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">ENLACE</div>
+          <h3 class="curso-modal-titulo serif" id="enlTituloModal">Insertar enlace</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarEnlaceEditor()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <div class="enl-previa" id="enlPrevia"></div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">TEXTO QUE SE VE</label>
+          <input type="text" class="form-input" id="enlTexto" placeholder="Mirá el curso completo" oninput="pintarPreviaEnlace()">
+          <div class="form-help">Lo que lee la persona en el artículo</div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">ADÓNDE LLEVA</label>
+          <input type="text" class="form-input" id="enlUrl" placeholder="/cursos o https://..." oninput="pintarPreviaEnlace()">
+          <div class="enl-atajos" id="enlAtajos"></div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Abrir en una pestaña nueva</div>
+            <div class="toggle-help">Para enlaces fuera del sitio conviene dejarlo encendido</div>
+          </div>
+          <div class="toggle-switch on" id="enlNuevaPestana" onclick="this.classList.toggle('on');pintarPreviaEnlace()"></div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <button class="btn-danger" id="btnQuitarEnlace" onclick="quitarEnlace()" style="display:none">QUITAR ENLACE</button>
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarEnlaceEditor()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="aplicarEnlace()">APLICAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <!-- Toast -->
@@ -4140,360 +4059,6 @@ body{visibility:hidden}
   // HASHTAGS conectados a Supabase
   // ============================================
   let hashtags = [];
-
-  // ═══════════════════════════════════════════════
-  // TRANSMISIONES EN VIVO
-  // ═══════════════════════════════════════════════
-  let transmisiones = [];
-
-  async function cargarTransmisiones(){
-    const cont = document.getElementById('transmisionesLista');
-    if(!cont || !sb) return;
-
-    const { data, error } = await sb.from('transmisiones')
-      .select('*').order('empieza_en', { ascending: false, nullsFirst: false });
-
-    if(error){
-      cont.innerHTML = '<div class="vacio-suave"><div class="ico">📡</div>' +
-        (String(error.message).includes('does not exist')
-          ? 'Falta crear las tablas. Corré SQL-TRANSMISIONES.sql en Supabase.'
-          : esc(error.message)) + '</div>';
-      return;
-    }
-
-    transmisiones = data || [];
-    renderTransmisiones();
-  }
-
-  function renderTransmisiones(){
-    const cont = document.getElementById('transmisionesLista');
-    if(!cont) return;
-
-    if(transmisiones.length === 0){
-      cont.innerHTML = '<div class="vacio-suave"><div class="ico">📡</div>' +
-        'Todavía no programaste ninguna transmisión' +
-        '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">' +
-        'Creá la primera con el botón de arriba</div></div>';
-      return;
-    }
-
-    cont.innerHTML = transmisiones.slice(0, 10).map(t => {
-      let pill, acciones;
-
-      if(t.estado === 'en_vivo'){
-        pill = '<span class="est-pill" style="background:rgba(255,59,71,0.16);border:0.5px solid rgba(255,59,71,0.5);color:#FF8090">● EN VIVO</span>';
-        acciones = '<button class="btn-secondary" onclick="terminarTransmision(\'' + t.id + '\')">Terminar</button>';
-      } else if(t.estado === 'terminada'){
-        const hasta = t.fin_real
-          ? new Date(new Date(t.fin_real).getTime() + (t.horas_replay || 24) * 3600000)
-          : null;
-        const viva = hasta && hasta.getTime() > Date.now();
-        pill = viva
-          ? '<span class="est-pill" style="background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.45);color:#FAC775">GRABACIÓN</span>'
-          : '<span class="est-pill" style="background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.15);color:rgba(255,245,240,0.45)">CERRADA</span>';
-        acciones = '<button class="btn-secondary" onclick="arrancarTransmision(\'' + t.id + '\')">Volver a poner en vivo</button>';
-      } else {
-        pill = '<span class="est-pill" style="background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.18);color:rgba(255,245,240,0.6)">PROGRAMADA</span>';
-        acciones = '<button class="cta-gold" style="padding:8px 15px;border-radius:9px;font-size:11.5px;border:none;cursor:pointer" ' +
-                   'onclick="arrancarTransmision(\'' + t.id + '\')">▶ PONER EN VIVO</button>';
-      }
-
-      let cuando = t.empieza_en ? fechaCorta(t.empieza_en) : 'Sin fecha';
-      if(t.estado === 'terminada' && t.fin_real){
-        const hasta = new Date(new Date(t.fin_real).getTime() + (t.horas_replay || 24) * 3600000);
-        const faltan = hasta.getTime() - Date.now();
-        cuando += faltan > 0
-          ? ' · quedan ' + Math.max(1, Math.round(faltan / 3600000)) + ' h de grabación'
-          : ' · ya cerró';
-      }
-
-      return '<div class="alumna-card" style="margin-bottom:10px">' +
-        '<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">' +
-          '<div style="min-width:0;flex:1">' +
-            '<div class="al-nombre">' + esc(t.titulo) + '</div>' +
-            '<div class="al-email">' + esc(cuando) + '</div>' +
-          '</div>' +
-          pill +
-        '</div>' +
-        '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px">' +
-          acciones +
-          '<button class="btn-secondary" onclick="abrirTransmision(\'' + t.id + '\')">Editar</button>' +
-        '</div>' +
-      '</div>';
-    }).join('');
-  }
-
-  function abrirTransmision(id){
-    const t = transmisiones.find(x => x.id === id) || null;
-
-    document.getElementById('traId').value = t ? t.id : '';
-    document.getElementById('traTituloModal').textContent = t ? 'Editar transmisión' : 'Nueva transmisión';
-    document.getElementById('traTitulo').value = t ? t.titulo : '';
-    document.getElementById('traDescripcion').value = t ? (t.descripcion || '') : '';
-    document.getElementById('traHoras').value = t ? (t.horas_replay || 24) : 24;
-    document.getElementById('traVideoPrueba').value = t ? (t.video_url_prueba || '') : '';
-
-    // datetime-local necesita el formato YYYY-MM-DDTHH:MM en hora local
-    let cuando = '';
-    if(t && t.empieza_en){
-      const d = new Date(t.empieza_en);
-      d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-      cuando = d.toISOString().slice(0, 16);
-    }
-    document.getElementById('traEmpieza').value = cuando;
-    document.getElementById('btnBorrarTra').style.display = t ? '' : 'none';
-
-    document.getElementById('transmisionModal').classList.add('show');
-  }
-
-  function cerrarTransmision(){
-    document.getElementById('transmisionModal').classList.remove('show');
-  }
-
-  async function guardarTransmision(){
-    const id = document.getElementById('traId').value;
-    const titulo = document.getElementById('traTitulo').value.trim();
-    if(!titulo) return mostrarToast('Ponele un título', true);
-
-    const cuando = document.getElementById('traEmpieza').value;
-
-    const datos = {
-      titulo: titulo,
-      descripcion: document.getElementById('traDescripcion').value.trim() || null,
-      empieza_en: cuando ? new Date(cuando).toISOString() : null,
-      horas_replay: parseInt(document.getElementById('traHoras').value) || 24,
-      video_url_prueba: document.getElementById('traVideoPrueba').value.trim() || null
-    };
-
-    const { error } = id
-      ? await sb.from('transmisiones').update(datos).eq('id', id)
-      : await sb.from('transmisiones').insert(datos);
-
-    if(error) return mostrarToast('No se pudo guardar: ' + error.message, true);
-
-    cerrarTransmision();
-    mostrarToast('✓ Transmisión guardada');
-    await cargarTransmisiones();
-  }
-
-  async function borrarTransmision(){
-    const id = document.getElementById('traId').value;
-    const t = transmisiones.find(x => x.id === id);
-    if(!t) return;
-    if(!confirm('¿Eliminar "' + t.titulo + '"?\n\nSe borran también los mensajes de su chat.')) return;
-
-    const { error } = await sb.from('transmisiones').delete().eq('id', id);
-    if(error) return mostrarToast('No se pudo borrar: ' + error.message, true);
-
-    cerrarTransmision();
-    mostrarToast('✓ Eliminada');
-    await cargarTransmisiones();
-  }
-
-  async function arrancarTransmision(id){
-    if(!confirm('¿Poner esta transmisión en vivo?\n\nLas premium la van a ver al instante en /vivo.')) return;
-    const { data, error } = await sb.rpc('arrancar_transmision', { p_id: id });
-    if(error) return mostrarToast('No se pudo: ' + error.message, true);
-    if(data && data.exito === false) return mostrarToast(data.error, true);
-    mostrarToast('🔴 En vivo');
-    await cargarTransmisiones();
-  }
-
-  async function terminarTransmision(id){
-    const t = transmisiones.find(x => x.id === id);
-    const horas = t ? (t.horas_replay || 24) : 24;
-    if(!confirm('¿Terminar la transmisión?\n\nLa grabación queda disponible ' + horas + ' horas más.')) return;
-    const { data, error } = await sb.rpc('terminar_transmision', { p_id: id });
-    if(error) return mostrarToast('No se pudo: ' + error.message, true);
-    mostrarToast('✓ Terminada. La grabación queda ' + horas + ' h');
-    await cargarTransmisiones();
-  }
-
-  // ═══════════════════════════════════════════════
-  // CATEGORÍAS DE LA COMUNIDAD
-  // Los botones de arriba del feed. Antes estaban
-  // escritos a mano en comunidad.html.
-  // ═══════════════════════════════════════════════
-  let categorias = [];
-
-  async function cargarCategorias(){
-    if(!sb) return;
-
-    const { data, error } = await sb.from('categorias')
-      .select('*').order('orden', { ascending: true });
-
-    if(error){
-      const cont = document.getElementById('categoriasLista');
-      if(cont){
-        cont.innerHTML = '<div class="vacio-suave"><div class="ico">🏷️</div>' +
-          (String(error.message).includes('does not exist')
-            ? 'Falta crear la tabla. Corré SQL-COMUNIDAD-CATEGORIAS.sql en Supabase.'
-            : esc(error.message)) + '</div>';
-      }
-      return;
-    }
-
-    categorias = data || [];
-    renderCategorias();
-  }
-
-  function renderCategorias(){
-    const cont = document.getElementById('categoriasLista');
-    if(!cont) return;
-
-    if(categorias.length === 0){
-      cont.innerHTML = '<div class="vacio-suave"><div class="ico">🏷️</div>' +
-        'Todavía no hay categorías' +
-        '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">' +
-        'Creá la primera con el botón de arriba</div></div>';
-      return;
-    }
-
-    cont.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:9px">' +
-      categorias.map(c => {
-        const apagada = !c.activa;
-        return '<button onclick="abrirCategoria(\'' + c.id + '\')" ' +
-          'style="display:inline-flex;align-items:center;gap:7px;padding:10px 15px;border-radius:20px;' +
-            'background:' + (apagada ? 'rgba(255,245,240,0.03)' : 'rgba(212,163,86,0.1)') + ';' +
-            'border:0.5px solid ' + (apagada ? 'rgba(255,245,240,0.12)' : 'rgba(212,163,86,0.4)') + ';' +
-            'color:' + (apagada ? 'rgba(255,245,240,0.4)' : '#FFF5F0') + ';' +
-            'font-size:13px;font-family:inherit;cursor:pointer;' +
-            (apagada ? 'text-decoration:line-through;' : '') + '">' +
-          (c.emoji ? esc(c.emoji) + ' ' : '') + esc(c.nombre) +
-          (c.solo_equipo ? '<span style="font-size:9.5px;letter-spacing:0.1em;color:#FAC775;' +
-            'border:0.5px solid rgba(212,163,86,0.4);border-radius:8px;padding:2px 6px">EQUIPO</span>' : '') +
-        '</button>';
-      }).join('') +
-    '</div>' +
-    '<div style="font-size:12px;color:rgba(255,245,240,0.4);margin-top:14px">' +
-      'Tocá cualquiera para editarla. Las tachadas están apagadas.' +
-    '</div>';
-  }
-
-  // Los íconos para elegir con un click
-  const EMOJIS_CAT = [
-    '📌','💡','🚀','❓','🏆','⭐','🔥','💎','📣','🎯',
-    '💬','📚','🎓','💰','📈','🎉','❤️','✨','🧠','⚡',
-    '🌱','🎁','📝','🔔','☕','🌟'
-  ];
-
-  function pintarSelectorEmojis(){
-    const cont = document.getElementById('emojiGrid');
-    if(!cont) return;
-    cont.innerHTML = EMOJIS_CAT.map(e =>
-      '<button type="button" class="emoji-op" onclick="elegirEmoji(\'' + e + '\')">' + e + '</button>'
-    ).join('');
-  }
-
-  function elegirEmoji(e){
-    document.getElementById('catEmoji').value = e;
-    marcarEmojiElegido();
-    pintarPreviaCat();
-  }
-
-  function limpiarEmoji(){
-    document.getElementById('catEmoji').value = '';
-    marcarEmojiElegido();
-    pintarPreviaCat();
-  }
-
-  function marcarEmojiElegido(){
-    const actual = document.getElementById('catEmoji').value.trim();
-    document.querySelectorAll('#emojiGrid .emoji-op').forEach(b => {
-      b.classList.toggle('sel', b.textContent.trim() === actual && actual !== '');
-    });
-  }
-
-  function pintarPreviaCat(){
-    const emoji = document.getElementById('catEmoji').value.trim();
-    const nombre = document.getElementById('catNombre').value.trim() || 'Sin nombre';
-    document.getElementById('catPrevia').textContent = (emoji ? emoji + ' ' : '') + nombre;
-  }
-
-  function abrirCategoria(id){
-    const c = categorias.find(x => x.id === id) || null;
-
-    document.getElementById('catId').value = c ? c.id : '';
-    document.getElementById('catTituloModal').textContent = c ? 'Editar categoría' : 'Nueva categoría';
-    document.getElementById('catEmoji').value = c ? (c.emoji || '') : '';
-    document.getElementById('catNombre').value = c ? c.nombre : '';
-    document.getElementById('catOrden').value = c ? (c.orden || 1) : (categorias.length + 1);
-    document.getElementById('catSoloEquipo').classList.toggle('on', !!(c && c.solo_equipo));
-    document.getElementById('catActiva').classList.toggle('on', c ? !!c.activa : true);
-
-    // La categoría "general" es la base del sistema: no se borra ni se apaga
-    const esGeneral = c && c.clave === 'general';
-    document.getElementById('btnBorrarCat').style.display = (c && !esGeneral) ? '' : 'none';
-
-    pintarSelectorEmojis();
-    marcarEmojiElegido();
-    pintarPreviaCat();
-    document.getElementById('categoriaModal').classList.add('show');
-  }
-
-  function cerrarCategoria(){
-    document.getElementById('categoriaModal').classList.remove('show');
-  }
-
-  // De "Consejos de venta" sale la clave "consejos-de-venta"
-  function claveDesde(texto){
-    return (texto || '')
-      .toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-      .slice(0, 40);
-  }
-
-  async function guardarCategoria(){
-    const id = document.getElementById('catId').value;
-    const nombre = document.getElementById('catNombre').value.trim();
-
-    if(!nombre) return mostrarToast('Ponele un nombre', true);
-
-    const datos = {
-      nombre: nombre,
-      emoji: document.getElementById('catEmoji').value.trim() || null,
-      orden: parseInt(document.getElementById('catOrden').value) || 1,
-      activa: document.getElementById('catActiva').classList.contains('on'),
-      solo_equipo: document.getElementById('catSoloEquipo').classList.contains('on')
-    };
-
-    let error;
-    if(id){
-      // La clave nunca cambia: los posts viejos la tienen guardada
-      ({ error } = await sb.from('categorias').update(datos).eq('id', id));
-    } else {
-      let clave = claveDesde(nombre);
-      if(!clave) clave = 'cat-' + Date.now();
-      if(categorias.some(c => c.clave === clave)) clave += '-' + (categorias.length + 1);
-      datos.clave = clave;
-      ({ error } = await sb.from('categorias').insert(datos));
-    }
-
-    if(error) return mostrarToast('No se pudo guardar: ' + error.message, true);
-
-    cerrarCategoria();
-    mostrarToast('✓ Categoría guardada');
-    await cargarCategorias();
-  }
-
-  async function borrarCategoria(){
-    const id = document.getElementById('catId').value;
-    const c = categorias.find(x => x.id === id);
-    if(!c) return;
-
-    if(!confirm('¿Eliminar la categoría "' + c.nombre + '"?\n\n' +
-      'Los posts que ya la tenían van a pasar a General.\n' +
-      'Si solo querés esconderla, apagá "Activa" en vez de borrarla.')) return;
-
-    const { error } = await sb.from('categorias').delete().eq('id', id);
-    if(error) return mostrarToast('No se pudo borrar: ' + error.message, true);
-
-    cerrarCategoria();
-    mostrarToast('✓ Categoría eliminada');
-    await cargarCategorias();
-  }
 
   async function cargarHashtags() {
     if (!sb) return;
@@ -4929,37 +4494,6 @@ body{visibility:hidden}
   // ============================
   // FILAS DEL CATÁLOGO
   // ============================
-  // Estas dos faltaban: se llamaba a cargarSecciones() en tres lugares
-  // pero la función no existía. Eso tiraba el error
-  // "cargarSecciones is not defined" y cortaba TODA la carga del panel,
-  // por eso el dashboard se quedaba con los números viejos.
-  let secciones = [];
-
-  async function cargarSecciones(){
-    if(!sb) return;
-
-    const { data, error } = await sb
-      .from('secciones')
-      .select('*')
-      .order('orden', { ascending: true });
-
-    if(error){
-      console.error('[admin] no pudimos traer las filas del catálogo:', error.message);
-      secciones = [];
-    } else {
-      secciones = data || [];
-    }
-
-    const badge = document.getElementById('seccionesCount');
-    if(badge){
-      badge.textContent = secciones.length;
-      badge.classList.toggle('dim', secciones.length === 0);
-    }
-
-    renderSecciones();
-    llenarSelectorSecciones();
-  }
-
   // El modal antiguo de secciones apunta al sistema nuevo
   function abrirSecciones(){ cambiarTab('secciones'); }
 
@@ -5271,98 +4805,6 @@ body{visibility:hidden}
     renderEncuentros();
     renderPremium();
     await cargarInteresadas();
-    await cargarPagosSueltos();
-    await cargarTransmisiones();
-  }
-
-  // ─── Pagos que no pudimos cruzar con ninguna cuenta ───
-  let pagosSueltos = [];
-
-  async function cargarPagosSueltos(){
-    const zona = document.getElementById('zonaPagosSueltos');
-    if(!zona) return;
-
-    const { data, error } = await sb.from('pagos_para_asignar').select('*');
-
-    if(error){
-      // Si todavía no corriste el SQL, no molestamos
-      zona.style.display = 'none';
-      return;
-    }
-
-    pagosSueltos = data || [];
-    zona.style.display = pagosSueltos.length ? '' : 'none';
-    renderPagosSueltos();
-  }
-
-  function renderPagosSueltos(){
-    const cont = document.getElementById('pagosSueltosLista');
-    if(!cont) return;
-
-    cont.innerHTML = pagosSueltos.map(p => {
-      const cands = Array.isArray(p.candidatas) ? p.candidatas : [];
-
-      const botones = cands.length
-        ? cands.slice(0, 5).map(c =>
-            '<button class="btn-secondary" style="margin:0 8px 8px 0" ' +
-              'onclick="asignarPago(\'' + p.id + '\', \'' + c.usuario_id + '\')">' +
-              '✓ ' + esc(c.nombre || c.email || 'Sin nombre') +
-            '</button>'
-          ).join('')
-        : '<div style="font-size:12.5px;color:rgba(255,245,240,0.45);margin-bottom:8px">' +
-            'Nadie apretó el botón de Premium cerca de esta fecha. Buscala en la lista de abajo.' +
-          '</div>';
-
-      const opciones = (alumnas || []).slice()
-        .sort((x, y) => (x.nombre || '').localeCompare(y.nombre || ''))
-        .map(a => '<option value="' + a.id + '">' + esc((a.nombre || 'Sin nombre') + ' · ' + (a.email || '')) + '</option>')
-        .join('');
-
-      return '<div class="alumna-card" style="border-color:rgba(212,163,86,0.35)">' +
-        '<div style="margin-bottom:12px">' +
-          '<div class="al-nombre">' + esc(p.email_pagopar || 'Sin email') + '</div>' +
-          '<div class="al-email">' +
-            gs(p.monto_gs) + ' · ' + fechaCorta(p.creado_en) +
-            (p.nombre_pagopar ? ' · ' + esc(p.nombre_pagopar) : '') +
-          '</div>' +
-        '</div>' +
-        '<div style="font-size:10px;letter-spacing:0.16em;color:rgba(255,245,240,0.45);margin-bottom:9px">' +
-          'APRETARON PREMIUM POR ESAS FECHAS' +
-        '</div>' +
-        '<div>' + botones + '</div>' +
-        '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;' +
-             'border-top:0.5px solid rgba(255,245,240,0.08);padding-top:12px">' +
-          '<select class="form-input" id="selPago_' + p.id + '" style="flex:1;min-width:200px">' +
-            '<option value="">— Elegir a otra persona —</option>' + opciones +
-          '</select>' +
-          '<button class="btn-secondary" onclick="asignarPagoElegido(\'' + p.id + '\')">ASIGNAR</button>' +
-        '</div>' +
-      '</div>';
-    }).join('');
-  }
-
-  function asignarPagoElegido(pagoId){
-    const sel = document.getElementById('selPago_' + pagoId);
-    if(!sel || !sel.value) return mostrarToast('Elegí a quién asignárselo', true);
-    asignarPago(pagoId, sel.value);
-  }
-
-  async function asignarPago(pagoId, usuarioId){
-    const quien = (alumnas || []).find(a => a.id === usuarioId);
-    const nombre = quien ? (quien.nombre || quien.email) : 'esta persona';
-
-    if(!confirm('¿Darle el acceso Premium a ' + nombre + '?\n\nSe le suma un mes desde hoy.')) return;
-
-    const { data, error } = await sb.rpc('asignar_pago_sin_cuenta', {
-      p_pago: pagoId,
-      p_usuario: usuarioId
-    });
-
-    if(error) return mostrarToast('No se pudo: ' + error.message, true);
-    if(data && data.exito === false) return mostrarToast(data.error || 'No se pudo asignar', true);
-
-    mostrarToast('✓ Acceso Premium asignado');
-    await cargarPremium();
   }
 
   function renderKpisPremium(){
@@ -5727,7 +5169,6 @@ body{visibility:hidden}
     document.getElementById('planBeneficios').value = planPremium.beneficios || '';
     document.getElementById('planVideo').value = planPremium.video_url || '';
     document.getElementById('planContenido').value = planPremium.contenido || '';
-    document.getElementById('planTextoCta').value = planPremium.texto_cta || '';
     document.getElementById('planTextoBoton').value = planPremium.texto_boton || '';
     document.getElementById('planEnlaceBoton').value = planPremium.enlace_boton || '';
     document.getElementById('planMostrarPrecio').classList.toggle('on', !!planPremium.mostrar_precio);
@@ -5748,7 +5189,6 @@ body{visibility:hidden}
       beneficios: document.getElementById('planBeneficios').value.trim() || null,
       video_url: document.getElementById('planVideo').value.trim() || null,
       contenido: document.getElementById('planContenido').value.trim() || null,
-      texto_cta: document.getElementById('planTextoCta').value.trim() || null,
       texto_boton: document.getElementById('planTextoBoton').value.trim() || null,
       enlace_boton: document.getElementById('planEnlaceBoton').value.trim() || null,
       mostrar_precio: document.getElementById('planMostrarPrecio').classList.contains('on')
@@ -7599,6 +7039,225 @@ body{visibility:hidden}
   let articulos = [];
   let filtroArticulos = 'todos';
 
+  // ============================
+  // EDITOR DE ARTÍCULOS
+  // ============================
+  let rangoGuardado = null;
+
+  function editorEl(){ return document.getElementById('articuloContenidoRico'); }
+
+  // Lo escrito antes en texto plano se convierte a párrafos
+  function aHtmlEditor(texto){
+    if(!texto) return '';
+    if(/<(p|h2|h3|ul|blockquote|a|strong|em)[\s>]/i.test(texto)) return texto;
+    return texto.split(/\n\n+/)
+      .map(p => '<p>' + esc(p.trim()).replace(/\n/g, '<br>') + '</p>')
+      .join('');
+  }
+
+  window.fmt = function(comando){
+    editorEl().focus();
+    document.execCommand(comando, false, null);
+    sincronizarEditor();
+  };
+
+  window.fmtBloque = function(tag){
+    editorEl().focus();
+    document.execCommand('formatBlock', false, '<' + tag + '>');
+    sincronizarEditor();
+  };
+
+  function sincronizarEditor(){
+    const el = editorEl();
+    if(!el) return;
+    document.getElementById('articuloContenido').value = limpiarHtml(el.innerHTML);
+    const palabras = el.innerText.trim().split(/\s+/).filter(Boolean).length;
+    const info = document.getElementById('editorInfo');
+    if(info) info.textContent = palabras + (palabras === 1 ? ' palabra' : ' palabras');
+  }
+
+  function limpiarHtml(html){
+    return (html || '')
+      .replace(/<span[^>]*>/gi, '').replace(/<\/span>/gi, '')
+      .replace(/ style="[^"]*"/gi, '')
+      .replace(/ class="[^"]*"/gi, '')
+      .replace(/<div>/gi, '<p>').replace(/<\/div>/gi, '</p>')
+      .replace(/<p><\/p>/gi, '')
+      .replace(/&nbsp;/g, ' ')
+      .trim();
+  }
+
+  function guardarSeleccion(){
+    const sel = window.getSelection();
+    if(sel.rangeCount > 0) rangoGuardado = sel.getRangeAt(0);
+  }
+
+  function restaurarSeleccion(){
+    if(!rangoGuardado) return;
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(rangoGuardado);
+  }
+
+  function enlaceBajoCursor(){
+    const sel = window.getSelection();
+    if(!sel.rangeCount) return null;
+    let n = sel.getRangeAt(0).commonAncestorContainer;
+    while(n && n !== editorEl()){
+      if(n.tagName === 'A') return n;
+      n = n.parentNode;
+    }
+    return null;
+  }
+
+  window.abrirEnlaceEditor = function(){
+    editorEl().focus();
+    guardarSeleccion();
+
+    const a = enlaceBajoCursor();
+    const texto = window.getSelection().toString();
+
+    if(a){
+      document.getElementById('enlTituloModal').textContent = 'Editar enlace';
+      document.getElementById('enlTexto').value = a.textContent;
+      document.getElementById('enlUrl').value = a.getAttribute('href') || '';
+      document.getElementById('enlNuevaPestana').classList.toggle('on', a.getAttribute('target') === '_blank');
+      document.getElementById('btnQuitarEnlace').style.display = '';
+      rangoGuardado = document.createRange();
+      rangoGuardado.selectNode(a);
+    } else {
+      document.getElementById('enlTituloModal').textContent = 'Insertar enlace';
+      document.getElementById('enlTexto').value = texto || '';
+      document.getElementById('enlUrl').value = '';
+      document.getElementById('enlNuevaPestana').classList.add('on');
+      document.getElementById('btnQuitarEnlace').style.display = 'none';
+    }
+
+    const atajos = [
+      { t:'Cursos', u:'/cursos' },
+      { t:'Comunidad', u:'/comunidad' },
+      { t:'Premium', u:'/premium' },
+      { t:'Blog', u:'/blog' },
+    ];
+    (cursos || []).filter(x => x.publicado).slice(0, 6).forEach(x => {
+      atajos.push({ t:'🎓 ' + x.titulo, u:'/curso-detalle?id=' + x.slug });
+    });
+
+    document.getElementById('enlAtajos').innerHTML = atajos.map(a =>
+      '<button type="button" class="enl-chip" onclick="ponerUrlEnlace(\'' + a.u + '\')">' + esc(a.t) + '</button>'
+    ).join('');
+
+    pintarPreviaEnlace();
+    document.getElementById('enlaceModal').classList.add('show');
+    setTimeout(() => document.getElementById('enlTexto').focus(), 150);
+  };
+
+  window.ponerUrlEnlace = function(u){
+    document.getElementById('enlUrl').value = u;
+    if(!document.getElementById('enlTexto').value.trim()){
+      const chip = [...document.querySelectorAll('.enl-chip')].find(x => (x.getAttribute('onclick')||'').includes(u));
+      if(chip) document.getElementById('enlTexto').value = chip.textContent.replace('🎓 ', '');
+    }
+    pintarPreviaEnlace();
+  };
+
+  window.pintarPreviaEnlace = function(){
+    const txt = document.getElementById('enlTexto').value.trim();
+    const url = document.getElementById('enlUrl').value.trim();
+    const nueva = document.getElementById('enlNuevaPestana').classList.contains('on');
+    const prev = document.getElementById('enlPrevia');
+
+    if(!txt && !url){
+      prev.innerHTML = '<span style="color:rgba(255,245,240,0.5)">Completá el texto y el destino para ver cómo queda.</span>';
+      return;
+    }
+
+    prev.innerHTML = 'Así se va a ver:<br><br>' +
+      '…y te dejo <a href="#" onclick="return false">' + esc(txt || 'acá') + '</a> para que lo veas.' +
+      '<br><br><span style="font-size:11.5px;color:rgba(255,245,240,0.5)">Lleva a: ' +
+      esc(normalizarUrl(url) || '(falta el destino)') +
+      (nueva ? ' · pestaña nueva' : '') + '</span>';
+  };
+
+  function normalizarUrl(u){
+    if(!u) return '';
+    const t = u.trim();
+    if(/^(https?:\/\/|mailto:|tel:|\/|#)/i.test(t)) return t;
+    if(/^www\./i.test(t)) return 'https://' + t;
+    if(t.includes('.') && !t.includes(' ')) return 'https://' + t;
+    return '/' + t;
+  }
+
+  window.cerrarEnlaceEditor = function(){
+    document.getElementById('enlaceModal').classList.remove('show');
+  };
+
+  window.aplicarEnlace = function(){
+    const txt = document.getElementById('enlTexto').value.trim();
+    const url = normalizarUrl(document.getElementById('enlUrl').value.trim());
+    const nueva = document.getElementById('enlNuevaPestana').classList.contains('on');
+
+    if(!txt) return mostrarToast('Escribí el texto que se va a ver', true);
+    if(!url) return mostrarToast('Escribí adónde lleva', true);
+
+    editorEl().focus();
+    restaurarSeleccion();
+
+    const a = enlaceBajoCursor();
+    if(a){
+      a.textContent = txt;
+      a.setAttribute('href', url);
+      if(nueva){ a.setAttribute('target', '_blank'); a.setAttribute('rel', 'noopener'); }
+      else { a.removeAttribute('target'); a.removeAttribute('rel'); }
+    } else {
+      const html = '<a href="' + url + '"' +
+        (nueva ? ' target="_blank" rel="noopener"' : '') + '>' + esc(txt) + '</a>&nbsp;';
+      document.execCommand('insertHTML', false, html);
+    }
+
+    sincronizarEditor();
+    cerrarEnlaceEditor();
+  };
+
+  window.quitarEnlace = function(){
+    editorEl().focus();
+    restaurarSeleccion();
+    document.execCommand('unlink', false, null);
+    sincronizarEditor();
+    cerrarEnlaceEditor();
+  };
+
+  window.verCodigo = function(){
+    const html = document.getElementById('articuloContenido').value;
+    const nuevo = prompt('El código del artículo. Podés editarlo si sabés HTML:', html);
+    if(nuevo !== null){
+      editorEl().innerHTML = nuevo;
+      sincronizarEditor();
+    }
+  };
+
+  // Pegar sin traer formato ajeno, y atajos
+  (function(){
+    const el = document.getElementById('articuloContenidoRico');
+    if(!el) return;
+
+    el.addEventListener('input', sincronizarEditor);
+    el.addEventListener('blur', sincronizarEditor);
+
+    el.addEventListener('paste', function(e){
+      e.preventDefault();
+      const texto = (e.clipboardData || window.clipboardData).getData('text/plain');
+      document.execCommand('insertText', false, texto);
+    });
+
+    el.addEventListener('keydown', function(e){
+      if((e.ctrlKey || e.metaKey) && e.key === 'k'){
+        e.preventDefault();
+        abrirEnlaceEditor();
+      }
+    });
+  })();
+
   async function cargarArticulos() {
     if (!sb) return;
     const { data, error } = await sb
@@ -7611,6 +7270,7 @@ body{visibility:hidden}
     }
     articulos = data || [];
     renderArticulos();
+    renderArticulosParaEnviar();
   }
 
   function renderArticulos() {
@@ -7673,6 +7333,9 @@ body{visibility:hidden}
       document.getElementById('articuloCategoria').value = a.categoria || 'marketing';
       document.getElementById('articuloResumen').value = a.resumen || '';
       document.getElementById('articuloContenido').value = a.contenido || '';
+      // Lo que ya está escrito en texto plano, lo pasamos a párrafos
+      editorEl().innerHTML = aHtmlEditor(a.contenido || '');
+      sincronizarEditor();
       document.getElementById('articuloAutor').value = a.autor || 'Milena Machado';
       document.getElementById('articuloTiempo').value = a.tiempo_lectura || 5;
       document.getElementById('articuloPublicado').classList.toggle('on', !!a.publicado);
@@ -7690,6 +7353,8 @@ body{visibility:hidden}
       }
     } else {
       ['articuloTitulo','articuloSlug','articuloResumen','articuloContenido','articuloFotoUrl'].forEach(f => document.getElementById(f).value = '');
+      editorEl().innerHTML = '';
+      sincronizarEditor();
       document.getElementById('articuloCategoria').value = 'marketing';
       document.getElementById('articuloAutor').value = 'Milena Machado';
       document.getElementById('articuloTiempo').value = 5;
@@ -7743,7 +7408,7 @@ body{visibility:hidden}
       slug: slug,
       categoria: document.getElementById('articuloCategoria').value,
       resumen: document.getElementById('articuloResumen').value.trim(),
-      contenido: document.getElementById('articuloContenido').value,
+      contenido: (sincronizarEditor(), document.getElementById('articuloContenido').value),
       autor: document.getElementById('articuloAutor').value.trim() || 'Milena Machado',
       tiempo_lectura: parseInt(document.getElementById('articuloTiempo').value) || 5,
       imagen_portada: document.getElementById('articuloFotoUrl').value || null,
@@ -7815,24 +7480,6 @@ body{visibility:hidden}
   // ============================
   let alumnas = [];
   let filtroAlumnas = 'todas';
-  let filtroCursoId = '';
-
-  function filtrarPorCurso(id){
-    filtroCursoId = id || '';
-    renderAlumnas();
-  }
-
-  // El selector se llena con los cursos que existan
-  function llenarFiltroCursos(){
-    const sel = document.getElementById('filtroCurso');
-    if(!sel) return;
-    const actual = sel.value;
-    sel.innerHTML = '<option value="">Todos los cursos</option>' +
-      (cursos || []).map(c =>
-        '<option value="' + c.id + '">🎓 ' + esc(c.titulo || 'Sin título') + '</option>'
-      ).join('');
-    if(actual) sel.value = actual;
-  }
   let buscaAlumnas = '';
   let yoSoyId = null;
 
@@ -7886,43 +7533,12 @@ body{visibility:hidden}
 
     alumnas = perfiles || [];
 
-    // Todo lo que necesitamos para el perfil, de una sola vez
-    const [rCompras, rPosts, rComs, rSusc, rInt] = await Promise.all([
-      sb.from('compras').select('usuario_id, curso_id, estado, cursos(titulo)'),
+    // Las tres consultas al mismo tiempo
+    const [rCompras, rPosts, rComs] = await Promise.all([
+      sb.from('compras').select('usuario_id, estado'),
       sb.from('posts').select('usuario_id'),
-      sb.from('comentarios').select('usuario_id'),
-      sb.from('suscripciones').select('usuario_id, estado, vence'),
-      sb.from('interesados_premium').select('usuario_id, creado_en, contactada')
+      sb.from('comentarios').select('usuario_id')
     ]);
-
-    // ¿Quién es premium hoy? Manda la fecha, igual que en el sitio
-    const premiumPorUsuario = {};
-    (rSusc.data || []).forEach(x => {
-      if(!x.usuario_id || x.estado === 'cancelada') return;
-      const alDia = !x.vence || new Date(x.vence).getTime() > Date.now();
-      if(alDia){
-        const actual = premiumPorUsuario[x.usuario_id];
-        if(!actual || (x.vence && new Date(x.vence) > new Date(actual))) {
-          premiumPorUsuario[x.usuario_id] = x.vence || 'sin-vencimiento';
-        }
-      }
-    });
-
-    // ¿Quién apretó "Quiero ser premium" y todavía no fue contactada?
-    const quierenPremium = {};
-    (rInt.data || []).forEach(x => {
-      if(x.usuario_id && !x.contactada) quierenPremium[x.usuario_id] = x.creado_en;
-    });
-
-    // Los títulos y los ids de lo que compró cada una
-    const cursosPorUsuario = {};
-    const idsPorUsuario = {};
-    (rCompras.data || []).forEach(x => {
-      if(x.estado !== 'pagado' || !x.usuario_id) return;
-      const t = x.cursos?.titulo;
-      if(t) (cursosPorUsuario[x.usuario_id] = cursosPorUsuario[x.usuario_id] || []).push(t);
-      if(x.curso_id) (idsPorUsuario[x.usuario_id] = idsPorUsuario[x.usuario_id] || []).push(x.curso_id);
-    });
 
     const compras = rCompras.data;
     const comprasPorUsuario = {};
@@ -7952,27 +7568,15 @@ body{visibility:hidden}
       a._likesRecib  = a.likes_recibidos    ?? 0;
       a._denHechas   = a.denuncias_hechas   ?? 0;
       a._denRecib    = a.denuncias_recibidas ?? 0;
-      a._premiumVence  = premiumPorUsuario[a.id] || null;
-      a._esPremium     = !!a._premiumVence;
-      a._quierePremium = quierenPremium[a.id] || null;
-      a._cursos        = cursosPorUsuario[a.id] || [];
-      a._cursoIds      = idsPorUsuario[a.id] || [];
     });
 
     document.getElementById('alumnasCount').textContent = alumnas.length;
-    llenarFiltroCursos();
     renderAlumnas();
   }
 
   function alumnaVisible(a){
     if(filtroAlumnas === 'compradoras' && a._compras === 0) return false;
     if(filtroAlumnas === 'activas' && (a._posts + a._comentarios) === 0) return false;
-    if(filtroAlumnas === 'premium' && !a._esPremium) return false;
-    if(filtroAlumnas === 'quieren' && (!a._quierePremium || a._esPremium)) return false;
-    // Solo comunidad: entró, pero no compró ningún curso ni es premium
-    if(filtroAlumnas === 'solocomunidad' && ((a._cursos || []).length > 0 || a._esPremium)) return false;
-    // Un curso puntual
-    if(filtroCursoId && !(a._cursoIds || []).includes(filtroCursoId)) return false;
     if(filtroAlumnas === 'equipo' && !['admin','fundadora'].includes(a.rol)) return false;
     if(filtroAlumnas === 'bloqueadas' && !a.bloqueado) return false;
     if(filtroAlumnas === 'denunciantes' && (a._denHechas || 0) < 3) return false;
@@ -8037,9 +7641,7 @@ body{visibility:hidden}
       return '<tr>' +
         '<td><div class="al-user">' + avatarAlumna(a) +
           '<div style="min-width:0"><div class="al-nombre">' + nombre + '</div>' +
-          '<div class="al-email">' + esc(a.email || '') + '</div>' +
-          (chipsAlumna(a) ? '<div style="margin-top:5px;display:flex;gap:5px;flex-wrap:wrap">' + chipsAlumna(a) + '</div>' : '') +
-          '</div></div></td>' +
+          '<div class="al-email">' + esc(a.email || '') + '</div></div></div></td>' +
         '<td>' + selectorRol(a) + '</td>' +
         '<td>' + (a._compras > 0
             ? '<span style="color:#9FE1CB;font-weight:500">' + a._compras + '</span>'
@@ -8064,7 +7666,6 @@ body{visibility:hidden}
         '<div class="alumna-card-top">' + avatarAlumna(a, 42) +
           '<div style="flex:1;min-width:0"><div class="al-nombre">' + nombre + '</div>' +
           '<div class="al-email">' + esc(a.email || '') + '</div></div></div>' +
-        (chipsAlumna(a) ? '<div style="margin:8px 0;display:flex;gap:6px;flex-wrap:wrap">' + chipsAlumna(a) + '</div>' : '') +
         '<div style="margin-bottom:10px">' + selectorRol(a) + '</div>' +
         '<div class="alumna-card-stats">' +
           '<span class="mini-stat">🎓 ' + a._compras + '</span>' +
@@ -8086,23 +7687,6 @@ body{visibility:hidden}
   }
 
   // Muestra si esta persona denuncia mucho o si la denuncian mucho
-  // Los distintivos que se ven al lado del nombre
-  function chipsAlumna(a){
-    let out = '';
-    if(a._esPremium){
-      const cuando = a._premiumVence === 'sin-vencimiento'
-        ? 'sin vencimiento'
-        : 'vence ' + fechaCorta(a._premiumVence);
-      out += '<span class="mini-stat" style="color:#FAC775;border-color:rgba(212,163,86,0.4)" ' +
-             'title="Premium · ' + cuando + '">⭐ Premium</span>';
-    }
-    if(a._quierePremium && !a._esPremium){
-      out += '<span class="mini-stat" style="color:#E8B8C4;border-color:rgba(232,184,196,0.4)" ' +
-             'title="Tocó el botón el ' + fechaCorta(a._quierePremium) + '">✋ Quiere Premium</span>';
-    }
-    return out;
-  }
-
   function insigniaDenuncias(a){
     const hechas = a._denHechas || 0;
     const recib = a._denRecib || 0;
@@ -8469,68 +8053,9 @@ body{visibility:hidden}
     document.getElementById('accAlerta').classList.remove('show');
     document.getElementById('btnAplicarAccion').textContent = 'APLICAR';
 
-    pintarPerfilMiembro(a);
-
     estadoAcc('');
     cargarInsigniasDe(id);
     document.getElementById('accionesModal').classList.add('show');
-  }
-
-  // La ficha completa de la persona: qué compró, si es premium, qué hace
-  function pintarPerfilMiembro(a){
-    const cont = document.getElementById('accPerfil');
-    if(!cont) return;
-
-    const dato = (etiqueta, valor, color) =>
-      '<div style="flex:1;min-width:120px">' +
-        '<div style="font-size:9.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.4);margin-bottom:4px">' + etiqueta + '</div>' +
-        '<div style="font-size:14px;color:' + (color || '#FFF5F0') + '">' + valor + '</div>' +
-      '</div>';
-
-    // Premium
-    let premium;
-    if(a._esPremium){
-      premium = a._premiumVence === 'sin-vencimiento'
-        ? '⭐ Sin vencimiento'
-        : '⭐ Hasta ' + fechaCorta(a._premiumVence);
-    } else if(a._quierePremium){
-      premium = '✋ Lo pidió el ' + fechaCorta(a._quierePremium);
-    } else {
-      premium = '—';
-    }
-
-    // Cursos, con nombre
-    const cursosTxt = a._cursos && a._cursos.length
-      ? a._cursos.map(t => '<div style="font-size:12.5px;color:rgba(255,245,240,0.8);' +
-          'padding:5px 0;border-bottom:0.5px solid rgba(255,245,240,0.06)">🎓 ' + esc(t) + '</div>').join('')
-      : '<div style="font-size:12.5px;color:rgba(255,245,240,0.35)">Todavía no compró ninguno</div>';
-
-    cont.innerHTML =
-      '<div style="background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.09);' +
-           'border-radius:13px;padding:16px 18px">' +
-
-        '<div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px">' +
-          dato('SE REGISTRÓ', fechaCorta(a.creado_en)) +
-          dato('PREMIUM', premium, a._esPremium ? '#FAC775' : (a._quierePremium ? '#E8B8C4' : 'rgba(255,245,240,0.35)')) +
-          dato('ROL', esc(a.rol || 'alumna')) +
-        '</div>' +
-
-        '<div style="font-size:9.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.4);margin-bottom:7px">' +
-          'CURSOS COMPRADOS (' + (a._cursos ? a._cursos.length : 0) + ')' +
-        '</div>' +
-        '<div style="margin-bottom:16px">' + cursosTxt + '</div>' +
-
-        '<div style="font-size:9.5px;letter-spacing:0.16em;color:rgba(255,245,240,0.4);margin-bottom:7px">' +
-          'ACTIVIDAD EN LA COMUNIDAD' +
-        '</div>' +
-        '<div style="display:flex;gap:7px;flex-wrap:wrap">' +
-          '<span class="mini-stat" title="Publicaciones">✏️ ' + (a._posts || 0) + ' posts</span>' +
-          '<span class="mini-stat" title="Comentarios">💬 ' + (a._comentarios || 0) + '</span>' +
-          '<span class="mini-stat" title="Diamantes que dio">💎 ' + (a._likesDados || 0) + '</span>' +
-          '<span class="mini-stat" title="Diamantes recibidos">⭐ ' + (a._likesRecib || 0) + '</span>' +
-        '</div>' +
-
-      '</div>';
   }
 
   function cerrarAcciones(){
@@ -9168,24 +8693,6 @@ body{visibility:hidden}
     return 'Gs ' + (Number(n) || 0).toLocaleString('es-PY');
   }
 
-  // Accesos que NO son una venta: cursos gratis, invitaciones, cortesías.
-  // Entran igual a la tabla de compras, pero no son plata que entró.
-  const METODOS_SIN_PLATA = ['gratis','invitacion','invitación','cortesia','cortesía','regalo'];
-  const METODOS_CON_PLATA  = ['pagopar','transferencia','efectivo','tarjeta','giro'];
-
-  // Es regalo SOLO si el método de pago lo dice. Nunca lo deducimos del monto:
-  // si el monto viniera mal, una venta real quedaría escondida.
-  function esRegalo(v){
-    const m = (v.metodo_pago || '').toLowerCase().trim();
-    if(METODOS_CON_PLATA.includes(m)) return false;   // venta real, pase lo que pase
-    if(METODOS_SIN_PLATA.includes(m)) return true;
-    return (Number(v.monto_gs) || 0) <= 0;            // método desconocido: decide el monto
-  }
-
-  function esVentaReal(v){
-    return !esRegalo(v);
-  }
-
   async function cargarVentas(){
     if(!sb) return;
 
@@ -9211,17 +8718,7 @@ body{visibility:hidden}
     }
     ventas.forEach(v => { v._persona = perfC[v.usuario_id] || null; });
 
-    // Diagnóstico: en la consola del navegador (F12) se ve fila por fila
-    // qué trajo la base y cómo la clasificamos.
-    console.table(ventas.map(v => ({
-      curso: v.cursos?.titulo || '—',
-      monto_gs: v.monto_gs,
-      estado: v.estado,
-      metodo_pago: v.metodo_pago,
-      clasificada_como: esRegalo(v) ? 'REGALO (no suma)' : 'VENTA REAL'
-    })));
-
-    const pagadas = ventas.filter(v => v.estado === 'pagado').filter(esVentaReal);
+    const pagadas = ventas.filter(v => v.estado === 'pagado');
     const pend = ventas.filter(v => v.estado === 'pendiente');
     const canc = ventas.filter(v => v.estado === 'cancelado');
     const total = pagadas.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
@@ -9268,7 +8765,7 @@ body{visibility:hidden}
         '<td>' + esc(nombreCompradora(v)) +
           (v._persona ? '<div class="al-email">' + esc(v._persona.email || '') + '</div>' : '') + '</td>' +
         '<td>' + esc(v.cursos?.titulo || '—') + '</td>' +
-        '<td style="font-family:Georgia,serif;color:' + (esRegalo(v) ? 'rgba(255,245,240,0.45)' : '#FAC775') + ';white-space:nowrap">' + (esRegalo(v) ? 'Gratis' : gs(v.monto_gs)) + '</td>' +
+        '<td style="font-family:Georgia,serif;color:#FAC775;white-space:nowrap">' + gs(v.monto_gs) + '</td>' +
         '<td>' + pillEstado(v.estado) + '</td>' +
         '<td style="color:rgba(255,245,240,0.55);font-size:12px;white-space:nowrap">' + fechaCorta(v.creado_en || v.pagado_en) + '</td>' +
       '</tr>'
@@ -9279,7 +8776,7 @@ body{visibility:hidden}
         '<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:9px">' +
           '<div style="min-width:0"><div class="al-nombre">' + esc(nombreCompradora(v)) + '</div>' +
           '<div class="al-email">' + esc(v.cursos?.titulo || '—') + '</div></div>' +
-          '<div style="font-family:Georgia,serif;color:' + (esRegalo(v) ? 'rgba(255,245,240,0.45)' : '#FAC775') + ';white-space:nowrap">' + (esRegalo(v) ? 'Gratis' : gs(v.monto_gs)) + '</div>' +
+          '<div style="font-family:Georgia,serif;color:#FAC775;white-space:nowrap">' + gs(v.monto_gs) + '</div>' +
         '</div>' +
         '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">' +
           pillEstado(v.estado) +
@@ -9321,19 +8818,10 @@ body{visibility:hidden}
   // ============================
   // DASHBOARD CON DATOS REALES
   // ============================
-  // Escribe en una tarjeta del dashboard sin romper todo si ese id no existe
-  function txtDash(id, valor){
-    const el = document.getElementById(id);
-    if(el) el.textContent = valor;
-    else console.warn('[dashboard] falta el elemento #' + id);
-  }
-
   async function cargarDashboard(){
     if(!sb) return;
 
-    const cobradas = ventas.filter(v => v.estado === 'pagado');
-    const pagadas = cobradas.filter(esVentaReal);   // ventas de verdad
-    const regalos = cobradas.filter(esRegalo);      // gratis · invitación · cortesía
+    const pagadas = ventas.filter(v => v.estado === 'pagado');
     const pend = ventas.filter(v => v.estado === 'pendiente');
     const total = pagadas.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
 
@@ -9343,19 +8831,18 @@ body{visibility:hidden}
     const delMes = pagadas.filter(v => new Date(v.pagado_en || v.creado_en).getTime() >= inicioMes);
     const totalMes = delMes.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
 
-    txtDash('dashIngresos', gs(total));
-    txtDash('dashIngresosMes', total > 0
+    document.getElementById('dashIngresos').textContent = gs(total);
+    document.getElementById('dashIngresosMes').textContent = total > 0
       ? gs(totalMes) + ' este mes'
-      : 'Sin ventas todavía');
-    txtDash('dashVentas', pagadas.length);
-    txtDash('dashVentasSub',
-      regalos.length > 0
-        ? (pagadas.length > 0 ? delMes.length + ' este mes · ' : '') + regalos.length + ' acceso(s) gratis aparte'
-        : (pagadas.length > 0 ? delMes.length + ' este mes' : 'Todavía ninguna'));
-    txtDash('dashPendientes', pend.length);
-    txtDash('dashTicket', pagadas.length
+      : 'Sin ventas todavía';
+    document.getElementById('dashVentas').textContent = pagadas.length;
+    document.getElementById('dashVentasSub').textContent = pagadas.length > 0
+      ? delMes.length + ' este mes'
+      : 'Todavía ninguna';
+    document.getElementById('dashPendientes').textContent = pend.length;
+    document.getElementById('dashTicket').textContent = pagadas.length
       ? gs(Math.round(total / pagadas.length))
-      : 'Gs 0');
+      : 'Gs 0';
 
     // Personas
     const nAlumnas = alumnas.length;
@@ -9364,49 +8851,48 @@ body{visibility:hidden}
     const compradoras = alumnas.filter(a => (a._compras || 0) > 0).length;
     const activas = alumnas.filter(a => (a._posts || 0) + (a._comentarios || 0) > 0).length;
 
-    txtDash('dashRegistradas', nAlumnas);
-    txtDash('dashRegistradasSub', nuevas > 0
+    document.getElementById('dashRegistradas').textContent = nAlumnas;
+    document.getElementById('dashRegistradasSub').textContent = nuevas > 0
       ? '+' + nuevas + ' en los últimos 30 días'
-      : 'Sin registros nuevos este mes');
-    txtDash('dashCompradoras', compradoras);
-    txtDash('dashConversion', nAlumnas > 0
+      : 'Sin registros nuevos este mes';
+    document.getElementById('dashCompradoras').textContent = compradoras;
+    document.getElementById('dashConversion').textContent = nAlumnas > 0
       ? Math.round((compradoras / nAlumnas) * 100) + '% de las registradas'
-      : '—');
-    txtDash('dashSubs', suscriptores.length);
-    txtDash('dashActivas', activas);
+      : '—';
+    document.getElementById('dashSubs').textContent = suscriptores.length;
+    document.getElementById('dashActivas').textContent = activas;
 
     // Contenido
     const cursosPub = cursos.filter(x => x.publicado).length;
     const artPub = articulos.filter(a => a.publicado).length;
-    txtDash('dashCursos', cursosPub);
-    txtDash('dashCursosSub', (cursos.length - cursosPub) + ' en borrador');
-    txtDash('dashArticulos', artPub);
-    txtDash('dashArticulosSub', (articulos.length - artPub) + ' en borrador');
-    txtDash('dashPosts', modPosts.length);
+    document.getElementById('dashCursos').textContent = cursosPub;
+    document.getElementById('dashCursosSub').textContent = (cursos.length - cursosPub) + ' en borrador';
+    document.getElementById('dashArticulos').textContent = artPub;
+    document.getElementById('dashArticulosSub').textContent = (articulos.length - artPub) + ' en borrador';
+    document.getElementById('dashPosts').textContent = modPosts.length;
 
     const nComents = Object.values(modComentarios).reduce((s, arr) => s + arr.length, 0);
-    txtDash('dashPostsSub', nComents + ' comentario' + (nComents === 1 ? '' : 's'));
+    document.getElementById('dashPostsSub').textContent = nComents + ' comentario' + (nComents === 1 ? '' : 's');
 
     // Por revisar: denuncias + publicaciones esperando aprobación
     const nDen = Object.values(modDenuncias).reduce((s, arr) => s + arr.length, 0);
     const nPend = modPosts.filter(p => p.pendiente_aprobacion).length;
     const porRevisar = nDen + nPend;
-    txtDash('dashPorRevisar', porRevisar);
-    document.getElementById('dashCardDenuncias')?.classList.toggle('alerta', porRevisar > 0);
-    txtDash('dashPorRevisarSub', porRevisar > 0
+    document.getElementById('dashPorRevisar').textContent = porRevisar;
+    document.getElementById('dashCardDenuncias').classList.toggle('alerta', porRevisar > 0);
+    document.getElementById('dashPorRevisarSub').textContent = porRevisar > 0
       ? nDen + ' denuncia(s) · ' + nPend + ' con enlace'
-      : 'Nada pendiente');
+      : 'Nada pendiente';
 
     // Saludo
     const yo = alumnas.find(a => a.id === yoSoyId);
-    if(yo) txtDash('dashNombre', (yo.nombre || 'vos').split(' ')[0]);
-    txtDash('dashResumen', total > 0
+    if(yo) document.getElementById('dashNombre').textContent = (yo.nombre || 'vos').split(' ')[0];
+    document.getElementById('dashResumen').textContent = total > 0
       ? 'Llevás ' + gs(total) + ' cobrados y ' + nAlumnas + ' persona' + (nAlumnas === 1 ? '' : 's') + ' registrada' + (nAlumnas === 1 ? '' : 's') + '.'
-      : 'Todavía no hubo ventas. Acá vas a ver los números cuando empiecen a llegar.');
+      : 'Todavía no hubo ventas. Acá vas a ver los números cuando empiecen a llegar.';
 
     // Últimas ventas
     const cont = document.getElementById('dashUltimasVentas');
-    if(!cont) return;
     const ultimas = ventas.slice(0, 6);
     if(ultimas.length === 0){
       cont.innerHTML = '<div class="vacio-suave"><div class="ico">💳</div>Todavía no hubo ventas' +
@@ -9419,42 +8905,22 @@ body{visibility:hidden}
             '<div style="font-size:11.5px;color:rgba(255,245,240,0.5)">' + esc(v.cursos?.titulo || '—') + ' · ' + fechaCorta(v.creado_en || v.pagado_en) + '</div>' +
           '</div>' +
           pillEstado(v.estado) +
-          '<span class="venta-monto"' + (esRegalo(v) ? ' style="color:rgba(255,245,240,0.45)"' : '') + '>' + (esRegalo(v) ? 'Gratis' : gs(v.monto_gs)) + '</span>' +
+          '<span class="venta-monto">' + gs(v.monto_gs) + '</span>' +
         '</div>'
       ).join('');
     }
   }
 
   async function refrescarDashboard(){
-    if(typeof sb === 'undefined' || !sb){
-      mostrarToast('Todavía no conectamos con la base. Esperá unos segundos y probá de nuevo.', true);
-      return;
-    }
     mostrarToast('Actualizando...');
-
-    // Si una carga falla, las demás siguen y el dashboard igual se actualiza
-    const pasos = [
-      ['cursos', cargarCursos],
-      ['alumnas', cargarAlumnas],
-      ['articulos', cargarArticulos],
-      ['ventas', cargarVentas],
-      ['newsletter', cargarNewsletter],
-      ['moderacion', cargarModeracion]
-    ];
-    const rotas = [];
-    for(const [nombre, fn] of pasos){
-      try { await fn(); }
-      catch(e){ rotas.push(nombre); console.error('[admin] falló cargar ' + nombre + ':', e); }
-    }
-
-    try { await cargarDashboard(); }
-    catch(e){ console.error('[admin] falló armar el dashboard:', e); }
-
-    if(!rotas.length) guardarNumeros();
-
-    mostrarToast(rotas.length
-      ? 'Actualizado, pero fallaron: ' + rotas.join(', ')
-      : '✓ Datos actualizados', rotas.length > 0);
+    await cargarCursos();
+    await cargarAlumnas();
+    await cargarArticulos();
+    await cargarVentas();
+    await cargarNewsletter();
+    await cargarModeracion();
+    await cargarDashboard();
+    mostrarToast('✓ Datos actualizados');
   }
 
   // ============================
@@ -9644,9 +9110,15 @@ body{visibility:hidden}
     const publicados = articulos.filter(a => a.publicado);
 
     if(publicados.length === 0){
+      const borradores = (articulos || []).length;
       cont.innerHTML = '<div class="vacio-suave"><div class="ico">📝</div>' +
-        'Todavía no hay artículos publicados' +
-        '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">Publicá uno en la pestaña Artículos y volvé acá para enviarlo</div></div>';
+        (borradores > 0
+          ? 'Tenés ' + borradores + ' artículo' + (borradores === 1 ? '' : 's') + ', pero ninguno está publicado' +
+            '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">' +
+            'Andá a la pestaña Artículos, abrí uno y prendé el interruptor <strong>Publicado</strong>.</div>'
+          : 'Todavía no hay artículos' +
+            '<div style="font-size:12px;color:rgba(255,245,240,0.35);margin-top:6px">Creá uno en la pestaña Artículos</div>') +
+        '</div>';
       return;
     }
 
@@ -9777,10 +9249,8 @@ body{visibility:hidden}
   function guardarNumeros(){
     try {
       const nums = {};
-      // Solo guardamos las tarjetas del dashboard. Las de Ventas se leen
-      // siempre en vivo: si guardáramos un valor viejo, taparía el real.
       document.querySelectorAll('.kpi-value, .sidebar-badge').forEach(el => {
-        if(el.id && el.id.indexOf('dash') === 0) nums[el.id] = el.textContent;
+        if(el.id) nums[el.id] = el.textContent;
       });
       localStorage.setItem(CACHE_NUMS, JSON.stringify(nums));
     } catch(e){}
@@ -9811,20 +9281,8 @@ body{visibility:hidden}
   // ─── Arranque ───────────────────────────────────────────────────
   pintarNumerosGuardados();
 
-  let intentosSupa = 0;
   const waitSupaCursos = setInterval(async () => {
-    if (typeof sb === 'undefined' || sb === null) {
-      intentosSupa++;
-      // ~10 segundos sin conexión: avisamos en vez de quedarnos en "Cargando..."
-      if (intentosSupa > 250) {
-        clearInterval(waitSupaCursos);
-        const r = document.getElementById('dashResumen');
-        if (r) r.textContent = 'No pudimos conectar con la base de datos. Abrí la consola (F12) y fijate si hay un error en supabase-config.js.';
-        marcarCargando(false);
-        console.error('[admin] sb nunca se inicializó. Revisá que supabase-config.js cargue sin errores.');
-      }
-      return;
-    }
+    if (typeof sb === 'undefined' || sb === null) return;
     clearInterval(waitSupaCursos);
 
     marcarCargando(true);
@@ -9832,50 +9290,31 @@ body{visibility:hidden}
     const { data: { user } } = await sb.auth.getUser();
     yoSoyId = user?.id || null;
 
-    // Todo lo independiente, al mismo tiempo.
-    // allSettled en vez de all: si una carga falla, las demás siguen
-    // y el dashboard igual se actualiza (antes se cortaba todo).
-    const tareas = [
-      ['cursos', cargarCursos],
-      ['carruseles', cargarCarruseles],
-      ['alumnas', cargarAlumnas],
-      ['articulos', cargarArticulos],
-      ['ventas', cargarVentas],
-      ['moderacion', cargarModeracion],
-      ['envios', cargarEnvios],
-      ['insignias', cargarInsignias],
-      ['anuncios', cargarAnuncios],
-      ['funciones', cargarFunciones],
-      ['clases-anuncio', cargarClasesParaAnuncio],
-      ['hashtags', cargarHashtags],
-      ['secciones', cargarSecciones]
-    ];
-
-    const res = await Promise.allSettled(tareas.map(t => t[1]()));
-    const rotas = [];
-    res.forEach((r, i) => {
-      if(r.status === 'rejected'){
-        rotas.push(tareas[i][0]);
-        console.error('[admin] falló cargar ' + tareas[i][0] + ':', r.reason);
-      }
-    });
+    // Todo lo independiente, al mismo tiempo
+    await Promise.all([
+      cargarCursos(),
+      cargarCarruseles(),
+      cargarAlumnas(),
+      cargarArticulos(),
+      cargarVentas(),
+      cargarModeracion(),
+      cargarEnvios(),
+      cargarInsignias(),
+      cargarAnuncios(),
+      cargarFunciones(),
+      cargarClasesParaAnuncio(),
+      cargarHashtags(),
+      cargarSecciones()
+    ]);
 
     // El newsletter necesita saber quiénes tienen cuenta
-    try { await cargarNewsletter(); }
-    catch(e){ rotas.push('newsletter'); console.error('[admin] falló cargar newsletter:', e); }
+    await cargarNewsletter();
 
-    try { await cargarDashboard(); }
-    catch(e){ console.error('[admin] falló armar el dashboard:', e); }
-
-    try { renderAnunciosPendientes(); } catch(e){ console.error(e); }
+    await cargarDashboard();
+    renderAnunciosPendientes();
 
     marcarCargando(false);
-    // Solo guardamos los números si cargó todo bien
-    if(!rotas.length) guardarNumeros();
-
-    if(rotas.length){
-      mostrarToast('Algunos datos no cargaron: ' + rotas.join(', ') + '. Probá Actualizar.', true);
-    }
+    guardarNumeros();
 
     verificarEmailConfigurado();
   }, 40);
@@ -9885,12 +9324,11 @@ body{visibility:hidden}
     if (typeof sb !== 'undefined' && sb !== null) {
       clearInterval(waitSupa);
       cargarHashtags();
-      cargarCategorias();
     }
   }, 100);
 </script>
 
-<script src="supabase-config.js?v=202609091550"></script>
+<script src="supabase-config.js"></script>
 <script>
 // Revelado inmediato: si el caché dice que hay sesión, mostramos la página
 // al instante y verificamos en segundo plano. Adiós a la espera.
@@ -9907,7 +9345,7 @@ body{visibility:hidden}
   }catch(e){}
 })();
 </script>
-<script src="header-dinamico.js?v=202609091550"></script>
+<script src="header-dinamico.js"></script>
 <script>
 (function() {
   const checkAdmin = setInterval(async () => {
@@ -9924,9 +9362,10 @@ body{visibility:hidden}
         window.location.replace('/index');
         return;
       }
-      // Mostrar la página (puede que otro bloque ya los haya sacado)
-      document.getElementById('auth-splash-style')?.remove();
-      document.getElementById('authSplash')?.remove();
+      // Mostrar la página
+      document.getElementById('auth-splash-style').remove();
+      const splash = document.getElementById('authSplash');
+      if (splash) splash.remove();
     }
   }, 50);
 })();

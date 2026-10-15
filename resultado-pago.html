@@ -2,7 +2,7 @@
 <html lang="es-PY">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Resultado del pago · Milena Machado</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -10,7 +10,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1A0A12">
 
-<link rel="stylesheet" href="styles.css?v=202609091550">
+<link rel="stylesheet" href="styles.css">
 <style>
   body{display:flex;min-height:100vh;align-items:center;justify-content:center;padding:30px 20px}
   .result-glow-1{position:fixed;width:480px;height:480px;left:-160px;top:-140px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.35),transparent 65%);pointer-events:none;z-index:0}
@@ -61,7 +61,7 @@
   </div>
 </div>
 
-<script src="supabase-config.js?v=202609091550"></script>
+<script src="supabase-config.js"></script>
 <script>
   const params = new URLSearchParams(window.location.search);
   const hashPedido = params.get('hash');
@@ -140,13 +140,9 @@
         .eq('pagopar_id', hashPedido)
         .maybeSingle();
 
-      // SIEMPRE consultamos el estado del pedido en Pagopar.
-      // Es el PASO 3 que Pagopar exige para habilitar producción: el comercio
-      // tiene que consultar el estado de un pedido. Si solo preguntáramos
-      // cuando la compra quedó pendiente, en un pago que el webhook confirma
-      // bien nunca se consultaría y el paso 3 queda sin cumplir.
+      // Si todavía figura pendiente, le preguntamos directamente a Pagopar.
+      // Así, aunque el aviso automático haya fallado, la compra se confirma igual.
       if (!compra || compra.estado === 'pendiente') {
-        // Todavía no está confirmada: mostramos el cartel de "verificando"
         mostrarResultado('pending', 'Confirmando tu pago...', 'Estamos verificando con el medio de pago. Aguardá unos segundos.', '');
 
         const confirmado = await preguntarAPagopar(hashPedido);
@@ -157,9 +153,6 @@
             .eq('pagopar_id', hashPedido).maybeSingle();
           if (r.data) compra = r.data;
         }
-      } else {
-        // Ya estaba confirmada: consultamos igual, en silencio, sin frenar la pantalla
-        preguntarAPagopar(hashPedido).catch(e => console.warn('[resultado] consulta silenciosa:', e));
       }
 
       if (!compra) {

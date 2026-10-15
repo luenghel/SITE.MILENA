@@ -2,7 +2,7 @@
 <html lang="es-PY">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pageTitle">Artículo · Milena Machado</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -90,6 +90,42 @@
   }
 
 
+
+  /* ═══ El contenido del artículo ═══ */
+  .article-content a{
+    color:#FAC775;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    text-decoration-thickness:1px;
+    transition:all 0.2s;
+  }
+  .article-content a:hover{
+    color:#FFF5F0;
+    text-decoration-color:#FAC775;
+    text-decoration-thickness:2px;
+  }
+  .article-content a[target="_blank"]::after{
+    content:'↗';
+    font-size:0.75em;
+    margin-left:3px;
+    opacity:0.6;
+  }
+
+  .article-content h2{font-family:Georgia,serif;font-size:26px;font-weight:500;margin:34px 0 14px;line-height:1.25}
+  .article-content h3{font-family:Georgia,serif;font-size:20px;font-weight:500;margin:26px 0 10px;color:rgba(255,245,240,0.92)}
+  .article-content ul,.article-content ol{margin:0 0 20px;padding-left:24px}
+  .article-content li{margin-bottom:9px;line-height:1.7}
+  .article-content blockquote{
+    margin:26px 0;padding:18px 22px;
+    border-left:3px solid rgba(212,163,86,0.6);
+    background:rgba(212,163,86,0.07);
+    border-radius:0 11px 11px 0;
+    font-family:Georgia,serif;font-style:italic;font-size:17px;
+    color:rgba(255,245,240,0.88);line-height:1.6;
+  }
+  .article-content strong,.article-content b{color:#FFF5F0;font-weight:600}
+  .article-content em,.article-content i{font-style:italic}
+
 </style>
 </head>
 <body>
@@ -158,8 +194,8 @@
   Hecho con <span style="color:#B8294A">♥</span> por Milena Machado · Paraguay 2026
 </footer>
 
-<script src="supabase-config.js?v=202609091550"></script>
-<script src="header-dinamico.js?v=202609091550"></script>
+<script src="supabase-config.js"></script>
+<script src="header-dinamico.js"></script>
 <script>
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('id');
@@ -191,12 +227,43 @@
   // Convertir saltos de línea simples en párrafos
   function contenidoAHtml(texto) {
     if (!texto) return '';
-    // Si ya tiene HTML, devolverlo tal cual
-    if (texto.includes('<p>') || texto.includes('<h2>') || texto.includes('<br>')) {
-      return texto;
+
+    // Si ya viene con formato del editor, lo dejamos tal cual
+    if (/<(p|h2|h3|ul|ol|li|blockquote|a|strong|em|b|i|br)[\s>]/i.test(texto)) {
+      return asegurarEnlaces(texto);
     }
-    // Convertir saltos dobles en párrafos
-    return texto.split(/\n\n+/).map(p => '<p>' + escapeHtml(p.trim()).replace(/\n/g, '<br>') + '</p>').join('');
+
+    // Texto plano: cada doble salto es un párrafo nuevo,
+    // y las direcciones sueltas se vuelven clickeables
+    return texto.split(/\n\n+/)
+      .map(p => '<p>' + enlazarSueltos(escapeHtml(p.trim())).replace(/\n/g, '<br>') + '</p>')
+      .join('');
+  }
+
+  // Las direcciones escritas sueltas se vuelven enlaces
+  function enlazarSueltos(html) {
+    return html
+      .replace(/(^|[\s(])((https?:\/\/|www\.)[^\s<)]+)/gi, function(_, antes, url){
+        const destino = url.startsWith('http') ? url : 'https://' + url;
+        return antes + '<a href="' + destino + '" target="_blank" rel="noopener">' + url + '</a>';
+      })
+      .replace(/(^|[\s(])([\w.+-]+@[\w-]+\.[\w.]+)/g, '$1<a href="mailto:$2">$2</a>');
+  }
+
+  // Los enlaces externos se abren en pestaña nueva
+  function asegurarEnlaces(html) {
+    const caja = document.createElement('div');
+    caja.innerHTML = html;
+
+    caja.querySelectorAll('a').forEach(function(a){
+      const href = a.getAttribute('href') || '';
+      if (/^https?:\/\//i.test(href) && !href.includes(location.hostname)) {
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener noreferrer');
+      }
+    });
+
+    return caja.innerHTML;
   }
 
   async function cargarArticulo() {

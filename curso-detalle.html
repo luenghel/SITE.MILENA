@@ -2,7 +2,7 @@
 <html lang="es-PY">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Creando Mentes Millonarias · Milena Machado</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -10,7 +10,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1A0A12">
 
-<link rel="stylesheet" href="styles.css?v=202609091550">
+<link rel="stylesheet" href="styles.css">
 <style>
   .breadcrumb-bar{padding:18px 32px;max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:16px}
   .back-circle{width:38px;height:38px;border-radius:50%;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.15);color:#FFF5F0;display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;transition:all 0.25s}
@@ -383,8 +383,8 @@
   Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
 </footer>
 
-<script src="supabase-config.js?v=202609091550"></script>
-<script src="header-dinamico.js?v=202609091550"></script>
+<script src="supabase-config.js"></script>
+<script src="header-dinamico.js"></script>
 
 
 <!-- MODAL DE COMPRA -->
@@ -541,17 +541,6 @@ async function mostrarTemario(curso, user){
   const clases = rCla.data || [];
 
   if(modulos.length === 0 || clases.length === 0) return;
-
-  // Cuándo compró, para poder calcular la liberación de las clases.
-  // Antes se usaba una variable "compra" que en esta función no existía:
-  // tiraba ReferenceError y el temario quedaba a medias.
-  let compra = null;
-  if(user){
-    const { data: cmp } = await sb.from('compras')
-      .select('pagado_en, creado_en, acceso_hasta').eq('usuario_id', user.id)
-      .eq('curso_id', curso.id).eq('estado','pagado').maybeSingle();
-    if(cmp) compra = { pagado_en: cmp.pagado_en || cmp.creado_en, acceso_hasta: cmp.acceso_hasta };
-  }
 
   // Progreso
   let progreso = {};

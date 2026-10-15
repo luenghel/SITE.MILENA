@@ -2,7 +2,7 @@
 <html lang="es-PY">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Baja del newsletter · Milena Machado</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -10,7 +10,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1A0A12">
 
-<link rel="stylesheet" href="styles.css?v=202609091550">
+<link rel="stylesheet" href="styles.css">
 <style>
   body{display:flex;min-height:100vh;align-items:center;justify-content:center;padding:30px 20px}
   .baja-glow{position:fixed;width:420px;height:420px;left:-140px;top:-120px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,196,0.28),transparent 65%);pointer-events:none}
@@ -59,7 +59,7 @@
   </div>
 </div>
 
-<script src="supabase-config.js?v=202609091550"></script>
+<script src="supabase-config.js"></script>
 <script>
   const params = new URLSearchParams(window.location.search);
   const email = (params.get('email') || '').trim();
