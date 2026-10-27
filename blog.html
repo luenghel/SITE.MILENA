@@ -123,7 +123,38 @@
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   .article-card{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:13px;overflow:hidden;cursor:pointer;transition:all 0.4s cubic-bezier(0.34,1.4,0.64,1);display:flex;flex-direction:column}
   .article-card:hover{transform:translateY(-4px);border-color:rgba(212,163,86,0.3);box-shadow:0 16px 40px rgba(0,0,0,0.4)}
-  .card-image{aspect-ratio:16/10;position:relative;overflow:hidden}
+  /* ═══ La portada manda: vertical en computadora ═══ */
+  .article-img{
+    aspect-ratio:3/4;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(160deg,#2D0A18,#4A0F1E,#1A0509);
+  }
+  .img-foto{
+    position:absolute;inset:0;
+    background-size:cover;background-position:center;
+    transition:transform 0.5s cubic-bezier(0.34,1.1,0.64,1);
+  }
+  .article-card:hover .img-foto{transform:scale(1.05)}
+  .article-img::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 60%,rgba(14,5,9,0.5) 100%);
+    pointer-events:none;
+  }
+  .img-emoji{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    font-size:46px;opacity:0.5;
+  }
+  .img-cat{
+    position:absolute;top:11px;left:11px;z-index:2;
+    padding:5px 11px;border-radius:14px;
+    background:rgba(14,5,9,0.78);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:0.5px solid rgba(255,245,240,0.22);
+    font-size:9.5px;letter-spacing:0.12em;font-weight:600;
+    color:#FFF5F0;
+  }
   .card-image .emoji{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:42px}
   .card-content{padding:18px}
   .card-title{font-size:18px;line-height:1.2;font-weight:500;margin:0 0 9px}
@@ -316,8 +347,11 @@
     cont.innerHTML = `
       <a href="/articulo?id=${escapeHtml(articulo.slug)}" style="text-decoration:none;color:inherit">
         <div class="featured-card">
-          <div class="featured-image" style="${articulo.imagen_portada ? `background:url('${escapeHtml(articulo.imagen_portada)}') center/cover` : ''}">
-            ${!articulo.imagen_portada ? `
+          <div class="featured-image" style="${(() => {
+            const f = (esCelular() && articulo.imagen_movil) ? articulo.imagen_movil : (articulo.imagen_portada || articulo.imagen_movil);
+            return f ? `background:url('${escapeHtml(f)}') center/cover` : '';
+          })()}">
+            ${!(articulo.imagen_portada || articulo.imagen_movil) ? `
               <div class="featured-bg-1"></div>
               <div class="featured-bg-2"></div>
               <div class="featured-emoji">📈</div>
@@ -350,6 +384,21 @@
     section.style.display = '';
   }
   
+  function esCelular(){
+    return window.matchMedia('(max-width:900px)').matches;
+  }
+
+  // Si cambia el tamaño de la pantalla, repintamos con la imagen que toca
+  let anchoAnterior = window.innerWidth;
+  window.addEventListener('resize', function(){
+    const eraCel = anchoAnterior <= 900;
+    const esCel = window.innerWidth <= 900;
+    anchoAnterior = window.innerWidth;
+    if(eraCel !== esCel && typeof articulosCache !== 'undefined' && articulosCache.length){
+      renderArticulos(articulosCache);
+    }
+  });
+
   function renderArticulos(articulos) {
     const grid = document.getElementById('articlesGrid');
     
@@ -381,9 +430,18 @@
     grid.innerHTML = filtrados.map(a => {
       const cat = escapeHtml(a.categoria || 'MARKETING').toUpperCase();
       const catClass = getCategoriaColor(a.categoria);
-      const portada = a.imagen_portada 
-        ? `<div class="article-img" style="background:url('${escapeHtml(a.imagen_portada)}') center/cover"></div>`
-        : `<div class="article-img"><div class="img-emoji">📊</div></div>`;
+      // La imagen que corresponde según la pantalla
+      const foto = (esCelular() && a.imagen_movil) ? a.imagen_movil : (a.imagen_portada || a.imagen_movil);
+
+      const portada = foto
+        ? `<div class="article-img">
+             <div class="img-foto" style="background-image:url('${escapeHtml(foto)}')"></div>
+             <span class="img-cat">${cat}</span>
+           </div>`
+        : `<div class="article-img">
+             <div class="img-emoji">📊</div>
+             <span class="img-cat">${cat}</span>
+           </div>`;
       return `
         <a href="/articulo?id=${escapeHtml(a.slug)}" class="article-card">
           ${portada}

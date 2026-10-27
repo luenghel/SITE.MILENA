@@ -2266,17 +2266,43 @@ body{visibility:hidden}
             <div class="form-help">Tip: doble Enter para separar párrafos. Soporta HTML básico (h2, h3, ul, li, strong, blockquote)</div>
           </div>
 
+          <div class="form-grid-full">
+            <div class="banner-aviso">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01" stroke-linecap="round"/></svg>
+              <div>
+                <strong>La portada es lo que hace que toquen el artículo.</strong>
+                Sin foto, la tarjeta queda solo con texto y pasa desapercibida.
+              </div>
+            </div>
+          </div>
+
           <div class="form-field form-grid-full">
-            <label class="form-label">IMAGEN DE PORTADA</label>
-            <div class="image-uploader" id="articuloFotoUploader" onclick="document.getElementById('articuloFotoInput').click()">
+            <label class="form-label">PORTADA PARA COMPUTADORA</label>
+            <div class="medida-tip">📐 Sugerido: <strong>900 × 1200 px</strong> (vertical, proporción 3 : 4)</div>
+            <div class="image-uploader" onclick="document.getElementById('articuloFotoInput').click()">
               <div id="articuloFotoEmpty">
-                <svg class="image-uploader-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                <div class="image-uploader-text">Clickeá para subir foto</div>
+                <svg class="image-uploader-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="2" width="12" height="20" rx="2"/><circle cx="10" cy="8" r="1.3"/><path d="M18 16l-4-4-8 7"/></svg>
+                <div class="image-uploader-text">Subir la portada vertical</div>
               </div>
               <div id="articuloFotoPreview" style="display:none;width:100%"></div>
               <input type="file" id="articuloFotoInput" accept="image/*" onchange="subirFotoArticulo(event)">
             </div>
             <input type="hidden" id="articuloFotoUrl">
+          </div>
+
+          <div class="form-field form-grid-full">
+            <label class="form-label">PORTADA PARA CELULAR</label>
+            <div class="medida-tip">📐 Sugerido: <strong>1080 × 1350 px</strong> (proporción 4 : 5)</div>
+            <div class="image-uploader" onclick="document.getElementById('articuloMovilInput').click()">
+              <div id="articuloMovilEmpty">
+                <svg class="image-uploader-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.3"/><path d="M21 16l-5-5L5 20"/></svg>
+                <div class="image-uploader-text">Subir la versión de celular</div>
+                <div class="image-uploader-help">Si no subís ninguna, se usa la de computadora</div>
+              </div>
+              <div id="articuloMovilPreview" style="display:none;width:100%"></div>
+              <input type="file" id="articuloMovilInput" accept="image/*" onchange="subirFotoArticuloMovil(event)">
+            </div>
+            <input type="hidden" id="articuloMovilUrl">
           </div>
 
           <div class="form-field">
@@ -7333,6 +7359,9 @@ body{visibility:hidden}
       document.getElementById('articuloCategoria').value = a.categoria || 'marketing';
       document.getElementById('articuloResumen').value = a.resumen || '';
       document.getElementById('articuloContenido').value = a.contenido || '';
+      document.getElementById('articuloMovilUrl').value = a.imagen_movil || '';
+      pintarPreviewArticulo('articuloFoto', a.imagen_portada || null);
+      pintarPreviewArticulo('articuloMovil', a.imagen_movil || null);
       // Lo que ya está escrito en texto plano, lo pasamos a párrafos
       editorEl().innerHTML = aHtmlEditor(a.contenido || '');
       sincronizarEditor();
@@ -7355,6 +7384,9 @@ body{visibility:hidden}
       ['articuloTitulo','articuloSlug','articuloResumen','articuloContenido','articuloFotoUrl'].forEach(f => document.getElementById(f).value = '');
       editorEl().innerHTML = '';
       sincronizarEditor();
+      document.getElementById('articuloMovilUrl').value = '';
+      pintarPreviewArticulo('articuloFoto', null);
+      pintarPreviewArticulo('articuloMovil', null);
       document.getElementById('articuloCategoria').value = 'marketing';
       document.getElementById('articuloAutor').value = 'Milena Machado';
       document.getElementById('articuloTiempo').value = 5;
@@ -7374,6 +7406,58 @@ body{visibility:hidden}
 
   function editarArticulo(id) {
     abrirModalArticulo(id);
+  }
+
+  // ─── La portada de celular del artículo ───
+  function pintarPreviewArticulo(base, url){
+    const vacio = document.getElementById(base + 'Empty');
+    const prev = document.getElementById(base + 'Preview');
+    if(!vacio || !prev) return;
+
+    if(!url){
+      vacio.style.display = '';
+      prev.style.display = 'none';
+      prev.innerHTML = '';
+      return;
+    }
+
+    vacio.style.display = 'none';
+    prev.style.display = 'block';
+    prev.innerHTML = '<img src="' + url + '" style="max-width:150px;display:block;margin:0 auto;border-radius:9px" alt="">' +
+                     '<div class="prop-info" id="' + base + 'Prop">Midiendo...</div>';
+
+    const img = new Image();
+    img.onload = function(){
+      const r = img.width / img.height;
+      const ideal = (base === 'articuloMovil') ? 0.8 : 0.75;
+      const nombre = (base === 'articuloMovil') ? '4 : 5 (1080 × 1350)' : '3 : 4 (900 × 1200)';
+      const cerca = Math.abs(r - ideal) / ideal < 0.12;
+      const el = document.getElementById(base + 'Prop');
+      if(!el) return;
+      el.className = 'prop-info ' + (cerca ? 'ok' : 'aviso');
+      el.innerHTML = img.width + ' × ' + img.height + ' px · proporción ' + r.toFixed(2) + ' : 1<br>' +
+        (cerca ? '✓ Buena medida' : 'La recomendada es ' + nombre + '. Igual funciona, pero se va a recortar.');
+    };
+    img.src = url;
+  }
+
+  async function subirFotoArticuloMovil(event){
+    const file = event.target.files[0];
+    if(!file) return;
+
+    const vacio = document.getElementById('articuloMovilEmpty');
+    vacio.innerHTML = '<div class="image-uploading"><div class="upload-spinner"></div> Subiendo...</div>';
+
+    const r = await subirImagen(file, 'articulos');
+    if(r.exito){
+      document.getElementById('articuloMovilUrl').value = r.url;
+      pintarPreviewArticulo('articuloMovil', r.url);
+      mostrarToast('✓ Portada de celular lista');
+    } else {
+      vacio.innerHTML = '<div class="image-uploader-text">Subir la versión de celular</div>';
+      mostrarToast('Error: ' + (typeof explicarErrorSubida === 'function' ? explicarErrorSubida(r.error) : r.error), true);
+    }
+    event.target.value = '';
   }
 
   async function subirFotoArticulo(event) {
@@ -7412,6 +7496,7 @@ body{visibility:hidden}
       autor: document.getElementById('articuloAutor').value.trim() || 'Milena Machado',
       tiempo_lectura: parseInt(document.getElementById('articuloTiempo').value) || 5,
       imagen_portada: document.getElementById('articuloFotoUrl').value || null,
+      imagen_movil: document.getElementById('articuloMovilUrl').value || null,
       publicado: publicado,
       destacado: document.getElementById('articuloDestacado').classList.contains('on'),
       actualizado_en: new Date().toISOString()

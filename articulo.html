@@ -296,8 +296,13 @@
     document.getElementById('artFecha').textContent = formatearFecha(articulo.publicado_en || articulo.creado_en);
     document.getElementById('artContenido').innerHTML = contenidoAHtml(articulo.contenido);
 
-    if (articulo.imagen_portada) {
-      document.getElementById('artPortada').style.backgroundImage = "url('" + articulo.imagen_portada + "')";
+    // La portada que corresponde según la pantalla
+    const esCel = window.matchMedia('(max-width:900px)').matches;
+    const foto = (esCel && articulo.imagen_movil) ? articulo.imagen_movil
+               : (articulo.imagen_portada || articulo.imagen_movil);
+
+    if (foto) {
+      document.getElementById('artPortada').style.backgroundImage = "url('" + foto + "')";
     } else {
       document.querySelector('.article-portada').style.display = 'none';
     }
