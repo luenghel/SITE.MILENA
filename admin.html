@@ -2291,6 +2291,21 @@ body{visibility:hidden}
           </div>
 
           <div class="form-field form-grid-full">
+            <label class="form-label">IMAGEN DENTRO DEL ARTÍCULO</label>
+            <div class="medida-tip">📐 Sugerido: <strong>1600 × 900 px</strong> (apaisada, proporción 16 : 9)</div>
+            <div class="image-uploader" onclick="document.getElementById('articuloBannerInput').click()">
+              <div id="articuloBannerEmpty">
+                <svg class="image-uploader-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="7" cy="11" r="1.3"/><path d="M22 15l-5-4L8 18"/></svg>
+                <div class="image-uploader-text">Subir la imagen apaisada</div>
+                <div class="image-uploader-help">Es la que se ve al abrir el artículo. Si no subís ninguna, se usa la portada.</div>
+              </div>
+              <div id="articuloBannerPreview" style="display:none;width:100%"></div>
+              <input type="file" id="articuloBannerInput" accept="image/*" onchange="subirBannerArticulo(event)">
+            </div>
+            <input type="hidden" id="articuloBannerUrl">
+          </div>
+
+          <div class="form-field form-grid-full">
             <label class="form-label">PORTADA PARA CELULAR</label>
             <div class="medida-tip">📐 Sugerido: <strong>1080 × 1350 px</strong> (proporción 4 : 5)</div>
             <div class="image-uploader" onclick="document.getElementById('articuloMovilInput').click()">
@@ -7360,8 +7375,10 @@ body{visibility:hidden}
       document.getElementById('articuloResumen').value = a.resumen || '';
       document.getElementById('articuloContenido').value = a.contenido || '';
       document.getElementById('articuloMovilUrl').value = a.imagen_movil || '';
+      document.getElementById('articuloBannerUrl').value = a.imagen_banner || '';
       pintarPreviewArticulo('articuloFoto', a.imagen_portada || null);
       pintarPreviewArticulo('articuloMovil', a.imagen_movil || null);
+      pintarPreviewArticulo('articuloBanner', a.imagen_banner || null);
       // Lo que ya está escrito en texto plano, lo pasamos a párrafos
       editorEl().innerHTML = aHtmlEditor(a.contenido || '');
       sincronizarEditor();
@@ -7385,8 +7402,10 @@ body{visibility:hidden}
       editorEl().innerHTML = '';
       sincronizarEditor();
       document.getElementById('articuloMovilUrl').value = '';
+      document.getElementById('articuloBannerUrl').value = '';
       pintarPreviewArticulo('articuloFoto', null);
       pintarPreviewArticulo('articuloMovil', null);
+      pintarPreviewArticulo('articuloBanner', null);
       document.getElementById('articuloCategoria').value = 'marketing';
       document.getElementById('articuloAutor').value = 'Milena Machado';
       document.getElementById('articuloTiempo').value = 5;
@@ -7429,8 +7448,14 @@ body{visibility:hidden}
     const img = new Image();
     img.onload = function(){
       const r = img.width / img.height;
-      const ideal = (base === 'articuloMovil') ? 0.8 : 0.75;
-      const nombre = (base === 'articuloMovil') ? '4 : 5 (1080 × 1350)' : '3 : 4 (900 × 1200)';
+      const ideales = {
+        articuloMovil:  { r: 0.8,  txt: '4 : 5 (1080 × 1350)' },
+        articuloBanner: { r: 1.78, txt: '16 : 9 (1600 × 900)' },
+        articuloFoto:   { r: 0.75, txt: '3 : 4 (900 × 1200)' }
+      };
+      const cfg = ideales[base] || ideales.articuloFoto;
+      const ideal = cfg.r;
+      const nombre = cfg.txt;
       const cerca = Math.abs(r - ideal) / ideal < 0.12;
       const el = document.getElementById(base + 'Prop');
       if(!el) return;
@@ -7439,6 +7464,25 @@ body{visibility:hidden}
         (cerca ? '✓ Buena medida' : 'La recomendada es ' + nombre + '. Igual funciona, pero se va a recortar.');
     };
     img.src = url;
+  }
+
+  async function subirBannerArticulo(event){
+    const file = event.target.files[0];
+    if(!file) return;
+
+    const vacio = document.getElementById('articuloBannerEmpty');
+    vacio.innerHTML = '<div class="image-uploading"><div class="upload-spinner"></div> Subiendo...</div>';
+
+    const r = await subirImagen(file, 'articulos');
+    if(r.exito){
+      document.getElementById('articuloBannerUrl').value = r.url;
+      pintarPreviewArticulo('articuloBanner', r.url);
+      mostrarToast('✓ Imagen del artículo lista');
+    } else {
+      vacio.innerHTML = '<div class="image-uploader-text">Subir la imagen apaisada</div>';
+      mostrarToast('Error: ' + (typeof explicarErrorSubida === 'function' ? explicarErrorSubida(r.error) : r.error), true);
+    }
+    event.target.value = '';
   }
 
   async function subirFotoArticuloMovil(event){
@@ -7497,6 +7541,7 @@ body{visibility:hidden}
       tiempo_lectura: parseInt(document.getElementById('articuloTiempo').value) || 5,
       imagen_portada: document.getElementById('articuloFotoUrl').value || null,
       imagen_movil: document.getElementById('articuloMovilUrl').value || null,
+      imagen_banner: document.getElementById('articuloBannerUrl').value || null,
       publicado: publicado,
       destacado: document.getElementById('articuloDestacado').classList.contains('on'),
       actualizado_en: new Date().toISOString()

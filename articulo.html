@@ -126,6 +126,59 @@
   .article-content strong,.article-content b{color:#FFF5F0;font-weight:600}
   .article-content em,.article-content i{font-style:italic}
 
+
+  /* ═══ El botón de volver ═══ */
+  header.main .header-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .btn-volver{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:9px 15px;
+    border-radius:20px;
+    background:rgba(255,245,240,0.05);
+    border:0.5px solid rgba(255,245,240,0.14);
+    font-size:12px;
+    color:rgba(255,245,240,0.78);
+    text-decoration:none;
+    white-space:nowrap;
+    flex-shrink:0;
+    transition:all 0.2s;
+  }
+  .btn-volver:hover{
+    background:rgba(212,163,86,0.14);
+    border-color:rgba(212,163,86,0.4);
+    color:#FAC775;
+  }
+
+  /* ═══ La portada dentro del artículo: apaisada ═══ */
+  .article-portada .portada-marco{
+    width:100%;
+    aspect-ratio:16/9;
+    border-radius:16px;
+    overflow:hidden;
+    background:linear-gradient(160deg,#2D0A18,#4A0F1E,#1A0509);
+  }
+  .article-portada .portada-foto{
+    width:100%;
+    height:100%;
+    background-size:cover;
+    background-position:center;
+  }
+
+  @media (max-width:768px){
+    /* En pantallas chicas, el botón queda compacto */
+    .btn-volver{padding:9px;border-radius:50%;gap:0}
+    .volver-texto{display:none}
+    header.main .header-inner{gap:10px}
+    /* Y la portada se hace más cuadrada */
+    .article-portada .portada-marco{aspect-ratio:4/3}
+  }
+
 </style>
 </head>
 <body>
@@ -136,9 +189,9 @@
       <div class="logo-box">M</div>
       <div class="logo-text">MILENA<br>MACHADO</div>
     </a>
-    <a href="/blog" style="font-size:12px;color:rgba(255,245,240,0.7);display:flex;align-items:center;gap:6px">
+    <a href="/blog" class="btn-volver">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      Volver al blog
+      <span class="volver-texto">Volver al blog</span>
     </a>
   </div>
 </header>
@@ -178,7 +231,9 @@
   </section>
 
   <div class="article-portada">
-    <div class="article-portada-img" id="artPortada"></div>
+    <div class="portada-marco">
+      <div class="portada-foto" id="artPortada"></div>
+    </div>
   </div>
 
   <div class="article-content" id="artContenido"></div>
@@ -296,10 +351,13 @@
     document.getElementById('artFecha').textContent = formatearFecha(articulo.publicado_en || articulo.creado_en);
     document.getElementById('artContenido').innerHTML = contenidoAHtml(articulo.contenido);
 
-    // La portada que corresponde según la pantalla
+    // Dentro del artículo va la imagen apaisada.
+    // Si no cargaron una, usamos la portada de la tarjeta.
     const esCel = window.matchMedia('(max-width:900px)').matches;
-    const foto = (esCel && articulo.imagen_movil) ? articulo.imagen_movil
-               : (articulo.imagen_portada || articulo.imagen_movil);
+    const foto = articulo.imagen_banner
+               || (esCel && articulo.imagen_movil ? articulo.imagen_movil : null)
+               || articulo.imagen_portada
+               || articulo.imagen_movil;
 
     if (foto) {
       document.getElementById('artPortada').style.backgroundImage = "url('" + foto + "')";
