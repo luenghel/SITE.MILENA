@@ -131,6 +131,61 @@
 
   .proximo-chip{position:absolute;top:10px;left:10px;padding:6px 12px;border-radius:8px;background:rgba(184,41,74,0.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:0.5px solid rgba(232,184,196,0.6);color:#FFF5F0;font-size:10px;font-weight:700;letter-spacing:0.1em;z-index:4}
 
+
+  /* ═══ Filas con desplazamiento, estilo catálogo ═══ */
+  .fila-cursos{position:relative;margin-bottom:38px}
+  .fila-cab{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:15px;flex-wrap:wrap}
+  .fila-titulos{flex:1;min-width:0}
+  .fila-nombre{font-size:21px;font-weight:500;margin:0;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .fila-sub{font-size:13px;color:rgba(255,245,240,0.5);margin-top:5px;line-height:1.45}
+  .fila-cuenta{font-size:11.5px;color:rgba(255,245,240,0.4);white-space:nowrap}
+
+  .fila-scroll{
+    overflow-x:auto;overflow-y:visible;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    scroll-behavior:smooth;
+    scroll-snap-type:x proximity;
+    padding:26px 0 34px;
+    margin:-26px -40px -34px;
+    padding-left:40px;padding-right:40px;
+  }
+  .fila-scroll::-webkit-scrollbar{display:none}
+
+  .fila-track{display:flex;gap:18px;width:max-content}
+  .fila-track > *{flex:0 0 260px;scroll-snap-align:start}
+
+  /* Las flechas */
+  .fila-flecha{
+    position:absolute;top:50%;transform:translateY(-20%);
+    width:40px;height:40px;border-radius:50%;
+    background:rgba(14,5,9,0.86);
+    border:0.5px solid rgba(255,245,240,0.2);
+    color:#FFF5F0;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;z-index:4;
+    opacity:0;transition:all 0.25s;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+  }
+  .fila-cursos:hover .fila-flecha{opacity:1}
+  .fila-flecha:hover{background:rgba(212,163,86,0.9);color:#2E0C05;border-color:#FAC775}
+  .fila-flecha.izq{left:-6px}
+  .fila-flecha.der{right:-6px}
+  .fila-flecha.oculta{opacity:0 !important;pointer-events:none}
+
+  @media (max-width:900px){
+    .fila-cursos{margin-bottom:28px}
+    .fila-nombre{font-size:18px}
+    .fila-scroll{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px}
+    .fila-track{gap:13px}
+    .fila-track > *{flex:0 0 190px}
+    .fila-flecha{display:none}
+  }
+  @media (max-width:420px){
+    .fila-track > *{flex:0 0 165px}
+  }
+
 </style>
 </head>
 <body>
@@ -378,25 +433,51 @@
 
     let algunaConCursos = false;
 
+    let html = '';
+
     filas.forEach(function(f){
-      const deEsta = todos.filter(c => (c.seccion || 'principal') === f.clave);
+      // La fila de gratuitos junta todo lo libre, esté donde esté
+      const deEsta = (f.clave === 'gratis')
+        ? todos.filter(c => (c.acceso === 'gratis' || !c.precio_gs) && c.seccion !== 'oculto')
+        : todos.filter(c => (c.seccion || 'principal') === f.clave);
+
       if(deEsta.length === 0) return;
       algunaConCursos = true;
 
       const col = f.color_etiqueta || '#5DCAA5';
-      const h2 = document.createElement('h2');
-      h2.className = 'serif';
-      h2.style.marginTop = '32px';
-      h2.innerHTML = esc(f.nombre) +
-        (f.etiqueta ? ' <span class="free-badge" style="background:' + col + '22;border-color:' + col + '66;color:' + col + '">' + esc(f.etiqueta) + '</span>' : '') +
-        (f.subtitulo ? '<div style="font-size:13px;color:rgba(255,245,240,0.5);font-family:ui-sans-serif,system-ui;font-style:normal;margin-top:5px">' + esc(f.subtitulo) + '</div>' : '');
-      padre.appendChild(h2);
 
-      const grid = document.createElement('div');
-      grid.className = 'section-row';
-      grid.innerHTML = deEsta.map(c => crearCard(c, user, comprasIds)).join('');
-      padre.appendChild(grid);
+      html += '<section class="fila-cursos">' +
+        '<div class="fila-cab">' +
+          '<div class="fila-titulos">' +
+            '<h2 class="fila-nombre serif">' + esc(f.nombre) +
+              (f.etiqueta
+                ? ' <span class="free-badge" style="background:' + col + '22;border-color:' + col + '66;color:' + col + '">' + esc(f.etiqueta) + '</span>'
+                : '') +
+            '</h2>' +
+            (f.subtitulo ? '<div class="fila-sub">' + esc(f.subtitulo) + '</div>' : '') +
+          '</div>' +
+          '<span class="fila-cuenta">' + deEsta.length +
+            (deEsta.length === 1 ? ' curso' : ' cursos') + '</span>' +
+        '</div>' +
+
+        '<div class="fila-scroll">' +
+          '<div class="fila-track">' +
+            deEsta.map(c => crearCard(c, user, comprasIds)).join('') +
+          '</div>' +
+        '</div>' +
+
+        // Las flechas, solo en computadora
+        '<button type="button" class="fila-flecha izq" aria-label="Anterior">' +
+          '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>' +
+        '</button>' +
+        '<button type="button" class="fila-flecha der" aria-label="Siguiente">' +
+          '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>' +
+        '</button>' +
+      '</section>';
     });
+
+    padre.innerHTML = html;
+    conectarFlechas();
 
     if(!algunaConCursos){
       padre.innerHTML = '<div style="padding:60px 20px;text-align:center;color:rgba(255,245,240,0.5)">' +
@@ -406,6 +487,34 @@
     }
   }, 50);
 })();
+
+  // Las flechas mueven la fila
+  function conectarFlechas(){
+    document.querySelectorAll('.fila-cursos').forEach(function(fila){
+      const scroll = fila.querySelector('.fila-scroll');
+      const izq = fila.querySelector('.fila-flecha.izq');
+      const der = fila.querySelector('.fila-flecha.der');
+      if(!scroll || !izq || !der) return;
+
+      function mover(dir){
+        scroll.scrollBy({ left: dir * (scroll.clientWidth * 0.8), behavior: 'smooth' });
+      }
+
+      izq.addEventListener('click', () => mover(-1));
+      der.addEventListener('click', () => mover(1));
+
+      // Escondemos la flecha cuando no hay más para ese lado
+      function revisar(){
+        const max = scroll.scrollWidth - scroll.clientWidth;
+        izq.classList.toggle('oculta', scroll.scrollLeft < 8);
+        der.classList.toggle('oculta', scroll.scrollLeft > max - 8);
+      }
+
+      scroll.addEventListener('scroll', revisar);
+      window.addEventListener('resize', revisar);
+      revisar();
+    });
+  }
 </script>
 </body>
 </html>

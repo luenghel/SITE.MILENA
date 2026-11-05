@@ -69,15 +69,15 @@
   @keyframes loadingDot{0%,80%,100%{opacity:0.3;transform:scale(0.8)}40%{opacity:1;transform:scale(1)}}
 
   /* ── Pantalla de código ── */
-  .codigo-icon{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,rgba(212,163,86,0.25),rgba(212,163,86,0.06));border:0.5px solid rgba(212,163,86,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:popIn 0.45s cubic-bezier(0.34,1.6,0.64,1)}
+  .codigo-icon{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,rgba(212,163,86,0.25),rgba(212,163,86,0.06));border:0.5px solid rgba(212,163,86,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:popIn 0.45s cubic-bezier(0.34,1.6,0.64,1) both}
   @keyframes popIn{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
 
   .codigo-email{color:#FAC775;font-weight:500;word-break:break-all}
 
-  .codigo-inputs{display:flex;gap:8px;justify-content:center;margin-bottom:22px}
-  .codigo-box{width:46px;height:56px;text-align:center;font-size:24px;font-weight:600;font-family:Georgia,serif;background:rgba(255,245,240,0.05);border:1px solid rgba(255,245,240,0.18);border-radius:11px;color:#FFF5F0;outline:none;transition:all 0.2s;-moz-appearance:textfield}
+  .codigo-inputs{display:flex;gap:8px;justify-content:center;margin-bottom:22px;width:100%}
+  .codigo-box{width:46px;max-width:16%;flex:0 1 46px;height:56px;text-align:center;font-size:24px;font-weight:600;font-family:Georgia,serif;background:rgba(255,245,240,0.05);border:1px solid rgba(255,245,240,0.18);border-radius:11px;color:#FFF5F0;outline:none;transition:all 0.2s;-moz-appearance:textfield}
   .codigo-box::-webkit-outer-spin-button,.codigo-box::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-  .codigo-box:focus{border-color:#FAC775;background:rgba(212,163,86,0.1);box-shadow:0 0 0 3px rgba(212,163,86,0.15);transform:translateY(-2px)}
+  .codigo-box:focus{border-color:#FAC775;background:rgba(212,163,86,0.1);box-shadow:0 0 0 3px rgba(212,163,86,0.15)}
   .codigo-box.lleno{border-color:rgba(212,163,86,0.6);background:rgba(212,163,86,0.08)}
 
   .reenviar-row{text-align:center;margin-top:18px;font-size:12.5px;color:rgba(255,245,240,0.55)}
@@ -93,8 +93,8 @@
   @media (max-width:480px){
     .login-title{font-size:24px}
     .logo-mark{width:42px;height:42px;font-size:21px}
-    .codigo-box{width:42px;height:52px;font-size:21px}
-    .codigo-inputs{gap:6px}
+    .codigo-box{width:auto;flex:1 1 0;min-width:0;max-width:52px;height:54px;font-size:20px}
+    .codigo-inputs{gap:5px;padding:0 2px}
   }
 
   .confiar-caja{display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.12);border-radius:12px;margin:18px 0;cursor:pointer;transition:all 0.2s;text-align:left}
@@ -507,16 +507,31 @@ function armarCajitas2P(){
     inp.type = 'text';
     inp.inputMode = 'numeric';
     inp.maxLength = 1;
+    inp.autocomplete = (i === 0) ? 'one-time-code' : 'off';
+    inp.setAttribute('aria-label', 'Dígito ' + (i + 1));
     cont.appendChild(inp);
   }
 
   const todas = cont.querySelectorAll('.codigo-box');
   todas.forEach((box, idx) => {
     box.addEventListener('input', e => {
-      e.target.value = e.target.value.replace(/\D/g,'').slice(-1);
+      const v = e.target.value.replace(/\D/g, '');
+
+      // Si el teléfono autocompleta los 6 dígitos de una
+      if(v.length > 1){
+        v.slice(0, todas.length).split('').forEach((d, k) => {
+          todas[k].value = d;
+          todas[k].classList.add('lleno');
+        });
+        todas[Math.min(v.length, todas.length) - 1].focus();
+        if(leerCodigo2P().length === CANT_2P) cerrarTecladoYVerificar();
+        return;
+      }
+
+      e.target.value = v.slice(-1);
       e.target.classList.toggle('lleno', !!e.target.value);
       if(e.target.value && idx < todas.length - 1) todas[idx + 1].focus();
-      if(leerCodigo2P().length === CANT_2P) verificar2Pasos();
+      if(leerCodigo2P().length === CANT_2P) cerrarTecladoYVerificar();
     });
     box.addEventListener('keydown', e => {
       if(e.key === 'Backspace' && !e.target.value && idx > 0){
@@ -529,9 +544,16 @@ function armarCajitas2P(){
       t.slice(0, todas.length).split('').forEach((d,i) => {
         todas[i].value = d; todas[i].classList.add('lleno');
       });
-      if(t.length >= CANT_2P) verificar2Pasos();
+      if(t.length >= CANT_2P) cerrarTecladoYVerificar();
     });
   });
+}
+
+// Cerramos el teclado antes de verificar: si no, la pantalla
+// cambia mientras el teclado se cierra y parpadea feo
+function cerrarTecladoYVerificar(){
+  document.activeElement?.blur();
+  setTimeout(verificar2Pasos, 120);
 }
 
 function leerCodigo2P(){
@@ -663,10 +685,10 @@ async function hacerRegistro(){
 // ─── PANTALLA DE CÓDIGO ────────────────────────────────────────────
 function irAPantallaCodigo(email){
   document.getElementById('codigoEmailTxt').textContent = email;
-  if(!document.querySelector('.codigo-box')) armarCajitas(CANT_DIGITOS);
+  if(!document.querySelector('#codigoInputs .codigo-box')) armarCajitas(CANT_DIGITOS);
   limpiarCodigo();
   cambiarTab('codigo');
-  setTimeout(() => document.querySelector('.codigo-box').focus(), 250);
+  setTimeout(() => document.querySelector('#codigoInputs .codigo-box')?.focus(), 250);
 }
 
 function volverDelCodigo(){
@@ -694,30 +716,34 @@ function armarCajitas(cantidad){
     inp.inputMode = 'numeric';
     inp.maxLength = 1;
     inp.dataset.i = i;
+    inp.autocomplete = (i === 0) ? 'one-time-code' : 'off';
+    inp.setAttribute('aria-label', 'Dígito ' + (i + 1));
     cont.appendChild(inp);
   }
   // Con muchos dígitos, achicamos para que entren en el celular
   cont.style.gap = cantidad > 6 ? '5px' : '8px';
-  document.querySelectorAll('.codigo-box').forEach(b => {
-    if(cantidad > 6){ b.style.width = '38px'; b.style.fontSize = '20px'; }
+  cont.querySelectorAll('.codigo-box').forEach(b => {
+    if(cantidad > 6){ b.style.maxWidth = '38px'; b.style.fontSize = '20px'; }
   });
 
   conectarCajitas();
 }
 
 function limpiarCodigo(){
-  document.querySelectorAll('.codigo-box').forEach(b => {
+  document.querySelectorAll('#codigoInputs .codigo-box').forEach(b => {
     b.value = '';
     b.classList.remove('lleno');
   });
 }
 
 function leerCodigo(){
-  return [...document.querySelectorAll('.codigo-box')].map(b => b.value).join('');
+  return [...document.querySelectorAll('#codigoInputs .codigo-box')].map(b => b.value).join('');
 }
 
 function conectarCajitas(){
-  const todas = document.querySelectorAll('.codigo-box');
+  // Solo las de ESTA pantalla: antes tomaba también las del 2FA
+  // y cada campo quedaba con dos escuchas, de ahí el parpadeo
+  const todas = document.querySelectorAll('#codigoInputs .codigo-box');
 
   todas.forEach((box, idx) => {
     box.addEventListener('input', e => {
@@ -747,7 +773,7 @@ function conectarCajitas(){
         armarCajitas(texto.length);
       }
 
-      const nuevas = document.querySelectorAll('.codigo-box');
+      const nuevas = document.querySelectorAll('#codigoInputs .codigo-box');
       texto.slice(0, nuevas.length).split('').forEach((d, i) => {
         nuevas[i].value = d;
         nuevas[i].classList.add('lleno');
@@ -797,7 +823,7 @@ async function verificarCodigo(){
 
     listo('btnVerificar');
     limpiarCodigo();
-    document.querySelector('.codigo-box').focus();
+    document.querySelector('#codigoInputs .codigo-box')?.focus();
 
     const m = (resultado.error.message || '').toLowerCase();
     if(m.includes('expired') || m.includes('invalid')){
@@ -825,7 +851,7 @@ function cambiarLargoCodigo(){
   const n = parseInt(v);
   if(!n || n < 4 || n > 10) return;
   armarCajitas(n);
-  document.querySelector('.codigo-box').focus();
+  document.querySelector('#codigoInputs .codigo-box')?.focus();
 }
 
 // ─── REENVÍO ───────────────────────────────────────────────────────
@@ -861,7 +887,7 @@ async function reenviarCodigo(){
   if(ok){
     mostrarAlerta('✓ Código nuevo enviado a ' + emailPendiente + '. Usá este, el anterior ya no sirve.', 'success');
     limpiarCodigo();
-    document.querySelector('.codigo-box').focus();
+    document.querySelector('#codigoInputs .codigo-box')?.focus();
     arrancarCooldown(60);
   }
 }

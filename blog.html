@@ -79,7 +79,8 @@
   section.filters{padding:0 32px 24px;max-width:1280px;margin:0 auto}
   .filters-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
   .chips{display:flex;gap:7px;flex-wrap:wrap}
-  .chip{padding:6px 12px;border-radius:18px;font-size:11px;font-weight:500;letter-spacing:0.04em;cursor:pointer;border:0.5px solid transparent;transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1)}
+  .chip{padding:7px 14px;border-radius:18px;font-size:11px;font-weight:500;letter-spacing:0.04em;cursor:pointer;border:0.5px solid transparent;transition:all 0.25s cubic-bezier(0.34,1.4,0.64,1);font-family:inherit;background:transparent;text-decoration:none;white-space:nowrap}
+  .chip:active{transform:scale(0.95)}
   .chip-active{background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208}
   .chip-quiet{background:rgba(255,245,240,0.04);border-color:rgba(255,245,240,0.12);color:rgba(255,245,240,0.7)}
   .chip-quiet:hover{transform:translateY(-1px) scale(1.04);background:rgba(255,245,240,0.08)}
@@ -245,14 +246,8 @@
 <!-- FILTROS -->
 <section class="filters">
   <div class="filters-row">
-    <div class="chips">
-      <a href="#" class="chip chip-active">Todos</a>
-      <a href="#marketing" class="chip chip-quiet">Marketing</a>
-      <a href="#ventas" class="chip chip-quiet">Ventas</a>
-      <a href="#mentalidad" class="chip chip-quiet">Mentalidad</a>
-      <a href="#redes" class="chip chip-quiet">Redes sociales</a>
-      <a href="#casos" class="chip chip-quiet">Casos reales</a>
-      <a href="#paraguay" class="chip chip-quiet">Paraguay</a>
+    <div class="chips" id="chipsCategorias">
+      <button type="button" class="chip chip-active" data-cat="todos">Todos</button>
     </div>
     <div class="search-wrap">
       <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
@@ -479,6 +474,7 @@
     }
     
     articulosCache = data || [];
+    pintarCategorias();
     
     // El destacado es el primero marcado como destacado
     const destacado = articulosCache.find(a => a.destacado);
@@ -504,16 +500,62 @@
     });
   }
   
-  // Filtros de categoría
-  document.querySelectorAll('.filter-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      categoriaActiva = chip.dataset.filter || 'todos';
-      const destacado = articulosCache.find(a => a.destacado);
-      const otros = articulosCache.filter(a => !destacado || a.id !== destacado.id);
-      renderArticulos(otros);
+  // Las categorías que realmente tienen artículos
+  function pintarCategorias(){
+    const cont = document.getElementById('chipsCategorias');
+    if(!cont) return;
+
+    // Contamos cuántos artículos hay por categoría
+    const cuenta = {};
+    articulosCache.forEach(a => {
+      const cat = (a.categoria || '').trim();
+      if(cat) cuenta[cat.toLowerCase()] = (cuenta[cat.toLowerCase()] || 0) + 1;
     });
+
+    const cats = Object.keys(cuenta).sort((a, b) => cuenta[b] - cuenta[a]);
+
+    cont.innerHTML =
+      '<button type="button" class="chip ' + (categoriaActiva === 'todos' ? 'chip-active' : 'chip-quiet') +
+        '" data-cat="todos">Todos · ' + articulosCache.length + '</button>' +
+      cats.map(cat => {
+        const nombre = cat.charAt(0).toUpperCase() + cat.slice(1);
+        return '<button type="button" class="chip ' +
+          (categoriaActiva === cat ? 'chip-active' : 'chip-quiet') +
+          '" data-cat="' + escapeHtml(cat) + '">' +
+          escapeHtml(nombre) + ' · ' + cuenta[cat] + '</button>';
+      }).join('');
+  }
+
+  // Filtros de categoría
+  document.addEventListener('click', function(e){
+    const chip = e.target.closest('#chipsCategorias .chip');
+    if(!chip) return;
+    e.preventDefault();
+
+    categoriaActiva = chip.dataset.cat || 'todos';
+
+    document.querySelectorAll('#chipsCategorias .chip').forEach(x => {
+      const activo = x.dataset.cat === categoriaActiva;
+      x.classList.toggle('chip-active', activo);
+      x.classList.toggle('chip-quiet', !activo);
+    });
+
+    // El destacado solo se muestra sin filtro
+    const destacado = articulosCache.find(a => a.destacado);
+    const seccionDestacado = document.getElementById('articuloDestacadoSection');
+    if(seccionDestacado){
+      seccionDestacado.style.display = (categoriaActiva === 'todos' && destacado) ? '' : 'none';
+    }
+
+    const otros = (categoriaActiva === 'todos')
+      ? articulosCache.filter(a => !destacado || a.id !== destacado.id)
+      : articulosCache;
+
+    renderArticulos(otros);
+
+    // Subimos hasta la grilla para que se note el cambio
+    const grid = document.querySelector('section.articles-grid');
+    if(grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
   
   // Esperar Supabase
