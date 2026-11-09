@@ -1165,6 +1165,18 @@
   .enl-chip{padding:6px 11px;background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);border-radius:14px;color:rgba(255,245,240,0.75);font-size:11px;cursor:pointer;font-family:inherit}
   .enl-chip:hover{background:rgba(212,163,86,0.16);border-color:rgba(212,163,86,0.4);color:#FAC775}
 
+
+  .cat-fila{display:flex;align-items:center;gap:13px;padding:13px 15px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.09);border-radius:11px;margin-bottom:9px;cursor:pointer;transition:all 0.2s;flex-wrap:wrap}
+  .cat-fila:hover{background:rgba(255,245,240,0.06);border-color:rgba(212,163,86,0.35)}
+  .cat-fila.apagada{opacity:0.5}
+  .cat-ico{width:36px;height:36px;border-radius:10px;background:rgba(212,163,86,0.14);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+  .cat-info{flex:1;min-width:130px}
+  .cat-nom{font-size:13.5px;font-weight:500}
+  .cat-desc{font-size:11.5px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .cat-chip-mini{font-size:10px;padding:4px 9px;border-radius:11px;white-space:nowrap}
+  .cat-chip-mini.equipo{background:rgba(184,41,74,0.22);border:0.5px solid rgba(232,184,196,0.4);color:#E8B8C4}
+  .cat-chip-mini.off{background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);color:rgba(255,245,240,0.5)}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -2098,6 +2110,19 @@ body{visibility:hidden}
   </div>
 
   <div class="tab-content" id="content-hashtags">
+
+    <!-- Las secciones de la comunidad -->
+    <div class="pm-seccion" style="margin-bottom:26px">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">Secciones de la comunidad</h3>
+          <p class="chart-subtitle">Los botones que ven las alumnas arriba del feed</p>
+        </div>
+        <button class="btn-secondary" onclick="abrirCategoria()">+ Nueva sección</button>
+      </div>
+      <div id="categoriasLista"></div>
+    </div>
+
     <div class="header-bar">
       <div>
         <div class="header-meta">GESTOR DE ETIQUETAS</div>
@@ -2125,13 +2150,13 @@ body{visibility:hidden}
       </div>
       <div class="stat-mini-card">
         <div class="stat-mini-label">MÁS USADA</div>
-        <div class="stat-mini-value" style="color:#FAC775">#desafio30dias</div>
-        <div class="stat-mini-sub">128 posts esta semana</div>
+        <div class="stat-mini-value" style="color:#FAC775;font-size:22px" id="statMasUsada">—</div>
+        <div class="stat-mini-sub" id="statMasUsadaSub">sin datos todavía</div>
       </div>
       <div class="stat-mini-card">
         <div class="stat-mini-label">SIN USAR</div>
-        <div class="stat-mini-value" style="color:rgba(255,245,240,0.6)">3</div>
-        <div class="stat-mini-sub">etiquetas sin actividad</div>
+        <div class="stat-mini-value" style="color:rgba(255,245,240,0.6)" id="statSinUsar">—</div>
+        <div class="stat-mini-sub">etiquetas que nadie usó</div>
       </div>
     </div>
 
@@ -4055,6 +4080,76 @@ body{visibility:hidden}
     </div>
   </div>
 
+  <!-- MODAL: SECCIÓN DE LA COMUNIDAD -->
+  <div class="curso-modal-backdrop" id="categoriaModal">
+    <div class="curso-modal" style="max-width:440px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">COMUNIDAD</div>
+          <h3 class="curso-modal-titulo serif" id="catTituloModal">Nueva sección</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarCategoria()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <input type="hidden" id="catId">
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">ÍCONO</label>
+            <input type="text" class="form-input" id="catIcono" placeholder="💡" maxlength="4" style="text-align:center;font-size:20px">
+          </div>
+          <div class="form-field">
+            <label class="form-label">NOMBRE</label>
+            <input type="text" class="form-input" id="catNombre" placeholder="Consejos" oninput="sugerirClaveCat()">
+          </div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">CLAVE</label>
+          <input type="text" class="form-input" id="catClave" placeholder="consejos">
+          <div class="form-help">Identificador interno. Una vez creada, mejor no cambiarla.</div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">DESCRIPCIÓN (opcional)</label>
+          <input type="text" class="form-input" id="catDescripcion" placeholder="Tips y aprendizajes">
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">ORDEN</label>
+          <input type="number" class="form-input" id="catOrden" min="0" placeholder="1">
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Solo el equipo puede publicar</div>
+            <div class="toggle-help">Las alumnas la ven, pero no pueden usarla al publicar</div>
+          </div>
+          <div class="toggle-switch" id="catSoloEquipo" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Activa</div>
+            <div class="toggle-help">Si está apagada, no aparece en la comunidad</div>
+          </div>
+          <div class="toggle-switch on" id="catActiva" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <button class="btn-danger" id="btnBorrarCat" onclick="borrarCategoria()" style="display:none">ELIMINAR</button>
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarCategoria()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="guardarCategoria()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <!-- Toast -->
@@ -4091,6 +4186,164 @@ body{visibility:hidden}
     document.getElementById('content-' + tab).classList.add('active');
     const navEl = document.getElementById('nav-' + tab);
     if(navEl) navEl.classList.add('active');
+  }
+
+  // Cuánto se usa cada etiqueta, con datos reales
+  async function cargarUsoHashtags(){
+    const { data, error } = await sb.from('uso_hashtags').select('*');
+
+    const masUsada = document.getElementById('statMasUsada');
+    const masSub = document.getElementById('statMasUsadaSub');
+    const sinUsar = document.getElementById('statSinUsar');
+    if(!masUsada) return;
+
+    if(error || !data){
+      masUsada.textContent = '—';
+      masSub.textContent = String(error?.message || '').includes('does not exist')
+        ? 'Corré SQL-CATEGORIAS-COMUNIDAD.sql'
+        : 'sin datos';
+      sinUsar.textContent = '—';
+      return;
+    }
+
+    const activas = data.filter(x => x.activo !== false);
+
+    // La más usada en los últimos 30 días
+    const top = [...activas].sort((a, b) => (b.posts_mes || 0) - (a.posts_mes || 0))[0];
+
+    if(top && top.posts_mes > 0){
+      masUsada.textContent = '#' + top.tag;
+      masSub.textContent = top.posts_semana > 0
+        ? top.posts_semana + (top.posts_semana === 1 ? ' post' : ' posts') + ' esta semana'
+        : top.posts_mes + (top.posts_mes === 1 ? ' post' : ' posts') + ' este mes';
+    } else {
+      masUsada.textContent = '—';
+      masSub.textContent = 'todavía nadie usó etiquetas';
+    }
+
+    sinUsar.textContent = activas.filter(x => !x.posts_total).length;
+  }
+
+  // ─── Secciones de la comunidad ───
+  let categoriasCom = [];
+
+  async function cargarCategoriasCom(){
+    const { data, error } = await sb.from('categorias_comunidad')
+      .select('*').order('orden', { ascending: true });
+
+    const cont = document.getElementById('categoriasLista');
+    if(!cont) return;
+
+    if(error){
+      cont.innerHTML = '<div style="padding:24px;text-align:center;color:#FF8090;font-size:12.5px">' +
+        (String(error.message).includes('does not exist')
+          ? 'Corré SQL-CATEGORIAS-COMUNIDAD.sql en Supabase.'
+          : esc(error.message)) + '</div>';
+      return;
+    }
+
+    categoriasCom = data || [];
+
+    if(categoriasCom.length === 0){
+      cont.innerHTML = '<div class="vacio-suave"><div class="ico">💬</div>Sin secciones todavía</div>';
+      return;
+    }
+
+    cont.innerHTML = categoriasCom.map(x =>
+      '<div class="cat-fila' + (x.activa ? '' : ' apagada') + '" onclick="abrirCategoria(\'' + x.id + '\')">' +
+        '<div class="cat-ico">' + (x.icono || '💬') + '</div>' +
+        '<div class="cat-info">' +
+          '<div class="cat-nom">' + esc(x.nombre) + '</div>' +
+          '<div class="cat-desc">' + esc(x.descripcion || x.clave) + '</div>' +
+        '</div>' +
+        (x.solo_equipo ? '<span class="cat-chip-mini equipo">SOLO EQUIPO</span>' : '') +
+        (x.activa ? '' : '<span class="cat-chip-mini off">APAGADA</span>') +
+      '</div>'
+    ).join('');
+  }
+
+  function sugerirClaveCat(){
+    const campo = document.getElementById('catClave');
+    if(document.getElementById('catId').value) return;   // si ya existe, no la tocamos
+    campo.value = document.getElementById('catNombre').value
+      .toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  function abrirCategoria(id){
+    document.getElementById('catId').value = id || '';
+    document.getElementById('catTituloModal').textContent = id ? 'Editar sección' : 'Nueva sección';
+    document.getElementById('btnBorrarCat').style.display = id ? '' : 'none';
+
+    if(id){
+      const x = categoriasCom.find(c => c.id === id);
+      document.getElementById('catIcono').value = x?.icono || '';
+      document.getElementById('catNombre').value = x?.nombre || '';
+      document.getElementById('catClave').value = x?.clave || '';
+      document.getElementById('catDescripcion').value = x?.descripcion || '';
+      document.getElementById('catOrden').value = x?.orden ?? 0;
+      document.getElementById('catSoloEquipo').classList.toggle('on', !!x?.solo_equipo);
+      document.getElementById('catActiva').classList.toggle('on', x?.activa !== false);
+    } else {
+      ['catIcono','catNombre','catClave','catDescripcion'].forEach(f => document.getElementById(f).value = '');
+      document.getElementById('catOrden').value = (categoriasCom.length + 1);
+      document.getElementById('catSoloEquipo').classList.remove('on');
+      document.getElementById('catActiva').classList.add('on');
+    }
+
+    document.getElementById('categoriaModal').classList.add('show');
+  }
+
+  function cerrarCategoria(){ document.getElementById('categoriaModal').classList.remove('show'); }
+
+  async function guardarCategoria(){
+    const nombre = document.getElementById('catNombre').value.trim();
+    const clave = document.getElementById('catClave').value.trim();
+
+    if(!nombre) return mostrarToast('Poné un nombre', true);
+    if(!clave) return mostrarToast('Falta la clave', true);
+
+    const datos = {
+      clave: clave,
+      nombre: nombre,
+      icono: document.getElementById('catIcono').value.trim() || null,
+      descripcion: document.getElementById('catDescripcion').value.trim() || null,
+      orden: parseInt(document.getElementById('catOrden').value) || 0,
+      solo_equipo: document.getElementById('catSoloEquipo').classList.contains('on'),
+      activa: document.getElementById('catActiva').classList.contains('on')
+    };
+
+    const id = document.getElementById('catId').value;
+    const r = id
+      ? await sb.from('categorias_comunidad').update(datos).eq('id', id)
+      : await sb.from('categorias_comunidad').insert(datos);
+
+    if(r.error){
+      return mostrarToast(String(r.error.message).includes('duplicate')
+        ? 'Ya existe una sección con esa clave'
+        : 'Error: ' + r.error.message, true);
+    }
+
+    mostrarToast(id ? '✓ Sección actualizada' : '✓ Sección creada');
+    cerrarCategoria();
+    await cargarCategoriasCom();
+  }
+
+  async function borrarCategoria(){
+    const id = document.getElementById('catId').value;
+    if(!id) return;
+
+    const x = categoriasCom.find(c => c.id === id);
+    if(x?.clave === 'general') return mostrarToast('La sección General no se puede borrar', true);
+
+    if(!confirm('¿Eliminar esta sección?\n\nLos posts que la usaban van a quedar sin sección.')) return;
+
+    const { error } = await sb.from('categorias_comunidad').delete().eq('id', id);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+
+    mostrarToast('Sección eliminada');
+    cerrarCategoria();
+    await cargarCategoriasCom();
   }
 
   // ============================
@@ -9436,6 +9689,8 @@ body{visibility:hidden}
       cargarFunciones(),
       cargarClasesParaAnuncio(),
       cargarHashtags(),
+      cargarCategoriasCom(),
+      cargarUsoHashtags(),
       cargarSecciones()
     ]);
 

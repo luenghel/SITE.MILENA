@@ -244,6 +244,83 @@
     .pr-btn{width:100%;text-align:center}
   }
 
+
+  /* ═══ Insignia desbloqueada ═══ */
+  .ins-ganada-fondo{
+    position:fixed;inset:0;z-index:10000;
+    background:rgba(8,3,5,0.88);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    display:none;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .ins-ganada-fondo.show{display:flex;animation:insFade 0.3s ease}
+  @keyframes insFade{from{opacity:0}to{opacity:1}}
+
+  .ins-ganada{
+    position:relative;
+    max-width:340px;width:100%;
+    background:linear-gradient(170deg,rgba(45,10,24,0.96),rgba(26,5,9,0.96));
+    border:0.5px solid rgba(212,163,86,0.45);
+    border-radius:22px;
+    padding:34px 28px 28px;
+    text-align:center;
+    overflow:hidden;
+    animation:insSube 0.5s cubic-bezier(0.34,1.4,0.64,1);
+  }
+  @keyframes insSube{
+    from{opacity:0;transform:translateY(28px) scale(0.94)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+  }
+
+  .ins-ganada-brillo{
+    position:absolute;top:-60%;left:50%;transform:translateX(-50%);
+    width:260px;height:260px;border-radius:50%;
+    background:radial-gradient(circle,rgba(212,163,86,0.3),transparent 68%);
+    pointer-events:none;
+  }
+
+  .ins-ganada-super{
+    font-size:10px;letter-spacing:0.28em;
+    color:#FAC775;margin-bottom:20px;font-weight:600;
+    position:relative;
+  }
+
+  .ins-ganada-hex{
+    width:104px;height:104px;margin:0 auto 18px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:46px;position:relative;
+    animation:insLatido 2.2s ease-in-out infinite;
+  }
+  @keyframes insLatido{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.06)}
+  }
+  .ins-ganada-hex img{width:100%;height:100%;object-fit:contain}
+
+  .ins-ganada-nombre{font-size:25px;font-weight:500;margin-bottom:8px;position:relative}
+
+  .ins-ganada-rareza{
+    display:inline-block;
+    font-size:9.5px;letter-spacing:0.14em;font-weight:600;
+    padding:5px 13px;border-radius:12px;margin-bottom:15px;
+  }
+  .ins-ganada-rareza.comun{background:rgba(255,245,240,0.08);border:0.5px solid rgba(255,245,240,0.2);color:rgba(255,245,240,0.7)}
+  .ins-ganada-rareza.rara{background:rgba(93,170,202,0.14);border:0.5px solid rgba(93,170,202,0.45);color:#9FD3E1}
+  .ins-ganada-rareza.epica{background:rgba(184,41,74,0.22);border:0.5px solid rgba(232,184,196,0.45);color:#E8B8C4}
+  .ins-ganada-rareza.legendaria{background:rgba(212,163,86,0.2);border:0.5px solid rgba(250,199,117,0.6);color:#FAC775}
+
+  .ins-ganada-desc{
+    font-size:13.5px;line-height:1.55;
+    color:rgba(255,245,240,0.72);
+    margin-bottom:24px;position:relative;
+  }
+
+  .ins-ganada-btn{
+    width:100%;padding:15px;border-radius:11px;
+    font-size:12px;font-weight:600;letter-spacing:0.12em;
+    border:none;cursor:pointer;font-family:inherit;position:relative;
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -284,11 +361,6 @@ body{visibility:hidden}
   <div class="filters-bar">
     <div class="filters-chips" id="filtrosChips">
       <button class="fchip active" data-cat="todos" onclick="filtrarCat(this)">General</button>
-      <button class="fchip" data-cat="anuncios" onclick="filtrarCat(this)">📌 Anuncios</button>
-      <button class="fchip" data-cat="consejos" onclick="filtrarCat(this)">💡 Consejos</button>
-      <button class="fchip" data-cat="avances" onclick="filtrarCat(this)">🚀 Avances</button>
-      <button class="fchip" data-cat="preguntas" onclick="filtrarCat(this)">❓ Preguntas</button>
-      <button class="fchip" data-cat="logros" onclick="filtrarCat(this)">🏆 Logros</button>
     </div>
     <div class="search-wrap">
       <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
@@ -348,12 +420,7 @@ body{visibility:hidden}
     <div class="composer-opciones" id="composerOpciones">
       <div class="opc-label">CATEGORÍA</div>
       <div class="cat-chips" id="catChips">
-        <button class="cat-chip selected" data-cat="general" onclick="elegirCategoria(this)" type="button">General</button>
-        <button class="cat-chip" data-cat="consejos" onclick="elegirCategoria(this)" type="button">💡 Consejo</button>
-        <button class="cat-chip" data-cat="avances" onclick="elegirCategoria(this)" type="button">🚀 Avance</button>
-        <button class="cat-chip" data-cat="preguntas" onclick="elegirCategoria(this)" type="button">❓ Pregunta</button>
-        <button class="cat-chip" data-cat="logros" onclick="elegirCategoria(this)" type="button">🏆 Logro</button>
-        <button class="cat-chip" data-cat="anuncios" onclick="elegirCategoria(this)" type="button" id="chipAnuncio" style="display:none">📌 Anuncio</button>
+        <div id="chipsCategoriaPost" style="display:contents"></div>
       </div>
 
       <div class="opc-label" style="margin-top:14px">ETIQUETAS</div>
@@ -547,15 +614,7 @@ function toggleOpciones(){
 function actualizarResumenOpciones(){
   const btn = document.getElementById('btnOpciones');
   const txt = document.getElementById('opcionesTxt');
-  const nombres = {
-    general: 'Etiquetar',
-    consejos: '💡 Consejo',
-    avances: '🚀 Avance',
-    preguntas: '❓ Pregunta',
-    logros: '🏆 Logro',
-    anuncios: '📌 Anuncio'
-  };
-  let etiqueta = nombres[categoriaPost] || 'Etiquetar';
+  let etiqueta = (categoriaPost === 'general') ? 'Etiquetar' : nombreCategoria(categoriaPost);
   if(hashtagsSeleccionados.length){
     etiqueta = (categoriaPost === 'general' ? '' : etiqueta + ' · ') + hashtagsSeleccionados.length + ' etiq.';
   }
@@ -686,6 +745,9 @@ async function publicar(){
     : '✓ Publicado en la comunidad');
 
   await cargarFeed();
+
+  // Puede haber desbloqueado una insignia al publicar
+  setTimeout(revisarInsigniasNuevas, 700);
 }
 
 // ─── Feed ──────────────────────────────────────────────────────────
@@ -843,6 +905,110 @@ function pintarBloquePremium(){
       escapeHtml(planPremium?.texto_boton || 'QUIERO SER PREMIUM') +
     '</a>' +
   '</div>';
+}
+
+
+
+// ─── Avisar cuando desbloquea una insignia ───
+let insGanadasCola = [];
+
+async function revisarInsigniasNuevas(){
+  try {
+    const { data } = await sb.rpc('mis_insignias_nuevas');
+    if(!data || data.length === 0) return;
+
+    insGanadasCola = data;
+    mostrarInsGanada();
+
+    // Las damos por vistas: ya se las estamos mostrando
+    await sb.rpc('marcar_insignias_vistas');
+  } catch(e){ /* si falta el SQL, no pasa nada */ }
+}
+
+function mostrarInsGanada(){
+  const ins = insGanadasCola[0];
+  if(!ins) return cerrarInsGanada();
+
+  const rareza = (ins.n_rareza || 'comun').toLowerCase();
+  const color = ins.n_color || '#D4A356';
+
+  document.getElementById('insGanadaHex').innerHTML = ins.n_imagen
+    ? '<img src="' + ins.n_imagen + '" alt="">'
+    : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;' +
+      'background:linear-gradient(145deg,' + color + '44,' + color + '11);' +
+      'border:1.5px solid ' + color + '88;' +
+      'clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)">' +
+      (ins.n_icono || '🏅') + '</div>';
+
+  document.getElementById('insGanadaNombre').textContent = ins.n_nombre || '';
+
+  const rar = document.getElementById('insGanadaRareza');
+  rar.className = 'ins-ganada-rareza ' + rareza;
+  rar.textContent = rareza.toUpperCase();
+
+  document.getElementById('insGanadaDesc').textContent = ins.n_descripcion || '';
+
+  document.getElementById('insGanadaBtn').textContent =
+    insGanadasCola.length > 1 ? 'SIGUIENTE (' + insGanadasCola.length + ')' : 'GENIAL';
+
+  document.getElementById('insGanadaFondo').classList.add('show');
+}
+
+function siguienteInsGanada(){
+  insGanadasCola.shift();
+  if(insGanadasCola.length > 0) mostrarInsGanada();
+  else cerrarInsGanada();
+}
+
+function cerrarInsGanada(){
+  document.getElementById('insGanadaFondo').classList.remove('show');
+  insGanadasCola = [];
+}
+
+// ─── Las categorías de la comunidad, desde el panel ───
+let categoriasComunidad = [];
+
+async function cargarCategorias(){
+  try {
+    const { data } = await sb.from('categorias_comunidad')
+      .select('*').eq('activa', true).order('orden', { ascending: true });
+    categoriasComunidad = data || [];
+  } catch(e){ categoriasComunidad = []; }
+
+  const cont = document.getElementById('filtrosChips');
+  if(!cont || categoriasComunidad.length === 0) return;
+
+  // "General" es el filtro que muestra todo
+  const general = categoriasComunidad.find(x => x.clave === 'general');
+  const otras = categoriasComunidad.filter(x => x.clave !== 'general');
+
+  cont.innerHTML =
+    '<button class="fchip active" data-cat="todos" onclick="filtrarCat(this)">' +
+      escapeHtml(general ? general.nombre : 'General') + '</button>' +
+    otras.map(x =>
+      '<button class="fchip" data-cat="' + escapeHtml(x.clave) + '" onclick="filtrarCat(this)">' +
+      (x.icono ? x.icono + ' ' : '') + escapeHtml(x.nombre) + '</button>'
+    ).join('');
+
+  // Y los chips para elegir al publicar
+  const chips = document.getElementById('chipsCategoriaPost');
+  if(chips){
+    const esEquipo = miPerfil && ['admin','fundadora'].includes(miPerfil.rol);
+    const permitidas = categoriasComunidad.filter(x => !x.solo_equipo || esEquipo);
+
+    chips.innerHTML = permitidas.map(x =>
+      '<button class="cat-chip' + (x.clave === 'general' ? ' selected' : '') +
+      '" data-cat="' + escapeHtml(x.clave) + '" onclick="elegirCategoria(this)" type="button">' +
+      (x.icono ? x.icono + ' ' : '') + escapeHtml(x.nombre) + '</button>'
+    ).join('');
+  }
+}
+
+// El nombre lindo de una categoría
+function nombreCategoria(clave){
+  const c = categoriasComunidad.find(x => x.clave === clave);
+  if(!c) return 'Etiquetar';
+  return (c.icono ? c.icono + ' ' : '') + c.nombre;
 }
 
 async function cargarCatalogoInsignias(){
@@ -1049,6 +1215,8 @@ async function toggleLike(postId){
     if(error && !String(error.message).includes('duplicate')){
       mostrarToast('No se pudo dar like', true);
     }
+    // Dar likes también puede desbloquear una insignia
+    setTimeout(revisarInsigniasNuevas, 600);
   }
 }
 
@@ -1248,13 +1416,16 @@ const waitSupaCom = setInterval(async () => {
   perfilesCache[user.id] = perfilActual;
   esAdmin = ['admin','fundadora'].includes(perfilActual.rol);
 
+  await cargarCategorias();
   await cargarCatalogoInsignias();
+
+  // ¿Desbloqueó alguna desde la última vez?
+  setTimeout(revisarInsigniasNuevas, 900);
   await revisarPremium();
 
   // Revisamos si se ganó alguna insignia nueva
   try { await sb.rpc('revisar_mis_insignias'); } catch(e){}
 
-  if(esAdmin) document.getElementById('chipAnuncio').style.display = '';
 
   // Miembro bloqueado: no puede publicar
   if(perfilActual.bloqueado){
@@ -1285,6 +1456,20 @@ const waitSupaCom = setInterval(async () => {
   await cargarFeed();
 }, 50);
 </script>
+
+
+<!-- Aviso de insignia ganada -->
+<div class="ins-ganada-fondo" id="insGanadaFondo" onclick="cerrarInsGanada()">
+  <div class="ins-ganada" onclick="event.stopPropagation()">
+    <div class="ins-ganada-brillo"></div>
+    <div class="ins-ganada-super">DESBLOQUEASTE</div>
+    <div class="ins-ganada-hex" id="insGanadaHex"></div>
+    <div class="ins-ganada-nombre serif" id="insGanadaNombre"></div>
+    <div class="ins-ganada-rareza" id="insGanadaRareza"></div>
+    <div class="ins-ganada-desc" id="insGanadaDesc"></div>
+    <button class="cta-gold ins-ganada-btn" onclick="siguienteInsGanada()" id="insGanadaBtn">GENIAL</button>
+  </div>
+</div>
 
 </body>
 </html>

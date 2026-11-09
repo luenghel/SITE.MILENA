@@ -647,6 +647,9 @@ let misInsignias = [];
 let insigniaElegida = null;
 
 async function cargarMisInsignias(){
+  // ¿Desbloqueó alguna mientras no estaba?
+  avisarInsigniasNuevas();
+
   if(!sb || !usuarioActual) return;
 
   // Por si se ganó alguna nueva
