@@ -4568,11 +4568,22 @@ body{visibility:hidden}
 
   async function eliminarHashtag(id, nombre){
     if(!confirm('¿Eliminar la etiqueta #' + nombre + '?\n\nLas alumnas ya no podrán usarla en posts nuevos.')) return;
-    const { error } = await sb.from('hashtags').delete().eq('id', id);
+
+    // Lo hacemos por función: así sabemos si realmente se borró.
+    // Un DELETE directo no avisa cuando la seguridad lo bloquea.
+    const { data, error } = await sb.rpc('borrar_etiqueta', { p_id: id });
+
     if (error) {
-      mostrarToast('Error al eliminar: ' + error.message, true);
-      return;
+      if (String(error.message).includes('does not exist')) {
+        return mostrarToast('Corré SQL-ARREGLAR-HASHTAGS.sql en Supabase', true);
+      }
+      return mostrarToast('Error al eliminar: ' + error.message, true);
     }
+
+    if (data && data.exito === false) {
+      return mostrarToast(data.error || 'No se pudo borrar', true);
+    }
+
     mostrarToast('Etiqueta #' + nombre + ' eliminada');
     await cargarHashtags();
   }
