@@ -220,9 +220,9 @@ select
   i.nombre,
   i.criterio,
   i.cantidad,
-  count(ui.id) as cuantas_la_tienen
+  count(ui.usuario_id) as cuantas_la_tienen
 from public.insignias i
 left join public.usuario_insignias ui on ui.insignia_id = i.id
-where i.tipo = 'automatica' and i.activa
+where i.tipo = 'automatica' and coalesce(i.activa, true)
 group by i.id, i.nombre, i.criterio, i.cantidad, i.orden
 order by i.orden;

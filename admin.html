@@ -1177,6 +1177,47 @@
   .cat-chip-mini.equipo{background:rgba(184,41,74,0.22);border:0.5px solid rgba(232,184,196,0.4);color:#E8B8C4}
   .cat-chip-mini.off{background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);color:rgba(255,245,240,0.5)}
 
+
+  .ped-caja{background:rgba(37,211,102,0.07);border:0.5px solid rgba(37,211,102,0.3);border-radius:14px;padding:18px 20px;margin-bottom:24px}
+  .ped-fila{display:flex;align-items:center;gap:13px;padding:13px 15px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.1);border-radius:11px;margin-bottom:9px;flex-wrap:wrap}
+  .ped-fila.viejo{border-color:rgba(255,159,64,0.45);background:rgba(255,159,64,0.07)}
+  .ped-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#7A1B2E,#B8294A);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;flex-shrink:0;overflow:hidden}
+  .ped-avatar img{width:100%;height:100%;object-fit:cover}
+  .ped-info{flex:1;min-width:150px}
+  .ped-nom{font-size:13.5px;font-weight:500}
+  .ped-detalle{font-size:11.5px;color:rgba(255,245,240,0.55);margin-top:2px;line-height:1.45}
+  .ped-codigo{font-family:ui-monospace,monospace;font-size:11px;color:#FAC775;background:rgba(212,163,86,0.14);padding:3px 8px;border-radius:7px}
+  .ped-monto{font-size:13px;font-weight:600;color:#9FE1CB;white-space:nowrap}
+  .ped-btn{padding:10px 16px;border-radius:9px;background:linear-gradient(135deg,#5DCAA5,#3FA886);border:none;color:#0A2E1F;font-size:11px;font-weight:600;letter-spacing:0.08em;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .ped-btn:hover{filter:brightness(1.08)}
+  .ped-btn.gris{background:rgba(255,245,240,0.07);border:0.5px solid rgba(255,245,240,0.16);color:rgba(255,245,240,0.6)}
+  .ped-espera{font-size:10.5px;color:#FFC48A}
+
+
+  .emb-caja{background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:14px;padding:18px 20px;margin-bottom:24px}
+  .emb-pasos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .emb-paso{flex:1;min-width:120px;padding:14px 15px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.1);border-radius:11px;position:relative}
+  .emb-num{font-family:Georgia,serif;font-size:26px;font-weight:500;line-height:1}
+  .emb-et{font-size:10px;letter-spacing:0.1em;color:rgba(255,245,240,0.45);margin-top:5px}
+  .emb-pct{font-size:11px;margin-top:5px;color:rgba(255,245,240,0.55)}
+  .emb-pct.cae{color:#FF8090}
+  .emb-barra{height:4px;border-radius:2px;background:rgba(255,245,240,0.08);margin-top:9px;overflow:hidden}
+  .emb-barra span{display:block;height:100%;background:linear-gradient(90deg,#EFB85C,#DDA63F)}
+
+  .int-fila{display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.09);border-radius:11px;margin-bottom:8px;flex-wrap:wrap}
+  .int-fila.caliente{border-color:rgba(255,159,64,0.45);background:rgba(255,159,64,0.06)}
+  .int-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7A1B2E,#B8294A);display:flex;align-items:center;justify-content:center;font-size:13.5px;flex-shrink:0;overflow:hidden}
+  .int-avatar img{width:100%;height:100%;object-fit:cover}
+  .int-info{flex:1;min-width:150px}
+  .int-nom{font-size:13px;font-weight:500}
+  .int-sub{font-size:11.5px;color:rgba(255,245,240,0.55);margin-top:2px}
+  .int-nivel{font-size:9.5px;padding:4px 9px;border-radius:11px;white-space:nowrap;font-weight:600;letter-spacing:0.05em}
+  .int-nivel.n3{background:rgba(255,159,64,0.2);border:0.5px solid rgba(255,159,64,0.5);color:#FFC48A}
+  .int-nivel.n2{background:rgba(212,163,86,0.16);border:0.5px solid rgba(212,163,86,0.4);color:#FAC775}
+  .int-nivel.n1{background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.15);color:rgba(255,245,240,0.55)}
+  .int-btn{padding:8px 13px;border-radius:8px;background:rgba(37,211,102,0.16);border:0.5px solid rgba(37,211,102,0.4);color:#7FE3A5;font-size:11px;cursor:pointer;font-family:inherit;white-space:nowrap;text-decoration:none}
+  .int-btn:hover{background:rgba(37,211,102,0.26)}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -2686,6 +2727,41 @@ body{visibility:hidden}
   <!-- TAB: VENTAS -->
   <!-- ============================ -->
   <div class="tab-content" id="content-ventas">
+
+    <!-- El camino de las personas -->
+    <div class="emb-caja">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">🛤️ El camino de tus visitantes</h3>
+          <p class="chart-subtitle">Dónde se quedan antes de comprar</p>
+        </div>
+      </div>
+      <div class="emb-pasos" id="embudoPasos"></div>
+    </div>
+
+    <!-- Las que se interesaron y no compraron -->
+    <div class="pm-seccion" id="sinComprarCaja" style="display:none">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">🔥 Se interesaron y no compraron</h3>
+          <p class="chart-subtitle" id="sinComprarSub">Escribiles: ya mostraron interés</p>
+        </div>
+      </div>
+      <div id="sinComprarLista"></div>
+    </div>
+
+    <!-- Pedidos esperando confirmación -->
+    <div class="ped-caja" id="pedidosCaja" style="display:none">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">💬 Pedidos por WhatsApp</h3>
+          <p class="chart-subtitle" id="pedidosSub">Confirmá el pago y el acceso se da solo</p>
+        </div>
+        <button class="btn-secondary" onclick="abrirDatosPago()">⚙️ Datos de pago</button>
+      </div>
+      <div id="pedidosLista"></div>
+    </div>
+
     <div class="pg-caja">
       <div class="pg-cab">
         <div style="flex:1;min-width:200px">
@@ -2973,6 +3049,16 @@ body{visibility:hidden}
 
         <div class="form-label" style="margin-bottom:9px">MENSAJE (opcional)</div>
         <textarea class="form-textarea" id="accMensaje" placeholder="Algo más que quieras explicarle. Va en el email." style="margin-bottom:16px"></textarea>
+
+        <div class="acc-invitar" style="background:rgba(93,170,202,0.07);border-color:rgba(93,170,202,0.3)">
+          <div class="acc-ins-cab">
+            <div class="acc-ins-tit">🛤️ Su camino en el sitio</div>
+            <button type="button" class="acc-ins-revisar" onclick="verCaminoDeGestion()">VER</button>
+          </div>
+          <div style="font-size:11.5px;color:rgba(255,245,240,0.55);line-height:1.5">
+            Qué miró, dónde tocó comprar y si llegó al pago.
+          </div>
+        </div>
 
         <div class="acc-invitar">
           <div class="acc-ins-cab">
@@ -4150,6 +4236,73 @@ body{visibility:hidden}
     </div>
   </div>
 
+  <!-- MODAL: DATOS PARA COBRAR -->
+  <div class="curso-modal-backdrop" id="datosPagoModal">
+    <div class="curso-modal" style="max-width:460px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">COBROS MANUALES</div>
+          <h3 class="curso-modal-titulo serif">Datos para cobrar</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarDatosPago()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <div class="inv-aviso">
+          Esto es lo que ve la alumna al tocar "Pagar por WhatsApp".
+          Dejá vacío lo que no uses.
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">WHATSAPP PARA RECIBIR PEDIDOS</label>
+          <input type="text" class="form-input" id="dpWhatsapp" placeholder="595981234567">
+          <div class="form-help">Con código de país, sin espacios ni signos</div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">BANCO</label>
+            <input type="text" class="form-input" id="dpBanco" placeholder="Itaú">
+          </div>
+          <div class="form-field">
+            <label class="form-label">N° DE CUENTA</label>
+            <input type="text" class="form-input" id="dpCuenta" placeholder="123456789">
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">TITULAR</label>
+            <input type="text" class="form-input" id="dpTitular" placeholder="Milena Gysel Machado">
+          </div>
+          <div class="form-field">
+            <label class="form-label">RUC / CI</label>
+            <input type="text" class="form-input" id="dpRuc" placeholder="4578329-2">
+          </div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">TIGO MONEY (opcional)</label>
+          <input type="text" class="form-input" id="dpTigo" placeholder="0981 234 567">
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">QUÉ LE DECIMOS</label>
+          <textarea class="form-textarea" id="dpInstrucciones" placeholder="Hacé la transferencia y mandanos el comprobante..."></textarea>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarDatosPago()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="guardarDatosPago()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <!-- Toast -->
@@ -4964,6 +5117,293 @@ body{visibility:hidden}
     cerrarSeccion();
     await cargarSecciones();
     await cargarCursos();
+  }
+
+  // ─── El camino de los visitantes ───
+  async function cargarEmbudo(){
+    const cont = document.getElementById('embudoPasos');
+    if(!cont) return;
+
+    const { data, error } = await sb.from('embudo').select('*').maybeSingle();
+
+    if(error || !data){
+      cont.innerHTML = '<div style="padding:16px;color:rgba(255,245,240,0.45);font-size:12.5px">' +
+        (String(error?.message || '').includes('does not exist')
+          ? 'Corré SQL-CAMINO-LEADS.sql para ver el camino de tus visitantes.'
+          : 'Sin datos todavía') + '</div>';
+      return;
+    }
+
+    const pasos = [
+      { et: 'SE REGISTRARON', n: data.registradas || 0 },
+      { et: 'MIRARON UN CURSO', n: data.miraron_curso || 0 },
+      { et: 'TOCARON COMPRAR', n: data.tocaron_comprar || 0 },
+      { et: 'LLEGARON AL PAGO', n: data.llegaron_al_pago || 0 },
+      { et: 'HICIERON EL PEDIDO', n: data.hicieron_pedido || 0 },
+      { et: 'COMPRARON', n: data.compraron || 0 },
+    ];
+
+    const base = pasos[0].n || 1;
+
+    cont.innerHTML = pasos.map((p, i) => {
+      const pct = Math.round((p.n / base) * 100);
+      const anterior = i > 0 ? pasos[i-1].n : null;
+      // Dónde se cae más gente
+      const caida = (anterior && anterior > 0)
+        ? Math.round(((anterior - p.n) / anterior) * 100) : 0;
+
+      return '<div class="emb-paso">' +
+        '<div class="emb-num" style="color:' + (i === pasos.length-1 ? '#9FE1CB' : '#FFF5F0') + '">' + p.n + '</div>' +
+        '<div class="emb-et">' + p.et + '</div>' +
+        (i > 0
+          ? '<div class="emb-pct' + (caida >= 50 ? ' cae' : '') + '">' +
+            (caida > 0 ? '↓ ' + caida + '% se cae acá' : 'siguen todas') + '</div>'
+          : '<div class="emb-pct">punto de partida</div>') +
+        '<div class="emb-barra"><span style="width:' + Math.min(100, pct) + '%"></span></div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // ─── Las que se interesaron y no compraron ───
+  async function cargarInteresadas(){
+    const caja = document.getElementById('sinComprarCaja');
+    const cont = document.getElementById('sinComprarLista');
+    if(!caja || !cont) return;
+
+    const { data, error } = await sb.from('interesadas_sin_comprar').select('*').limit(25);
+
+    if(error || !data || data.length === 0){
+      caja.style.display = 'none';
+      return;
+    }
+
+    caja.style.display = '';
+    document.getElementById('sinComprarSub').textContent =
+      data.length + (data.length === 1 ? ' persona mostró interés' : ' personas mostraron interés') +
+      ' y no compraron';
+
+    const NIVEL = {
+      3: { txt: 'LLEGÓ AL PAGO', cl: 'n3' },
+      2: { txt: 'TOCÓ COMPRAR', cl: 'n2' },
+      1: { txt: 'MIRÓ EL CURSO', cl: 'n1' }
+    };
+
+    cont.innerHTML = data.map(x => {
+      const ini = (x.nombre || x.email || '?').charAt(0).toUpperCase();
+      const niv = NIVEL[x.hasta_donde] || NIVEL[1];
+      const caliente = x.hasta_donde >= 2 && (x.dias_desde || 0) <= 7;
+
+      const cuando = x.dias_desde === 0 ? 'hoy'
+        : x.dias_desde === 1 ? 'ayer'
+        : 'hace ' + x.dias_desde + ' días';
+
+      // El mensaje listo para mandarle
+      const texto = encodeURIComponent(
+        'Hola ' + (x.nombre || '').split(' ')[0] + '! Vi que te interesó *' +
+        (x.curso_titulo || '') + '*. ¿Te quedó alguna duda? Cualquier cosa, acá estoy 😊'
+      );
+
+      return '<div class="int-fila' + (caliente ? ' caliente' : '') + '">' +
+        '<div class="int-avatar">' + (x.avatar_url ? '<img src="' + x.avatar_url + '" alt="">' : ini) + '</div>' +
+        '<div class="int-info">' +
+          '<div class="int-nom">' + esc(x.nombre || 'Sin nombre') + '</div>' +
+          '<div class="int-sub">' + esc(x.curso_titulo || '') + ' · ' + cuando + '</div>' +
+          '<div class="int-sub">' + esc(x.email || '') + '</div>' +
+        '</div>' +
+        '<span class="int-nivel ' + niv.cl + '">' + niv.txt + '</span>' +
+        '<a class="int-btn" href="https://wa.me/?text=' + texto + '" target="_blank" rel="noopener">💬 Escribir</a>' +
+      '</div>';
+    }).join('');
+  }
+
+  // Desde el modal de gestión
+  function verCaminoDeGestion(){
+    const id = document.getElementById('accUsuarioId').value;
+    if(!id) return;
+    const a = (alumnas || []).find(x => x.id === id);
+    verCamino(id, a?.nombre || a?.email || '');
+  }
+
+  // ─── El camino de una persona ───
+  async function verCamino(usuarioId, nombre){
+    const { data, error } = await sb.rpc('camino_de', { p_usuario: usuarioId });
+
+    if(error || !data || data.length === 0){
+      return mostrarToast('Sin pasos registrados todavía');
+    }
+
+    const NOMBRES = {
+      registro: '📝 Se registró',
+      vio_curso: '👀 Miró el curso',
+      clic_comprar: '🛒 Tocó comprar',
+      vio_checkout: '💳 Llegó al pago',
+      pedido: '💬 Hizo el pedido',
+      compra: '✅ Compró'
+    };
+
+    const texto = data.map(p => {
+      const f = new Date(p.c_cuando);
+      return (NOMBRES[p.c_tipo] || p.c_tipo) +
+        (p.c_curso ? ' — ' + p.c_curso : '') +
+        '\n   ' + f.toLocaleDateString('es-PY', { day:'numeric', month:'short' }) +
+        ' ' + f.toLocaleTimeString('es-PY', { hour:'2-digit', minute:'2-digit' });
+    }).join('\n\n');
+
+    alert('El camino de ' + (nombre || '') + '\n\n' + texto);
+  }
+
+  // ─── Pedidos por WhatsApp ───
+  let pedidos = [];
+
+  async function cargarPedidos(){
+    const { data, error } = await sb.from('pedidos_detalle').select('*');
+
+    const caja = document.getElementById('pedidosCaja');
+    const cont = document.getElementById('pedidosLista');
+    if(!caja || !cont) return;
+
+    if(error){
+      if(String(error.message).includes('does not exist')) { caja.style.display = 'none'; return; }
+      caja.style.display = '';
+      cont.innerHTML = '<div style="padding:18px;color:#FF8090;font-size:12.5px">' + esc(error.message) + '</div>';
+      return;
+    }
+
+    pedidos = data || [];
+    const pendientes = pedidos.filter(p => p.estado === 'pendiente');
+
+    // Si no hay nada pendiente, no ocupamos espacio
+    if(pendientes.length === 0 && pedidos.length === 0){
+      caja.style.display = 'none';
+      return;
+    }
+
+    caja.style.display = '';
+    document.getElementById('pedidosSub').textContent = pendientes.length
+      ? pendientes.length + (pendientes.length === 1 ? ' pedido esperando' : ' pedidos esperando') + ' confirmación'
+      : 'Todo al día';
+
+    if(pendientes.length === 0){
+      cont.innerHTML = '<div style="padding:22px;text-align:center;color:rgba(255,245,240,0.45);font-size:12.5px">' +
+        '✓ No hay pedidos pendientes</div>';
+      return;
+    }
+
+    cont.innerHTML = pendientes.map(p => {
+      const ini = (p.nombre || p.email || '?').charAt(0).toUpperCase();
+      const viejo = (p.dias_esperando || 0) >= 2;
+      const que = p.plan_premium
+        ? '⭐ Premium · ' + p.meses_premium + (p.meses_premium === 1 ? ' mes' : ' meses')
+        : (p.curso_titulo || 'Sin curso');
+
+      const cuando = p.dias_esperando === 0 ? 'hoy'
+        : p.dias_esperando === 1 ? 'ayer'
+        : 'hace ' + p.dias_esperando + ' días';
+
+      return '<div class="ped-fila' + (viejo ? ' viejo' : '') + '">' +
+        '<div class="ped-avatar">' + (p.avatar_url ? '<img src="' + p.avatar_url + '" alt="">' : ini) + '</div>' +
+        '<div class="ped-info">' +
+          '<div class="ped-nom">' + esc(p.nombre || 'Sin nombre') + '</div>' +
+          '<div class="ped-detalle">' + esc(que) + ' · ' +
+            '<span class="ped-codigo">' + esc(p.codigo || '') + '</span>' +
+            (viejo ? ' · <span class="ped-espera">⏳ ' + cuando + '</span>' : ' · ' + cuando) +
+          '</div>' +
+          '<div class="ped-detalle">' + esc(p.email || '') +
+            (p.telefono ? ' · ' + esc(p.telefono) : '') + '</div>' +
+        '</div>' +
+        '<div class="ped-monto">' +
+          (p.monto_gs ? 'Gs ' + p.monto_gs.toLocaleString('es-PY') : 'Gratis') +
+        '</div>' +
+        '<button class="ped-btn" onclick="confirmarPedido(\'' + p.id + '\')">✓ CONFIRMAR PAGO</button>' +
+        '<button class="ped-btn gris" onclick="cancelarPedido(\'' + p.id + '\')">Cancelar</button>' +
+      '</div>';
+    }).join('');
+  }
+
+  async function confirmarPedido(id){
+    const p = pedidos.find(x => x.id === id);
+    if(!p) return;
+
+    const metodo = prompt(
+      'Confirmar el pago de ' + (p.nombre || p.email) + '\n\n' +
+      '¿Cómo pagó? (transferencia / tigo / efectivo)',
+      'transferencia'
+    );
+    if(metodo === null) return;
+
+    const { data, error } = await sb.rpc('confirmar_pedido', {
+      p_pedido: id,
+      p_metodo: metodo.trim() || 'transferencia',
+      p_notas: null
+    });
+
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    if(data && data.exito === false) return mostrarToast(data.error, true);
+
+    mostrarToast('✓ Acceso otorgado a ' + (p.nombre || p.email));
+
+    // Le avisamos por email
+    if(p.curso_id || p.curso_titulo){
+      await llamarAvisos({
+        accion: 'bienvenida',
+        curso_id: pedidos.find(x => x.id === id)?.curso_id,
+        usuario_id: p.usuario_id
+      }).catch(() => {});
+    }
+
+    await cargarPedidos();
+    if(typeof cargarVentas === 'function') cargarVentas();
+  }
+
+  async function cancelarPedido(id){
+    if(!confirm('¿Cancelar este pedido?')) return;
+
+    const { error } = await sb.from('pedidos')
+      .update({ estado: 'cancelado' }).eq('id', id);
+
+    if(error) return mostrarToast('Error: ' + error.message, true);
+    mostrarToast('Pedido cancelado');
+    await cargarPedidos();
+  }
+
+  // ─── Los datos para cobrar ───
+  async function abrirDatosPago(){
+    const { data } = await sb.from('ajustes').select('clave, valor').like('clave', 'pago_%');
+    const d = {};
+    (data || []).forEach(x => { d[x.clave] = x.valor; });
+
+    document.getElementById('dpWhatsapp').value = d.pago_whatsapp || '';
+    document.getElementById('dpBanco').value = d.pago_banco || '';
+    document.getElementById('dpCuenta').value = d.pago_cuenta || '';
+    document.getElementById('dpTitular').value = d.pago_titular || '';
+    document.getElementById('dpRuc').value = d.pago_ruc || '';
+    document.getElementById('dpTigo').value = d.pago_tigo || '';
+    document.getElementById('dpInstrucciones').value = d.pago_instrucciones || '';
+
+    document.getElementById('datosPagoModal').classList.add('show');
+  }
+
+  function cerrarDatosPago(){ document.getElementById('datosPagoModal').classList.remove('show'); }
+
+  async function guardarDatosPago(){
+    const pares = [
+      ['pago_whatsapp', document.getElementById('dpWhatsapp').value.trim().replace(/[^0-9]/g, '')],
+      ['pago_banco', document.getElementById('dpBanco').value.trim()],
+      ['pago_cuenta', document.getElementById('dpCuenta').value.trim()],
+      ['pago_titular', document.getElementById('dpTitular').value.trim()],
+      ['pago_ruc', document.getElementById('dpRuc').value.trim()],
+      ['pago_tigo', document.getElementById('dpTigo').value.trim()],
+      ['pago_instrucciones', document.getElementById('dpInstrucciones').value.trim()]
+    ];
+
+    for(const [clave, valor] of pares){
+      const { error } = await sb.from('ajustes')
+        .upsert({ clave, valor }, { onConflict: 'clave' });
+      if(error) return mostrarToast('Error: ' + error.message, true);
+    }
+
+    mostrarToast('✓ Datos guardados');
+    cerrarDatosPago();
   }
 
   // ─── Diagnóstico de Pagopar ───
@@ -9691,6 +10131,9 @@ body{visibility:hidden}
       cargarHashtags(),
       cargarCategoriasCom(),
       cargarUsoHashtags(),
+      cargarPedidos(),
+      cargarEmbudo(),
+      cargarInteresadas(),
       cargarSecciones()
     ]);
 

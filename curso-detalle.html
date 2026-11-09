@@ -900,6 +900,9 @@ function mostrarModal(logueada) {
   // Redirigir al checkout con el slug del curso correcto
   if (btn) {
     btn.onclick = function() {
+      // Anotamos que tocó comprar
+      anotarPaso('clic_comprar', curso?.id || null, precioTxt);
+
       if (precio > 0) {
         window.location.href = '/checkout?curso=' + cursoId;
       } else {
@@ -1061,6 +1064,9 @@ async function pintarCursoReal(){
       .eq('curso_id', curso.id).eq('estado','pagado').maybeSingle();
     if(cmp) compra = { pagado_en: cmp.pagado_en || cmp.creado_en, acceso_hasta: cmp.acceso_hasta };
   }
+
+  // Anotamos que miró este curso
+  anotarPaso('vio_curso', curso.id, curso.titulo);
 
   // ─── Cuánto tiempo de acceso le queda ───
   pintarContadorAcceso(curso, compra);

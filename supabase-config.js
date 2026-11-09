@@ -398,3 +398,23 @@ function precioParaVos(curso, esPremium) {
   }
   return { precio: curso.precio_gs, normal: null, conDescuento: false };
 }
+
+// ═══════════════════════════════════════════════════════════
+// EL CAMINO DE CADA PERSONA
+// Anota los pasos para saber quién se interesó y no compró
+// ═══════════════════════════════════════════════════════════
+async function anotarPaso(tipo, cursoId, detalle) {
+  try {
+    if (typeof sb === 'undefined' || !sb) return;
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) return;
+
+    await sb.rpc('anotar_paso', {
+      p_tipo: tipo,
+      p_curso: cursoId || null,
+      p_detalle: detalle || null
+    });
+  } catch (e) {
+    // Si falta el SQL, seguimos sin romper nada
+  }
+}
