@@ -222,7 +222,7 @@
       await cargarDatosPago();
 
       // Anotamos que llegó al checkout
-      anotarPaso('vio_checkout', curso.id, curso.titulo);
+      try { anotarPaso('vio_checkout', curso.id, curso.titulo); } catch(e){}
 
       // Llenar resumen
       const precio = curso.precio_gs ? 'Gs ' + curso.precio_gs.toLocaleString('es-PY') : 'GRATIS';
@@ -424,33 +424,31 @@
     btn.disabled = true;
     txt.textContent = 'UN MOMENTO...';
 
-    const { data: ped, error } = await sb.from('pedidos').insert({
-      usuario_id: user.id,
-      curso_id: cursoActual ? cursoActual.id : null,
-      nombre: nombre,
-      email: email,
-      telefono: telefono || null,
-      monto_gs: (cursoActual && cursoActual.precio_gs) || 0
-    }).select('codigo').single();
+    // Dejamos registrado el pedido. Si falla, igual seguimos:
+    // lo importante es que pueda escribirnos.
+    let codigo = '';
+    try {
+      const { data: ped } = await sb.from('pedidos').insert({
+        usuario_id: user.id,
+        curso_id: cursoActual ? cursoActual.id : null,
+        nombre: nombre,
+        email: email,
+        telefono: telefono || null,
+        monto_gs: (cursoActual && cursoActual.precio_gs) || 0
+      }).select('codigo').single();
+
+      codigo = (ped && ped.codigo) || '';
+    } catch(e){
+      console.warn('[pedido] no se pudo registrar:', e);
+    }
 
     btn.disabled = false;
     txt.textContent = 'PAGAR POR WHATSAPP';
-
-    if(error){
-      return mostrarError(String(error.message).includes('does not exist')
-        ? 'Falta configurar el sistema de pedidos. Avisale a Milena.'
-        : 'No pudimos registrar tu pedido. Probá de nuevo.');
-    }
-
-    const codigo = (ped && ped.codigo) || '';
-    anotarPaso('pedido', cursoActual ? cursoActual.id : null, codigo);
+    try { anotarPaso('pedido', cursoActual ? cursoActual.id : null, codigo); } catch(e){}
     mostrarDatosPago(codigo);
 
-    const wa = String(datosPago.pago_whatsapp || '').replace(/[^0-9]/g, '');
-    if(!wa){
-      mostrarError('Todavía no está configurado el WhatsApp de contacto.');
-      return;
-    }
+    // El número configurado en el panel, o el de siempre
+    const wa = String(datosPago.pago_whatsapp || '595986200740').replace(/[^0-9]/g, '');
 
     const monto = (cursoActual && cursoActual.precio_gs)
       ? 'Gs ' + cursoActual.precio_gs.toLocaleString('es-PY') : '';

@@ -1848,7 +1848,7 @@ body{visibility:hidden}
   </div>
 
   <!-- ============================ -->
-  <!-- TAB: HASHTAGS / ETIQUETAS -->
+  <!-- TAB: HASHTAGS -->
   <!-- ============================ -->
   <!-- ============================ -->
   <!-- TAB: CURSOS -->
@@ -2166,9 +2166,9 @@ body{visibility:hidden}
 
     <div class="header-bar">
       <div>
-        <div class="header-meta">GESTOR DE ETIQUETAS</div>
-        <h1 class="header-title">Etiquetas <span class="serif-it gradtext" style="font-size:34px">de la comunidad</span></h1>
-        <p class="header-sub">Definí qué etiquetas pueden usar las alumnas en sus posts</p>
+        <div class="header-meta">GESTOR DE HASHTAGS</div>
+        <h1 class="header-title">Hashtags <span class="serif-it gradtext" style="font-size:34px">de la comunidad</span></h1>
+        <p class="header-sub">Definí qué hashtags pueden usar las alumnas en sus posts</p>
       </div>
     </div>
 
@@ -2177,15 +2177,15 @@ body{visibility:hidden}
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/></svg>
       </div>
       <div class="hashtags-info-text">
-        <div class="hashtags-info-title">Cómo funcionan las etiquetas</div>
-        <p class="hashtags-info-desc">Las alumnas <strong>solo pueden usar las etiquetas</strong> que definas acá. No pueden inventar nuevas. Esto mantiene la comunidad organizada y todos los posts bien clasificados.</p>
+        <div class="hashtags-info-title">Cómo funcionan los hashtags</div>
+        <p class="hashtags-info-desc">Las alumnas <strong>solo pueden usar los hashtags</strong> que definas acá. No pueden inventar nuevos. Esto mantiene la comunidad organizada y todos los posts bien clasificados.</p>
       </div>
     </div>
 
     <!-- Stats -->
     <div class="hashtag-stats">
       <div class="stat-mini-card">
-        <div class="stat-mini-label">TOTAL ETIQUETAS</div>
+        <div class="stat-mini-label">TOTAL HASHTAGS</div>
         <div class="stat-mini-value" id="statTotal">14</div>
         <div class="stat-mini-sub">disponibles para alumnas</div>
       </div>
@@ -2197,7 +2197,7 @@ body{visibility:hidden}
       <div class="stat-mini-card">
         <div class="stat-mini-label">SIN USAR</div>
         <div class="stat-mini-value" style="color:rgba(255,245,240,0.6)" id="statSinUsar">—</div>
-        <div class="stat-mini-sub">etiquetas que nadie usó</div>
+        <div class="stat-mini-sub">hashtags que nadie usó</div>
       </div>
     </div>
 
@@ -2205,7 +2205,7 @@ body{visibility:hidden}
     <div class="hashtags-add-row">
       <div class="hashtags-input-wrap">
         <span class="hashtag-prefix">#</span>
-        <input type="text" class="hashtags-input" id="newHashtag" placeholder="agregar nueva etiqueta..." onkeypress="if(event.key==='Enter')agregarHashtag()" oninput="limpiarInput(this)"/>
+        <input type="text" class="hashtags-input" id="newHashtag" placeholder="agregar nuevo hashtag..." onkeypress="if(event.key==='Enter')agregarHashtag()" oninput="limpiarInput(this)"/>
       </div>
       <button class="cta-gold add-btn" onclick="agregarHashtag()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -2216,8 +2216,8 @@ body{visibility:hidden}
     <!-- Lista -->
     <div class="hashtags-list-card">
       <div class="hashtags-list-head">
-        <h3 class="chart-title">Etiquetas activas</h3>
-        <span class="hashtags-count" id="hashtagsCount">14 etiquetas</span>
+        <h3 class="chart-title">Hashtags activos</h3>
+        <span class="hashtags-count" id="hashtagsCount">—</span>
       </div>
       <div class="hashtags-list" id="hashtagsList"></div>
     </div>
@@ -4341,7 +4341,7 @@ body{visibility:hidden}
     if(navEl) navEl.classList.add('active');
   }
 
-  // Cuánto se usa cada etiqueta, con datos reales
+  // Cuánto se usa cada hashtag, con datos reales
   async function cargarUsoHashtags(){
     const { data, error } = await sb.from('uso_hashtags').select('*');
 
@@ -4371,7 +4371,7 @@ body{visibility:hidden}
         : top.posts_mes + (top.posts_mes === 1 ? ' post' : ' posts') + ' este mes';
     } else {
       masUsada.textContent = '—';
-      masSub.textContent = 'todavía nadie usó etiquetas';
+      masSub.textContent = 'todavía nadie usó hashtags';
     }
 
     sinUsar.textContent = activas.filter(x => !x.posts_total).length;
@@ -4515,7 +4515,7 @@ body{visibility:hidden}
       .order('nombre', { ascending: true });
     if (error) {
       console.error('Error cargando hashtags:', error);
-      mostrarToast('Error al cargar etiquetas', true);
+      mostrarToast('Error al cargar los hashtags', true);
       return;
     }
     hashtags = data || [];
@@ -4525,18 +4525,18 @@ body{visibility:hidden}
   function renderHashtags(){
     const list = document.getElementById('hashtagsList');
     if(hashtags.length === 0){
-      list.innerHTML = '<div class="empty-state">No hay etiquetas. Agregá la primera arriba ☝️</div>';
+      list.innerHTML = '<div class="empty-state">Todavía no hay hashtags. Agregá el primero arriba ☝️</div>';
     } else {
       list.innerHTML = hashtags.map(h => `
         <div class="hashtag-tag">
           #${h.nombre}
-          <button class="delete-x" onclick="eliminarHashtag('${h.id}','${h.nombre}')" title="Eliminar etiqueta">
+          <button class="delete-x" onclick="eliminarHashtag('${h.id}','${h.nombre}')" title="Eliminar hashtag">
             <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
           </button>
         </div>
       `).join('');
     }
-    document.getElementById('hashtagsCount').textContent = hashtags.length + ' etiqueta' + (hashtags.length !== 1 ? 's' : '');
+    document.getElementById('hashtagsCount').textContent = hashtags.length + ' hashtag' + (hashtags.length !== 1 ? 's' : '');
     document.getElementById('statTotal').textContent = hashtags.length;
   }
 
@@ -4549,11 +4549,11 @@ body{visibility:hidden}
     const input = document.getElementById('newHashtag');
     const tag = input.value.trim().toLowerCase();
     if(!tag){
-      mostrarToast('Escribí el nombre de la etiqueta', true);
+      mostrarToast('Escribí el hashtag', true);
       return;
     }
     if(hashtags.find(h => h.nombre === tag)){
-      mostrarToast('Esa etiqueta ya existe', true);
+      mostrarToast('Ese hashtag ya existe', true);
       return;
     }
     const { error } = await sb.from('hashtags').insert({ nombre: tag });
@@ -4567,7 +4567,7 @@ body{visibility:hidden}
   }
 
   async function eliminarHashtag(id, nombre){
-    if(!confirm('¿Eliminar la etiqueta #' + nombre + '?\n\nLas alumnas ya no podrán usarla en posts nuevos.')) return;
+    if(!confirm('¿Eliminar el hashtag #' + nombre + '?\n\nLas alumnas ya no podrán usarla en posts nuevos.')) return;
 
     // Lo hacemos por función: así sabemos si realmente se borró.
     // Un DELETE directo no avisa cuando la seguridad lo bloquea.
@@ -4584,7 +4584,7 @@ body{visibility:hidden}
       return mostrarToast(data.error || 'No se pudo borrar', true);
     }
 
-    mostrarToast('Etiqueta #' + nombre + ' eliminada');
+    mostrarToast('Hashtag #' + nombre + ' eliminado');
     await cargarHashtags();
   }
 

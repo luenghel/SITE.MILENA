@@ -402,6 +402,12 @@
     .filtro-panel{left:0;right:auto;min-width:0;width:min(340px,92vw)}
   }
 
+
+  .filtro-ayuda{font-size:11px;color:rgba(255,245,240,0.4);margin:-5px 0 9px;line-height:1.4}
+
+
+  .opc-ayuda{font-size:11px;color:rgba(255,245,240,0.4);margin:-4px 0 8px;line-height:1.4}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -449,11 +455,13 @@ body{visibility:hidden}
       <div class="filtro-panel" id="filtroPanel">
         <div class="filtro-grupo">
           <div class="filtro-titulo">SECCIONES</div>
+          <div class="filtro-ayuda">Qué tipo de publicación es</div>
           <div id="filtrosChips"></div>
         </div>
 
         <div class="filtro-grupo" id="filtroGrupoTags">
-          <div class="filtro-titulo">ETIQUETAS</div>
+          <div class="filtro-titulo">HASHTAGS</div>
+          <div class="filtro-ayuda">De qué tema habla</div>
           <div id="filtrosTags"></div>
         </div>
       </div>
@@ -505,7 +513,7 @@ body{visibility:hidden}
 
       <button class="cbtn" type="button" onclick="toggleOpciones()" id="btnOpciones">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.6 13.4 12 22l-9-9V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor"/></svg>
-        <span id="opcionesTxt">Etiquetar</span>
+        <span id="opcionesTxt">Hashtags</span>
         <svg class="cbtn-arrow" id="opcArrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
 
@@ -514,12 +522,14 @@ body{visibility:hidden}
 
     <!-- Opciones plegables -->
     <div class="composer-opciones" id="composerOpciones">
-      <div class="opc-label">CATEGORÍA</div>
+      <div class="opc-label">SECCIÓN</div>
+      <div class="opc-ayuda">Qué tipo de publicación es</div>
       <div class="cat-chips" id="catChips">
         <div id="chipsCategoriaPost" style="display:contents"></div>
       </div>
 
-      <div class="opc-label" style="margin-top:14px">ETIQUETAS</div>
+      <div class="opc-label" style="margin-top:14px">HASHTAGS</div>
+      <div class="opc-ayuda">De qué tema habla</div>
       <div class="hashtag-chips" id="hashtagChips"></div>
     </div>
   </div>
@@ -710,9 +720,9 @@ function toggleOpciones(){
 function actualizarResumenOpciones(){
   const btn = document.getElementById('btnOpciones');
   const txt = document.getElementById('opcionesTxt');
-  let etiqueta = (categoriaPost === 'general') ? 'Etiquetar' : nombreCategoria(categoriaPost);
+  let etiqueta = (categoriaPost === 'general') ? 'Sección y hashtags' : nombreCategoria(categoriaPost);
   if(hashtagsSeleccionados.length){
-    etiqueta = (categoriaPost === 'general' ? '' : etiqueta + ' · ') + hashtagsSeleccionados.length + ' etiq.';
+    etiqueta = (categoriaPost === 'general' ? '' : etiqueta + ' · ') + hashtagsSeleccionados.length + ' #';
   }
   txt.textContent = etiqueta;
   const hayAlgo = categoriaPost !== 'general' || hashtagsSeleccionados.length > 0;
@@ -1219,7 +1229,7 @@ async function cargarCategorias(){
 // El nombre lindo de una categoría
 function nombreCategoria(clave){
   const c = categoriasComunidad.find(x => x.clave === clave);
-  if(!c) return 'Etiquetar';
+  if(!c) return 'Hashtags';
   return (c.icono ? c.icono + ' ' : '') + c.nombre;
 }
 
