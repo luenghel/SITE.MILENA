@@ -403,18 +403,22 @@ function precioParaVos(curso, esPremium) {
 // EL CAMINO DE CADA PERSONA
 // Anota los pasos para saber quién se interesó y no compró
 // ═══════════════════════════════════════════════════════════
-async function anotarPaso(tipo, cursoId, detalle) {
-  try {
-    if (typeof sb === 'undefined' || !sb) return;
-    const { data: { user } } = await sb.auth.getUser();
-    if (!user) return;
+function anotarPaso(tipo, cursoId, detalle) {
+  // No esperamos la respuesta: esto nunca debe frenar lo que la persona
+  // está haciendo. Si falla, no pasa nada.
+  (async function () {
+    try {
+      if (typeof sb === 'undefined' || !sb) return;
+      const { data: { user } } = await sb.auth.getUser();
+      if (!user) return;
 
-    await sb.rpc('anotar_paso', {
-      p_tipo: tipo,
-      p_curso: cursoId || null,
-      p_detalle: detalle || null
-    });
-  } catch (e) {
-    // Si falta el SQL, seguimos sin romper nada
-  }
+      await sb.rpc('anotar_paso', {
+        p_tipo: tipo,
+        p_curso: cursoId || null,
+        p_detalle: detalle || null
+      });
+    } catch (e) {
+      // Si falta el SQL o falla la red, seguimos igual
+    }
+  })();
 }

@@ -181,7 +181,7 @@ do $$
 declare r record;
 begin
   for r in select * from (values
-    ('pago_whatsapp',      ''),
+    ('pago_whatsapp',      '595986200740'),
     ('pago_banco',         ''),
     ('pago_titular',       ''),
     ('pago_cuenta',        ''),
