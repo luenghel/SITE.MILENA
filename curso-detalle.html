@@ -305,6 +305,25 @@
       font-size: 16px !important;
     }
   }
+
+  .tem-clase.bloqueada{opacity:0.45;cursor:default;pointer-events:none}
+  .tem-muestra{display:inline-block;margin-left:7px;font-size:9px;padding:2px 7px;border-radius:9px;background:rgba(93,202,165,0.16);border:0.5px solid rgba(93,202,165,0.4);color:#9FE1CB;letter-spacing:0.05em;font-weight:600}
+
+  .tem-comprar{display:flex;align-items:center;gap:16px;margin-top:22px;padding:18px 20px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.32);border-radius:14px;flex-wrap:wrap}
+  .tem-comprar-txt{flex:1;min-width:190px;font-size:13.5px;line-height:1.55;color:rgba(255,245,240,0.78)}
+  .tem-comprar-txt strong{color:#FFF5F0}
+  .tem-comprar-btn{padding:14px 22px;border-radius:10px;font-size:11.5px;font-weight:600;letter-spacing:0.1em;text-decoration:none;white-space:nowrap}
+
+  .sin-contenido{max-width:620px;margin:40px auto;padding:34px 28px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:16px;text-align:center}
+  .sc-ico{font-size:40px;margin-bottom:14px}
+  .sc-tit{font-family:Georgia,serif;font-size:22px;font-weight:500;margin-bottom:9px}
+  .sc-txt{font-size:14px;line-height:1.6;color:rgba(255,245,240,0.65)}
+
+  @media (max-width:700px){
+    .tem-comprar{flex-direction:column;align-items:stretch}
+    .tem-comprar-btn{text-align:center}
+  }
+
 </style>
 </head>
 <body>
@@ -543,7 +562,28 @@ function aplicarDatosCurso(curso) {
 }
 
 // ─── Temario para quien ya tiene acceso ───
-async function mostrarTemario(curso, user){
+
+// Compró el curso pero todavía no hay clases cargadas
+function pintarSinContenido(curso){
+  const esc2 = t => { const d = document.createElement('div'); d.textContent = t || ''; return d.innerHTML; };
+
+  const html = `
+    <div class="sin-contenido">
+      <div class="sc-ico">📚</div>
+      <div class="sc-tit">Ya tenés <span class="serif-it gradtext">${esc2(curso.titulo)}</span></div>
+      <div class="sc-txt">
+        Milena todavía está preparando las clases.
+        Te vamos a avisar por email apenas esté la primera.
+      </div>
+    </div>
+  `;
+
+  const cont = document.createElement('div');
+  cont.innerHTML = html;
+  document.body.insertBefore(cont.firstElementChild, document.querySelector('footer') || null);
+}
+
+async function mostrarTemario(curso, user, compraDeEsta){
   const [rMod, rCla] = await Promise.all([
     sb.from('modulos').select('*').eq('curso_id', curso.id).eq('publicado', true).order('orden', { ascending: true }),
     sb.from('clases').select('*').eq('curso_id', curso.id).eq('publicado', true).order('orden', { ascending: true })
@@ -552,7 +592,18 @@ async function mostrarTemario(curso, user){
   const modulos = rMod.data || [];
   const clases = rCla.data || [];
 
-  if(modulos.length === 0 || clases.length === 0) return;
+  // ¿Tiene el curso?
+  const esMio = !!(user && compraDeEsta);
+
+  // Sin contenido cargado todavía
+  if(modulos.length === 0 || clases.length === 0){
+    if(esMio){
+      pintarSinContenido(curso);
+    } else {
+      mostrarModal(!!user);
+    }
+    return;
+  }
 
   // Progreso
   let progreso = {};
@@ -577,6 +628,15 @@ async function mostrarTemario(curso, user){
   });
   const siguiente = libres.find(x => !progreso[x.id]) || libres[0] || null;
 
+  // Las clases abiertas para quien todavía no compró
+  const muestras = planas.filter(function(x){
+    if(x.gratis) return true;
+    const m = modulos.find(mm => mm.id === x.modulo_id);
+    return !!(m && m.gratis);
+  });
+  const nMuestras = muestras.length;
+  const primeraMuestra = muestras[0] || null;
+
   const esc2 = t => { const d = document.createElement('div'); d.textContent = t || ''; return d.innerHTML; };
 
   const html = `
@@ -584,16 +644,28 @@ async function mostrarTemario(curso, user){
       <div class="temario-caja">
         <div class="temario-cab">
           <div>
-            <div class="temario-eyebrow">TU CURSO</div>
+            <div class="temario-eyebrow">${esMio ? 'TU CURSO' : 'MIRÁ DE QUÉ SE TRATA'}</div>
             <h2 class="temario-h2 serif">${esc2(curso.titulo)}</h2>
-            <div class="temario-prog-txt">${hechas} de ${total} clases · ${pct}% completado</div>
+            <div class="temario-prog-txt">
+              ${esMio
+                ? hechas + ' de ' + total + ' clases · ' + pct + '% completado'
+                : nMuestras + (nMuestras === 1 ? ' clase abierta' : ' clases abiertas') +
+                  ' de ' + total + ' · probala antes de comprar'}
+            </div>
           </div>
-          <a href="${enlaceClase(curso.slug, siguiente)}" class="cta-gold temario-btn">
-            ${hechas === 0 ? 'EMPEZAR EL CURSO' : (hechas === total ? 'REPASAR' : 'SEGUIR DONDE QUEDÉ')}
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </a>
+          ${esMio
+            ? `<a href="${enlaceClase(curso.slug, siguiente)}" class="cta-gold temario-btn">
+                ${hechas === 0 ? 'EMPEZAR EL CURSO' : (hechas === total ? 'REPASAR' : 'SEGUIR DONDE QUEDÉ')}
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </a>`
+            : (primeraMuestra
+                ? `<a href="${enlaceClase(curso.slug, primeraMuestra)}" class="cta-gold temario-btn">
+                     VER CLASE GRATIS
+                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                   </a>`
+                : '')}
         </div>
-        <div class="temario-barra"><div class="temario-fill" style="width:${pct}%"></div></div>
+        ${esMio ? `<div class="temario-barra"><div class="temario-fill" style="width:${pct}%"></div></div>` : ''}
 
         <div class="temario-lista">
           ${modulos.map((m, i) => {
@@ -609,7 +681,9 @@ async function mostrarTemario(curso, user){
                     <div class="tem-mod-meta">${cls.length} clase${cls.length === 1 ? '' : 's'}${min ? ' · ' + min + ' min' : ''}</div>
                   </div>
                 </div>
-                ${cls.map(cl => `
+                ${cls.map(cl => {
+                  const abierta = esMio || cl.gratis || m.gratis;
+                  return abierta ? `
                   <a href="${enlaceClase(curso.slug, cl)}" class="tem-clase">
                     <div class="tem-check ${progreso[cl.id] ? 'ok' : ''}">
                       ${progreso[cl.id]
@@ -618,14 +692,37 @@ async function mostrarTemario(curso, user){
                     </div>
                     <div style="flex:1;min-width:0">
                       <div class="tem-clase-tit">${esc2(cl.titulo)}</div>
+                      <div class="tem-clase-meta">
+                        ${cl.duracion_minutos ? cl.duracion_minutos + ' min' : ''}
+                        ${!esMio ? '<span class="tem-muestra">🎁 GRATIS</span>' : ''}
+                      </div>
+                    </div>
+                  </a>` : `
+                  <div class="tem-clase bloqueada">
+                    <div class="tem-check">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.4)" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                    </div>
+                    <div style="flex:1;min-width:0">
+                      <div class="tem-clase-tit">${esc2(cl.titulo)}</div>
                       <div class="tem-clase-meta">${cl.duracion_minutos ? cl.duracion_minutos + ' min' : ''}</div>
                     </div>
-                  </a>
-                `).join('')}
+                  </div>`;
+                }).join('')}
               </div>
             `;
           }).join('')}
         </div>
+
+        ${!esMio ? `
+          <div class="tem-comprar">
+            <div class="tem-comprar-txt">
+              <strong>Esto es solo una muestra.</strong>
+              El curso completo tiene ${total} clases en ${modulos.length} módulos.
+            </div>
+            <a href="/checkout?curso=${esc2(curso.slug)}" class="cta-gold tem-comprar-btn">
+              ${curso.precio_gs ? 'COMPRAR · Gs ' + curso.precio_gs.toLocaleString('es-PY') : 'QUIERO EL CURSO'}
+            </a>
+          </div>` : ''}
       </div>
     </section>
   `;
@@ -993,7 +1090,7 @@ const checkAccess = setInterval(async () => {
     if (!user) {
       // Con muestras, le dejamos ver el temario: puede probar antes de comprar
       if (hayMuestras) {
-        await mostrarTemario(curso, null);
+        await mostrarTemario(curso, null, null);
         return;
       }
       mostrarModal(false);
@@ -1023,7 +1120,7 @@ const checkAccess = setInterval(async () => {
       }
       // Con muestras, puede ver el temario y probar las clases libres
       if (hayMuestras) {
-        await mostrarTemario(curso, user);
+        await mostrarTemario(curso, user, null);
         return;
       }
       mostrarModal(true);
@@ -1031,7 +1128,7 @@ const checkAccess = setInterval(async () => {
     }
 
     // Tiene acceso: mostramos el temario y el botón para entrar
-    await mostrarTemario(curso, user);
+    await mostrarTemario(curso, user, compra);
   }
 }, 100);
 </script>
@@ -1155,6 +1252,15 @@ async function pintarCursoReal(){
     return claseDisponible(x, curso, compra, clases, modulos).libre;
   });
   const siguiente = libres.find(x => !progreso[x.id]) || libres[0] || null;
+
+  // Las clases abiertas para quien todavía no compró
+  const muestras = planas.filter(function(x){
+    if(x.gratis) return true;
+    const m = modulos.find(mm => mm.id === x.modulo_id);
+    return !!(m && m.gratis);
+  });
+  const nMuestras = muestras.length;
+  const primeraMuestra = muestras[0] || null;
 
   cont.innerHTML = modulos.map(function(m, i){
     const cls = clases.filter(x => x.modulo_id === m.id);

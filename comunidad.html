@@ -46,31 +46,34 @@
   .composer-avatar{display:none}
   .composer-input{
     width:100%;
-    padding:0;
-    background:transparent;
-    border:none;
+    padding:14px 16px;
+    background:rgba(255,245,240,0.045);
+    border:0.5px solid rgba(255,245,240,0.13);
+    border-radius:12px;
     color:#FFF5F0;
     font-size:16px;
     outline:none;
     font-family:inherit;
-    min-height:54px;
+    min-height:62px;
     max-height:280px;
     resize:none;
     overflow-y:auto;
     line-height:1.6;
     box-sizing:border-box;
+    transition:border-color 0.2s, background 0.2s;
+  }
+  .composer-input:focus{
+    border-color:rgba(212,163,86,0.5);
+    background:rgba(255,245,240,0.06);
   }
   .composer-input::placeholder{color:rgba(255,245,240,0.35);font-size:15.5px}
 
   /* Una línea que separa el texto de los botones */
   .composer-sep{
     height:0.5px;
-    background:rgba(255,245,240,0.09);
-    margin:14px -20px 13px;
+    background:rgba(255,245,240,0.08);
+    margin:15px -20px 13px;
   }
-  .composer-input:focus{border-color:rgba(212,163,86,0.5)}
-  .composer-input::placeholder{color:rgba(255,245,240,0.4)}
-
   .composer-preview{margin-top:11px;margin-left:51px;position:relative;border-radius:10px;overflow:hidden;max-width:220px}
   .composer-preview img{width:100%;display:block}
   .composer-preview button{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;background:rgba(14,5,9,0.85);border:none;color:#FF8090;cursor:pointer;display:flex;align-items:center;justify-content:center}
@@ -167,7 +170,18 @@
 
   .post-body{font-size:14px;line-height:1.55;color:rgba(255,245,240,0.88);margin:0 0 14px;white-space:pre-wrap;word-wrap:break-word}
   .hashtag{color:#FAC775;font-weight:500}
-  .post-image{width:100%;border-radius:10px;margin-bottom:14px;display:block;max-height:460px;object-fit:cover}
+  .post-image{
+    width:100%;
+    border-radius:12px;
+    margin-bottom:14px;
+    display:block;
+    /* La foto se ve entera, sin recortar.
+       Limitamos la altura para que una foto muy larga
+       no ocupe toda la pantalla. */
+    max-height:min(620px, 78vh);
+    object-fit:contain;
+    background:rgba(14,5,9,0.5);
+  }
 
   .post-actions{display:flex;align-items:center;gap:8px;padding-top:10px;border-top:0.5px solid rgba(255,245,240,0.06)}
   .pa-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;background:transparent;border:none;color:rgba(255,245,240,0.65);font-size:12px;cursor:pointer;border-radius:7px;font-family:inherit;transition:all 0.2s}
@@ -492,7 +506,7 @@
   .ep-texto:focus{border-color:rgba(212,163,86,0.45)}
 
   .ep-foto{position:relative;margin-top:13px;border-radius:12px;overflow:hidden}
-  .ep-foto img{width:100%;display:block;max-height:260px;object-fit:cover}
+  .ep-foto img{width:100%;display:block;max-height:300px;object-fit:contain;background:rgba(14,5,9,0.5)}
   .ep-foto button{
     position:absolute;top:9px;right:9px;
     width:28px;height:28px;border-radius:50%;
