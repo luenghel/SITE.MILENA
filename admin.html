@@ -1218,6 +1218,58 @@
   .int-btn{padding:8px 13px;border-radius:8px;background:rgba(37,211,102,0.16);border:0.5px solid rgba(37,211,102,0.4);color:#7FE3A5;font-size:11px;cursor:pointer;font-family:inherit;white-space:nowrap;text-decoration:none}
   .int-btn:hover{background:rgba(37,211,102,0.26)}
 
+
+  .emb-paso.tocable{cursor:pointer;transition:all 0.2s}
+  .emb-paso.tocable:hover{background:rgba(212,163,86,0.1);border-color:rgba(212,163,86,0.4);transform:translateY(-2px)}
+  .emb-paso.tocable::after{
+    content:'ver quiénes';
+    position:absolute;bottom:7px;right:11px;
+    font-size:9px;color:rgba(212,163,86,0.6);
+    opacity:0;transition:opacity 0.2s;
+  }
+  .emb-paso.tocable:hover::after{opacity:1}
+
+  .quienes-barra{display:flex;gap:9px;margin-bottom:16px;flex-wrap:wrap}
+  .quienes-barra .form-input{flex:1;min-width:180px}
+
+  .qn-fila{display:flex;align-items:center;gap:12px;padding:11px 13px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.08);border-radius:10px;margin-bottom:7px;flex-wrap:wrap}
+  .qn-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7A1B2E,#B8294A);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;overflow:hidden}
+  .qn-avatar img{width:100%;height:100%;object-fit:cover}
+  .qn-info{flex:1;min-width:140px}
+  .qn-nom{font-size:13px;font-weight:500}
+  .qn-sub{font-size:11.5px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .qn-cuando{font-size:11px;color:rgba(255,245,240,0.42);white-space:nowrap}
+  .qn-accion{background:none;border:0.5px solid rgba(255,245,240,0.16);border-radius:8px;padding:7px 11px;color:rgba(255,245,240,0.65);font-size:11px;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .qn-accion:hover{color:#FAC775;border-color:rgba(212,163,86,0.45)}
+
+
+  .fila-explica{display:flex;gap:22px;padding:20px 22px;background:rgba(255,245,240,0.03);border:0.5px solid rgba(255,245,240,0.1);border-radius:14px;margin-bottom:18px;flex-wrap:wrap}
+  .fe-texto{flex:1;min-width:230px;font-size:13.5px;line-height:1.65;color:rgba(255,245,240,0.78)}
+  .fe-texto strong{color:#FFF5F0}
+  .fe-ejemplo{flex:0 0 280px;padding:15px;background:rgba(14,5,9,0.5);border-radius:11px;border:0.5px solid rgba(255,245,240,0.07)}
+  .fe-titulo{font-family:Georgia,serif;font-size:13px;color:rgba(255,245,240,0.8);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+  .fe-chip{font-size:8px;padding:2px 7px;border-radius:9px;background:rgba(93,202,165,0.18);border:0.5px solid rgba(93,202,165,0.4);color:#9FE1CB;letter-spacing:0.06em}
+  .fe-cursos{display:flex;gap:7px}
+  .fe-card{width:46px;height:62px;border-radius:6px;background:linear-gradient(160deg,#4A0F1E,#2D0A18);border:0.5px solid rgba(255,245,240,0.09)}
+
+  @media (max-width:800px){
+    .fila-explica{flex-direction:column}
+    .fe-ejemplo{flex:1;width:100%}
+  }
+
+
+  .acc-cursos{padding:14px 15px;background:rgba(93,202,165,0.07);border:0.5px solid rgba(93,202,165,0.28);border-radius:12px;margin-bottom:16px}
+  .ac-fila{display:flex;align-items:center;gap:11px;padding:10px 12px;background:rgba(255,245,240,0.04);border-radius:9px;margin-top:8px;flex-wrap:wrap}
+  .ac-info{flex:1;min-width:130px}
+  .ac-nom{font-size:12.5px;font-weight:500}
+  .ac-sub{font-size:11px;color:rgba(255,245,240,0.5);margin-top:2px}
+  .ac-quitar{background:none;border:0.5px solid rgba(255,128,144,0.35);border-radius:7px;color:rgba(255,128,144,0.8);font-size:10.5px;cursor:pointer;font-family:inherit;padding:6px 10px;white-space:nowrap}
+  .ac-quitar:hover{background:rgba(255,59,71,0.14);color:#FF8090}
+  .ac-vacio{font-size:11.5px;color:rgba(255,245,240,0.45);padding:9px 0}
+
+
+  .acc-nota-yo{padding:12px 14px;background:rgba(93,170,202,0.1);border:0.5px solid rgba(93,170,202,0.35);border-radius:11px;font-size:12.5px;color:#9FD3E1;line-height:1.5;margin-bottom:16px}
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1564,6 +1616,18 @@ body{visibility:hidden}
     }
   }
 
+
+  /* ═══ Evitar el zoom automático del iPhone ═══
+     Safari hace zoom en cualquier campo con letra menor a 16px.
+     En el celular los agrandamos; en escritorio quedan como estaban. */
+  @media (max-width: 820px){
+    input, textarea, select,
+    input[type="text"], input[type="email"], input[type="password"],
+    input[type="number"], input[type="tel"], input[type="search"],
+    input[type="date"], input[type="datetime-local"]{
+      font-size: 16px !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -3050,6 +3114,19 @@ body{visibility:hidden}
         <div class="form-label" style="margin-bottom:9px">MENSAJE (opcional)</div>
         <textarea class="form-textarea" id="accMensaje" placeholder="Algo más que quieras explicarle. Va en el email." style="margin-bottom:16px"></textarea>
 
+        <div class="acc-nota-yo" id="accNotaYo" style="display:none">
+          👋 Sos vos. Podés darte cursos para probar la plataforma,
+          pero no bloquearte ni eliminarte.
+        </div>
+
+        <div class="acc-cursos">
+          <div class="acc-ins-cab">
+            <div class="acc-ins-tit">🎓 Sus cursos</div>
+            <button type="button" class="acc-ins-revisar" onclick="abrirDarCurso()">+ DAR CURSO</button>
+          </div>
+          <div id="accCursosLista"></div>
+        </div>
+
         <div class="acc-invitar" style="background:rgba(93,170,202,0.07);border-color:rgba(93,170,202,0.3)">
           <div class="acc-ins-cab">
             <div class="acc-ins-tit">🛤️ Su camino en el sitio</div>
@@ -3646,6 +3723,29 @@ body{visibility:hidden}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
           NUEVA FILA
         </button>
+      </div>
+    </div>
+
+    <div class="fila-explica">
+      <div class="fe-texto">
+        <strong>Una fila es un grupo de cursos con un título.</strong>
+        Así es como se ve tu catálogo: cada fila agrupa los cursos que le asignaste,
+        igual que en Netflix.
+        <br><br>
+        En cada curso, el campo <strong>"Dónde aparece"</strong> elige a qué fila va.
+      </div>
+
+      <div class="fe-ejemplo">
+        <div class="fe-titulo">Marketing Digital</div>
+        <div class="fe-cursos">
+          <div class="fe-card"></div><div class="fe-card"></div><div class="fe-card"></div>
+        </div>
+        <div class="fe-titulo" style="margin-top:14px">
+          Contenidos gratuitos <span class="fe-chip">GRATIS</span>
+        </div>
+        <div class="fe-cursos">
+          <div class="fe-card"></div><div class="fe-card"></div>
+        </div>
       </div>
     </div>
 
@@ -4303,6 +4403,92 @@ body{visibility:hidden}
     </div>
   </div>
 
+  <!-- MODAL: QUIÉNES HICIERON ESTE PASO -->
+  <div class="curso-modal-backdrop" id="quienesModal">
+    <div class="curso-modal" style="max-width:560px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">EL CAMINO</div>
+          <h3 class="curso-modal-titulo serif" id="quienesTitulo">Quiénes</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarQuienes()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <div class="quienes-barra">
+          <input type="text" class="form-input" id="quienesBuscar" placeholder="Buscar por nombre o email..." oninput="filtrarQuienes()">
+          <button class="btn-secondary" onclick="copiarEmails()" id="btnCopiarEmails">📋 Copiar emails</button>
+        </div>
+        <div id="quienesLista"></div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <span style="font-size:11.5px;color:rgba(255,245,240,0.45)" id="quienesPie"></span>
+        <button class="btn-secondary" style="margin-left:auto" onclick="cerrarQuienes()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DAR UN CURSO -->
+  <div class="curso-modal-backdrop" id="darCursoModal" style="z-index:10003">
+    <div class="curso-modal" style="max-width:440px">
+      <div class="curso-modal-header">
+        <div>
+          <div class="header-meta" style="font-size:9.5px;margin-bottom:3px">ACCESO DIRECTO</div>
+          <h3 class="curso-modal-titulo serif">Dar un curso</h3>
+        </div>
+        <button class="curso-modal-close" onclick="cerrarDarCurso()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="curso-modal-body">
+        <div class="inv-aviso">
+          Se le da el acceso al instante, sin pasar por el pago.
+          Sirve para pruebas, regalos o ventas cobradas por fuera.
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">QUÉ CURSO</label>
+          <select class="form-select" id="dcCurso"></select>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">CÓMO LO REGISTRAMOS</label>
+          <select class="form-select" id="dcMetodo">
+            <option value="cortesia">Cortesía (sin cargo)</option>
+            <option value="transferencia">Pagó por transferencia</option>
+            <option value="efectivo">Pagó en efectivo</option>
+            <option value="prueba">Prueba interna</option>
+          </select>
+        </div>
+
+        <div class="form-field" style="margin-bottom:14px">
+          <label class="form-label">MONTO (opcional)</label>
+          <input type="text" class="form-input" id="dcMonto" placeholder="0" inputmode="numeric">
+          <div class="form-help">Para que figure en tus ventas. Dejalo en 0 si fue de regalo.</div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">📧 Avisarle por email</div>
+            <div class="toggle-help">Le llega la bienvenida con el enlace al curso</div>
+          </div>
+          <div class="toggle-switch on" id="dcAvisar" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+
+      <div class="curso-modal-footer">
+        <div style="margin-left:auto;display:flex;gap:10px">
+          <button class="btn-secondary" onclick="cerrarDarCurso()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="darCurso()">DAR ACCESO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <!-- Toast -->
@@ -4952,6 +5138,32 @@ body{visibility:hidden}
   // ============================
   // FILAS DEL CATÁLOGO
   // ============================
+  let secciones = [];
+
+  // Trae las filas del catálogo
+  async function cargarSecciones(){
+    const { data, error } = await sb.from('secciones')
+      .select('*').order('orden', { ascending: true });
+
+    if(error){
+      const cont = document.getElementById('seccionesLista');
+      if(cont){
+        cont.innerHTML = '<div style="padding:24px;text-align:center;color:#FF8090;font-size:12.5px">' +
+          (String(error.message).includes('does not exist')
+            ? 'Corré SQL-SECCIONES.sql en Supabase para crear las filas.'
+            : esc(error.message)) + '</div>';
+      }
+      // Igual dejamos el selector usable
+      llenarSelectorSecciones();
+      return;
+    }
+
+    secciones = data || [];
+    renderSecciones();
+    llenarSelectorSecciones();
+  }
+
+
   // El modal antiguo de secciones apunta al sistema nuevo
   function abrirSecciones(){ cambiarTab('secciones'); }
 
@@ -5106,6 +5318,7 @@ body{visibility:hidden}
     mostrarToast(id ? '✓ Fila actualizada' : '✓ Fila creada');
     cerrarSeccion();
     await cargarSecciones();
+    llenarSelectorSecciones();
   }
 
   async function borrarSeccion(){
@@ -5130,6 +5343,108 @@ body{visibility:hidden}
     await cargarCursos();
   }
 
+  // ─── Quiénes hicieron cada paso ───
+  let quienesData = [];
+
+  async function verQuienes(paso, titulo){
+    document.getElementById('quienesTitulo').textContent = titulo.charAt(0) + titulo.slice(1).toLowerCase();
+    document.getElementById('quienesBuscar').value = '';
+    document.getElementById('quienesLista').innerHTML =
+      '<div style="padding:30px;text-align:center;color:rgba(255,245,240,0.45);font-size:12.5px">Buscando...</div>';
+    document.getElementById('quienesModal').classList.add('show');
+
+    const { data, error } = await sb.from('quienes_por_paso')
+      .select('*').eq('paso', paso).order('cuando', { ascending: false });
+
+    if(error){
+      document.getElementById('quienesLista').innerHTML =
+        '<div style="padding:24px;text-align:center;color:#FF8090;font-size:12.5px">' +
+        (String(error.message).includes('does not exist')
+          ? 'Corré de nuevo SQL-CAMINO-LEADS.sql: agrega la lista de personas.'
+          : esc(error.message)) + '</div>';
+      return;
+    }
+
+    quienesData = data || [];
+    renderQuienes();
+  }
+
+  function renderQuienes(){
+    const cont = document.getElementById('quienesLista');
+    const busca = document.getElementById('quienesBuscar').value.toLowerCase().trim();
+
+    let lista = quienesData;
+    if(busca){
+      lista = lista.filter(x =>
+        (x.nombre || '').toLowerCase().includes(busca) ||
+        (x.email || '').toLowerCase().includes(busca) ||
+        (x.curso_titulo || '').toLowerCase().includes(busca)
+      );
+    }
+
+    document.getElementById('quienesPie').textContent =
+      lista.length + (lista.length === 1 ? ' persona' : ' personas');
+
+    if(lista.length === 0){
+      cont.innerHTML = '<div style="padding:30px;text-align:center;color:rgba(255,245,240,0.45);font-size:12.5px">' +
+        (busca ? 'Nadie con esa búsqueda' : 'Todavía nadie llegó a este paso') + '</div>';
+      return;
+    }
+
+    cont.innerHTML = lista.map(x => {
+      const ini = (x.nombre || x.email || '?').charAt(0).toUpperCase();
+      const f = x.cuando ? new Date(x.cuando) : null;
+
+      let cuando = '';
+      if(f){
+        const dias = Math.floor((Date.now() - f.getTime()) / 86400000);
+        cuando = dias === 0 ? 'hoy'
+          : dias === 1 ? 'ayer'
+          : dias < 30 ? 'hace ' + dias + ' días'
+          : f.toLocaleDateString('es-PY', { day:'numeric', month:'short' });
+      }
+
+      const wa = encodeURIComponent(
+        'Hola ' + (x.nombre || '').split(' ')[0] + '! ' +
+        (x.curso_titulo ? 'Vi que te interesó *' + x.curso_titulo + '*. ¿Te quedó alguna duda?' : '¿Cómo venís con la plataforma?')
+      );
+
+      return '<div class="qn-fila">' +
+        '<div class="qn-avatar">' + (x.avatar_url ? '<img src="' + x.avatar_url + '" alt="">' : ini) + '</div>' +
+        '<div class="qn-info">' +
+          '<div class="qn-nom">' + esc(x.nombre || 'Sin nombre') + '</div>' +
+          '<div class="qn-sub">' + esc(x.email || '') +
+            (x.curso_titulo ? ' · ' + esc(x.curso_titulo) : '') + '</div>' +
+        '</div>' +
+        '<div class="qn-cuando">' + cuando + '</div>' +
+        '<button class="qn-accion" onclick="verCamino(\'' + x.usuario_id + '\',\'' +
+          esc(x.nombre || '').replace(/'/g, "\\'") + '\')">🛤️ Camino</button>' +
+        '<a class="qn-accion" href="https://wa.me/?text=' + wa + '" target="_blank" rel="noopener">💬</a>' +
+      '</div>';
+    }).join('');
+  }
+
+  function filtrarQuienes(){ renderQuienes(); }
+
+  function cerrarQuienes(){ document.getElementById('quienesModal').classList.remove('show'); }
+
+  function copiarEmails(){
+    const busca = document.getElementById('quienesBuscar').value.toLowerCase().trim();
+    let lista = quienesData;
+    if(busca){
+      lista = lista.filter(x =>
+        (x.nombre || '').toLowerCase().includes(busca) ||
+        (x.email || '').toLowerCase().includes(busca)
+      );
+    }
+
+    const emails = [...new Set(lista.map(x => x.email).filter(Boolean))];
+    if(emails.length === 0) return mostrarToast('No hay emails para copiar', true);
+
+    navigator.clipboard?.writeText(emails.join(', '));
+    mostrarToast('✓ ' + emails.length + ' email(s) copiados');
+  }
+
   // ─── El camino de los visitantes ───
   async function cargarEmbudo(){
     const cont = document.getElementById('embudoPasos');
@@ -5146,12 +5461,12 @@ body{visibility:hidden}
     }
 
     const pasos = [
-      { et: 'SE REGISTRARON', n: data.registradas || 0 },
-      { et: 'MIRARON UN CURSO', n: data.miraron_curso || 0 },
-      { et: 'TOCARON COMPRAR', n: data.tocaron_comprar || 0 },
-      { et: 'LLEGARON AL PAGO', n: data.llegaron_al_pago || 0 },
-      { et: 'HICIERON EL PEDIDO', n: data.hicieron_pedido || 0 },
-      { et: 'COMPRARON', n: data.compraron || 0 },
+      { clave: 'registro',     et: 'SE REGISTRARON',     n: data.registradas || 0 },
+      { clave: 'vio_curso',    et: 'MIRARON UN CURSO',   n: data.miraron_curso || 0 },
+      { clave: 'clic_comprar', et: 'TOCARON COMPRAR',    n: data.tocaron_comprar || 0 },
+      { clave: 'vio_checkout', et: 'LLEGARON AL PAGO',   n: data.llegaron_al_pago || 0 },
+      { clave: 'pedido',       et: 'HICIERON EL PEDIDO', n: data.hicieron_pedido || 0 },
+      { clave: 'compra',       et: 'COMPRARON',          n: data.compraron || 0 },
     ];
 
     const base = pasos[0].n || 1;
@@ -5163,7 +5478,8 @@ body{visibility:hidden}
       const caida = (anterior && anterior > 0)
         ? Math.round(((anterior - p.n) / anterior) * 100) : 0;
 
-      return '<div class="emb-paso">' +
+      return '<div class="emb-paso' + (p.n > 0 ? ' tocable' : '') + '"' +
+        (p.n > 0 ? ' onclick="verQuienes(\'' + p.clave + '\',\'' + p.et + '\')"' : '') + '>' +
         '<div class="emb-num" style="color:' + (i === pasos.length-1 ? '#9FE1CB' : '#FFF5F0') + '">' + p.n + '</div>' +
         '<div class="emb-et">' + p.et + '</div>' +
         (i > 0
@@ -8744,6 +9060,130 @@ body{visibility:hidden}
     document.querySelectorAll('#invCursos .inv-curso').forEach(x => x.classList.remove('sel'));
   }
 
+  // ─── Los cursos de una persona, desde Gestionar ───
+  let cursosDeEsta = [];
+
+  async function cargarCursosDeAlumna(usuarioId){
+    const cont = document.getElementById('accCursosLista');
+    if(!cont || !usuarioId) return;
+
+    const { data, error } = await sb.from('compras')
+      .select('id, estado, monto_gs, metodo_pago, pagado_en, acceso_hasta, curso_id, cursos(titulo, slug)')
+      .eq('usuario_id', usuarioId)
+      .eq('estado', 'pagado');
+
+    if(error){
+      cont.innerHTML = '<div class="ac-vacio">No pudimos leer sus cursos</div>';
+      return;
+    }
+
+    cursosDeEsta = data || [];
+
+    if(cursosDeEsta.length === 0){
+      cont.innerHTML = '<div class="ac-vacio">Todavía no tiene ningún curso</div>';
+      return;
+    }
+
+    cont.innerHTML = cursosDeEsta.map(x => {
+      const vence = x.acceso_hasta ? new Date(x.acceso_hasta) : null;
+      const dias = vence ? Math.ceil((vence.getTime() - Date.now()) / 86400000) : null;
+
+      return '<div class="ac-fila">' +
+        '<div class="ac-info">' +
+          '<div class="ac-nom">' + esc(x.cursos?.titulo || 'Curso') + '</div>' +
+          '<div class="ac-sub">' +
+            (x.monto_gs ? 'Gs ' + x.monto_gs.toLocaleString('es-PY') : 'Sin cargo') +
+            (x.metodo_pago ? ' · ' + esc(x.metodo_pago) : '') +
+            (dias !== null
+              ? (dias > 0 ? ' · ' + dias + ' días restantes' : ' · ⚠️ vencido')
+              : ' · acceso permanente') +
+          '</div>' +
+        '</div>' +
+        '<button class="ac-quitar" onclick="quitarCurso(\'' + x.id + '\',\'' +
+          esc(x.cursos?.titulo || '').replace(/'/g, "\\'") + '\')">Quitar</button>' +
+      '</div>';
+    }).join('');
+  }
+
+  function abrirDarCurso(){
+    const usuarioId = document.getElementById('accUsuarioId').value;
+    if(!usuarioId) return;
+
+    // Los que todavía no tiene
+    const yaTiene = cursosDeEsta.map(x => x.curso_id);
+    const libres = (cursos || []).filter(c => c.publicado && !yaTiene.includes(c.id));
+
+    const sel = document.getElementById('dcCurso');
+    sel.innerHTML = libres.length === 0
+      ? '<option value="">Ya tiene todos los cursos publicados</option>'
+      : libres.map(c =>
+          '<option value="' + c.id + '" data-precio="' + (c.precio_gs || 0) + '">' +
+          esc(c.titulo) +
+          (c.precio_gs ? ' · Gs ' + c.precio_gs.toLocaleString('es-PY') : ' · gratis') +
+          '</option>'
+        ).join('');
+
+    document.getElementById('dcMetodo').value = 'cortesia';
+    document.getElementById('dcMonto').value = '0';
+    document.getElementById('dcAvisar').classList.add('on');
+
+    document.getElementById('darCursoModal').classList.add('show');
+  }
+
+  function cerrarDarCurso(){ document.getElementById('darCursoModal').classList.remove('show'); }
+
+  async function darCurso(){
+    const usuarioId = document.getElementById('accUsuarioId').value;
+    const cursoId = document.getElementById('dcCurso').value;
+
+    if(!usuarioId) return mostrarToast('No sabemos a quién', true);
+    if(!cursoId) return mostrarToast('Elegí un curso', true);
+
+    const monto = parseInt(String(document.getElementById('dcMonto').value).replace(/\D/g, '')) || 0;
+    const metodo = document.getElementById('dcMetodo').value;
+
+    const { error } = await sb.from('compras').insert({
+      usuario_id: usuarioId,
+      curso_id: cursoId,
+      monto_gs: monto,
+      estado: 'pagado',
+      metodo_pago: metodo,
+      pagado_en: new Date().toISOString()
+    });
+
+    if(error){
+      return mostrarToast(String(error.message).includes('duplicate')
+        ? 'Ya tenía ese curso'
+        : 'Error: ' + error.message, true);
+    }
+
+    mostrarToast('✓ Curso otorgado');
+
+    // El email de bienvenida
+    if(document.getElementById('dcAvisar').classList.contains('on')){
+      await llamarAvisos({
+        accion: 'bienvenida',
+        curso_id: cursoId,
+        usuario_id: usuarioId
+      }).catch(() => {});
+    }
+
+    cerrarDarCurso();
+    await cargarCursosDeAlumna(usuarioId);
+    if(typeof cargarVentas === 'function') cargarVentas();
+  }
+
+  async function quitarCurso(compraId, titulo){
+    if(!confirm('¿Quitarle el acceso a "' + titulo + '"?\n\nVa a dejar de ver las clases. Su progreso se conserva por si se lo devolvés.')) return;
+
+    const { error } = await sb.from('compras').delete().eq('id', compraId);
+    if(error) return mostrarToast('Error: ' + error.message, true);
+
+    mostrarToast('Acceso quitado');
+    await cargarCursosDeAlumna(document.getElementById('accUsuarioId').value);
+    if(typeof cargarVentas === 'function') cargarVentas();
+  }
+
   // ─── Insignias de una persona (en el modal de gestión) ───
   let insigniasDeEsta = [];
 
@@ -8844,9 +9284,13 @@ body{visibility:hidden}
   function abrirAcciones(id){
     const a = alumnas.find(x => x.id === id);
     if(!a) return;
-    if(a.id === yoSoyId) return mostrarToast('No podés aplicarte esto a vos misma', true);
+
+    const soyYo = (a.id === yoSoyId);
 
     document.getElementById('accUsuarioId').value = id;
+
+    // Sus cursos: darlos y quitarlos
+    cargarCursosDeAlumna(id);
 
     const nombre = a.nombre || (a.email || '').split('@')[0];
     document.getElementById('accPersona').innerHTML =
@@ -8889,6 +9333,27 @@ body{visibility:hidden}
 
     estadoAcc('');
     cargarInsigniasDe(id);
+
+    // Sobre vos misma: podés darte cursos para probar,
+    // pero no bloquearte ni eliminarte
+    const zonaAcciones = document.querySelector('.acc-tipos')?.closest('.form-field')
+                       || document.querySelector('.acc-tipos')?.parentElement;
+
+    if(soyYo){
+      if(zonaAcciones) zonaAcciones.style.display = 'none';
+      document.getElementById('btnAplicarAccion').style.display = 'none';
+      btnEliminar.style.display = 'none';
+
+      const nota = document.getElementById('accNotaYo');
+      if(nota) nota.style.display = '';
+    } else {
+      if(zonaAcciones) zonaAcciones.style.display = '';
+      document.getElementById('btnAplicarAccion').style.display = '';
+
+      const nota = document.getElementById('accNotaYo');
+      if(nota) nota.style.display = 'none';
+    }
+
     document.getElementById('accionesModal').classList.add('show');
   }
 
@@ -10140,6 +10605,7 @@ body{visibility:hidden}
       cargarFunciones(),
       cargarClasesParaAnuncio(),
       cargarHashtags(),
+      cargarSecciones(),
       cargarCategoriasCom(),
       cargarUsoHashtags(),
       cargarPedidos(),

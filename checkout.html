@@ -92,6 +92,18 @@
     cursor:pointer;font-family:inherit;text-decoration:underline;padding:2px 0;
   }
 
+
+  /* ═══ Evitar el zoom automático del iPhone ═══
+     Safari hace zoom en cualquier campo con letra menor a 16px.
+     En el celular los agrandamos; en escritorio quedan como estaban. */
+  @media (max-width: 820px){
+    input, textarea, select,
+    input[type="text"], input[type="email"], input[type="password"],
+    input[type="number"], input[type="tel"], input[type="search"],
+    input[type="date"], input[type="datetime-local"]{
+      font-size: 16px !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -496,5 +508,6 @@
 
 </script>
 
+<script src="app-instalar.js"></script>
 </body>
 </html>

@@ -202,3 +202,75 @@ grant select on public.interes_por_curso to authenticated;
 
 -- ─── VERIFICACIÓN ──────────────────────────────────────────────────
 select * from public.embudo;
+
+-- ═══════════════════════════════════════════════════════════════════
+-- QUIÉNES HICIERON CADA PASO
+-- Para poder tocar un número y ver la lista de personas
+-- ═══════════════════════════════════════════════════════════════════
+
+drop view if exists public.quienes_por_paso;
+create view public.quienes_por_paso as
+-- Se registraron
+select
+  'registro'::text as paso,
+  p.id             as usuario_id,
+  p.nombre,
+  p.email,
+  p.avatar_url,
+  null::text       as curso_titulo,
+  null::uuid       as curso_id,
+  p.creado_en      as cuando
+from public.perfiles p
+
+union all
+
+-- Miraron un curso, tocaron comprar, llegaron al pago
+select
+  e.tipo,
+  p.id,
+  p.nombre,
+  p.email,
+  p.avatar_url,
+  c.titulo,
+  c.id,
+  max(e.creado_en)
+from public.eventos e
+join public.perfiles p on p.id = e.usuario_id
+left join public.cursos c on c.id = e.curso_id
+where e.tipo in ('vio_curso', 'clic_comprar', 'vio_checkout')
+group by e.tipo, p.id, p.nombre, p.email, p.avatar_url, c.titulo, c.id
+
+union all
+
+-- Hicieron el pedido
+select
+  'pedido'::text,
+  p.id,
+  coalesce(pe.nombre, p.nombre),
+  coalesce(pe.email, p.email),
+  p.avatar_url,
+  c.titulo,
+  c.id,
+  pe.creado_en
+from public.pedidos pe
+join public.perfiles p on p.id = pe.usuario_id
+left join public.cursos c on c.id = pe.curso_id
+
+union all
+
+-- Compraron
+select
+  'compra'::text,
+  p.id,
+  p.nombre,
+  p.email,
+  p.avatar_url,
+  c.titulo,
+  c.id,
+  coalesce(co.pagado_en, co.creado_en)
+from public.compras co
+join public.perfiles p on p.id = co.usuario_id
+left join public.cursos c on c.id = co.curso_id
+where co.estado = 'pagado';
+
+grant select on public.quienes_por_paso to authenticated;

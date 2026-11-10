@@ -164,11 +164,91 @@
   .com-responder.abierto{display:block}
   .com-vacio{padding:30px 20px;text-align:center;color:rgba(255,245,240,0.45);font-size:13px}
 
+
+  /* ═══ Terminó la muestra ═══ */
+  .fin-muestra-fondo{
+    position:fixed;inset:0;z-index:9500;
+    background:rgba(8,3,5,0.9);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    display:none;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .fin-muestra-fondo.show{display:flex;animation:fmFade 0.35s ease}
+  @keyframes fmFade{from{opacity:0}to{opacity:1}}
+
+  .fin-muestra{
+    position:relative;max-width:400px;width:100%;
+    background:linear-gradient(170deg,rgba(45,10,24,0.97),rgba(26,5,9,0.97));
+    border:0.5px solid rgba(212,163,86,0.45);
+    border-radius:22px;padding:34px 28px 26px;
+    text-align:center;overflow:hidden;
+    animation:fmSube 0.5s cubic-bezier(0.34,1.35,0.64,1);
+  }
+  @keyframes fmSube{
+    from{opacity:0;transform:translateY(26px) scale(0.95)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+  }
+
+  .fm-brillo{
+    position:absolute;top:-55%;left:50%;transform:translateX(-50%);
+    width:250px;height:250px;border-radius:50%;
+    background:radial-gradient(circle,rgba(212,163,86,0.28),transparent 68%);
+    pointer-events:none;
+  }
+
+  .fm-super{font-size:10px;letter-spacing:0.24em;color:#FAC775;margin-bottom:14px;font-weight:600;position:relative}
+  .fm-titulo{font-size:27px;font-weight:500;margin:0 0 10px;position:relative;line-height:1.2}
+  .fm-texto{font-size:14px;line-height:1.6;color:rgba(255,245,240,0.72);margin:0 0 20px;position:relative}
+
+  .fm-lista{
+    background:rgba(255,245,240,0.04);
+    border-radius:12px;padding:15px 17px;
+    margin-bottom:22px;text-align:left;position:relative;
+  }
+  .fm-item{
+    display:flex;align-items:flex-start;gap:9px;
+    font-size:13.5px;color:rgba(255,245,240,0.85);
+    padding:5px 0;line-height:1.5;
+  }
+  .fm-item svg{flex-shrink:0;margin-top:3px}
+
+  .fm-btn{
+    display:block;width:100%;padding:16px;
+    border-radius:12px;font-size:12px;font-weight:600;
+    letter-spacing:0.12em;text-decoration:none;text-align:center;
+    border:none;cursor:pointer;font-family:inherit;position:relative;
+  }
+  .fm-despues{
+    background:none;border:none;
+    color:rgba(255,245,240,0.45);
+    font-size:12.5px;cursor:pointer;
+    font-family:inherit;margin-top:13px;padding:6px;
+    position:relative;
+  }
+  .fm-despues:hover{color:rgba(255,245,240,0.7)}
+
+  @media (max-width:480px){
+    .fin-muestra{padding:28px 22px 22px}
+    .fm-titulo{font-size:23px}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
 .auth-splash{position:fixed;inset:0;background:linear-gradient(180deg,#1A0A12 0%,#0E0509 100%);z-index:9999;display:flex;align-items:center;justify-content:center;visibility:visible}
 .auth-splash-spinner{width:40px;height:40px;border:2px solid rgba(212,163,86,0.2);border-top-color:#FAC775;border-radius:50%;animation:girar 0.8s linear infinite}
+
+  /* ═══ Evitar el zoom automático del iPhone ═══
+     Safari hace zoom en cualquier campo con letra menor a 16px.
+     En el celular los agrandamos; en escritorio quedan como estaban. */
+  @media (max-width: 820px){
+    input, textarea, select,
+    input[type="text"], input[type="email"], input[type="password"],
+    input[type="number"], input[type="tel"], input[type="search"],
+    input[type="date"], input[type="datetime-local"]{
+      font-size: 16px !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -432,6 +512,78 @@ function urlDeClase(cl){
   return base + (cl.numero ? '&c=' + cl.numero : '&clase=' + encodeURIComponent(cl.id));
 }
 
+
+// ─── Cuando termina de ver las clases de muestra ───
+function esDeMuestra(cl){
+  if(!cl) return false;
+  if(cl.gratis) return true;
+  const m = modulos.find(x => x.id === cl.modulo_id);
+  return !!(m && m.gratis);
+}
+
+function mostrarFinDeMuestra(){
+  if(tieneAcceso) return;                        // ya lo compró
+  if(document.getElementById('finMuestraFondo').classList.contains('show')) return;
+
+  // ¿Le quedan más muestras por ver?
+  const muestras = clasesPlanas.filter(esDeMuestra);
+  const sinVer = muestras.filter(x => x.id !== claseActualId && !progreso[x.id]);
+
+  if(sinVer.length > 0){
+    // Todavía le quedan: la llevamos a la siguiente en vez de vender
+    const prox = sinVer[0];
+    if(prox) abrirClase(prox.id, true);
+    return;
+  }
+
+  // Ya vio todas: ahora sí le ofrecemos el curso
+  const precio = curso.precio_gs
+    ? 'Gs ' + curso.precio_gs.toLocaleString('es-PY')
+    : '';
+
+  document.getElementById('fmTitulo').textContent =
+    muestras.length === 1 ? '¿Te gustó?' : '¿Seguimos?';
+
+  document.getElementById('fmTexto').textContent =
+    'Viste ' + muestras.length + (muestras.length === 1 ? ' clase de muestra' : ' clases de muestra') +
+    '. El curso completo tiene mucho más.';
+
+  // Qué incluye
+  const items = [];
+  if(curso.modulos_count) items.push(curso.modulos_count + ' módulos completos');
+  if(curso.clases_count) items.push(curso.clases_count + ' clases en video');
+  if(curso.duracion_horas) items.push(curso.duracion_horas + ' horas de contenido');
+
+  if(curso.tipo_acceso === 'dias' && curso.dias_acceso){
+    const meses = Math.round(curso.dias_acceso / 30);
+    items.push(meses >= 12
+      ? (Math.round(curso.dias_acceso / 365)) + ' año(s) de acceso'
+      : meses + ' meses de acceso');
+  } else {
+    items.push('Acceso de por vida');
+  }
+
+  items.push('Comunidad privada CMM');
+
+  document.getElementById('fmLista').innerHTML = items.map(t =>
+    '<div class="fm-item">' +
+      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+      esc(t) +
+    '</div>'
+  ).join('');
+
+  const btn = document.getElementById('fmComprar');
+  btn.setAttribute('href', '/checkout?curso=' + encodeURIComponent(cursoSlug));
+  document.getElementById('fmBtnTxt').textContent =
+    precio ? 'QUIERO EL CURSO · ' + precio : 'QUIERO EL CURSO COMPLETO';
+
+  document.getElementById('finMuestraFondo').classList.add('show');
+}
+
+function cerrarFinMuestra(){
+  document.getElementById('finMuestraFondo').classList.remove('show');
+}
+
 // ─── Pintar la clase completa ──────────────────────────────────────
 async function abrirClase(id, empujarHistorial){
   const cl = clasesPlanas.find(x => x.id === id);
@@ -582,6 +734,11 @@ async function alternarCompletada(){
     if(sig) mostrarToast('✓ Clase completada');
     else mostrarToast('🎉 ¡Terminaste el curso!');
   }
+
+  // Si terminó una clase de muestra y no tiene el curso, le ofrecemos comprarlo
+  if(nuevo && !tieneAcceso && esDeMuestra(claseActual)){
+    setTimeout(mostrarFinDeMuestra, 800);
+  }
 }
 
 // ─── Navegación ────────────────────────────────────────────────────
@@ -602,7 +759,15 @@ function irAnterior(){
 function irSiguiente(){
   const idx = clasesPlanas.findIndex(x => x.id === claseActualId);
   const sig = clasesPlanas[idx + 1];
-  if(sig) abrirClase(sig.id, true);
+  if(!sig) return;
+
+  // Si la siguiente está bloqueada y venía de una muestra, le ofrecemos el curso
+  if(!tieneAcceso && !esDeMuestra(sig)){
+    mostrarFinDeMuestra();
+    return;
+  }
+
+  abrirClase(sig.id, true);
 }
 
 // ─── Progreso ──────────────────────────────────────────────────────
@@ -1077,6 +1242,26 @@ async function borrarComentario(id){
 }
 
 </script>
+
+<script src="app-instalar.js"></script>
+
+<!-- Terminó la muestra -->
+<div class="fin-muestra-fondo" id="finMuestraFondo">
+  <div class="fin-muestra">
+    <div class="fm-brillo"></div>
+
+    <div class="fm-super">TERMINASTE LA MUESTRA</div>
+    <h2 class="fm-titulo serif" id="fmTitulo">¿Seguimos?</h2>
+    <p class="fm-texto" id="fmTexto"></p>
+
+    <div class="fm-lista" id="fmLista"></div>
+
+    <a class="cta-gold fm-btn" id="fmComprar">
+      <span id="fmBtnTxt">QUIERO EL CURSO COMPLETO</span>
+    </a>
+    <button class="fm-despues" onclick="cerrarFinMuestra()">Ahora no, gracias</button>
+  </div>
+</div>
 
 </body>
 </html>

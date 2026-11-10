@@ -186,6 +186,18 @@
     .fila-track > *{flex:0 0 165px}
   }
 
+
+  /* ═══ Evitar el zoom automático del iPhone ═══
+     Safari hace zoom en cualquier campo con letra menor a 16px.
+     En el celular los agrandamos; en escritorio quedan como estaban. */
+  @media (max-width: 820px){
+    input, textarea, select,
+    input[type="text"], input[type="email"], input[type="password"],
+    input[type="number"], input[type="tel"], input[type="search"],
+    input[type="date"], input[type="datetime-local"]{
+      font-size: 16px !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -221,7 +233,7 @@
 </section>
 
 <footer class="main-footer">
-  Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026
+  Hecho con <span class="heart">♥</span> por Milena Machado · Paraguay 2026<br><a href="/privacidad" style="color:rgba(255,245,240,0.45);font-size:11.5px">Política de privacidad</a>
 </footer>
 
 <script src="supabase-config.js"></script>
@@ -516,5 +528,6 @@
     });
   }
 </script>
+<script src="app-instalar.js"></script>
 </body>
 </html>
