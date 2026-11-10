@@ -85,7 +85,14 @@
   .post-btn:disabled{opacity:0.5;cursor:not-allowed}
 
   .composer-opciones{max-height:0;overflow:hidden;transition:max-height 0.3s ease,margin 0.3s ease,opacity 0.25s;opacity:0;margin-left:51px}
-  .composer-opciones.abierto{max-height:400px;opacity:1;margin-top:14px;padding-top:13px;border-top:0.5px solid rgba(255,245,240,0.07)}
+  .composer-opciones.abierto{
+    max-height:min(520px, 60vh);
+    overflow-y:auto;
+    opacity:1;
+    margin-top:14px;
+    padding-top:14px;
+    border-top:0.5px solid rgba(255,245,240,0.07);
+  }
   .opc-label{font-size:9.5px;letter-spacing:0.18em;color:rgba(255,245,240,0.45);font-weight:600;margin-bottom:8px}
   /* Botones de categoría y etiquetas */
   .cat-chips{display:flex;gap:6px;flex-wrap:wrap}
@@ -439,6 +446,97 @@
 
   .opc-ayuda{font-size:11px;color:rgba(255,245,240,0.4);margin:-4px 0 8px;line-height:1.4}
 
+
+  .ht-aviso{font-size:11.5px;color:rgba(255,245,240,0.45);line-height:1.5;padding:6px 0}
+
+
+  /* ═══ Editar publicación ═══ */
+  .post-editado{font-style:italic;opacity:0.7}
+
+  .edit-post-fondo{
+    position:fixed;inset:0;z-index:9600;
+    background:rgba(8,3,5,0.86);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    display:none;align-items:center;justify-content:center;
+    padding:22px;
+  }
+  .edit-post-fondo.show{display:flex;animation:epFade 0.25s ease}
+  @keyframes epFade{from{opacity:0}to{opacity:1}}
+
+  .edit-post{
+    width:100%;max-width:480px;
+    max-height:88vh;overflow-y:auto;
+    background:#2A0D18;
+    border:0.5px solid rgba(255,245,240,0.15);
+    border-radius:18px;
+    padding:22px;
+    animation:epSube 0.35s cubic-bezier(0.34,1.25,0.64,1);
+  }
+  @keyframes epSube{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+  .ep-cab{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+  .ep-titulo{font-size:19px;font-weight:500;margin:0}
+  .ep-x{background:none;border:none;color:rgba(255,245,240,0.45);font-size:24px;line-height:1;cursor:pointer;font-family:inherit;padding:0 3px}
+  .ep-x:hover{color:#FFF5F0}
+
+  .ep-texto{
+    width:100%;min-height:120px;max-height:260px;
+    padding:14px 15px;
+    background:rgba(255,245,240,0.04);
+    border:0.5px solid rgba(255,245,240,0.12);
+    border-radius:12px;
+    color:#FFF5F0;font-size:16px;
+    font-family:inherit;line-height:1.6;
+    resize:vertical;outline:none;box-sizing:border-box;
+  }
+  .ep-texto:focus{border-color:rgba(212,163,86,0.45)}
+
+  .ep-foto{position:relative;margin-top:13px;border-radius:12px;overflow:hidden}
+  .ep-foto img{width:100%;display:block;max-height:260px;object-fit:cover}
+  .ep-foto button{
+    position:absolute;top:9px;right:9px;
+    width:28px;height:28px;border-radius:50%;
+    background:rgba(14,5,9,0.82);
+    border:0.5px solid rgba(255,245,240,0.25);
+    color:#FFF5F0;font-size:16px;line-height:1;
+    cursor:pointer;font-family:inherit;
+  }
+
+  .ep-seccion{margin-top:17px}
+  .ep-label{font-size:9.5px;letter-spacing:0.15em;color:rgba(255,245,240,0.42);margin-bottom:9px;font-weight:600}
+  .ep-chips{display:flex;flex-wrap:wrap;gap:6px}
+  .ep-chip{
+    padding:8px 13px;border-radius:16px;
+    background:rgba(255,245,240,0.05);
+    border:0.5px solid rgba(255,245,240,0.12);
+    color:rgba(255,245,240,0.75);
+    font-size:12px;cursor:pointer;font-family:inherit;
+    transition:all 0.18s;white-space:nowrap;
+  }
+  .ep-chip:hover{background:rgba(255,245,240,0.09)}
+  .ep-chip.sel{background:rgba(212,163,86,0.2);border-color:#FAC775;color:#FAC775}
+
+  .ep-aviso{font-size:12.5px;line-height:1.5;margin-top:14px;display:none}
+  .ep-aviso.show{display:block}
+  .ep-aviso.error{color:#FF8090}
+  .ep-aviso.info{color:#FAC775}
+
+  .ep-pie{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
+  .ep-guardar{padding:13px 22px;border-radius:10px;font-size:11.5px;font-weight:600;letter-spacing:0.1em;border:none;cursor:pointer;font-family:inherit}
+  .btn-sec-com{
+    padding:13px 18px;border-radius:10px;
+    background:rgba(255,245,240,0.05);
+    border:0.5px solid rgba(255,245,240,0.14);
+    color:rgba(255,245,240,0.7);
+    font-size:11.5px;cursor:pointer;font-family:inherit;
+  }
+  .btn-sec-com:hover{color:#FFF5F0}
+
+  @media (max-width:520px){
+    .edit-post{padding:18px;border-radius:15px}
+    .ep-pie button{flex:1}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -790,15 +888,37 @@ function elegirCategoria(el){
 })();
 
 async function cargarHashtagsDisponibles(){
-  const { data } = await sb.from('hashtags').select('nombre').order('nombre', { ascending: true });
-  hashtagsDisponibles = (data || []).map(h => h.nombre);
   const cont = document.getElementById('hashtagChips');
-  if(hashtagsDisponibles.length === 0){
-    cont.innerHTML = '<div style="font-size:11.5px;color:rgba(255,245,240,0.4);font-style:italic">No hay etiquetas todavía</div>';
+  if(!cont) return;
+
+  const { data, error } = await sb.from('hashtags')
+    .select('nombre, activo').order('nombre', { ascending: true });
+
+  if(error){
+    console.warn('[hashtags]', error.message);
+    cont.innerHTML = '<div class="ht-aviso">No pudimos cargar los hashtags. ' +
+      (String(error.message).includes('does not exist')
+        ? 'Falta crear la tabla en Supabase.'
+        : 'Probá recargar la página.') + '</div>';
     return;
   }
+
+  // Los apagados no se ofrecen
+  hashtagsDisponibles = (data || [])
+    .filter(h => h.activo !== false)
+    .map(h => h.nombre);
+
+  if(hashtagsDisponibles.length === 0){
+    cont.innerHTML = '<div class="ht-aviso">' +
+      (esAdmin
+        ? 'Todavía no creaste hashtags. Creálos en el panel, en la pestaña Hashtags.'
+        : 'Todavía no hay hashtags disponibles.') +
+      '</div>';
+    return;
+  }
+
   cont.innerHTML = hashtagsDisponibles.map(h =>
-    `<button class="hashtag-chip" data-tag="${escapeHtml(h)}" onclick="toggleHashtag(this)" type="button">#${escapeHtml(h)}</button>`
+    `<button class="hashtag-chip${hashtagsSeleccionados.includes(h) ? ' selected' : ''}" data-tag="${escapeHtml(h)}" onclick="toggleHashtag(this)" type="button">#${escapeHtml(h)}</button>`
   ).join('');
 }
 
@@ -1142,8 +1262,8 @@ function pintarFiltroActual(){
 
   const partes = [];
 
-  if(categoriaActiva && categoriaActiva !== 'todos'){
-    const c = categoriasComunidad.find(x => x.clave === categoriaActiva);
+  if(filtroCategoria && filtroCategoria !== 'todos'){
+    const c = categoriasComunidad.find(x => x.clave === filtroCategoria);
     if(c) partes.push((c.icono ? c.icono + ' ' : '') + c.nombre);
   }
 
@@ -1207,7 +1327,7 @@ function filtrarPorTag(tag){
 
 function limpiarFiltros(){
   tagFiltrado = null;
-  categoriaActiva = 'todos';
+  filtroCategoria = 'todos';
   textoBusqueda = '';
 
   const campo = document.getElementById('buscarPosts');
@@ -1240,7 +1360,14 @@ async function cargarCategorias(){
   } catch(e){ categoriasComunidad = []; }
 
   const cont = document.getElementById('filtrosChips');
-  if(!cont || categoriasComunidad.length === 0) return;
+  if(!cont) return;
+
+  // Si todavía no creaste las secciones, al menos dejamos "General"
+  if(categoriasComunidad.length === 0){
+    cont.innerHTML = '<button class="fchip active" data-cat="todos" onclick="filtrarCat(this)">General</button>';
+    const grupo = document.getElementById('filtroGrupoTags');
+    return;
+  }
 
   // "General" es el filtro que muestra todo
   const general = categoriasComunidad.find(x => x.clave === 'general');
@@ -1257,7 +1384,7 @@ async function cargarCategorias(){
   // Y los chips para elegir al publicar
   const chips = document.getElementById('chipsCategoriaPost');
   if(chips){
-    const esEquipo = miPerfil && ['admin','fundadora'].includes(miPerfil.rol);
+    const esEquipo = perfilActual && ['admin','fundadora'].includes(perfilActual.rol);
     const permitidas = categoriasComunidad.filter(x => !x.solo_equipo || esEquipo);
 
     chips.innerHTML = permitidas.map(x =>
@@ -1370,6 +1497,7 @@ function renderFeed(){
             </div>
             <div class="post-meta">
               <span>${tiempoRelativo(p.creado_en)}</span>
+              ${p.editado_en ? '<span>·</span><span class="post-editado" title="Editado ' + new Date(p.editado_en).toLocaleString('es-PY') + '">editado</span>' : ''}
               ${p.categoria && p.categoria !== 'general' ? '<span>·</span><span>' + escapeHtml(p.categoria) + '</span>' : ''}
             </div>
           </div>
@@ -1379,6 +1507,7 @@ function renderFeed(){
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="19" r="1.7"/></svg>
             </button>
             <div class="post-menu-drop" id="menu-${p.id}">
+              ${p.usuario_id === usuarioActual.id ? `<button class="post-menu-item" onclick="editarPost('${p.id}')">✏️ Editar</button>` : ''}
               ${esAdmin ? `<button class="post-menu-item" onclick="fijarPost('${p.id}', ${!p.fijado})">${p.fijado ? 'Quitar de fijados' : '📌 Fijar arriba'}</button>` : ''}
               ${puedeBorrar ? `<button class="post-menu-item danger" onclick="borrarPost('${p.id}')">Eliminar post</button>` : ''}
             </div>
@@ -1536,6 +1665,136 @@ async function borrarComentario(id){
   await cargarFeed();
 }
 
+
+// ═══════════════════════════════════════════════════════════
+// EDITAR UNA PUBLICACIÓN
+// ═══════════════════════════════════════════════════════════
+let postEditando = null;
+let edCategoria = 'general';
+let edHashtags = [];
+let edFoto = null;
+
+function avisoEdit(msg, tipo){
+  const el = document.getElementById('epAviso');
+  if(!msg){ el.className = 'ep-aviso'; return; }
+  el.className = 'ep-aviso show ' + (tipo || 'error');
+  el.textContent = msg;
+}
+
+function editarPost(id){
+  const p = (posts || []).find(x => x.id === id);
+  if(!p) return mostrarToast('No encontramos esa publicación', true);
+  if(p.usuario_id !== usuarioActual.id) return mostrarToast('Solo podés editar lo tuyo', true);
+
+  postEditando = p;
+  edCategoria = p.categoria || 'general';
+  edHashtags = [...(p.hashtags || [])];
+  edFoto = p.imagen_url || null;
+
+  document.getElementById('epTexto').value = p.contenido || '';
+
+  // La foto
+  const zonaFoto = document.getElementById('epFoto');
+  if(edFoto){
+    document.getElementById('epFotoImg').src = edFoto;
+    zonaFoto.style.display = '';
+  } else {
+    zonaFoto.style.display = 'none';
+  }
+
+  // Las secciones
+  const esEquipo = perfilActual && ['admin','fundadora'].includes(perfilActual.rol);
+  const cats = (categoriasComunidad || []).filter(x => !x.solo_equipo || esEquipo);
+
+  document.getElementById('epCategorias').innerHTML = cats.length
+    ? cats.map(x =>
+        '<button type="button" class="ep-chip' + (x.clave === edCategoria ? ' sel' : '') +
+        '" onclick="elegirCatEdit(this,\'' + escapeHtml(x.clave) + '\')">' +
+        (x.icono ? x.icono + ' ' : '') + escapeHtml(x.nombre) + '</button>'
+      ).join('')
+    : '<div style="font-size:11.5px;color:rgba(255,245,240,0.4)">Sin secciones configuradas</div>';
+
+  // Los hashtags
+  document.getElementById('epHashtags').innerHTML = (hashtagsDisponibles || []).length
+    ? hashtagsDisponibles.map(h =>
+        '<button type="button" class="ep-chip' + (edHashtags.includes(h) ? ' sel' : '') +
+        '" onclick="tocarTagEdit(this,\'' + escapeHtml(h) + '\')">#' + escapeHtml(h) + '</button>'
+      ).join('')
+    : '<div style="font-size:11.5px;color:rgba(255,245,240,0.4)">Sin hashtags disponibles</div>';
+
+  avisoEdit('');
+  document.getElementById('editPostFondo').classList.add('show');
+  setTimeout(() => document.getElementById('epTexto').focus(), 180);
+}
+
+function elegirCatEdit(el, clave){
+  document.querySelectorAll('#epCategorias .ep-chip').forEach(x => x.classList.remove('sel'));
+  el.classList.add('sel');
+  edCategoria = clave;
+}
+
+function tocarTagEdit(el, tag){
+  const i = edHashtags.indexOf(tag);
+  if(i >= 0){ edHashtags.splice(i, 1); el.classList.remove('sel'); }
+  else { edHashtags.push(tag); el.classList.add('sel'); }
+}
+
+function quitarFotoEdit(){
+  if(!confirm('¿Quitar la foto de esta publicación?')) return;
+  edFoto = null;
+  document.getElementById('epFoto').style.display = 'none';
+}
+
+function cerrarEditarPost(ev){
+  if(ev && ev.target !== ev.currentTarget) return;
+  document.getElementById('editPostFondo').classList.remove('show');
+  postEditando = null;
+}
+
+async function guardarEdicionPost(){
+  if(!postEditando) return;
+
+  const texto = document.getElementById('epTexto').value.trim();
+  if(!texto && !edFoto) return avisoEdit('Escribí algo o dejá la foto');
+
+  const btn = document.getElementById('epGuardar');
+  btn.disabled = true;
+  btn.textContent = 'GUARDANDO...';
+
+  // Si agregó un enlace, vuelve a revisión
+  const tieneEnlace = /(https?:\/\/|www\.)/i.test(texto);
+  const esEquipo = perfilActual && ['admin','fundadora'].includes(perfilActual.rol);
+  const vuelveARevision = tieneEnlace && !esEquipo && !postEditando.pendiente_aprobacion;
+
+  const datos = {
+    contenido: texto || null,
+    categoria: edCategoria,
+    hashtags: edHashtags,
+    imagen_url: edFoto,
+    editado_en: new Date().toISOString()
+  };
+
+  if(vuelveARevision) datos.pendiente_aprobacion = true;
+
+  const { error } = await sb.from('posts').update(datos).eq('id', postEditando.id);
+
+  btn.disabled = false;
+  btn.textContent = 'GUARDAR CAMBIOS';
+
+  if(error){
+    return avisoEdit(String(error.message).includes('editado_en')
+      ? 'Falta correr SQL-EDITAR-POSTS.sql en Supabase'
+      : 'No pudimos guardar: ' + error.message);
+  }
+
+  mostrarToast(vuelveARevision
+    ? '⏳ Guardado. Como agregaste un enlace, vuelve a revisión.'
+    : '✓ Publicación actualizada');
+
+  cerrarEditarPost();
+  await cargarFeed();
+}
+
 async function borrarPost(id){
   if(!confirm('¿Eliminar esta publicación? No se puede deshacer.')) return;
   const { error } = await sb.from('posts').delete().eq('id', id);
@@ -1686,14 +1945,17 @@ const waitSupaCom = setInterval(async () => {
   perfilesCache[user.id] = perfilActual;
   esAdmin = ['admin','fundadora'].includes(perfilActual.rol);
 
-  await cargarCategorias();
-  await cargarTagsDelMenu();
-  pintarFiltroActual();
-  await cargarCatalogoInsignias();
+  // Nada de esto debe impedir que cargue el feed
+  try { await cargarCategorias(); } catch(e){ console.warn('[categorias]', e); }
+  try { await cargarTagsDelMenu(); } catch(e){ console.warn('[hashtags]', e); }
+  try { pintarFiltroActual(); } catch(e){}
+  try { await cargarCatalogoInsignias(); } catch(e){ console.warn('[insignias]', e); }
+  try { await revisarPremium(); } catch(e){ console.warn('[premium]', e); }
 
-  // ¿Desbloqueó alguna desde la última vez?
-  setTimeout(revisarInsigniasNuevas, 900);
-  await revisarPremium();
+  // ¿Desbloqueó alguna insignia desde la última vez?
+  setTimeout(function(){
+    try { revisarInsigniasNuevas(); } catch(e){}
+  }, 900);
 
   // Revisamos si se ganó alguna insignia nueva
   try { await sb.rpc('revisar_mis_insignias'); } catch(e){}
@@ -1726,7 +1988,7 @@ const waitSupaCom = setInterval(async () => {
   document.getElementById('auth-splash-style')?.remove();
   document.getElementById('authSplash')?.remove();
 
-  await cargarHashtagsDisponibles();
+  try { await cargarHashtagsDisponibles(); } catch(e){ console.warn('[hashtags]', e); }
   await cargarFeed();
 }, 50);
 </script>
@@ -1746,5 +2008,40 @@ const waitSupaCom = setInterval(async () => {
 </div>
 
 <script src="app-instalar.js"></script>
+
+<!-- Editar publicación -->
+<div class="edit-post-fondo" id="editPostFondo" onclick="cerrarEditarPost(event)">
+  <div class="edit-post" onclick="event.stopPropagation()">
+    <div class="ep-cab">
+      <h3 class="ep-titulo serif">Editar tu publicación</h3>
+      <button class="ep-x" onclick="cerrarEditarPost()" aria-label="Cerrar">×</button>
+    </div>
+
+    <textarea class="ep-texto" id="epTexto" placeholder="¿Qué querés contar?"></textarea>
+
+    <div class="ep-foto" id="epFoto" style="display:none">
+      <img id="epFotoImg" alt="">
+      <button type="button" onclick="quitarFotoEdit()" title="Quitar la foto">×</button>
+    </div>
+
+    <div class="ep-seccion">
+      <div class="ep-label">SECCIÓN</div>
+      <div class="ep-chips" id="epCategorias"></div>
+    </div>
+
+    <div class="ep-seccion">
+      <div class="ep-label">HASHTAGS</div>
+      <div class="ep-chips" id="epHashtags"></div>
+    </div>
+
+    <div class="ep-aviso" id="epAviso"></div>
+
+    <div class="ep-pie">
+      <button class="btn-sec-com" onclick="cerrarEditarPost()">Cancelar</button>
+      <button class="cta-gold ep-guardar" onclick="guardarEdicionPost()" id="epGuardar">GUARDAR CAMBIOS</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
