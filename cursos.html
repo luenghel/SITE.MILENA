@@ -402,7 +402,7 @@
     // Con foto de portada: solo la imagen, el diseño ya trae el título
     if(curso.foto_portada){
       return `
-      <a href="${link}"${target} class="poster-hover poster-card${curso.destacado_home ? ' destacado' : ''}" data-curso="${esc(curso.slug)}">
+      <a href="${link}"${target} class="poster-hover poster-card${curso.marco_dorado ? ' destacado' : ''}" data-curso="${esc(curso.slug)}">
         <div class="poster-shadow limpio" style="background-image:url('${esc(curso.foto_portada)}')">
           ${esProximo ? '<div class="velo-proximo"></div>' : ''}
           ${esProximo ? `<div class="proximo-chip">🔮 PRÓXIMAMENTE${chipFalta(curso)}</div>` : ''}
@@ -425,7 +425,7 @@
     }
 
     return `
-      <a href="${link}"${target} class="poster-hover poster-card${curso.destacado_home ? ' destacado' : ''}" data-curso="${esc(curso.slug)}">
+      <a href="${link}"${target} class="poster-hover poster-card${curso.marco_dorado ? ' destacado' : ''}" data-curso="${esc(curso.slug)}">
         <div class="poster-shadow" style="${fondo}">
           ${esProximo ? '<div class="velo-proximo"></div>' : ''}
           <div style="position:absolute;width:160px;height:160px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>

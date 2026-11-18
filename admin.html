@@ -2208,10 +2208,18 @@ body{visibility:hidden}
 
         <div class="toggle-row">
           <div class="toggle-info">
-            <div class="toggle-label">⭐ Destacar en home</div>
-            <div class="toggle-help">Aparece en la página principal y le damos un hilito dorado girando alrededor</div>
+            <div class="toggle-label">🏠 Mostrar en la home</div>
+            <div class="toggle-help">Aparece en la página principal del sitio</div>
           </div>
           <div class="toggle-switch" id="cursoDestacado" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">✨ Marco dorado girando</div>
+            <div class="toggle-help">Un hilito dorado da vueltas alrededor del curso, en la home y en el catálogo. Es aparte de mostrarlo en la home.</div>
+          </div>
+          <div class="toggle-switch" id="cursoMarcoDorado" onclick="this.classList.toggle('on')"></div>
         </div>
       </div>
 
@@ -4936,6 +4944,7 @@ body{visibility:hidden}
       cursoOrdenAuto = c.orden || 0;
       document.getElementById('cursoPublicado').classList.toggle('on', !!c.publicado);
       document.getElementById('cursoDestacado').classList.toggle('on', !!c.destacado_home);
+      document.getElementById('cursoMarcoDorado').classList.toggle('on', !!c.marco_dorado);
       gradientSeleccionado = c.color_gradient || gradientSeleccionado;
       document.querySelectorAll('.gradient-option').forEach(g => {
         g.classList.toggle('selected', g.dataset.gradient === gradientSeleccionado);
@@ -4975,6 +4984,7 @@ body{visibility:hidden}
       document.getElementById('cursoCategoria').value = 'FORMACIÓN';
       document.getElementById('cursoPublicado').classList.remove('on');
       document.getElementById('cursoDestacado').classList.remove('on');
+      document.getElementById('cursoMarcoDorado').classList.remove('on');
       gradientSeleccionado = 'linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)';
       document.querySelectorAll('.gradient-option').forEach((g,i) => g.classList.toggle('selected', i === 0));
       quitarFotoCurso();
@@ -5070,6 +5080,7 @@ body{visibility:hidden}
       color_gradient: gradientSeleccionado,
       publicado: document.getElementById('cursoPublicado').classList.contains('on'),
       destacado_home: document.getElementById('cursoDestacado').classList.contains('on'),
+      marco_dorado: document.getElementById('cursoMarcoDorado').classList.contains('on'),
       foto_portada: document.getElementById('cursoFotoUrl').value || null,
       tipo: document.getElementById('cursoTipo').value,
       seccion: document.getElementById('cursoSeccion').value,

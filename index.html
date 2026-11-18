@@ -923,7 +923,7 @@
     if(curso.foto_portada){
       return `
       <div class="poster-item">
-        <a href="${destino}"${target} class="poster-hover poster${curso.destacado_home ? ' destacado' : ''}">
+        <a href="${destino}"${target} class="poster-hover poster${curso.marco_dorado ? ' destacado' : ''}">
           <div class="poster-shadow limpio" style="${fondoCard}">
             ${esProximo ? '<div class="velo-proximo"></div>' : ''}
             ${necesitaCandado ? `
@@ -946,7 +946,7 @@
     // Sin foto, mostramos el diseño con el título encima
     return `
       <div class="poster-item">
-        <a href="${destino}"${target} class="poster-hover poster${curso.destacado_home ? ' destacado' : ''}">
+        <a href="${destino}"${target} class="poster-hover poster${curso.marco_dorado ? ' destacado' : ''}">
           <div class="poster-shadow" style="${fondoCard}">
             ${esProximo ? '<div class="velo-proximo"></div>' : ''}
             <div style="position:absolute;width:130px;height:130px;left:-30px;top:-20px;border-radius:50%;filter:blur(2px);background:radial-gradient(circle,rgba(184,41,74,0.55),transparent 70%)"></div>
