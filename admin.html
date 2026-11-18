@@ -210,6 +210,13 @@
   .curso-card-meta{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .curso-card-precio{font-size:14px;color:#FAC775;font-weight:500;font-family:Georgia,serif}
   .curso-card-precio.gratis{color:#9FE1CB}
+  .curso-card-precio.proximo{color:#E8B8C4}
+  .previa-cuenta{margin-top:12px;padding:14px;border-radius:12px;background:rgba(232,184,196,0.08);border:0.5px solid rgba(232,184,196,0.3);text-align:center}
+  .previa-cuenta .pc-lbl{font-size:10px;letter-spacing:0.18em;color:rgba(255,245,240,0.5);margin-bottom:8px}
+  .previa-cuenta .pc-reloj{display:flex;justify-content:center;gap:10px}
+  .previa-cuenta .pc-bloque{min-width:54px;padding:8px 6px;border-radius:9px;background:rgba(255,245,240,0.06)}
+  .previa-cuenta .pc-num{font-size:20px;font-weight:600;color:#FAC775;line-height:1}
+  .previa-cuenta .pc-uni{font-size:9px;letter-spacing:0.1em;color:rgba(255,245,240,0.45);margin-top:4px}
   .curso-card-stats{font-size:10.5px;color:rgba(255,245,240,0.55)}
 
   .empty-cursos{padding:60px 20px;text-align:center;color:rgba(255,245,240,0.5);grid-column:1/-1}
@@ -774,6 +781,20 @@
 
   .clase-fila{display:flex;align-items:center;gap:10px;padding:11px 12px;background:rgba(255,245,240,0.03);border-radius:9px;margin-top:8px;cursor:pointer;transition:all 0.2s}
   .clase-fila:hover{background:rgba(255,245,240,0.07)}
+
+  /* ── Arrastrar para ordenar ── */
+  .arrastre{width:24px;height:30px;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:grab;color:rgba(255,245,240,0.28);border-radius:6px;transition:all 0.18s;touch-action:none;user-select:none}
+  .arrastre:hover{color:#FAC775;background:rgba(212,163,86,0.14)}
+  .arrastre:active{cursor:grabbing}
+  .clase-fila.llevando,.modulo.llevando{opacity:0.35}
+  .clase-fila.marca-arriba{box-shadow:0 -3px 0 -1px #FAC775}
+  .clase-fila.marca-abajo{box-shadow:0 3px 0 -1px #FAC775}
+  .modulo-body.recibe{background:rgba(212,163,86,0.08);border-radius:9px;outline:1.5px dashed rgba(212,163,86,0.55);outline-offset:-3px}
+  .modulo.marca-arriba{box-shadow:0 -3px 0 -1px #FAC775}
+  .modulo.marca-abajo{box-shadow:0 3px 0 -1px #FAC775}
+  .aviso-arrastre{display:flex;align-items:center;gap:8px;padding:10px 13px;margin-bottom:12px;border-radius:10px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.28);font-size:12px;color:rgba(255,245,240,0.72)}
+  .guardando-orden{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;padding:11px 20px;border-radius:11px;background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208;font-size:12.5px;font-weight:600;display:none}
+  .guardando-orden.show{display:block}
   .clase-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,245,240,0.06);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
   .clase-info{flex:1;min-width:0}
   .clase-titulo{font-size:13px}
@@ -2012,7 +2033,18 @@ body{visibility:hidden}
             <div class="form-help">Una línea por punto</div>
 
             <label class="form-label" style="margin-top:14px">CUÁNDO SALE (opcional)</label>
-            <input type="date" class="form-input" id="cursoFechaDisponible">
+            <input type="datetime-local" class="form-input" id="cursoFechaDisponible" onchange="pintarPreviaCuenta()">
+            <div class="form-help">Poné día y hora. Si no sabés la hora exacta, dejá 00:00.</div>
+
+            <div class="toggle-row" style="margin-top:12px">
+              <div class="toggle-info">
+                <div class="toggle-label">⏳ Mostrar cuenta regresiva</div>
+                <div class="toggle-help">Un reloj en vivo con los días, horas y minutos que faltan</div>
+              </div>
+              <div class="toggle-switch on" id="cursoCuentaRegresiva" onclick="this.classList.toggle('on');pintarPreviaCuenta()"></div>
+            </div>
+
+            <div id="previaCuenta" class="previa-cuenta" style="display:none"></div>
           </div>
 
           <div class="form-field form-grid-full">
@@ -2176,8 +2208,8 @@ body{visibility:hidden}
 
         <div class="toggle-row">
           <div class="toggle-info">
-            <div class="toggle-label">Destacar en home</div>
-            <div class="toggle-help">Aparece en la página principal del sitio</div>
+            <div class="toggle-label">⭐ Destacar en home</div>
+            <div class="toggle-help">Aparece en la página principal y le damos un hilito dorado girando alrededor</div>
           </div>
           <div class="toggle-switch" id="cursoDestacado" onclick="this.classList.toggle('on')"></div>
         </div>
@@ -4840,7 +4872,11 @@ body{visibility:hidden}
           <div class="curso-card-cat">${c.categoria || 'SIN CATEGORÍA'}</div>
           <div class="curso-card-titulo">${c.titulo}</div>
           <div class="curso-card-meta">
-            <span class="curso-card-precio ${c.precio_gs === 0 ? 'gratis' : ''}">${c.precio_gs === 0 ? 'GRATIS' : 'Gs ' + c.precio_gs.toLocaleString('es-PY')}</span>
+            <span class="curso-card-precio ${c.proximamente ? 'proximo' : (c.precio_gs === 0 ? 'gratis' : '')}">${
+              c.proximamente
+                ? '🔮 PRÓXIMAMENTE' + (c.fecha_disponible ? ' · ' + faltaPara(c.fecha_disponible) : '')
+                : (c.precio_gs === 0 ? 'GRATIS' : 'Gs ' + (c.precio_gs || 0).toLocaleString('es-PY'))
+            }</span>
             <span class="curso-card-stats">${[
               c.modulos_count ? c.modulos_count + ' mód' : '',
               c.clases_count ? c.clases_count + ' clase' + (c.clases_count === 1 ? '' : 's') : '',
@@ -4887,8 +4923,8 @@ body{visibility:hidden}
       document.getElementById('cursoProximamente').classList.toggle('on', !!c.proximamente);
       document.getElementById('cursoTextoProximo').value = c.texto_proximamente || '';
       document.getElementById('cursoQueIncluye').value = c.que_incluye || '';
-      document.getElementById('cursoFechaDisponible').value = c.fecha_disponible
-        ? new Date(c.fecha_disponible).toISOString().slice(0,10) : '';
+      document.getElementById('cursoFechaDisponible').value = fechaParaInput(c.fecha_disponible);
+      document.getElementById('cursoCuentaRegresiva').classList.toggle('on', c.mostrar_cuenta !== false);
       document.getElementById('cursoLanzamiento').value = c.fecha_lanzamiento
         ? new Date(c.fecha_lanzamiento).toISOString().slice(0,10) : '';
       document.getElementById('cursoAvisarLiberacion').classList.toggle('on', c.avisar_liberacion !== false);
@@ -4933,6 +4969,7 @@ body{visibility:hidden}
       document.getElementById('cursoTextoProximo').value = '';
       document.getElementById('cursoQueIncluye').value = '';
       document.getElementById('cursoFechaDisponible').value = '';
+      document.getElementById('cursoCuentaRegresiva').classList.add('on');
       document.getElementById('cursoLanzamiento').value = new Date().toISOString().slice(0,10);
       document.getElementById('cursoAvisarLiberacion').classList.add('on');
       document.getElementById('cursoCategoria').value = 'FORMACIÓN';
@@ -5047,8 +5084,9 @@ body{visibility:hidden}
       texto_proximamente: document.getElementById('cursoTextoProximo').value.trim() || null,
       que_incluye: document.getElementById('cursoQueIncluye').value.trim() || null,
       fecha_disponible: document.getElementById('cursoFechaDisponible').value
-        ? new Date(document.getElementById('cursoFechaDisponible').value + 'T00:00:00').toISOString()
+        ? new Date(document.getElementById('cursoFechaDisponible').value).toISOString()
         : null,
+      mostrar_cuenta: document.getElementById('cursoCuentaRegresiva').classList.contains('on'),
       avisar_liberacion: document.getElementById('cursoAvisarLiberacion').classList.contains('on')
     };
 
@@ -7028,9 +7066,68 @@ body{visibility:hidden}
     zona.style.display = (t === 'curso' && id) ? '' : 'none';
   }
 
+  // ─── Fechas y cuenta regresiva ─────────────────────────────────
+  // El input datetime-local trabaja en hora local, no en UTC
+  function fechaParaInput(iso){
+    if(!iso) return '';
+    const d = new Date(iso);
+    if(isNaN(d)) return '';
+    const dos = n => String(n).padStart(2, '0');
+    return d.getFullYear() + '-' + dos(d.getMonth()+1) + '-' + dos(d.getDate()) +
+           'T' + dos(d.getHours()) + ':' + dos(d.getMinutes());
+  }
+
+  // Cuánto falta, en palabras cortas
+  function faltaPara(iso){
+    const ms = new Date(iso).getTime() - Date.now();
+    if(isNaN(ms)) return '';
+    if(ms <= 0) return 'ya salió';
+    const dias = Math.floor(ms / 86400000);
+    const horas = Math.floor((ms % 86400000) / 3600000);
+    if(dias > 0) return 'faltan ' + dias + 'd';
+    if(horas > 0) return 'faltan ' + horas + 'h';
+    return 'falta poco';
+  }
+
+  // El relojito de ejemplo adentro del formulario
+  let timerPrevia = null;
+  function pintarPreviaCuenta(){
+    const caja = document.getElementById('previaCuenta');
+    if(!caja) return;
+
+    const valor = document.getElementById('cursoFechaDisponible')?.value;
+    const on = document.getElementById('cursoCuentaRegresiva')?.classList.contains('on');
+
+    if(timerPrevia){ clearInterval(timerPrevia); timerPrevia = null; }
+
+    if(!valor || !on){ caja.style.display = 'none'; return; }
+
+    const destino = new Date(valor).getTime();
+    if(isNaN(destino)){ caja.style.display = 'none'; return; }
+
+    const dibujar = () => {
+      let ms = destino - Date.now();
+      if(ms < 0) ms = 0;
+      const d = Math.floor(ms / 86400000);
+      const h = Math.floor((ms % 86400000) / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const sg = Math.floor((ms % 60000) / 1000);
+      const bloque = (n, u) => '<div class="pc-bloque"><div class="pc-num">' +
+        String(n).padStart(2,'0') + '</div><div class="pc-uni">' + u + '</div></div>';
+      caja.innerHTML = '<div class="pc-lbl">ASÍ LO VAN A VER</div>' +
+        '<div class="pc-reloj">' + bloque(d,'DÍAS') + bloque(h,'HS') +
+        bloque(m,'MIN') + bloque(sg,'SEG') + '</div>';
+    };
+
+    caja.style.display = '';
+    dibujar();
+    timerPrevia = setInterval(dibujar, 1000);
+  }
+
   function cambiarProximamente(){
     const on = document.getElementById('cursoProximamente').classList.contains('on');
     document.getElementById('camposProximamente').style.display = on ? '' : 'none';
+    pintarPreviaCuenta();
   }
 
 
@@ -7142,14 +7239,32 @@ body{visibility:hidden}
 
     let totalClases = 0, totalMin = 0;
 
-    cont.innerHTML = modulos.map((m, i) => {
+    const ayuda = '<div class="aviso-arrastre">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/></svg>' +
+      'Agarrá el puntito de la izquierda para mover una clase de lugar, o pasarla a otro módulo.' +
+      '</div>';
+
+    cont.innerHTML = ayuda + modulos.map((m, i) => {
       const cls = clasesPorModulo[m.id] || [];
       totalClases += cls.length;
       const min = cls.reduce((s, x) => s + (x.duracion_minutos || 0), 0);
       totalMin += min;
 
-      return '<div class="modulo" id="mod-' + m.id + '">' +
+      return '<div class="modulo" id="mod-' + m.id + '" data-modid="' + m.id + '"' +
+        ' ondragstart="arrastreModuloEmpieza(event,\'' + m.id + '\')"' +
+        ' ondragover="arrastreSobreModuloOrden(event)"' +
+        ' ondragleave="limpiarMarcas(this)"' +
+        ' ondrop="arrastreSueltaModulo(event)"' +
+        ' ondragend="arrastreTermina()">' +
         '<div class="modulo-head" onclick="toggleModulo(\'' + m.id + '\')">' +
+          '<div class="arrastre" title="Arrastrá para cambiar el orden del módulo"' +
+            ' onpointerdown="prepararArrastreModulo(this)" onclick="event.stopPropagation()">' +
+            '<svg width="12" height="16" viewBox="0 0 12 16" fill="currentColor">' +
+              '<circle cx="3" cy="3" r="1.4"/><circle cx="9" cy="3" r="1.4"/>' +
+              '<circle cx="3" cy="8" r="1.4"/><circle cx="9" cy="8" r="1.4"/>' +
+              '<circle cx="3" cy="13" r="1.4"/><circle cx="9" cy="13" r="1.4"/>' +
+            '</svg>' +
+          '</div>' +
           '<div class="modulo-num">' + (i + 1) + '</div>' +
           '<div class="modulo-info">' +
             '<div class="modulo-titulo">' + esc(m.titulo) + (m.publicado === false ? ' <span class="mini-badge borrador">BORRADOR</span>' : '') + '</div>' +
@@ -7165,11 +7280,28 @@ body{visibility:hidden}
           '<button class="acc-btn-menu" onclick="event.stopPropagation();abrirModulo(\'' + m.id + '\')">Editar</button>' +
           '<svg class="modulo-flecha" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>' +
         '</div>' +
-        '<div class="modulo-body">' +
+        '<div class="modulo-body" data-modulo="' + m.id + '"' +
+          ' ondragover="arrastreSobreModulo(event,\'' + m.id + '\')"' +
+          ' ondragleave="limpiarMarcas(this)"' +
+          ' ondrop="arrastreSueltaEnModulo(event,\'' + m.id + '\')">' +
           (cls.length === 0
             ? '<div style="padding:14px 0;font-size:12.5px;color:rgba(255,245,240,0.45);font-style:italic">Todavía no hay clases en este módulo</div>'
             : cls.map(cl =>
-                '<div class="clase-fila" onclick="abrirClase(\'' + m.id + '\', \'' + cl.id + '\')">' +
+                '<div class="clase-fila" data-clase="' + cl.id + '" data-modulo="' + m.id + '"' +
+                  ' ondragstart="arrastreClaseEmpieza(event,\'' + cl.id + '\',\'' + m.id + '\')"' +
+                  ' ondragover="arrastreSobreClase(event)"' +
+                  ' ondragleave="limpiarMarcas(this)"' +
+                  ' ondrop="arrastreSueltaEnClase(event)"' +
+                  ' ondragend="arrastreTermina()"' +
+                  ' onclick="abrirClase(\'' + m.id + '\', \'' + cl.id + '\')">' +
+                  '<div class="arrastre" title="Arrastrá para cambiar el orden"' +
+                    ' onpointerdown="prepararArrastre(this)" onclick="event.stopPropagation()">' +
+                    '<svg width="12" height="16" viewBox="0 0 12 16" fill="currentColor">' +
+                      '<circle cx="3" cy="3" r="1.4"/><circle cx="9" cy="3" r="1.4"/>' +
+                      '<circle cx="3" cy="8" r="1.4"/><circle cx="9" cy="8" r="1.4"/>' +
+                      '<circle cx="3" cy="13" r="1.4"/><circle cx="9" cy="13" r="1.4"/>' +
+                    '</svg>' +
+                  '</div>' +
                   '<div class="clase-ico">' + (ICONOS_CLASE[cl.tipo] || '🎬') + '</div>' +
                   '<div class="clase-info">' +
                     '<div class="clase-titulo">' + esc(cl.titulo) + '</div>' +
@@ -7200,7 +7332,224 @@ body{visibility:hidden}
   }
 
   function toggleModulo(id){
+    if(huboArrastre) return;
     document.getElementById('mod-' + id)?.classList.toggle('abierto');
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // ARRASTRAR PARA ORDENAR
+  //
+  // Las filas no son arrastrables hasta que tocás el puntito.
+  // Así no se mueven sin querer al hacer click para editar.
+  // ═══════════════════════════════════════════════════════════════
+
+  let llevando = null;          // { tipo, id, moduloId }
+  let huboArrastre = false;     // para no abrir el editor al soltar
+
+  function prepararArrastre(mango){
+    const fila = mango.closest('.clase-fila');
+    if(fila) fila.setAttribute('draggable', 'true');
+  }
+
+  function prepararArrastreModulo(mango){
+    const mod = mango.closest('.modulo');
+    if(mod) mod.setAttribute('draggable', 'true');
+  }
+
+  function limpiarMarcas(el){
+    if(el) el.classList.remove('marca-arriba', 'marca-abajo', 'recibe');
+  }
+
+  function limpiarTodasLasMarcas(){
+    document.querySelectorAll('.marca-arriba, .marca-abajo, .recibe').forEach(x => {
+      x.classList.remove('marca-arriba', 'marca-abajo', 'recibe');
+    });
+  }
+
+  function arrastreClaseEmpieza(e, claseId, moduloId){
+    llevando = { tipo: 'clase', id: claseId, moduloId: moduloId };
+    huboArrastre = true;
+    e.stopPropagation();
+    e.currentTarget.classList.add('llevando');
+    try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', claseId); } catch(x){}
+  }
+
+  function arrastreModuloEmpieza(e, moduloId){
+    // Si lo que arranca es una clase de adentro, no tocamos nada
+    if(llevando && llevando.tipo === 'clase') return;
+    llevando = { tipo: 'modulo', id: moduloId };
+    huboArrastre = true;
+    e.currentTarget.classList.add('llevando');
+    try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', moduloId); } catch(x){}
+  }
+
+  function arrastreTermina(){
+    document.querySelectorAll('[draggable="true"]').forEach(x => x.removeAttribute('draggable'));
+    document.querySelectorAll('.llevando').forEach(x => x.classList.remove('llevando'));
+    limpiarTodasLasMarcas();
+    llevando = null;
+    setTimeout(() => { huboArrastre = false; }, 60);
+  }
+
+  // ─── Encima de otra clase ───
+  function arrastreSobreClase(e){
+    if(!llevando || llevando.tipo !== 'clase') return;
+    e.preventDefault();
+    e.stopPropagation();
+    const fila = e.currentTarget;
+    if(fila.dataset.clase === llevando.id){ limpiarMarcas(fila); return; }
+    const caja = fila.getBoundingClientRect();
+    const arriba = (e.clientY - caja.top) < caja.height / 2;
+    fila.classList.toggle('marca-arriba', arriba);
+    fila.classList.toggle('marca-abajo', !arriba);
+  }
+
+  function arrastreSueltaEnClase(e){
+    if(!llevando || llevando.tipo !== 'clase') return;
+    e.preventDefault();
+    e.stopPropagation();
+    const fila = e.currentTarget;
+    const destinoId = fila.dataset.clase;
+    const moduloDestino = fila.dataset.modulo;
+    const arriba = fila.classList.contains('marca-arriba');
+    limpiarTodasLasMarcas();
+    if(destinoId === llevando.id) return;
+    moverClase(llevando.id, llevando.moduloId, moduloDestino, destinoId, arriba);
+  }
+
+  // ─── Encima del cuerpo de un módulo (al final) ───
+  function arrastreSobreModulo(e, moduloId){
+    if(!llevando || llevando.tipo !== 'clase') return;
+    e.preventDefault();
+    e.currentTarget.classList.add('recibe');
+  }
+
+  function arrastreSueltaEnModulo(e, moduloId){
+    if(!llevando || llevando.tipo !== 'clase') return;
+    e.preventDefault();
+    limpiarTodasLasMarcas();
+    moverClase(llevando.id, llevando.moduloId, moduloId, null, false);
+  }
+
+  // ─── Reordenar módulos ───
+  function arrastreSobreModuloOrden(e){
+    if(!llevando || llevando.tipo !== 'modulo') return;
+    e.preventDefault();
+    const mod = e.currentTarget;
+    if(mod.dataset.modid === llevando.id){ limpiarMarcas(mod); return; }
+    const caja = mod.getBoundingClientRect();
+    const arriba = (e.clientY - caja.top) < caja.height / 2;
+    mod.classList.toggle('marca-arriba', arriba);
+    mod.classList.toggle('marca-abajo', !arriba);
+  }
+
+  function arrastreSueltaModulo(e){
+    if(!llevando || llevando.tipo !== 'modulo') return;
+    e.preventDefault();
+    const mod = e.currentTarget;
+    const destinoId = mod.dataset.modid;
+    const arriba = mod.classList.contains('marca-arriba');
+    limpiarTodasLasMarcas();
+    if(destinoId === llevando.id) return;
+    moverModulo(llevando.id, destinoId, arriba);
+  }
+
+  // ─── Mover de verdad ───
+  async function moverClase(claseId, moduloOrigen, moduloDestino, antesDe, arriba){
+    const origen = clasesPorModulo[moduloOrigen] || [];
+    const i = origen.findIndex(x => x.id === claseId);
+    if(i < 0) return;
+
+    const [clase] = origen.splice(i, 1);
+    clase.modulo_id = moduloDestino;
+
+    if(!clasesPorModulo[moduloDestino]) clasesPorModulo[moduloDestino] = [];
+    const destino = clasesPorModulo[moduloDestino];
+
+    if(antesDe){
+      let j = destino.findIndex(x => x.id === antesDe);
+      if(j < 0) j = destino.length;
+      else if(!arriba) j = j + 1;
+      destino.splice(j, 0, clase);
+    } else {
+      destino.push(clase);
+    }
+
+    // Se ve al instante; guardamos atrás
+    renderContenido();
+    abrirModulosConClase(moduloDestino);
+
+    const cambios = [];
+    const tocados = moduloOrigen === moduloDestino ? [moduloDestino] : [moduloOrigen, moduloDestino];
+    tocados.forEach(mid => {
+      (clasesPorModulo[mid] || []).forEach((cl, k) => {
+        if(cl.orden !== k + 1 || cl.modulo_id !== mid){
+          cl.orden = k + 1;
+          cl.modulo_id = mid;
+          cambios.push({ id: cl.id, orden: k + 1, modulo_id: mid });
+        }
+      });
+    });
+
+    await guardarOrden('clases', cambios);
+  }
+
+  async function moverModulo(moduloId, destinoId, arriba){
+    const i = modulos.findIndex(x => x.id === moduloId);
+    if(i < 0) return;
+    const [mod] = modulos.splice(i, 1);
+
+    let j = modulos.findIndex(x => x.id === destinoId);
+    if(j < 0) j = modulos.length;
+    else if(!arriba) j = j + 1;
+    modulos.splice(j, 0, mod);
+
+    renderContenido();
+
+    const cambios = [];
+    modulos.forEach((m, k) => {
+      if(m.orden !== k + 1){
+        m.orden = k + 1;
+        cambios.push({ id: m.id, orden: k + 1 });
+      }
+    });
+
+    await guardarOrden('modulos', cambios);
+  }
+
+  function abrirModulosConClase(moduloId){
+    document.getElementById('mod-' + moduloId)?.classList.add('abierto');
+  }
+
+  // ─── Guardar el orden nuevo ───
+  async function guardarOrden(tabla, cambios){
+    if(!cambios.length) return;
+
+    let cartel = document.getElementById('guardandoOrden');
+    if(!cartel){
+      cartel = document.createElement('div');
+      cartel.id = 'guardandoOrden';
+      cartel.className = 'guardando-orden';
+      document.body.appendChild(cartel);
+    }
+    cartel.textContent = 'Guardando el orden...';
+    cartel.classList.add('show');
+
+    let falló = null;
+    for(const c of cambios){
+      const { id, ...campos } = c;
+      const { error } = await sb.from(tabla).update(campos).eq('id', id);
+      if(error){ falló = error; break; }
+    }
+
+    cartel.classList.remove('show');
+
+    if(falló){
+      mostrarToast('No se pudo guardar el orden: ' + falló.message, true);
+      await cargarContenido();
+    } else {
+      mostrarToast('✓ Orden guardado');
+    }
   }
 
   // Muestra el estado arriba del modal, y lo actualiza al tocar el interruptor
@@ -7543,6 +7892,7 @@ body{visibility:hidden}
 
   // ─── MÓDULOS ─────────────────────────────────────────────────────
   function abrirModulo(id){
+    if(huboArrastre) return;   // acaba de soltar: no abrimos el editor
     document.getElementById('moduloId').value = id || '';
     document.getElementById('moduloModalTitulo').textContent = id ? 'Editar módulo' : 'Nuevo módulo';
     document.getElementById('btnEliminarModulo').style.display = id ? '' : 'none';
@@ -7628,6 +7978,7 @@ body{visibility:hidden}
 
   // ─── CLASES ──────────────────────────────────────────────────────
   function abrirClase(moduloId, claseId){
+    if(huboArrastre) return;   // acaba de soltar: no abrimos el editor
     document.getElementById('claseModuloId').value = moduloId;
     document.getElementById('claseId').value = claseId || '';
     document.getElementById('claseModalTitulo').textContent = claseId ? 'Editar clase' : 'Nueva clase';

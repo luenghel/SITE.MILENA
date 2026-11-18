@@ -232,6 +232,104 @@
     .fm-titulo{font-size:23px}
   }
 
+  /* ═══════════════════════════════════════════════════════════════
+     REPRODUCTOR v2 — pantalla grande + contenidos en panel
+     ═══════════════════════════════════════════════════════════════ */
+
+  .clase-top{min-height:60px;box-sizing:border-box;padding:10px 20px;gap:12px}
+  .top-nav{display:flex;gap:6px;flex-shrink:0}
+  .nav-redonda{width:38px;height:38px;border-radius:50%;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.16);color:#FFF5F0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;padding:0}
+  .nav-redonda:hover{background:rgba(212,163,86,0.18);border-color:rgba(212,163,86,0.5);color:#FAC775}
+
+  .btn-lista{display:inline-flex;align-items:center;gap:9px;padding:11px 15px;background:rgba(255,245,240,0.06);border:0.5px solid rgba(255,245,240,0.18);border-radius:11px;color:#FFF5F0;font-size:12.5px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all 0.2s;flex-shrink:0}
+  .btn-lista:hover{background:rgba(212,163,86,0.16);border-color:rgba(212,163,86,0.5);color:#FAC775}
+  .bl-flecha{opacity:0.55}
+
+  /* ── Distribución ── */
+  .clase-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:0;align-items:start;min-height:0}
+  .clase-main{padding:0 0 50px;min-width:0}
+
+  /* ── El video, lo más grande que entre ── */
+  .escenario{background:#000;display:flex;align-items:center;justify-content:center;width:100%}
+  .escenario > div{width:100%}
+  .video-caja{width:100%;max-width:calc((100vh - 215px) * 16 / 9);aspect-ratio:16/9;margin:0 auto;background:#000}
+  .video-sin{max-width:calc((100vh - 215px) * 16 / 9);margin:0 auto}
+
+  /* ── Título + acciones (estilo Luana) ── */
+  .barra-clase{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 26px;background:rgba(255,245,240,0.025);border-bottom:0.5px solid rgba(255,245,240,0.07)}
+  .bcl-info{flex:1;min-width:200px}
+  .bcl-info .clase-h1{font-size:20.5px;margin:0 0 4px}
+  .bcl-info .clase-meta{margin:0}
+  .bcl-acciones{display:flex;gap:2px;flex-wrap:wrap}
+  .acc{display:flex;flex-direction:column;align-items:center;gap:5px;padding:7px 10px;background:none;border:none;color:rgba(255,245,240,0.6);font-family:inherit;font-size:10.5px;cursor:pointer;border-radius:11px;transition:all 0.18s;min-width:62px}
+  .acc:hover{color:#FFF5F0;background:rgba(255,245,240,0.05)}
+  .acc-ico{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,245,240,0.22);display:flex;align-items:center;justify-content:center;transition:all 0.18s}
+  .acc:hover .acc-ico{border-color:rgba(212,163,86,0.6);color:#FAC775}
+  .acc.hecha{color:#9FE1CB}
+  .acc.hecha .acc-ico{background:rgba(93,202,165,0.18);border-color:#5DCAA5;color:#9FE1CB}
+  .solo-chico{display:none}
+
+  .clase-cuerpo{padding:22px 26px;max-width:880px}
+  .pie-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px;padding-top:20px;border-top:0.5px solid rgba(255,245,240,0.07)}
+
+  /* ── Comentarios al costado ── */
+  .panel-com{position:sticky;top:60px;height:calc(100vh - 60px);display:flex;flex-direction:column;border-left:0.5px solid rgba(255,245,240,0.08);background:rgba(255,245,240,0.018);margin:0;min-height:0}
+  .pc-cab{display:flex;align-items:baseline;gap:9px;padding:15px 18px 12px;border-bottom:0.5px solid rgba(255,245,240,0.07);flex-shrink:0}
+  .pc-cab .com-tit{font-size:17px}
+  .pc-scroll{flex:1;overflow-y:auto;padding:2px 18px 12px;min-height:0}
+  .pc-pie{border-top:0.5px solid rgba(255,245,240,0.07);padding:11px 15px 14px;background:rgba(14,5,9,0.55);flex-shrink:0}
+  .pc-fila{display:flex;align-items:flex-end;gap:9px;margin-top:9px}
+  .pc-fila .com-input{min-height:46px;max-height:150px;border-radius:23px;padding:13px 17px;margin:0;resize:none}
+  .pc-enviar{width:46px;height:46px;flex-shrink:0;border-radius:50%;border:none;background:linear-gradient(135deg,#FAC775,#D4A356);color:#3D1208;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s}
+  .pc-enviar:hover{transform:scale(1.05)}
+  .pc-enviar:disabled{opacity:0.5;cursor:default;transform:none}
+  .panel-com .com-item{padding:13px 0}
+  .panel-com .com-item:first-child{border-top:none}
+  .panel-com .com-texto{font-size:13.5px}
+  .panel-com .com-item.respuesta{margin-left:24px;padding-left:12px}
+
+  /* ── Contenidos del módulo: panel que se abre ── */
+  .clase-lista{position:fixed;top:0;right:-470px;bottom:0;width:435px;max-width:92vw;z-index:400;background:#12060A;border-left:0.5px solid rgba(212,163,86,0.3);overflow-y:auto;max-height:100vh;transition:right 0.32s cubic-bezier(0.34,1.2,0.64,1);box-shadow:-28px 0 70px rgba(0,0,0,0.55)}
+  .clase-lista.abierta{right:0}
+  .lista-fondo{position:fixed;inset:0;background:rgba(8,3,6,0.74);z-index:399;opacity:0;pointer-events:none;transition:opacity 0.25s}
+  .lista-fondo.show{opacity:1;pointer-events:auto}
+  .lista-cerrar{position:absolute;top:13px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(255,245,240,0.08);border:none;color:#FFF5F0;cursor:pointer;z-index:9;display:flex;align-items:center;justify-content:center;padding:0}
+  .lista-cerrar:hover{background:rgba(255,245,240,0.16)}
+  .lista-head{padding:20px 54px 15px 22px}
+  .lista-titulo{font-size:15px}
+  .mod-cab{padding:15px 22px 10px}
+  .cl-item{padding:12px 22px}
+  .cl-nom{font-size:13.5px}
+
+  @media (max-width:1240px){
+    .clase-layout{grid-template-columns:minmax(0,1fr) 340px}
+  }
+
+  @media (max-width:1000px){
+    .clase-layout{grid-template-columns:1fr}
+    .panel-com{position:static;height:auto;max-height:none;border-left:none;border-top:0.5px solid rgba(255,245,240,0.08);margin-top:6px}
+    .pc-scroll{flex:none;overflow:visible;padding:2px 16px 12px}
+    .pc-pie{background:none}
+    .video-caja,.video-sin{max-width:100%}
+    .barra-clase{padding:13px 16px;gap:12px}
+    .bcl-info{min-width:100%}
+    .bcl-info .clase-h1{font-size:18px}
+    .bcl-acciones{width:100%;justify-content:space-between;gap:0}
+    .acc{min-width:0;flex:1;padding:6px 2px;font-size:10px}
+    .solo-chico{display:flex}
+    .clase-cuerpo{padding:20px 16px}
+    .volver-txt{display:none}
+    .bl-txt,.bl-flecha{display:none}
+    .btn-lista{padding:10px 12px}
+    .clase-top{padding:9px 14px}
+  }
+
+  @media (max-width:820px){
+    input,textarea,select{font-size:16px !important}
+  }
+
+  .resaltado{animation:resalta 1.6s ease}
+  @keyframes resalta{0%,100%{box-shadow:none}25%,70%{box-shadow:0 0 0 2px rgba(212,163,86,0.6)}}
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -260,6 +358,8 @@ body{visibility:hidden}
 </div>
 
 <div id="contenido" style="display:none">
+
+  <!-- ═══ BARRA DE ARRIBA ═══ -->
   <div class="clase-top">
     <a href="/cursos" class="volver-curso" id="linkVolver">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -269,19 +369,77 @@ body{visibility:hidden}
       <div class="top-curso-nom" id="topCurso">—</div>
       <div class="top-curso-prog" id="topProgreso"></div>
     </div>
+
+    <div class="top-nav">
+      <button class="nav-redonda" id="btnAnterior" onclick="irAnterior()" title="Clase anterior" style="display:none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+      </button>
+      <button class="nav-redonda" id="btnSiguiente" onclick="irSiguiente()" title="Clase siguiente" style="display:none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+      </button>
+    </div>
+
     <button class="btn-lista" onclick="abrirLista()">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg>
-      Clases
+      <span class="bl-txt">Contenidos del módulo</span>
+      <svg class="bl-flecha" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
     </button>
   </div>
 
   <div class="clase-layout">
     <div class="clase-main">
-      <div id="zonaVideo"></div>
 
+      <!-- ─── El video, grande ─── -->
+      <div class="escenario">
+        <div id="zonaVideo"></div>
+      </div>
+
+      <!-- ─── Título y acciones ─── -->
+      <div class="barra-clase">
+        <div class="bcl-info">
+          <h1 class="clase-h1" id="claseTitulo">—</h1>
+          <div class="clase-meta" id="claseMeta"></div>
+        </div>
+        <div class="bcl-acciones">
+          <button class="acc" id="btnCompletar" onclick="alternarCompletada()">
+            <span class="acc-ico">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="acc-txt" id="btnCompletarTxt">Concluir</span>
+          </button>
+
+          <button class="acc" id="accMaterial" onclick="irA('zonaMateriales')" style="display:none">
+            <span class="acc-ico">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </span>
+            <span class="acc-txt">Material</span>
+          </button>
+
+          <button class="acc" id="accValorar" onclick="irA('opinionCaja')" style="display:none">
+            <span class="acc-ico">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg>
+            </span>
+            <span class="acc-txt">Valorar</span>
+          </button>
+
+          <button class="acc solo-chico" onclick="irA('comentariosZona')">
+            <span class="acc-ico">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l2-5.2A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>
+            </span>
+            <span class="acc-txt">Comentarios</span>
+          </button>
+
+          <button class="acc" onclick="compartirClase()">
+            <span class="acc-ico">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
+            </span>
+            <span class="acc-txt">Compartir</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ─── Lo que hay debajo ─── -->
       <div class="clase-cuerpo">
-        <div class="clase-meta" id="claseMeta"></div>
-        <h1 class="clase-h1" id="claseTitulo">—</h1>
         <p class="clase-desc" id="claseDesc"></p>
         <div class="clase-texto" id="claseTexto" style="display:none"></div>
 
@@ -290,70 +448,70 @@ body{visibility:hidden}
           <div id="listaMateriales"></div>
         </div>
 
-        
-<div class="clase-acciones">
-          <button class="btn-completar" id="btnCompletar" onclick="alternarCompletada()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            <span id="btnCompletarTxt">MARCAR COMO VISTA</span>
-          </button>
-          <button class="btn-nav" id="btnAnterior" onclick="irAnterior()" style="display:none">
+        <!-- ═══ OPINIÓN SOBRE LA CLASE ═══ -->
+        <div class="op-caja" id="opinionCaja" style="display:none">
+          <div class="op-tit">¿Cómo te resultó esta clase?</div>
+          <div class="op-sub">Nos ayuda a mejorar lo que grabamos. Nadie más ve tu respuesta.</div>
+          <div class="op-chips" id="opChips"></div>
+          <textarea class="op-texto" id="opComentario" placeholder="¿Querés contarnos algo más? (opcional)"></textarea>
+          <div class="op-pie">
+            <button class="cta-gold op-btn" onclick="guardarOpinion()" id="btnOpinion">ENVIAR</button>
+            <span class="op-estado" id="opEstado"></span>
+          </div>
+        </div>
+
+        <div class="pie-nav">
+          <button class="btn-nav" id="btnAnterior2" onclick="irAnterior()" style="display:none">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-            Anterior
+            Clase anterior
           </button>
-          <button class="btn-nav principal" id="btnSiguiente" onclick="irSiguiente()" style="display:none">
+          <button class="btn-nav principal" id="btnSiguiente2" onclick="irSiguiente()" style="display:none">
             Siguiente clase
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
           </button>
         </div>
-
-<!-- ═══ OPINIÓN SOBRE LA CLASE ═══ -->
-<div class="op-caja" id="opinionCaja" style="display:none">
-  <div class="op-tit">¿Cómo te resultó esta clase?</div>
-  <div class="op-sub">Nos ayuda a mejorar lo que grabamos. Nadie más ve tu respuesta.</div>
-  <div class="op-chips" id="opChips"></div>
-  <textarea class="op-texto" id="opComentario" placeholder="¿Querés contarnos algo más? (opcional)"></textarea>
-  <div class="op-pie">
-    <button class="cta-gold op-btn" onclick="guardarOpinion()" id="btnOpinion">ENVIAR</button>
-    <span class="op-estado" id="opEstado"></span>
-  </div>
-</div>
-
-<!-- ═══ COMENTARIOS ═══ -->
-<div class="com-zona" id="comentariosZona">
-  <div class="com-cab">
-    <h3 class="com-tit">Comentarios</h3>
-    <span class="com-cuenta" id="comCuenta"></span>
-  </div>
-
-  <div class="com-nuevo">
-    <textarea class="com-input" id="comTexto" placeholder="Escribí tu comentario o pregunta..."></textarea>
-    <div class="com-nuevo-pie">
-      <label class="com-check" onclick="this.classList.toggle('on')" id="comEsPregunta">
-        <span class="com-check-box">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="3.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </span>
-        Es una pregunta
-      </label>
-      <button class="cta-gold com-btn" onclick="publicarComentario()" id="btnComentar">PUBLICAR</button>
-    </div>
-  </div>
-
-  <div id="comLista"></div>
-</div>
-
       </div>
     </div>
 
-    <aside class="clase-lista" id="listaLateral">
-      <div class="lista-head">
-        <div class="lista-titulo" id="listaTitulo">Contenido del curso</div>
-        <div class="barra-prog"><div class="barra-prog-fill" id="barraProg" style="width:0%"></div></div>
-        <div class="lista-prog-txt" id="listaProgTxt">—</div>
+    <!-- ═══ COMENTARIOS AL COSTADO ═══ -->
+    <aside class="panel-com" id="comentariosZona">
+      <div class="pc-cab">
+        <h3 class="com-tit">Comentarios</h3>
+        <span class="com-cuenta" id="comCuenta"></span>
       </div>
-      <div id="listaClases"></div>
+
+      <div class="pc-scroll" id="comLista"></div>
+
+      <div class="pc-pie">
+        <label class="com-check" onclick="this.classList.toggle('on')" id="comEsPregunta">
+          <span class="com-check-box">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="3.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          Es una pregunta
+        </label>
+        <div class="pc-fila">
+          <textarea class="com-input" id="comTexto" placeholder="Dejá tu comentario..."></textarea>
+          <button class="pc-enviar" onclick="publicarComentario()" id="btnComentar" title="Publicar">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
     </aside>
   </div>
 </div>
+
+<!-- ═══ CONTENIDOS DEL MÓDULO (panel que se abre) ═══ -->
+<aside class="clase-lista" id="listaLateral">
+  <button class="lista-cerrar" onclick="cerrarLista()" title="Cerrar">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <div class="lista-head">
+    <div class="lista-titulo" id="listaTitulo">Contenido del curso</div>
+    <div class="barra-prog"><div class="barra-prog-fill" id="barraProg" style="width:0%"></div></div>
+    <div class="lista-prog-txt" id="listaProgTxt">—</div>
+  </div>
+  <div id="listaClases"></div>
+</aside>
 
 <div class="lista-fondo" id="listaFondo" onclick="cerrarLista()"></div>
 
@@ -679,9 +837,15 @@ async function cargarMateriales(claseId){
     mats.unshift({ id: 'propio', titulo: 'Material de la clase', tipo: 'pdf', url: claseActual.archivo_url });
   }
 
-  if(mats.length === 0){ zona.style.display = 'none'; return; }
+  const atajo = document.getElementById('accMaterial');
+  if(mats.length === 0){
+    zona.style.display = 'none';
+    if(atajo) atajo.style.display = 'none';
+    return;
+  }
 
   zona.style.display = 'block';
+  if(atajo) atajo.style.display = '';
   lista.innerHTML = mats.map(m => {
     const ico = m.tipo === 'enlace' ? '🔗' : (m.tipo === 'imagen' ? '🖼️' : '📄');
     return '<a href="' + esc(m.url) + '" target="_blank" rel="noopener" class="mat-item">' +
@@ -698,7 +862,7 @@ function pintarBotonCompletar(){
   const hecha = !!progreso[claseActualId];
   const btn = document.getElementById('btnCompletar');
   btn.classList.toggle('hecha', hecha);
-  document.getElementById('btnCompletarTxt').textContent = hecha ? 'CLASE VISTA' : 'MARCAR COMO VISTA';
+  document.getElementById('btnCompletarTxt').textContent = hecha ? 'Concluida' : 'Concluir';
 }
 
 async function alternarCompletada(){
@@ -746,8 +910,39 @@ function pintarNavegacion(){
   const idx = clasesPlanas.findIndex(x => x.id === claseActualId);
   const ant = clasesPlanas[idx - 1];
   const sig = clasesPlanas[idx + 1];
-  document.getElementById('btnAnterior').style.display = ant ? '' : 'none';
-  document.getElementById('btnSiguiente').style.display = sig ? '' : 'none';
+  ['btnAnterior','btnAnterior2'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = ant ? '' : 'none';
+  });
+  ['btnSiguiente','btnSiguiente2'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = sig ? '' : 'none';
+  });
+}
+
+// ─── Bajar hasta una parte de la página ────────────────────────────
+function irA(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  el.classList.add('resaltado');
+  setTimeout(() => el.classList.remove('resaltado'), 1600);
+}
+
+// ─── Compartir la clase ────────────────────────────────────────────
+async function compartirClase(){
+  const url = window.location.origin + urlDeClase(claseActual);
+  const titulo = (claseActual?.titulo || 'Clase') + ' · ' + (curso?.titulo || 'CMM');
+
+  if(navigator.share){
+    try{ await navigator.share({ title: titulo, url: url }); return; }catch(e){ if(e.name === 'AbortError') return; }
+  }
+  try{
+    await navigator.clipboard.writeText(url);
+    mostrarToast('Enlace copiado');
+  }catch(e){
+    mostrarToast('No pudimos copiar el enlace', true);
+  }
 }
 
 function irAnterior(){
@@ -958,6 +1153,8 @@ let miOpinion = null;
 
 async function cargarOpinion(claseId){
   const caja = document.getElementById('opinionCaja');
+  const atajoOp = document.getElementById('accValorar');
+  if(atajoOp) atajoOp.style.display = 'none';
   if(!caja || !usuario) return;
 
   // Solo tiene sentido si puede ver la clase
@@ -977,6 +1174,7 @@ async function cargarOpinion(claseId){
   opElegidas = mia?.opciones || [];
 
   caja.style.display = '';
+  if(atajoOp) atajoOp.style.display = '';
   caja.classList.toggle('enviada', !!mia);
 
   document.getElementById('opChips').innerHTML = opcionesOpinion.map(o =>
@@ -1167,6 +1365,22 @@ function abrirRespuesta(id){
   if(el) el.classList.toggle('abierto');
 }
 
+// El campo de comentario crece con el texto, y Enter publica
+(function(){
+  const t = document.getElementById('comTexto');
+  if(!t) return;
+  t.addEventListener('input', () => {
+    t.style.height = 'auto';
+    t.style.height = Math.min(t.scrollHeight, 150) + 'px';
+  });
+  t.addEventListener('keydown', e => {
+    if(e.key === 'Enter' && !e.shiftKey && window.innerWidth > 1000){
+      e.preventDefault();
+      publicarComentario();
+    }
+  });
+})();
+
 async function publicarComentario(){
   const texto = document.getElementById('comTexto').value.trim();
   if(!texto) return;
@@ -1186,7 +1400,9 @@ async function publicarComentario(){
   btn.disabled = false;
   if(error) return alert('No se pudo publicar: ' + error.message);
 
-  document.getElementById('comTexto').value = '';
+  const campo = document.getElementById('comTexto');
+  campo.value = '';
+  campo.style.height = '';
   document.getElementById('comEsPregunta').classList.remove('on');
   await cargarComentarios(claseActualId);
 }

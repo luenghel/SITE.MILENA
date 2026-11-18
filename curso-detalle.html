@@ -121,6 +121,27 @@
     pointer-events:none;
   }
 
+  /* ── La foto del curso, de fondo y bien bajita ── */
+  .modal-fondo{
+    position:absolute;inset:0;
+    background-size:cover;background-position:center;
+    opacity:0.14;                    /* bien bajita, para que no pelee con el texto */
+    pointer-events:none;z-index:0;
+    border-radius:22px;
+  }
+  /* Un velo encima para que el texto se lea siempre */
+  .modal-velo{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(14,3,7,0.5) 0%,rgba(14,3,7,0.3) 35%,rgba(14,3,7,0.8) 100%);
+    pointer-events:none;z-index:1;
+    border-radius:22px;
+  }
+  .compra-modal.con-fondo{
+    background:linear-gradient(180deg,#1C0610 0%,#0D0306 100%);
+  }
+  .compra-modal.con-fondo .compra-modal-poster{display:none}
+  .compra-modal.con-fondo .compra-modal-body{padding-top:38px}
+
   .compra-modal-poster{
     aspect-ratio:16/9;
     background:linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%);
@@ -280,6 +301,15 @@
   .prox-badge{display:inline-block;padding:6px 14px;background:rgba(184,41,74,0.3);border:1px solid rgba(232,184,196,0.5);border-radius:20px;color:#E8B8C4;font-size:10px;font-weight:700;letter-spacing:0.14em;margin-bottom:16px}
   .prox-slogan{font-size:15px;color:#E8B8C4;font-style:italic;margin:0 0 14px;font-family:Georgia,serif}
   .prox-cuenta{display:inline-block;padding:8px 16px;background:rgba(212,163,86,0.14);border:0.5px solid rgba(212,163,86,0.4);border-radius:10px;color:#FAC775;font-size:13px;font-weight:600;margin-bottom:18px}
+
+  /* ── Reloj en vivo ── */
+  .reloj{margin:0 auto 20px;max-width:330px}
+  .reloj-lbl{font-size:9.5px;letter-spacing:0.2em;color:rgba(255,245,240,0.45);margin-bottom:9px;text-align:center}
+  .reloj-fila{display:flex;justify-content:center;gap:8px}
+  .reloj-bloque{flex:1;max-width:76px;padding:11px 4px;border-radius:12px;background:rgba(212,163,86,0.12);border:0.5px solid rgba(212,163,86,0.35)}
+  .reloj-num{font-size:25px;font-weight:600;color:#FAC775;line-height:1;font-variant-numeric:tabular-nums}
+  .reloj-uni{font-size:8.5px;letter-spacing:0.12em;color:rgba(255,245,240,0.5);margin-top:6px}
+  .reloj-ya{text-align:center;font-size:14px;color:#9FE1CB;font-weight:600;margin-bottom:18px}
   .prox-texto{font-size:14.5px;line-height:1.65;color:rgba(255,245,240,0.8);margin:0 0 20px;white-space:pre-wrap}
   .prox-nota{font-size:12px;color:rgba(255,245,240,0.55);margin-top:12px;line-height:1.5;min-height:18px}
 
@@ -883,6 +913,76 @@ function pintarContadorAcceso(curso, compra){
 
 // ─── Curso que viene pronto ───
 let cursoProximo = null;
+let relojTimer = null;
+
+// ─── La foto del curso, de fondo y al 20% ──────────────────────────
+// Queda más oscuro y se lee mejor que con la franja de arriba.
+function ponerFotoDeFondo(caja, foto){
+  if(!caja) return;
+
+  let fondo = caja.querySelector('.modal-fondo');
+  if(!fondo){
+    fondo = document.createElement('div');
+    fondo.className = 'modal-fondo';
+    caja.insertBefore(fondo, caja.firstChild);
+  }
+  fondo.style.backgroundImage = "url('" + foto + "')";
+
+  let velo = caja.querySelector('.modal-velo');
+  if(!velo){
+    velo = document.createElement('div');
+    velo.className = 'modal-velo';
+    caja.insertBefore(velo, fondo.nextSibling);
+  }
+
+  caja.classList.add('con-fondo');
+}
+
+function sacarFotoDeFondo(caja){
+  if(!caja) return;
+  caja.querySelector('.modal-fondo')?.remove();
+  caja.querySelector('.modal-velo')?.remove();
+  caja.classList.remove('con-fondo');
+}
+
+// ─── El reloj que va bajando solo ──────────────────────────────────
+function arrancarReloj(fechaISO){
+  const caja = document.getElementById('relojProx');
+  if(!caja) return;
+
+  const destino = new Date(fechaISO).getTime();
+  if(isNaN(destino)) { caja.style.display = 'none'; return; }
+
+  if(relojTimer) clearInterval(relojTimer);
+
+  const dibujar = () => {
+    const ms = destino - Date.now();
+
+    if(ms <= 0){
+      caja.innerHTML = '<div class="reloj-ya">🎉 ¡Ya está disponible!</div>';
+      clearInterval(relojTimer);
+      return;
+    }
+
+    const d  = Math.floor(ms / 86400000);
+    const h  = Math.floor((ms % 86400000) / 3600000);
+    const m  = Math.floor((ms % 3600000) / 60000);
+    const sg = Math.floor((ms % 60000) / 1000);
+
+    const bloque = (n, u) =>
+      '<div class="reloj-bloque"><div class="reloj-num">' + String(n).padStart(2,'0') +
+      '</div><div class="reloj-uni">' + u + '</div></div>';
+
+    caja.innerHTML =
+      '<div class="reloj-lbl">FALTA PARA EL LANZAMIENTO</div>' +
+      '<div class="reloj-fila">' +
+        bloque(d, 'DÍAS') + bloque(h, 'HORAS') + bloque(m, 'MIN') + bloque(sg, 'SEG') +
+      '</div>';
+  };
+
+  dibujar();
+  relojTimer = setInterval(dibujar, 1000);
+}
 
 function mostrarProximamente(curso, user){
   cursoProximo = curso;
@@ -891,8 +991,11 @@ function mostrarProximamente(curso, user){
   const esc2 = t => { const d = document.createElement('div'); d.textContent = t || ''; return d.innerHTML; };
 
   // Cuánto falta
+  // Si pidió cuenta regresiva, va el reloj en vivo; si no, el texto corto
+  const conReloj = !!curso.fecha_disponible && curso.mostrar_cuenta !== false;
   let cuenta = '';
-  if(curso.fecha_disponible){
+
+  if(curso.fecha_disponible && !conReloj){
     const faltan = Math.ceil((new Date(curso.fecha_disponible).getTime() - Date.now()) / 86400000);
     if(faltan > 1) cuenta = 'Faltan ' + faltan + ' días';
     else if(faltan === 1) cuenta = 'Sale mañana';
@@ -909,6 +1012,7 @@ function mostrarProximamente(curso, user){
 
     <h2 class="compra-modal-title serif" style="margin-bottom:8px">${esc2(curso.titulo)}</h2>
     ${curso.slogan ? `<p class="prox-slogan">${esc2(curso.slogan)}</p>` : ''}
+    ${conReloj ? '<div class="reloj" id="relojProx"></div>' : ''}
     ${cuenta ? `<div class="prox-cuenta">${cuenta}</div>` : ''}
 
     ${curso.texto_proximamente ? `<p class="prox-texto">${esc2(curso.texto_proximamente).replace(/\n/g,'<br>')}</p>` : ''}
@@ -936,19 +1040,22 @@ function mostrarProximamente(curso, user){
     </button>
   `;
 
-  // La portada
+  if(conReloj) arrancarReloj(curso.fecha_disponible);
+
+  // La portada: si hay foto, va de fondo apagada en vez de arriba
+  const caja = modal.querySelector('.compra-modal');
   const poster = modal.querySelector('.compra-modal-poster');
-  if(poster && curso.foto_portada){
-    poster.style.backgroundImage = "url('" + curso.foto_portada + "')";
-    poster.style.backgroundSize = 'cover';
-    poster.style.backgroundPosition = 'center';
-    const cont = poster.querySelector('.compra-modal-poster-content');
-    if(cont) cont.style.display = 'none';
-  } else if(poster){
-    const t = poster.querySelector('.compra-modal-poster-title');
-    if(t) t.textContent = curso.titulo;
-    const cat = poster.querySelector('.compra-modal-poster-cat');
-    if(cat) cat.textContent = (curso.categoria || 'PRÓXIMAMENTE').toUpperCase();
+
+  if(caja && curso.foto_portada){
+    ponerFotoDeFondo(caja, curso.foto_portada);
+  } else {
+    sacarFotoDeFondo(caja);
+    if(poster){
+      const t = poster.querySelector('.compra-modal-poster-title');
+      if(t) t.textContent = curso.titulo;
+      const cat = poster.querySelector('.compra-modal-poster-cat');
+      if(cat) cat.textContent = (curso.categoria || 'PRÓXIMAMENTE').toUpperCase();
+    }
   }
 
   modal.classList.add('show');

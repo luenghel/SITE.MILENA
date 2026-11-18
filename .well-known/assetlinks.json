@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.milenacmm.app",
+      "sha256_cert_fingerprints": [
+        "PEGAR_ACA_LA_HUELLA_QUE_TE_DA_PWABUILDER"
+      ]
+    }
+  }
+]
