@@ -201,8 +201,8 @@
 
     const links = [
       { href: '/index', txt: 'Inicio', icon: '<path d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>' },
-      { href: '/cursos', txt: 'Cursos', icon: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>' },
       { href: '/comunidad', txt: 'Comunidad', icon: '<rect x="2" y="4" width="20" height="14" rx="2"/>' },
+      { href: '/cursos', txt: 'Cursos', icon: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>' },
       { href: '/blog', txt: 'Blog', icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>' }
     ];
 

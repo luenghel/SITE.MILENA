@@ -330,6 +330,46 @@
 
   .resaltado{animation:resalta 1.6s ease}
   @keyframes resalta{0%,100%{box-shadow:none}25%,70%{box-shadow:0 0 0 2px rgba(212,163,86,0.6)}}
+  /* ── Cuaderno ── */
+  .acc{position:relative}
+  .acc-punto{position:absolute;top:5px;right:9px;width:7px;height:7px;border-radius:50%;background:#FAC775;display:none}
+  .acc-punto.hay{display:block}
+
+  .cuaderno{
+    position:fixed;top:0;right:-470px;bottom:0;width:430px;max-width:92vw;z-index:420;
+    background:#15080D;border-left:0.5px solid rgba(212,163,86,0.3);
+    display:flex;flex-direction:column;
+    transition:right 0.32s cubic-bezier(0.34,1.2,0.64,1);
+    box-shadow:-28px 0 70px rgba(0,0,0,0.55);
+  }
+  .cuaderno.abierta{right:0}
+  .cua-cab{display:flex;align-items:flex-start;gap:12px;padding:20px 20px 14px;border-bottom:0.5px solid rgba(255,245,240,0.08);flex-shrink:0}
+  .cua-cab > div:first-child{flex:1;min-width:0}
+  .cua-tit{font-family:Georgia,serif;font-size:19px;color:#FFF5F0}
+  .cua-sub{font-size:12px;color:rgba(255,245,240,0.5);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cua-texto{
+    flex:1;min-height:0;width:100%;box-sizing:border-box;resize:none;
+    background:none;border:none;outline:none;
+    padding:18px 20px;
+    color:#FFF5F0;font-family:inherit;font-size:15px;line-height:1.75;
+  }
+  .cua-texto::placeholder{color:rgba(255,245,240,0.3);line-height:1.6}
+  .cua-pie{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 20px 16px;border-top:0.5px solid rgba(255,245,240,0.08);flex-shrink:0}
+  .cua-estado{font-size:11.5px;color:rgba(255,245,240,0.45)}
+  .cua-estado.ok{color:#9FE1CB}
+  .cua-borrar{background:none;border:none;color:rgba(255,130,140,0.75);font-family:inherit;font-size:11.5px;cursor:pointer;padding:5px 8px;border-radius:7px}
+  .cua-borrar:hover{background:rgba(255,130,140,0.1)}
+
+  /* ── Fotitos en la lista de clases ── */
+  .cl-mini{width:62px;height:35px;border-radius:7px;flex-shrink:0;background:rgba(255,245,240,0.07) center/cover no-repeat;position:relative;overflow:hidden}
+  .cl-mini .cl-mini-ico{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .cl-item.activa .cl-mini{box-shadow:0 0 0 1.5px #FAC775}
+  .cl-mini-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(10,3,7,0.3)}
+
+  @media (max-width:1000px){
+    .cuaderno{width:100%;max-width:100%;right:-100%}
+  }
+
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -406,6 +446,14 @@ body{visibility:hidden}
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </span>
             <span class="acc-txt" id="btnCompletarTxt">Concluir</span>
+          </button>
+
+          <button class="acc" id="accCuaderno" onclick="abrirCuaderno()">
+            <span class="acc-ico">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            </span>
+            <span class="acc-txt">Cuaderno</span>
+            <span class="acc-punto" id="accCuadernoPunto"></span>
           </button>
 
           <button class="acc" id="accMaterial" onclick="irA('zonaMateriales')" style="display:none">
@@ -514,6 +562,29 @@ body{visibility:hidden}
 </aside>
 
 <div class="lista-fondo" id="listaFondo" onclick="cerrarLista()"></div>
+
+<!-- ═══ CUADERNO: los apuntes de esta clase ═══ -->
+<aside class="cuaderno" id="cuaderno">
+  <div class="cua-cab">
+    <div>
+      <div class="cua-tit">Mi cuaderno</div>
+      <div class="cua-sub" id="cuaClase">—</div>
+    </div>
+    <button class="lista-cerrar" style="position:static" onclick="cerrarCuaderno()" title="Cerrar">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <textarea class="cua-texto" id="cuaTexto"
+    placeholder="Escribí acá lo que te llevás de esta clase.&#10;&#10;Se guarda solo, y después lo ves todo junto en tu perfil."></textarea>
+
+  <div class="cua-pie">
+    <span class="cua-estado" id="cuaEstado"></span>
+    <button class="cua-borrar" id="cuaBorrar" onclick="borrarNota()" style="display:none">Borrar</button>
+  </div>
+</aside>
+
+<div class="lista-fondo" id="cuadernoFondo" onclick="cerrarCuaderno()"></div>
 
 <!-- Sin acceso -->
 <div id="sinAcceso" style="display:none">
@@ -789,6 +860,7 @@ async function abrirClase(id, empujarHistorial){
   // Los comentarios y la opinión de esta clase
   cargarComentarios(cl.id);
   cargarOpinion(cl.id);
+  cargarNota(cl.id);
 
   const mod = modulos.find(m => m.id === cl.modulo_id);
   document.getElementById('claseMeta').innerHTML =
@@ -977,6 +1049,184 @@ function pintarProgreso(){
 }
 
 // ─── Lista lateral ─────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+// LA FOTITO DE CADA CLASE
+//
+// Si es de YouTube, la sacamos del propio video. Si cargaron una
+// a mano en el panel, usamos esa. Si no hay ninguna, el iconito.
+// ═══════════════════════════════════════════════════════════════════
+function fotoDeClase(cl){
+  if(!cl) return '';
+  if(cl.miniatura) return cl.miniatura;
+
+  const u = cl.video_url || '';
+  const m = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/|youtube\.com\/live\/)([A-Za-z0-9_-]{11})/);
+  if(m) return 'https://img.youtube.com/vi/' + m[1] + '/mqdefault.jpg';
+
+  const v = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if(v) return '';   // Vimeo no da la foto sin pedirla a su API
+
+  return '';
+}
+
+function miniDeClase(cl, hecha, bloqueada){
+  const foto = bloqueada ? '' : fotoDeClase(cl);
+  const fondo = foto ? ' style="background-image:url(\'' + foto + '\')"' : '';
+
+  let encima = '';
+  if(hecha){
+    encima = '<div class="cl-mini-play"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>';
+  } else if(bloqueada){
+    encima = '<div class="cl-mini-ico"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>';
+  } else if(foto){
+    encima = '<div class="cl-mini-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,245,240,0.95)"><path d="M8 5v14l11-7z"/></svg></div>';
+  } else {
+    encima = '<div class="cl-mini-ico">' + (ICO_TIPO[cl.tipo] || '🎬') + '</div>';
+  }
+
+  return '<div class="cl-mini"' + fondo + '>' + encima + '</div>';
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// EL CUADERNO
+//
+// Un apunte por clase. Se guarda solo mientras escribe, y después
+// los ve todos juntos en su perfil.
+// ═══════════════════════════════════════════════════════════════════
+let notaActual = null;
+let notaTimer = null;
+let notaGuardando = false;
+
+function abrirCuaderno(){
+  if(!usuario){
+    mostrarToast('Entrá a tu cuenta para usar el cuaderno', true);
+    return;
+  }
+  document.getElementById('cuaderno').classList.add('abierta');
+  document.getElementById('cuadernoFondo').classList.add('show');
+  setTimeout(() => document.getElementById('cuaTexto')?.focus(), 340);
+}
+
+function cerrarCuaderno(){
+  document.getElementById('cuaderno').classList.remove('abierta');
+  document.getElementById('cuadernoFondo').classList.remove('show');
+  if(notaTimer){ clearTimeout(notaTimer); guardarNota(); }
+}
+
+function estadoNota(txt, ok){
+  const el = document.getElementById('cuaEstado');
+  if(!el) return;
+  el.textContent = txt || '';
+  el.className = 'cua-estado' + (ok ? ' ok' : '');
+}
+
+async function cargarNota(claseId){
+  notaActual = null;
+  const campo = document.getElementById('cuaTexto');
+  const sub = document.getElementById('cuaClase');
+  const punto = document.getElementById('accCuadernoPunto');
+
+  if(campo) campo.value = '';
+  if(sub) sub.textContent = claseActual?.titulo || '';
+  if(punto) punto.classList.remove('hay');
+  estadoNota('');
+  document.getElementById('cuaBorrar').style.display = 'none';
+
+  if(!usuario || !claseId) return;
+
+  try{
+    const { data } = await sb.from('notas_clase')
+      .select('id, texto')
+      .eq('usuario_id', usuario.id)
+      .eq('clase_id', claseId)
+      .maybeSingle();
+
+    if(data){
+      notaActual = data;
+      if(campo) campo.value = data.texto || '';
+      if(data.texto && data.texto.trim()){
+        if(punto) punto.classList.add('hay');
+        document.getElementById('cuaBorrar').style.display = '';
+        estadoNota('Guardado', true);
+      }
+    }
+  }catch(e){ /* si falta la tabla, el cuaderno queda vacío y listo */ }
+}
+
+async function guardarNota(){
+  if(!usuario || !claseActualId || notaGuardando) return;
+
+  const campo = document.getElementById('cuaTexto');
+  if(!campo) return;
+  const texto = campo.value;
+
+  notaGuardando = true;
+  estadoNota('Guardando...');
+
+  try{
+    const fila = {
+      usuario_id: usuario.id,
+      clase_id: claseActualId,
+      curso_id: curso?.id || null,
+      texto: texto
+    };
+
+    const { data, error } = await sb.from('notas_clase')
+      .upsert(fila, { onConflict: 'usuario_id,clase_id' })
+      .select('id, texto')
+      .maybeSingle();
+
+    if(error) throw error;
+
+    notaActual = data || notaActual;
+    estadoNota('Guardado', true);
+
+    const punto = document.getElementById('accCuadernoPunto');
+    const hay = !!(texto && texto.trim());
+    if(punto) punto.classList.toggle('hay', hay);
+    document.getElementById('cuaBorrar').style.display = hay ? '' : 'none';
+
+  }catch(e){
+    const falta = String(e?.message || '').includes('does not exist');
+    estadoNota(falta ? 'Falta correr SQL-CADERNO-Y-MINIATURAS.sql' : 'No se pudo guardar');
+  }
+
+  notaGuardando = false;
+}
+
+async function borrarNota(){
+  if(!usuario || !claseActualId) return;
+  if(!confirm('¿Borrar lo que escribiste en esta clase?')) return;
+
+  await sb.from('notas_clase').delete()
+    .eq('usuario_id', usuario.id).eq('clase_id', claseActualId);
+
+  document.getElementById('cuaTexto').value = '';
+  document.getElementById('cuaBorrar').style.display = 'none';
+  document.getElementById('accCuadernoPunto')?.classList.remove('hay');
+  notaActual = null;
+  estadoNota('Borrado');
+}
+
+// Se guarda solo, un segundo después de dejar de escribir
+(function(){
+  const campo = document.getElementById('cuaTexto');
+  if(!campo) return;
+
+  campo.addEventListener('input', () => {
+    estadoNota('Escribiendo...');
+    if(notaTimer) clearTimeout(notaTimer);
+    notaTimer = setTimeout(() => { notaTimer = null; guardarNota(); }, 1000);
+  });
+
+  // Por si cierra la pestaña con algo sin guardar
+  window.addEventListener('beforeunload', () => {
+    if(notaTimer) guardarNota();
+  });
+})();
+
+
 function renderLista(){
   const cont = document.getElementById('listaClases');
 
@@ -1001,13 +1251,7 @@ function renderLista(){
 
         return '<div class="cl-item ' + (activa ? 'activa ' : '') + (bloqueada ? 'bloqueada' : '') + '" ' +
           (bloqueada ? '' : 'onclick="abrirClase(&#39;' + cl.id + '&#39;, true)"') + '>' +
-          '<div class="cl-estado ' + (hecha ? 'hecha' : '') + '">' +
-            (hecha
-              ? '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
-              : (bloqueada
-                  ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.5)" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>'
-                  : (ICO_TIPO[cl.tipo] || ''))) +
-          '</div>' +
+          miniDeClase(cl, hecha, bloqueada) +
           '<div class="cl-txt">' +
             '<div class="cl-nom">' + esc(cl.titulo) + '</div>' +
             '<div class="cl-min">' + (porLiberar

@@ -921,6 +921,31 @@ async function recuperarContrasena(){
 // Medidor de fuerza en el registro
 if(typeof crearMedidorPassword === 'function'){
   crearMedidorPassword('medidorReg', 'regPass');
+
+  // ─── Si vino del convite de la home, abrimos en REGISTRARSE ───
+  try{
+    const q = new URLSearchParams(window.location.search);
+    const quiereRegistro = q.get('registro') === '1' || window.location.hash === '#registro';
+
+    const preNombre = sessionStorage.getItem('cmm_pre_nombre') || '';
+    const preEmail  = sessionStorage.getItem('cmm_pre_email') || '';
+
+    if(quiereRegistro || preNombre || preEmail){
+      cambiarTab('registro');
+
+      if(preNombre) document.getElementById('regNombre').value = preNombre;
+      if(preEmail)  document.getElementById('regEmail').value  = preEmail;
+
+      sessionStorage.removeItem('cmm_pre_nombre');
+      sessionStorage.removeItem('cmm_pre_email');
+
+      // Lo dejamos parado en lo que le falta
+      setTimeout(() => {
+        const campo = (!preNombre ? 'regNombre' : (!preEmail ? 'regEmail' : 'regPass'));
+        if(window.innerWidth > 760) document.getElementById(campo)?.focus();
+      }, 250);
+    }
+  }catch(e){}
 }
 
 // ─── Si ya está logueada, la sacamos de acá ────────────────────────

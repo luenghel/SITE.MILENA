@@ -889,6 +889,8 @@
   .func-input:focus{border-color:rgba(212,163,86,0.5)}
   .func-btn{padding:9px 16px;border-radius:9px;border:none;background:rgba(212,163,86,0.18);border:0.5px solid rgba(212,163,86,0.4);color:#FAC775;font-size:11.5px;cursor:pointer;font-family:inherit;white-space:nowrap}
   .func-btn:hover{background:rgba(212,163,86,0.3)}
+  .aviso-tipo{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:0.5px solid rgba(255,245,240,0.07)}
+  .aviso-tipo .func-info{flex:1;min-width:0}
   .func-ayuda{font-size:11.5px;color:rgba(255,245,240,0.5);margin-top:14px;padding-top:14px;border-top:0.5px solid rgba(255,245,240,0.06);line-height:1.5}
   .func-ayuda code{background:rgba(255,245,240,0.08);padding:2px 6px;border-radius:4px;font-size:11px}
   .func-estado{margin-top:10px;font-size:12px;display:none}
@@ -2766,10 +2768,71 @@ body{visibility:hidden}
         <button class="func-btn" onclick="guardarFuncion('func_avisos_clases','funcAvisos')">Guardar</button>
       </div>
 
+      <div class="func-fila">
+        <div class="func-info">
+          <div class="func-nom">🔔 Avisos al equipo</div>
+          <div class="func-des">Email cuando alguien se registra o compra</div>
+        </div>
+        <input class="func-input" id="funcAvisosEquipo" placeholder="ej: avisar-equipo">
+        <button class="func-btn" onclick="guardarFuncion('func_avisos_equipo','funcAvisosEquipo')">Guardar</button>
+      </div>
+
       <div class="func-ayuda">
         💡 El nombre está en <strong>Supabase → Edge Functions → columna URL</strong>, después de <code>/functions/v1/</code>
       </div>
       <div class="func-estado" id="funcEstado"></div>
+    </div>
+
+    <!-- ═══ AVISOS AL EQUIPO ═══ -->
+    <div class="funcs-caja" style="border-color:rgba(159,225,203,0.3)">
+      <div class="funcs-cab">
+        <div>
+          <div style="font-size:13.5px;font-weight:500">🔔 Avisos al equipo</div>
+          <div style="font-size:11.5px;color:rgba(255,245,240,0.55);margin-top:3px;line-height:1.5">
+            Un email cuando pasa algo importante en el sitio. Los avisos salen desde la base de datos,
+            así llegan aunque la persona cierre la página al instante.
+          </div>
+        </div>
+        <button class="btn-secondary" onclick="probarAvisos()" id="btnProbarAvisos">Probar</button>
+      </div>
+
+      <div class="func-fila">
+        <div class="func-info">
+          <div class="func-nom">📬 A quién le avisamos</div>
+          <div class="func-des">Uno o varios emails, separados por coma</div>
+        </div>
+        <input class="func-input" id="avisosEmails" placeholder="milena@ejemplo.com, luenghel@ejemplo.com">
+        <button class="func-btn" onclick="guardarAvisosEmails()">Guardar</button>
+      </div>
+
+      <div class="aviso-tipo">
+        <div class="func-info">
+          <div class="func-nom">🎉 Alguien se registró</div>
+          <div class="func-des">Nombre, email y cuántas cuentas hay en total</div>
+        </div>
+        <div class="toggle-switch on" id="avisoRegistro" onclick="alternarAviso(this,'avisos_registro')"></div>
+      </div>
+
+      <div class="aviso-tipo">
+        <div class="func-info">
+          <div class="func-nom">💰 Alguien quiere comprar</div>
+          <div class="func-des">Apenas genera el pedido y se abre WhatsApp</div>
+        </div>
+        <div class="toggle-switch on" id="avisoPedido" onclick="alternarAviso(this,'avisos_pedido')"></div>
+      </div>
+
+      <div class="aviso-tipo">
+        <div class="func-info">
+          <div class="func-nom">✅ Se confirmó un pago</div>
+          <div class="func-des">Con el monto y cuánto llevás vendido este mes</div>
+        </div>
+        <div class="toggle-switch on" id="avisoCompra" onclick="alternarAviso(this,'avisos_compra')"></div>
+      </div>
+
+      <div class="func-ayuda" id="avisosAyuda">
+        💡 Primero corré <code>SQL-AVISOS-EQUIPO.sql</code> en Supabase y subí la función <code>avisar-equipo</code>.
+      </div>
+      <div class="func-estado" id="avisosEstado"></div>
     </div>
 
     <!-- Cursos y clases sin anunciar -->
@@ -10592,7 +10655,8 @@ body{visibility:hidden}
     func_dos_pasos: 'funcDosPasos',
     func_admin: 'funcAdmin',
     func_newsletter: 'funcNewsletter',
-    func_avisos_clases: 'funcAvisos'
+    func_avisos_clases: 'funcAvisos',
+    func_avisos_equipo: 'funcAvisosEquipo'
   };
 
   function estadoFunc(msg, tipo){
@@ -10601,6 +10665,121 @@ body{visibility:hidden}
     if(!msg){ el.className = 'func-estado'; el.textContent = ''; return; }
     el.className = 'func-estado show ' + (tipo || 'ok');
     el.textContent = msg;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // AVISOS AL EQUIPO
+  //
+  // La base de datos es la que llama a la función, así que acá
+  // además del nombre le guardamos la URL entera y la clave.
+  // ═══════════════════════════════════════════════════════════════
+
+  function estadoAvisos(msg, tipo){
+    const el = document.getElementById('avisosEstado');
+    if(!el) return;
+    if(!msg){ el.className = 'func-estado'; el.textContent = ''; return; }
+    el.className = 'func-estado show ' + (tipo || 'ok');
+    el.textContent = msg;
+  }
+
+  async function cargarAvisos(){
+    if(!sb) return;
+    const { data, error } = await sb.from('ajustes').select('clave, valor').like('clave', 'avisos_%');
+
+    if(error){
+      if(String(error.message).includes('does not exist')){
+        estadoAvisos('Falta correr SQL-AVISOS-EQUIPO.sql en Supabase.', 'error');
+      }
+      return;
+    }
+
+    const conf = {};
+    (data || []).forEach(a => conf[a.clave] = a.valor || '');
+
+    const campo = document.getElementById('avisosEmails');
+    if(campo) campo.value = conf.avisos_emails || '';
+
+    const pares = [
+      ['avisoRegistro', 'avisos_registro'],
+      ['avisoPedido',   'avisos_pedido'],
+      ['avisoCompra',   'avisos_compra'],
+    ];
+    pares.forEach(([id, clave]) => {
+      const el = document.getElementById(id);
+      if(el) el.classList.toggle('on', conf[clave] !== 'no');
+    });
+
+    const ayuda = document.getElementById('avisosAyuda');
+    if(ayuda && !conf.avisos_url){
+      ayuda.innerHTML = '⚠️ Todavía falta guardar el nombre de la función <code>avisar-equipo</code> acá arriba, en ⚙️ Funciones de Supabase.';
+    }
+  }
+
+  async function guardarAvisosEmails(){
+    const campo = document.getElementById('avisosEmails');
+    const v = campo.value.trim();
+
+    const malos = v.split(/[,;\s]+/).filter(x => x && !x.includes('@'));
+    if(malos.length) return estadoAvisos('Esto no parece un email: ' + malos[0], 'error');
+
+    const { error } = await sb.from('ajustes')
+      .upsert({ clave: 'avisos_emails', valor: v, actualizado_en: new Date().toISOString() },
+              { onConflict: 'clave' });
+
+    if(error) return estadoAvisos('No se pudo guardar: ' + error.message, 'error');
+    estadoAvisos(v ? '✓ Guardado. Probá con el botón de arriba.' : '✓ Guardado (sin nadie, no se manda nada)', 'ok');
+  }
+
+  async function alternarAviso(el, clave){
+    el.classList.toggle('on');
+    const on = el.classList.contains('on');
+
+    const { error } = await sb.from('ajustes')
+      .upsert({ clave: clave, valor: on ? 'si' : 'no', actualizado_en: new Date().toISOString() },
+              { onConflict: 'clave' });
+
+    if(error){
+      el.classList.toggle('on');
+      return estadoAvisos('No se pudo guardar: ' + error.message, 'error');
+    }
+    estadoAvisos(on ? '✓ Aviso encendido' : '✓ Aviso apagado', 'ok');
+  }
+
+  async function probarAvisos(){
+    const btn = document.getElementById('btnProbarAvisos');
+    const nombre = (document.getElementById('funcAvisosEquipo')?.value || '').trim();
+
+    if(!nombre) return estadoAvisos('Primero guardá el nombre de la función, arriba.', 'error');
+    if(!(document.getElementById('avisosEmails')?.value || '').trim()){
+      return estadoAvisos('Primero cargá a quién le avisamos.', 'error');
+    }
+
+    btn.disabled = true;
+    estadoAvisos('Mandando...', 'ok');
+
+    try{
+      const { data: { session } } = await sb.auth.getSession();
+      const r = await fetch(SUPABASE_URL + '/functions/v1/' + nombre, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + (session?.access_token || SUPABASE_ANON_KEY),
+          'apikey': SUPABASE_ANON_KEY
+        },
+        body: JSON.stringify({ prueba: true })
+      });
+      const j = await r.json().catch(() => ({}));
+
+      if(r.ok && j.ok){
+        estadoAvisos('✓ Mandado a: ' + (j.enviado_a || []).join(', ') + '. Mirá la bandeja (y el spam).', 'ok');
+      }else{
+        estadoAvisos('No salió: ' + (j.error || ('HTTP ' + r.status)), 'error');
+      }
+    }catch(e){
+      estadoAvisos('No pudimos llegar a la función: ' + e.message, 'error');
+    }
+
+    btn.disabled = false;
   }
 
   async function cargarFunciones(){
@@ -10636,6 +10815,17 @@ body{visibility:hidden}
       .upsert({ clave: clave, valor: v, actualizado_en: new Date().toISOString() }, { onConflict: 'clave' });
 
     if(error) return estadoFunc('No se pudo guardar: ' + error.message, 'error');
+
+    // Los avisos los dispara la base de datos, no el navegador.
+    // Por eso le dejamos escrita la dirección entera y la clave.
+    if(clave === 'func_avisos_equipo'){
+      await sb.from('ajustes').upsert([
+        { clave: 'avisos_url',    valor: SUPABASE_URL + '/functions/v1/' + v, actualizado_en: new Date().toISOString() },
+        { clave: 'avisos_apikey', valor: SUPABASE_ANON_KEY,                   actualizado_en: new Date().toISOString() }
+      ], { onConflict: 'clave' });
+      const ayuda = document.getElementById('avisosAyuda');
+      if(ayuda) ayuda.innerHTML = '✓ Listo. Probá el botón <strong>Probar</strong> de la caja de abajo.';
+    }
 
     // Probamos que responda
     const { data: { session } } = await sb.auth.getSession();
@@ -10965,6 +11155,7 @@ body{visibility:hidden}
       cargarInsignias(),
       cargarAnuncios(),
       cargarFunciones(),
+      cargarAvisos(),
       cargarClasesParaAnuncio(),
       cargarHashtags(),
       cargarSecciones(),

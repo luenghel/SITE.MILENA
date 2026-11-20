@@ -160,6 +160,34 @@
 
   .insignia-img{width:44px;height:44px;object-fit:contain;display:block}
 
+
+  /* ── Mi cuaderno ── */
+  .apuntes-buscar{display:flex;align-items:center;gap:10px;padding:11px 15px;margin-bottom:18px;
+    background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.12);border-radius:12px;max-width:420px}
+  .apuntes-buscar input{flex:1;background:none;border:none;outline:none;color:#FFF5F0;font-family:inherit;font-size:14px}
+  .apuntes-buscar input::placeholder{color:rgba(255,245,240,0.35)}
+
+  .ap-curso{margin-bottom:26px}
+  .ap-curso-tit{display:flex;align-items:baseline;gap:9px;margin-bottom:11px}
+  .ap-curso-nom{font-family:Georgia,serif;font-size:17px;color:#FAC775}
+  .ap-curso-n{font-size:11.5px;color:rgba(255,245,240,0.42)}
+
+  .ap-item{display:block;text-decoration:none;color:inherit;
+    background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.09);
+    border-radius:13px;padding:15px 17px;margin-bottom:9px;transition:all 0.18s}
+  .ap-item:hover{background:rgba(255,245,240,0.06);border-color:rgba(212,163,86,0.4);transform:translateX(3px)}
+  .ap-cab{display:flex;align-items:center;gap:11px;margin-bottom:8px}
+  .ap-mini{width:58px;height:33px;border-radius:7px;flex-shrink:0;
+    background:rgba(255,245,240,0.08) center/cover no-repeat;display:flex;align-items:center;justify-content:center;font-size:13px}
+  .ap-clase{flex:1;min-width:0;font-size:14px;font-weight:500;color:#FFF5F0;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ap-fecha{font-size:11px;color:rgba(255,245,240,0.4);flex-shrink:0}
+  .ap-texto{font-size:13.5px;line-height:1.65;color:rgba(255,245,240,0.75);
+    white-space:pre-wrap;word-break:break-word;
+    display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .ap-texto mark{background:rgba(250,199,117,0.3);color:#FFF5F0;border-radius:3px;padding:0 2px}
+
+  .ap-vacio{padding:34px 20px;text-align:center;color:rgba(255,245,240,0.45);font-size:13.5px;line-height:1.7}
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -190,9 +218,9 @@ body{visibility:hidden}
       <div class="logo-text">MILENA<br>MACHADO</div>
     </a>
     <a href="/index" class="nav-btn">INICIO</a>
+    <a href="/comunidad" class="nav-btn">COMUNIDAD</a>
     <a href="/cursos" class="nav-btn">CURSOS</a>
     <a href="/blog" class="nav-btn">BLOG</a>
-    <a href="/comunidad" class="nav-btn">COMUNIDAD</a>
     <div style="margin-left:auto"><a href="/login" class="btn-outline">MI PERFIL</a></div>
   </div>
 </header>
@@ -261,6 +289,23 @@ body{visibility:hidden}
   </div>
 
   <div class="insignias-grid" id="insigniasGrid"></div>
+</section>
+
+<!-- ═══ MI CUADERNO ═══ -->
+<section class="insignias-section" id="seccionApuntes" style="display:none">
+  <div class="insignias-header">
+    <h2 class="insignias-title serif">Mi cuaderno</h2>
+    <div class="insignia-filters">
+      <span class="chip chip-quiet" id="apuntesCuenta">0 apuntes</span>
+    </div>
+  </div>
+
+  <div class="apuntes-buscar">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.9"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke-linecap="round"/></svg>
+    <input id="apuntesBusca" placeholder="Buscar en mis apuntes..." oninput="pintarApuntes()">
+  </div>
+
+  <div id="apuntesLista"></div>
 </section>
 
 <div class="crop-backdrop" id="cropBackdrop">
@@ -924,6 +969,139 @@ const waitSupaPerfil = setInterval(async () => {
 
   await cargarDatos();
 }, 50);
+</script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// MI CUADERNO
+//
+// Todo lo que fue anotando en cada clase, junto y ordenado por curso.
+// ═══════════════════════════════════════════════════════════════════
+let misApuntes = [];
+
+function escAp(t){
+  const d = document.createElement('div');
+  d.textContent = t == null ? '' : String(t);
+  return d.innerHTML;
+}
+
+function fotoApunte(cl){
+  if(!cl) return '';
+  if(cl.miniatura) return cl.miniatura;
+  const u = cl.video_url || '';
+  const m = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/|youtube\.com\/live\/)([A-Za-z0-9_-]{11})/);
+  return m ? 'https://img.youtube.com/vi/' + m[1] + '/mqdefault.jpg' : '';
+}
+
+function cuandoApunte(iso){
+  const d = new Date(iso);
+  if(isNaN(d)) return '';
+  const dias = Math.floor((Date.now() - d.getTime()) / 86400000);
+  if(dias === 0) return 'hoy';
+  if(dias === 1) return 'ayer';
+  if(dias < 7) return 'hace ' + dias + ' días';
+  return d.toLocaleDateString('es-PY', { day: '2-digit', month: 'short' });
+}
+
+async function cargarApuntes(){
+  const sesion = await sb.auth.getUser();
+  const yo = sesion?.data?.user;
+  if(!yo) return;
+
+  try{
+    const { data, error } = await sb
+      .from('notas_clase')
+      .select('id, texto, actualizado_en, clase_id, curso_id, clases(titulo, video_url, miniatura, orden), cursos(titulo, slug)')
+      .eq('usuario_id', yo.id)
+      .order('actualizado_en', { ascending: false });
+
+    if(error) throw error;
+
+    misApuntes = (data || []).filter(n => n.texto && n.texto.trim());
+
+    if(misApuntes.length === 0) return;    // sin apuntes, la sección no aparece
+
+    document.getElementById('seccionApuntes').style.display = '';
+    document.getElementById('apuntesCuenta').textContent =
+      misApuntes.length + (misApuntes.length === 1 ? ' apunte' : ' apuntes');
+    pintarApuntes();
+
+  }catch(e){
+    // Si todavía no corrieron el SQL, no mostramos nada y seguimos
+    console.log('[apuntes]', e?.message || e);
+  }
+}
+
+function pintarApuntes(){
+  const cont = document.getElementById('apuntesLista');
+  if(!cont) return;
+
+  const busca = (document.getElementById('apuntesBusca')?.value || '').trim().toLowerCase();
+
+  const filtrados = busca
+    ? misApuntes.filter(n =>
+        (n.texto || '').toLowerCase().includes(busca) ||
+        (n.clases?.titulo || '').toLowerCase().includes(busca) ||
+        (n.cursos?.titulo || '').toLowerCase().includes(busca))
+    : misApuntes;
+
+  if(filtrados.length === 0){
+    cont.innerHTML = '<div class="ap-vacio">No encontré apuntes con esa palabra.</div>';
+    return;
+  }
+
+  // Los agrupamos por curso, respetando el orden en que vienen
+  const porCurso = [];
+  const indice = {};
+  filtrados.forEach(n => {
+    const clave = n.curso_id || 'sin';
+    if(indice[clave] === undefined){
+      indice[clave] = porCurso.length;
+      porCurso.push({ titulo: n.cursos?.titulo || 'Otros apuntes', slug: n.cursos?.slug, notas: [] });
+    }
+    porCurso[indice[clave]].notas.push(n);
+  });
+
+  const resaltar = (t) => {
+    const limpio = escAp(t);
+    if(!busca) return limpio;
+    try{
+      const re = new RegExp('(' + busca.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+      return limpio.replace(re, '<mark>$1</mark>');
+    }catch(e){ return limpio; }
+  };
+
+  cont.innerHTML = porCurso.map(c =>
+    '<div class="ap-curso">' +
+      '<div class="ap-curso-tit">' +
+        '<span class="ap-curso-nom">' + escAp(c.titulo) + '</span>' +
+        '<span class="ap-curso-n">' + c.notas.length + (c.notas.length === 1 ? ' apunte' : ' apuntes') + '</span>' +
+      '</div>' +
+      c.notas.map(n => {
+        const foto = fotoApunte(n.clases);
+        const enlace = (c.slug && n.clase_id)
+          ? '/clase?curso=' + encodeURIComponent(c.slug) + '&clase=' + encodeURIComponent(n.clase_id)
+          : '#';
+        return '<a class="ap-item" href="' + enlace + '">' +
+          '<div class="ap-cab">' +
+            '<div class="ap-mini"' + (foto ? ' style="background-image:url(\'' + foto + '\')"' : '') + '>' +
+              (foto ? '' : '📝') +
+            '</div>' +
+            '<div class="ap-clase">' + escAp(n.clases?.titulo || 'Clase') + '</div>' +
+            '<div class="ap-fecha">' + cuandoApunte(n.actualizado_en) + '</div>' +
+          '</div>' +
+          '<div class="ap-texto">' + resaltar(n.texto) + '</div>' +
+        '</a>';
+      }).join('') +
+    '</div>').join('');
+}
+
+// Arranca cuando la página ya cargó lo suyo
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', () => setTimeout(cargarApuntes, 400));
+}else{
+  setTimeout(cargarApuntes, 400);
+}
 </script>
 
 <script src="app-instalar.js"></script>
