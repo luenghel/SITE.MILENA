@@ -24,5 +24,11 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/f/:slug",
+      "destination": "/pesquisa"
+    }
   ]
 }

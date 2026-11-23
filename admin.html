@@ -1382,6 +1382,92 @@
   .pesq-chip.on{background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.06));
     border-color:rgba(212,163,86,0.55);color:#FAC775}
 
+  /* ═══ FORMULARIOS ═══ */
+  .frm-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .frm-card{padding:18px;border-radius:15px;cursor:pointer;background:rgba(255,245,240,0.035);
+    border:0.5px solid rgba(255,245,240,0.1);transition:all .2s}
+  .frm-card:hover{border-color:rgba(212,163,86,0.35);background:rgba(255,245,240,0.05)}
+  .frm-card.elegido{border-color:rgba(212,163,86,0.6);
+    background:linear-gradient(160deg,rgba(212,163,86,0.1),rgba(255,245,240,0.03))}
+  .frm-card-cab{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .frm-card-nom{font-family:'Cormorant Garamond',Georgia,serif;font-size:21px;font-weight:500;line-height:1.15}
+  .frm-estado{font-size:9.5px;letter-spacing:.16em;font-weight:600;padding:4px 8px;border-radius:6px;flex-shrink:0}
+  .frm-estado.on{background:rgba(93,202,165,0.14);color:#9FE1CB}
+  .frm-estado.off{background:rgba(255,245,240,0.07);color:rgba(255,245,240,0.45)}
+  .frm-card-link{font-size:12px;color:#FAC775;margin-top:6px;word-break:break-all}
+  .frm-card-num{font-size:12.5px;color:rgba(255,245,240,0.6);margin-top:12px}
+  .frm-card-num b{color:#FFF5F0;font-size:15px}
+  .frm-nuevas{color:#FAC775}
+  .frm-card-acc{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+  .frm-card-acc .pesq-accion{padding:7px 11px;font-size:11.5px}
+
+  .frm-fondo{position:fixed;inset:0;z-index:900;background:rgba(8,4,10,0.78);backdrop-filter:blur(6px);
+    display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+  .frm-fondo.show{display:flex}
+  .frm-fondo.arriba{z-index:950}
+  .frm-modal{width:100%;max-width:760px;background:#1A0F1C;border:0.5px solid rgba(212,163,86,0.25);
+    border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,0.5)}
+  .frm-modal.chico{max-width:620px}
+  .frm-modal-cab{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;
+    padding:22px 24px 16px;border-bottom:0.5px solid rgba(255,245,240,0.07)}
+  .frm-modal-sub{font-size:10px;letter-spacing:.2em;color:#D4A356;font-weight:600}
+  .frm-modal-tit{font-family:'Cormorant Garamond',Georgia,serif;font-size:25px;margin-top:4px;line-height:1.15}
+  .frm-x{background:none;border:none;color:rgba(255,245,240,0.6);font-size:28px;line-height:1;cursor:pointer;padding:0 4px}
+  .frm-x:hover{color:#FFF5F0}
+  .frm-modal-cuerpo{padding:18px 24px 24px}
+  .frm-pestanas{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .frm-pestana{padding:9px 15px;border-radius:9px;background:rgba(255,245,240,0.04);
+    border:0.5px solid rgba(255,245,240,0.12);color:rgba(255,245,240,0.7);font-size:12.5px;
+    cursor:pointer;font-family:inherit;text-decoration:none}
+  .frm-pestana.on{background:rgba(212,163,86,0.16);border-color:rgba(212,163,86,0.5);color:#FAC775}
+  #feVer{margin-left:auto}
+  .frm-ayuda{font-size:12px;color:rgba(255,245,240,0.5);margin-bottom:12px}
+  .frm-agregar{width:100%;margin-top:10px;padding:14px;border-radius:12px;cursor:pointer;
+    background:transparent;border:1px dashed rgba(212,163,86,0.45);color:#FAC775;font-size:13px;font-family:inherit}
+  .frm-agregar:hover{background:rgba(212,163,86,0.07)}
+  .frm-campos{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+  .frm-campo{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .frm-campo.ancho{grid-column:1/-1}
+  .frm-campo textarea.form-input{resize:vertical;min-height:44px;line-height:1.5}
+  .frm-campo select.form-input{appearance:auto}
+  .frm-slug{display:flex;align-items:center;border:0.5px solid rgba(255,245,240,0.15);border-radius:9px;
+    background:rgba(255,245,240,0.04);overflow:hidden}
+  .frm-slug span{padding:0 0 0 12px;font-size:12.5px;color:rgba(255,245,240,0.45);white-space:nowrap}
+  .frm-slug .form-input{border:none;background:transparent;padding-left:2px;flex:1;min-width:0}
+  .frm-slug .form-input:disabled{color:rgba(255,245,240,0.45)}
+  .frm-nota{font-size:11px;color:rgba(255,245,240,0.45);line-height:1.5}
+  .frm-nota code{color:#FAC775;font-size:10.5px}
+  .frm-pie{display:flex;gap:10px;justify-content:flex-end;align-items:center;flex-wrap:wrap;margin-top:18px}
+  .frm-peligro{margin-right:auto;background:none;border:none;color:#FF8090;font-size:12px;cursor:pointer;font-family:inherit}
+  .frm-peligro:hover{text-decoration:underline}
+
+  .fp-fila{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;margin-bottom:7px;
+    background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.08)}
+  .fp-fila.apagada{opacity:.45}
+  .fp-mover{display:flex;flex-direction:column;gap:2px}
+  .fp-mover button{background:none;border:none;color:rgba(255,245,240,0.5);font-size:9px;cursor:pointer;padding:1px 4px;line-height:1}
+  .fp-mover button:hover:not(:disabled){color:#FAC775}
+  .fp-mover button:disabled{opacity:.2;cursor:default}
+  .fp-num{font-size:11px;color:rgba(255,245,240,0.4);width:18px;text-align:center;flex-shrink:0}
+  .fp-ico{width:30px;height:30px;border-radius:8px;background:rgba(212,163,86,0.12);color:#FAC775;
+    display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+  .fp-txt{flex:1;min-width:0;cursor:pointer}
+  .fp-tit{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fp-det{font-size:11px;color:rgba(255,245,240,0.45);margin-top:2px}
+  .fp-fija{color:#FAC775}
+  .fp-btn{background:none;border:none;cursor:pointer;font-size:14px;padding:4px;opacity:.7}
+  .fp-btn:hover:not(:disabled){opacity:1}
+  .fp-btn:disabled{opacity:.15;cursor:default}
+  .toggle-switch.bloqueado{opacity:.4;cursor:not-allowed}
+  @media(max-width:640px){
+    .frm-campos{grid-template-columns:1fr}
+    .frm-fondo{padding:0}
+    .frm-modal{border-radius:0;min-height:100vh}
+    #feVer{margin-left:0}
+    .fp-fila{gap:7px;padding:9px}
+    .fp-num{display:none}
+  }
+
   .pesq-card{border-radius:15px;margin-bottom:13px;overflow:hidden;
     background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.1);
     transition:border-color 0.2s}
@@ -1822,7 +1908,7 @@ body{visibility:hidden}
     </a>
     <a href="#" onclick="cambiarTab('pesquisa')" class="sidebar-item" id="nav-pesquisa">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-      Pesquisa
+      Formularios
       <span class="sidebar-badge" id="pesquisaCount">0</span>
     </a>
     <a href="#" onclick="cambiarTab('metricas')" class="sidebar-item" id="nav-metricas">
@@ -3041,52 +3127,219 @@ body{visibility:hidden}
 
     <div class="pm-cab" style="margin-bottom:18px">
       <div>
-        <h3 class="chart-title" style="margin-bottom:2px">📋 El confesionario</h3>
-        <p class="chart-subtitle">Lo que te contaron con sus propias palabras</p>
+        <h3 class="chart-title" style="margin-bottom:2px">📋 Formularios</h3>
+        <p class="chart-subtitle">Creá formularios, cambiá las preguntas y leé lo que te contaron. Sin tocar código.</p>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn-secondary" onclick="bajarPesquisa()">⬇ Descargar</button>
+        <button class="btn-secondary" onclick="nuevoFormulario()">+ Nuevo formulario</button>
         <button class="btn-secondary" onclick="cargarPesquisa()">Actualizar</button>
       </div>
     </div>
 
     <div id="pesquisaFalta" class="met-aviso" style="display:none"></div>
+    <div class="func-estado" id="pesqEstado" style="margin-bottom:14px"></div>
 
-    <!-- El enlace del formulario y el grupo -->
-    <div class="funcs-caja" style="margin-bottom:20px">
-      <div class="func-fila">
-        <div class="func-info">
-          <div class="func-nom">🔗 El enlace del formulario</div>
-          <div class="func-des">Pegalo en ManyChat. Agregale <code>?rubro=nutricionista</code> para que la pregunta 4 cambie sola.</div>
+    <!-- Los formularios -->
+    <div class="frm-lista" id="frmLista"></div>
+
+    <!-- Las respuestas del que está elegido -->
+    <div id="frmRespuestas" style="display:none">
+      <div class="pm-cab" style="margin:30px 0 16px">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px" id="frmRespTit">Respuestas</h3>
+          <p class="chart-subtitle" id="frmRespSub"></p>
         </div>
-        <input class="func-input" id="pesqEnlace" readonly value="https://milenacmm.com/pesquisa">
-        <button class="func-btn" onclick="copiarEnlacePesquisa()">Copiar</button>
+        <button class="btn-secondary" onclick="bajarPesquisa()">⬇ Descargar</button>
       </div>
-
-      <div class="func-fila">
-        <div class="func-info">
-          <div class="func-nom">💬 Grupo de WhatsApp</div>
-          <div class="func-des">Se lo mostramos apenas crea la cuenta. Si lo dejás vacío, no aparece.</div>
-        </div>
-        <input class="func-input" id="grupoWhatsapp" placeholder="https://chat.whatsapp.com/...">
-        <button class="func-btn" onclick="guardarGrupo()">Guardar</button>
-      </div>
-
-      <div class="func-ayuda">
-        💡 Los rubros que ya están armados: nutricionista · abogada · psicologa · arquitecta ·
-        personal-trainer · estetica · contadora · ingeniera · empresas · estudiantes
-      </div>
-      <div class="func-estado" id="pesqEstado"></div>
+      <div class="met-tarjetas" id="pesqTarjetas"></div>
+      <div class="pesq-filtros" id="pesqFiltros"></div>
+      <div id="pesqLista"></div>
     </div>
+  </div>
 
-    <!-- Los números -->
-    <div class="met-tarjetas" id="pesqTarjetas"></div>
+  <!-- ═══ EDITAR UN FORMULARIO ═══ -->
+  <div class="frm-fondo" id="frmFondo" onclick="if(event.target===this)cerrarEditorForm()">
+    <div class="frm-modal">
+      <div class="frm-modal-cab">
+        <div>
+          <div class="frm-modal-sub">EDITAR FORMULARIO</div>
+          <div class="frm-modal-tit" id="feTitVista">—</div>
+        </div>
+        <button class="frm-x" onclick="cerrarEditorForm()" title="Cerrar">×</button>
+      </div>
 
-    <!-- Filtro por rubro -->
-    <div class="pesq-filtros" id="pesqFiltros"></div>
+      <div class="frm-modal-cuerpo">
 
-    <!-- Las respuestas -->
-    <div id="pesqLista"></div>
+        <div class="frm-pestanas">
+          <button class="frm-pestana on" id="fePesPreg" onclick="pestanaEditor('preg')">Preguntas</button>
+          <button class="frm-pestana" id="fePesAju" onclick="pestanaEditor('aju')">Ajustes</button>
+          <a class="frm-pestana" id="feVer" href="#" target="_blank" rel="noopener">Ver el formulario ↗</a>
+        </div>
+
+        <!-- Preguntas -->
+        <div id="feZonaPreg">
+          <div class="frm-ayuda">
+            Usá las flechas ▲▼ para cambiar el orden. Las apagadas no se muestran, pero no se borran.
+          </div>
+          <div id="fePreguntas"></div>
+          <button class="frm-agregar" onclick="editarPregunta(null)">+ Agregar pregunta</button>
+        </div>
+
+        <!-- Ajustes -->
+        <div id="feZonaAju" style="display:none">
+          <div class="frm-campos">
+            <label class="frm-campo">
+              <span class="form-label">NOMBRE · SOLO LO VES VOS</span>
+              <input class="form-input" id="feTitulo" placeholder="Movimiento Directo">
+            </label>
+
+            <label class="frm-campo">
+              <span class="form-label">ENLACE</span>
+              <div class="frm-slug">
+                <span>milenacmm.com/f/</span>
+                <input class="form-input" id="feSlug" placeholder="mi-formulario" oninput="limpiarSlugCampo(this)">
+              </div>
+              <span class="frm-nota">Solo minúsculas, números y guiones. Si lo cambiás, el enlace viejo deja de andar.</span>
+            </label>
+
+            <label class="frm-campo">
+              <span class="form-label">TEXTO CHICO DE ARRIBA</span>
+              <input class="form-input" id="feSub" placeholder="Movimiento Directo">
+            </label>
+
+            <label class="frm-campo">
+              <span class="form-label">GRUPO DE WHATSAPP</span>
+              <input class="form-input" id="feGrupo" placeholder="https://chat.whatsapp.com/...">
+              <span class="frm-nota">Se lo mostramos después de crear la cuenta. Vacío = no aparece.</span>
+            </label>
+
+            <label class="frm-campo">
+              <span class="form-label">TÍTULO DEL FINAL</span>
+              <input class="form-input" id="feGTit" placeholder="Gracias, **{nombre}**">
+              <span class="frm-nota"><code>{nombre}</code> pone su nombre · <code>**palabra**</code> la marca en dorado</span>
+            </label>
+
+            <label class="frm-campo">
+              <span class="form-label">TEXTO DEL FINAL</span>
+              <input class="form-input" id="feGTxt" placeholder="Lo voy a leer entero.">
+            </label>
+          </div>
+
+          <div class="toggle-row" style="margin-top:6px">
+            <div class="toggle-info">
+              <div class="toggle-label">🟢 Formulario abierto</div>
+              <div class="toggle-help">Apagado, el enlace muestra "este formulario ya no está abierto"</div>
+            </div>
+            <div class="toggle-switch" id="feActivo" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label">👤 Al final, invitar a crear la cuenta</div>
+              <div class="toggle-help">Si lo apagás y hay grupo de WhatsApp, el final muestra el grupo directo</div>
+            </div>
+            <div class="toggle-switch" id="feCuenta" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <div class="frm-pie">
+            <button class="frm-peligro" onclick="borrarFormulario()">Borrar formulario</button>
+            <button class="btn-secondary" onclick="duplicarFormulario()">Duplicar</button>
+            <button class="cta-gold btn-save" onclick="guardarAjustesForm()">GUARDAR AJUSTES</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EDITAR UNA PREGUNTA ═══ -->
+  <div class="frm-fondo arriba" id="pregFondo" onclick="if(event.target===this)cerrarPregunta()">
+    <div class="frm-modal chico">
+      <div class="frm-modal-cab">
+        <div>
+          <div class="frm-modal-sub" id="peSub">NUEVA PREGUNTA</div>
+          <div class="frm-modal-tit" id="peClave" style="font-size:13px;font-family:inherit;color:rgba(255,245,240,0.45)"></div>
+        </div>
+        <button class="frm-x" onclick="cerrarPregunta()" title="Cerrar">×</button>
+      </div>
+
+      <div class="frm-modal-cuerpo">
+        <div class="frm-campos">
+          <label class="frm-campo">
+            <span class="form-label">TIPO</span>
+            <select class="form-input" id="peTipo" onchange="ajustarCamposPregunta()">
+              <option value="opciones">Elegir una opción · pasa sola</option>
+              <option value="varias">Elegir varias opciones</option>
+              <option value="larga">Escribir un texto largo</option>
+              <option value="texto">Escribir algo corto</option>
+              <option value="email">Email</option>
+              <option value="tel">Teléfono / WhatsApp</option>
+            </select>
+          </label>
+
+          <label class="frm-campo">
+            <span class="form-label">ETIQUETA DE ARRIBA · OPCIONAL</span>
+            <input class="form-input" id="peCejilla" placeholder="Quién sos · 1 de 6">
+          </label>
+
+          <label class="frm-campo ancho">
+            <span class="form-label">LA PREGUNTA</span>
+            <textarea class="form-input" id="peTitulo" rows="2" placeholder="¿Qué **edad** tenés?"></textarea>
+            <span class="frm-nota">
+              <code>**palabra**</code> bloque dorado ·
+              <code>__palabra__</code> cursiva dorada ·
+              <code>~~palabra~~</code> cursiva rosa
+            </span>
+          </label>
+
+          <label class="frm-campo ancho">
+            <span class="form-label">TEXTO DE AYUDA · OPCIONAL</span>
+            <input class="form-input" id="peAyuda" placeholder="Va debajo de la pregunta, más chico">
+          </label>
+
+          <label class="frm-campo ancho" id="peZonaPh">
+            <span class="form-label">LO QUE SE VE ADENTRO DEL CAMPO VACÍO</span>
+            <input class="form-input" id="pePh" placeholder="Escribí acá…">
+          </label>
+
+          <label class="frm-campo ancho" id="peZonaOp">
+            <span class="form-label">LAS OPCIONES · UNA POR RENGLÓN</span>
+            <textarea class="form-input" id="peOpciones" rows="6" placeholder="Hasta 24&#10;25 a 34&#10;35 a 44"></textarea>
+            <span class="frm-nota">"Prefiero no decir" se agrega sola, salvo que la pregunta sea obligatoria.</span>
+          </label>
+
+          <label class="frm-campo ancho" id="peZonaSolas">
+            <span class="form-label">OPCIONES QUE NO SE COMBINAN · OPCIONAL</span>
+            <input class="form-input" id="peSolas" placeholder="No">
+            <span class="frm-nota">Separadas por coma. Si marca una de estas, se desmarcan las demás.</span>
+          </label>
+
+          <label class="frm-campo" id="peZonaMin">
+            <span class="form-label">LETRAS MÍNIMAS</span>
+            <input class="form-input" id="peMinimo" type="number" min="0" max="500" placeholder="0">
+          </label>
+
+          <label class="frm-campo ancho">
+            <span class="form-label">OTRO TÍTULO SEGÚN EL RUBRO · OPCIONAL</span>
+            <textarea class="form-input" id="peRubro" rows="3" placeholder="nutricionista = Lo que nadie sabe de ser __nutricionista__ es…"></textarea>
+            <span class="frm-nota">Uno por renglón: <code>rubro = título</code>. El rubro viene en el enlace: <code>?rubro=nutricionista</code></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">⭐ Obligatoria</div>
+            <div class="toggle-help">No se puede saltar</div>
+          </div>
+          <div class="toggle-switch" id="peObligatoria" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="frm-pie">
+          <button class="btn-secondary" onclick="cerrarPregunta()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="guardarPregunta()">GUARDAR PREGUNTA</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ============================ -->
@@ -5117,25 +5370,33 @@ body{visibility:hidden}
 
 
   // ═══════════════════════════════════════════════════════════════
-  // LA PESQUISA
+  // LOS FORMULARIOS
+  //
+  // Cada formulario tiene su enlace (milenacmm.com/f/slug) y sus
+  // preguntas, que se editan acá. El de siempre es /pesquisa.
   // ═══════════════════════════════════════════════════════════════
 
+  let formularios = [];
+  let preguntasDe = {};          // { formulario_id: [preguntas] }
+  let cuentaRespuestas = {};     // { formulario_id: { total, sinLeer } }
+  let formElegido = null;        // el que se está viendo abajo
+  let formEditando = null;       // el que está abierto en el editor
+  let pregEditando = null;       // la pregunta abierta (null = nueva)
   let pesquisaTodas = [];
   let pesquisaRubro = 'todos';
 
-  const PESQ_PREGUNTAS = [
-    ['r1_momento',    '1 · ¿Qué te hizo comentar la palabra hoy?'],
-    ['r2_peso',       '2 · Cuando cerrás el día, ¿qué te pesa y no le contás a nadie?'],
-    ['r3_cambio',     '3 · Si todo saliera como querés, ¿qué cambiaría en tu vida?'],
-    ['r4_nadie_sabe', '4 · Lo que nadie sabe de lo que hace es…'],
-    ['r5_admira',     '5 · ¿A quién admira y qué siente que le falta?'],
-    ['r6_porque',     '6 · Por qué te sigue, contado a una amiga']
-  ];
+  const TIPOS_TXT = {
+    opciones: 'Una opción', varias: 'Varias opciones', larga: 'Texto largo',
+    texto: 'Texto corto', email: 'Email', tel: 'Teléfono'
+  };
+  const TIPOS_ICO = { opciones: '◉', varias: '☑', larga: '¶', texto: 'Aa', email: '@', tel: '☏' };
+  const CLAVES_RESERVADAS = ['formulario','rubro','pieza','dispositivo','visitante','id'];
 
-  const PESQ_PERFIL = [
-    ['edad','Edad'], ['estado_civil','Estado civil'], ['hijos','Hijos'],
-    ['anos_mercado','En el mercado'], ['como_trabaja','Trabaja'], ['facturacion','Factura']
-  ];
+  function enlaceForm(f){
+    return f.slug === 'pesquisa'
+      ? 'https://milenacmm.com/pesquisa'
+      : 'https://milenacmm.com/f/' + f.slug;
+  }
 
   function estadoPesq(msg, tipo){
     const el = document.getElementById('pesqEstado');
@@ -5143,7 +5404,26 @@ body{visibility:hidden}
     if(!msg){ el.className = 'func-estado'; el.textContent = ''; return; }
     el.className = 'func-estado show ' + (tipo || 'ok');
     el.textContent = msg;
+    clearTimeout(estadoPesq._t);
+    estadoPesq._t = setTimeout(() => { el.className = 'func-estado'; }, 6000);
   }
+
+  // "Movimiento Directo" → "movimiento-directo"
+  function hacerSlug(t){
+    return String(t || '').toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+      .slice(0, 60).replace(/-+$/g, '');
+  }
+  function limpiarSlugCampo(el){
+    const pos = el.selectionStart;
+    const limpio = String(el.value).toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9-]+/g, '-').replace(/-{2,}/g, '-').slice(0, 60);
+    if(limpio !== el.value){ el.value = limpio; try{ el.setSelectionRange(pos, pos); }catch(e){} }
+  }
+
+  function sinMarcas(t){ return String(t || '').replace(/\*\*|__|~~/g, ''); }
 
   function cuandoPesq(iso){
     const d = new Date(iso);
@@ -5152,63 +5432,152 @@ body{visibility:hidden}
     if(h < 1) return 'recién';
     if(h < 24) return 'hace ' + h + ' h';
     const dias = Math.floor(h / 24);
-    if(dias < 7) return 'hace ' + dias + ' días';
+    if(dias < 7) return 'hace ' + dias + (dias === 1 ? ' día' : ' días');
     return d.toLocaleDateString('es-PY', { day:'2-digit', month:'short' });
   }
 
+  // ═══ CARGAR ══════════════════════════════════════════════════════
   async function cargarPesquisa(){
     const aviso = document.getElementById('pesquisaFalta');
 
-    try{
-      const [resumen, filas, grupo] = await Promise.all([
-        sb.from('pesquisa_resumen').select('*').maybeSingle(),
-        sb.from('pesquisa').select('*').order('creado_en', { ascending: false }).limit(400),
-        sb.from('ajustes').select('clave, valor').eq('clave', 'grupo_whatsapp').maybeSingle()
-      ]);
+    const { data: fs, error } = await sb.from('formularios').select('*').order('creado_en');
 
-      if(filas.error && String(filas.error.message || '').includes('does not exist')){
-        aviso.style.display = '';
-        aviso.innerHTML = '⚠️ Falta correr <strong>SQL-PESQUISA-Y-EMAILS.sql</strong> en Supabase.';
-        return;
-      }
-      aviso.style.display = 'none';
-
-      pesquisaTodas = filas.data || [];
-
-      const campo = document.getElementById('grupoWhatsapp');
-      if(campo && grupo.data) campo.value = grupo.data.valor || '';
-
-      pintarPesqTarjetas(resumen.data || {});
-      pintarPesqFiltros();
-      pintarPesquisa();
-
-      const badge = document.getElementById('pesquisaCount');
-      if(badge){
-        const sinLeer = pesquisaTodas.filter(r => !r.leida).length;
-        badge.textContent = sinLeer || pesquisaTodas.length;
-        badge.classList.toggle('dim', sinLeer === 0);
-      }
-
-    }catch(e){
+    if(error){
       aviso.style.display = '';
-      aviso.textContent = 'No pudimos leer la pesquisa: ' + (e?.message || e);
+      aviso.innerHTML = String(error.message || '').includes('does not exist')
+        ? '⚠️ Falta correr <strong>SQL-FORMULARIOS.sql</strong> en Supabase.'
+        : 'No pudimos leer los formularios: ' + esc(error.message);
+      return;
     }
+    aviso.style.display = 'none';
+    formularios = fs || [];
+
+    // Cuántas respuestas tiene cada uno
+    cuentaRespuestas = {};
+    const { data: rs } = await sb.from('pesquisa').select('formulario_id, leida');
+    (rs || []).forEach(r => {
+      const k = r.formulario_id || 'sin';
+      if(!cuentaRespuestas[k]) cuentaRespuestas[k] = { total: 0, sinLeer: 0 };
+      cuentaRespuestas[k].total++;
+      if(!r.leida) cuentaRespuestas[k].sinLeer++;
+    });
+
+    const badge = document.getElementById('pesquisaCount');
+    if(badge){
+      const sinLeer = Object.values(cuentaRespuestas).reduce((a, c) => a + c.sinLeer, 0);
+      const total = Object.values(cuentaRespuestas).reduce((a, c) => a + c.total, 0);
+      badge.textContent = sinLeer || total;
+      badge.classList.toggle('dim', sinLeer === 0);
+    }
+
+    if(!formElegido || !formularios.find(f => f.id === formElegido)){
+      formElegido = formularios[0]?.id || null;
+    }
+
+    pintarFormularios();
+    if(formElegido) await verRespuestas(formElegido, true);
   }
 
-  function pintarPesqTarjetas(r){
+  async function traerPreguntas(formId, forzar){
+    if(preguntasDe[formId] && !forzar) return preguntasDe[formId];
+    const { data } = await sb.from('formulario_preguntas')
+      .select('*').eq('formulario_id', formId).order('orden');
+    preguntasDe[formId] = data || [];
+    return preguntasDe[formId];
+  }
+
+  // ═══ LA LISTA DE FORMULARIOS ═════════════════════════════════════
+  function pintarFormularios(){
+    const cont = document.getElementById('frmLista');
+    if(!cont) return;
+
+    if(formularios.length === 0){
+      cont.innerHTML = '<div class="met-vacio">Todavía no hay formularios.<br>' +
+        'Tocá <strong>+ Nuevo formulario</strong> para crear el primero.</div>';
+      document.getElementById('frmRespuestas').style.display = 'none';
+      return;
+    }
+
+    cont.innerHTML = formularios.map(f => {
+      const c = cuentaRespuestas[f.id] || { total: 0, sinLeer: 0 };
+      const link = enlaceForm(f);
+      return '<div class="frm-card' + (f.id === formElegido ? ' elegido' : '') + '" onclick="verRespuestas(\'' + f.id + '\')">' +
+        '<div class="frm-card-cab">' +
+          '<div class="frm-card-nom">' + esc(f.titulo) + '</div>' +
+          '<span class="frm-estado ' + (f.activo ? 'on' : 'off') + '">' + (f.activo ? 'ABIERTO' : 'CERRADO') + '</span>' +
+        '</div>' +
+        '<div class="frm-card-link">' + esc(link.replace('https://', '')) + '</div>' +
+        '<div class="frm-card-num">' +
+          '<b>' + c.total + '</b> ' + (c.total === 1 ? 'respuesta' : 'respuestas') +
+          (c.sinLeer ? ' · <span class="frm-nuevas">' + c.sinLeer + ' sin leer</span>' : '') +
+        '</div>' +
+        '<div class="frm-card-acc" onclick="event.stopPropagation()">' +
+          '<button class="pesq-accion" onclick="editarFormulario(\'' + f.id + '\')">✏️ Editar</button>' +
+          '<button class="pesq-accion" onclick="copiarEnlaceForm(\'' + f.id + '\')">🔗 Copiar enlace</button>' +
+          '<a class="pesq-accion" href="' + link + '" target="_blank" rel="noopener">↗ Abrir</a>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function copiarEnlaceForm(id){
+    const f = formularios.find(x => x.id === id);
+    if(!f) return;
+    navigator.clipboard.writeText(enlaceForm(f))
+      .then(() => mostrarToast('✓ Enlace copiado'))
+      .catch(() => mostrarToast('No se pudo copiar', true));
+  }
+
+  // ═══ LAS RESPUESTAS DEL ELEGIDO ══════════════════════════════════
+  async function verRespuestas(id, sinPintarLista){
+    formElegido = id;
+    pesquisaRubro = 'todos';
+    if(!sinPintarLista) pintarFormularios();
+
+    const f = formularios.find(x => x.id === id);
+    if(!f) return;
+
+    document.getElementById('frmRespuestas').style.display = '';
+    document.getElementById('frmRespTit').textContent = 'Respuestas · ' + f.titulo;
+    document.getElementById('pesqLista').innerHTML = '<div class="met-vacio">Cargando…</div>';
+
+    await traerPreguntas(id);
+    const { data } = await sb.from('pesquisa').select('*')
+      .eq('formulario_id', id).order('creado_en', { ascending: false }).limit(500);
+    pesquisaTodas = data || [];
+
+    pintarPesqTarjetas();
+    pintarPesqFiltros();
+    pintarPesquisa();
+  }
+
+  function valorDe(r, clave){
+    const v = (r.respuestas && r.respuestas[clave] !== undefined) ? r.respuestas[clave] : r[clave];
+    return v == null ? '' : String(v);
+  }
+
+  function pintarPesqTarjetas(){
     const cont = document.getElementById('pesqTarjetas');
     if(!cont) return;
+    const total = pesquisaTodas.length;
+    const semana = pesquisaTodas.filter(r => Date.now() - new Date(r.creado_en) < 7 * 86400000).length;
+    const hoy = pesquisaTodas.filter(r => Date.now() - new Date(r.creado_en) < 86400000).length;
+    const sinLeer = pesquisaTodas.filter(r => !r.leida).length;
+    const cuentas = pesquisaTodas.filter(r => r.creo_cuenta).length;
+
     const t = (lbl, num, pie, cl) =>
       '<div class="met-t"><div class="met-t-lbl">' + lbl + '</div>' +
-      '<div class="met-t-num ' + (cl || '') + '">' + (num || 0) + '</div>' +
+      '<div class="met-t-num ' + (cl || '') + '">' + num + '</div>' +
       '<div class="met-t-pie">' + pie + '</div></div>';
 
     cont.innerHTML =
-      t('RESPUESTAS', r.total, (r.semana || 0) + ' esta semana', 'oro') +
-      t('HOY', r.hoy, 'desde ayer') +
-      t('SIN LEER', r.sin_leer, 'todavía no las abriste') +
-      t('CREARON CUENTA', r.crearon_cuenta, 'de ' + (r.total || 0), 'verde') +
-      t('RUBROS', r.rubros, 'distintos');
+      t('RESPUESTAS', total, semana + ' esta semana', 'oro') +
+      t('HOY', hoy, 'en las últimas 24 h') +
+      t('SIN LEER', sinLeer, 'todavía no las abriste') +
+      t('CREARON CUENTA', cuentas, 'de ' + total, 'verde');
+
+    document.getElementById('frmRespSub').textContent =
+      total ? 'Tocá una para leerla entera. Al abrirla queda como leída.' : '';
   }
 
   function pintarPesqFiltros(){
@@ -5216,19 +5585,16 @@ body{visibility:hidden}
     if(!cont) return;
 
     const cuenta = {};
-    pesquisaTodas.forEach(r => {
-      const k = r.rubro || '(sin rubro)';
-      cuenta[k] = (cuenta[k] || 0) + 1;
-    });
-
+    pesquisaTodas.forEach(r => { if(r.rubro) cuenta[r.rubro] = (cuenta[r.rubro] || 0) + 1; });
     const rubros = Object.keys(cuenta).sort((a, b) => cuenta[b] - cuenta[a]);
+
+    if(pesquisaTodas.length === 0){ cont.innerHTML = ''; return; }
 
     cont.innerHTML =
       '<button class="pesq-chip' + (pesquisaRubro === 'todos' ? ' on' : '') +
         '" onclick="filtrarPesq(\'todos\')">Todas · ' + pesquisaTodas.length + '</button>' +
       '<button class="pesq-chip' + (pesquisaRubro === 'sinleer' ? ' on' : '') +
-        '" onclick="filtrarPesq(\'sinleer\')">Sin leer · ' +
-        pesquisaTodas.filter(r => !r.leida).length + '</button>' +
+        '" onclick="filtrarPesq(\'sinleer\')">Sin leer · ' + pesquisaTodas.filter(r => !r.leida).length + '</button>' +
       rubros.map(rb =>
         '<button class="pesq-chip' + (pesquisaRubro === rb ? ' on' : '') +
         '" onclick="filtrarPesq(' + JSON.stringify(rb).replace(/"/g, '&quot;') + ')">' +
@@ -5247,40 +5613,46 @@ body{visibility:hidden}
 
     let filas = pesquisaTodas;
     if(pesquisaRubro === 'sinleer') filas = filas.filter(r => !r.leida);
-    else if(pesquisaRubro !== 'todos') filas = filas.filter(r => (r.rubro || '(sin rubro)') === pesquisaRubro);
+    else if(pesquisaRubro !== 'todos') filas = filas.filter(r => r.rubro === pesquisaRubro);
 
     if(filas.length === 0){
-      cont.innerHTML = '<div class="met-vacio">Todavía no llegó ninguna respuesta.<br>' +
-        'Pegá el enlace de arriba en ManyChat y empiezan a caer acá.</div>';
+      cont.innerHTML = '<div class="met-vacio">Todavía no llegó ninguna respuesta a este formulario.<br>' +
+        'Copiá el enlace de arriba y compartilo.</div>';
       return;
     }
 
+    const preguntas = (preguntasDe[formElegido] || []).filter(p => !['nombre','email','whatsapp'].includes(p.clave));
+    const deTocar = preguntas.filter(p => p.tipo === 'opciones' || p.tipo === 'varias');
+    const deEscribir = preguntas.filter(p => !(p.tipo === 'opciones' || p.tipo === 'varias'));
+
     cont.innerHTML = filas.map(r => {
-      const nom = r.nombre || 'Sin nombre';
+      const nom = valorDe(r, 'nombre') || 'Sin nombre';
+      const mail = valorDe(r, 'email');
       const inicial = nom.trim()[0] ? nom.trim()[0].toUpperCase() : '?';
 
-      const perfil = PESQ_PERFIL
-        .filter(([k]) => r[k] && r[k] !== 'prefiero no decir')
-        .map(([k, lbl]) => '<div class="pesq-dato"><b>' + lbl + '</b>' + esc(r[k]) + '</div>')
+      const perfil = deTocar
+        .filter(p => { const v = valorDe(r, p.clave); return v && v !== 'prefiero no decir'; })
+        .map(p => '<div class="pesq-dato"><b>' + esc(sinMarcas(p.cejilla || p.titulo).split('·')[0].trim().slice(0, 28)) +
+          '</b>' + esc(valorDe(r, p.clave)) + '</div>')
         .join('');
 
-      const respuestas = PESQ_PREGUNTAS.map(([k, preg]) => {
-        const hay = r[k] && String(r[k]).trim();
-        return '<div class="pesq-r' + (hay ? '' : ' vacia') + '">' +
-          '<div class="pesq-r-p">' + preg + '</div>' +
-          '<div class="pesq-r-t">' + (hay ? esc(r[k]) : 'No la respondió') + '</div>' +
+      const respuestas = deEscribir.map((p, i) => {
+        const v = valorDe(r, p.clave).trim();
+        return '<div class="pesq-r' + (v ? '' : ' vacia') + '">' +
+          '<div class="pesq-r-p">' + esc(sinMarcas(p.titulo)) + '</div>' +
+          '<div class="pesq-r-t">' + (v ? esc(v) : 'No la respondió') + '</div>' +
         '</div>';
       }).join('');
 
-      const wa = (r.whatsapp || '').replace(/\D/g, '');
+      const wa = valorDe(r, 'whatsapp').replace(/\D/g, '');
       const waLink = wa ? (wa.length <= 10 ? '595' + wa.replace(/^0+/, '') : wa) : '';
 
       return '<div class="pesq-card' + (r.leida ? '' : ' nueva') + '" id="pesq-' + r.id + '">' +
         '<div class="pesq-cab" onclick="abrirPesq(\'' + r.id + '\')">' +
-          '<div class="pesq-ava">' + inicial + '</div>' +
+          '<div class="pesq-ava">' + esc(inicial) + '</div>' +
           '<div class="pesq-quien">' +
             '<div class="pesq-nom">' + esc(nom) + '</div>' +
-            '<div class="pesq-meta">' + esc(r.email || 'sin email') + ' · ' + cuandoPesq(r.creado_en) + '</div>' +
+            '<div class="pesq-meta">' + esc(mail || 'sin email') + ' · ' + cuandoPesq(r.creado_en) + '</div>' +
           '</div>' +
           '<div class="pesq-tags">' +
             (r.rubro ? '<span class="pesq-tag rubro">' + esc(r.rubro) + '</span>' : '') +
@@ -5289,14 +5661,12 @@ body{visibility:hidden}
             '<svg class="pesq-flecha" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>' +
           '</div>' +
         '</div>' +
-
         '<div class="pesq-cuerpo">' +
           (perfil ? '<div class="pesq-perfil">' + perfil + '</div>' : '') +
           respuestas +
           '<div class="pesq-pie">' +
-            (waLink ? '<a class="pesq-accion wa" href="https://wa.me/' + waLink +
-              '" target="_blank" rel="noopener">💬 Escribirle</a>' : '') +
-            (r.email ? '<a class="pesq-accion" href="mailto:' + esc(r.email) + '">✉️ Email</a>' : '') +
+            (waLink ? '<a class="pesq-accion wa" href="https://wa.me/' + waLink + '" target="_blank" rel="noopener">💬 Escribirle</a>' : '') +
+            (mail ? '<a class="pesq-accion" href="mailto:' + esc(mail) + '">✉️ Email</a>' : '') +
             '<button class="pesq-accion" onclick="copiarRespuesta(\'' + r.id + '\')">📋 Copiar todo</button>' +
             (r.pieza ? '<span class="pesq-accion" style="cursor:default">Vino de: ' + esc(r.pieza) + '</span>' : '') +
           '</div>' +
@@ -5310,7 +5680,6 @@ body{visibility:hidden}
     if(!card) return;
     card.classList.toggle('abierta');
 
-    // Al abrirla por primera vez, queda marcada como leída
     const fila = pesquisaTodas.find(r => r.id === id);
     if(card.classList.contains('abierta') && fila && !fila.leida){
       fila.leida = true;
@@ -5318,10 +5687,17 @@ body{visibility:hidden}
       card.querySelector('.pesq-tag.nueva')?.remove();
       try{
         await sb.from('pesquisa').update({ leida: true }).eq('id', id);
-        const badge = document.getElementById('pesquisaCount');
-        const sinLeer = pesquisaTodas.filter(r => !r.leida).length;
-        if(badge){ badge.textContent = sinLeer || pesquisaTodas.length; badge.classList.toggle('dim', sinLeer === 0); }
+        const c = cuentaRespuestas[formElegido];
+        if(c && c.sinLeer > 0) c.sinLeer--;
+        pintarFormularios();
+        pintarPesqTarjetas();
         pintarPesqFiltros();
+        const badge = document.getElementById('pesquisaCount');
+        if(badge){
+          const sinLeer = Object.values(cuentaRespuestas).reduce((a, x) => a + x.sinLeer, 0);
+          badge.textContent = sinLeer || Object.values(cuentaRespuestas).reduce((a, x) => a + x.total, 0);
+          badge.classList.toggle('dim', sinLeer === 0);
+        }
       }catch(e){}
     }
   }
@@ -5329,14 +5705,14 @@ body{visibility:hidden}
   function copiarRespuesta(id){
     const r = pesquisaTodas.find(x => x.id === id);
     if(!r) return;
+    const preguntas = preguntasDe[formElegido] || [];
 
-    let txt = (r.nombre || 'Sin nombre') + ' · ' + (r.email || '') + ' · ' + (r.whatsapp || '') + '\n';
+    let txt = (valorDe(r, 'nombre') || 'Sin nombre') + ' · ' + valorDe(r, 'email') + ' · ' + valorDe(r, 'whatsapp') + '\n';
     if(r.rubro) txt += 'Rubro: ' + r.rubro + '\n';
     txt += '\n';
-    PESQ_PERFIL.forEach(([k, lbl]) => { if(r[k]) txt += lbl + ': ' + r[k] + '\n'; });
-    txt += '\n';
-    PESQ_PREGUNTAS.forEach(([k, preg]) => {
-      if(r[k]) txt += preg + '\n' + r[k] + '\n\n';
+    preguntas.filter(p => !['nombre','email','whatsapp'].includes(p.clave)).forEach(p => {
+      const v = valorDe(r, p.clave);
+      if(v) txt += sinMarcas(p.titulo) + '\n' + v + '\n\n';
     });
 
     navigator.clipboard.writeText(txt.trim())
@@ -5344,46 +5720,390 @@ body{visibility:hidden}
       .catch(() => mostrarToast('No se pudo copiar', true));
   }
 
-  function copiarEnlacePesquisa(){
-    navigator.clipboard.writeText('https://milenacmm.com/pesquisa')
-      .then(() => estadoPesq('✓ Copiado. Agregale ?rubro=nutricionista según la pieza.', 'ok'))
-      .catch(() => estadoPesq('No se pudo copiar', 'error'));
-  }
-
-  async function guardarGrupo(){
-    const v = document.getElementById('grupoWhatsapp').value.trim();
-
-    if(v && !v.startsWith('https://chat.whatsapp.com/') && !v.startsWith('https://')){
-      return estadoPesq('El enlace del grupo tiene que empezar con https://', 'error');
-    }
-
-    const { error } = await sb.from('ajustes')
-      .upsert({ clave: 'grupo_whatsapp', valor: v, actualizado_en: new Date().toISOString() },
-              { onConflict: 'clave' });
-
-    if(error) return estadoPesq('No se pudo guardar: ' + error.message, 'error');
-    estadoPesq(v ? '✓ Guardado. Se lo mostramos apenas creen la cuenta.' : '✓ Guardado (sin grupo, no aparece)', 'ok');
-  }
-
-  // ─── Bajarse todo en una planilla ───
   function bajarPesquisa(){
     if(pesquisaTodas.length === 0) return mostrarToast('Todavía no hay respuestas', true);
+    const f = formularios.find(x => x.id === formElegido);
+    const preguntas = preguntasDe[formElegido] || [];
 
-    const col = ['creado_en','nombre','email','whatsapp','rubro','pieza',
-      'edad','estado_civil','hijos','anos_mercado','como_trabaja','facturacion',
-      'r1_momento','r2_peso','r3_cambio','r4_nadie_sabe','r5_admira','r6_porque','creo_cuenta'];
+    const cols = [['creado_en','Fecha'], ['rubro','Rubro'], ['pieza','Pieza']]
+      .concat(preguntas.map(p => [p.clave, sinMarcas(p.titulo).slice(0, 80)]))
+      .concat([['creo_cuenta','Creó cuenta']]);
 
     const limpio = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
-
-    const csv = '\uFEFF' + col.join(';') + '\n' +
-      pesquisaTodas.map(r => col.map(c => limpio(r[c])).join(';')).join('\n');
+    const csv = '﻿' + cols.map(c => limpio(c[1])).join(';') + '\n' +
+      pesquisaTodas.map(r => cols.map(([k]) => {
+        if(k === 'creado_en' || k === 'rubro' || k === 'pieza') return limpio(r[k]);
+        if(k === 'creo_cuenta') return limpio(r.creo_cuenta ? 'sí' : 'no');
+        return limpio(valorDe(r, k));
+      }).join(';')).join('\n');
 
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-    a.download = 'pesquisa-cmm-' + new Date().toISOString().slice(0, 10) + '.csv';
+    a.download = (f?.slug || 'formulario') + '-' + new Date().toISOString().slice(0, 10) + '.csv';
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
     mostrarToast('✓ Descargando');
+  }
+
+  // ═══ CREAR, DUPLICAR, BORRAR ═════════════════════════════════════
+  function slugLibre(base){
+    let s = hacerSlug(base) || 'formulario';
+    if(!formularios.some(f => f.slug === s)) return s;
+    for(let n = 2; n < 200; n++){
+      const t = (s + '-' + n).slice(0, 60);
+      if(!formularios.some(f => f.slug === t)) return t;
+    }
+    return s + '-' + Date.now().toString(36);
+  }
+
+  async function nuevoFormulario(){
+    const slug = slugLibre('formulario-nuevo');
+    const { data: f, error } = await sb.from('formularios').insert({
+      slug: slug, titulo: 'Formulario nuevo', subtitulo: 'Creando Mentes Millonarias'
+    }).select().single();
+
+    if(error) return estadoPesq('No se pudo crear: ' + error.message, 'error');
+
+    // Nombre y email van siempre: sin eso no se puede crear la cuenta
+    await sb.from('formulario_preguntas').insert([
+      { formulario_id: f.id, orden: 1, clave: 'nombre', tipo: 'texto', cejilla: 'Empecemos',
+        titulo: 'Antes de nada, ¿cómo te **llamo**?', ayuda: 'Como te dicen tus amigas.',
+        placeholder: 'Tu nombre', obligatoria: true, fija: true },
+      { formulario_id: f.id, orden: 2, clave: 'email', tipo: 'email', cejilla: 'Para escribirte',
+        titulo: 'Elegí tu **mejor** email',
+        ayuda: 'Poné el que mirás todos los días: ahí te llega todo lo importante.',
+        placeholder: 'vos@ejemplo.com', obligatoria: true, fija: true },
+      { formulario_id: f.id, orden: 3, clave: 'whatsapp', tipo: 'tel', cejilla: 'Por si te escribo',
+        titulo: '¿Y tu __WhatsApp__?', ayuda: 'Nunca lo comparto con nadie.',
+        placeholder: '09xx xxx xxx', obligatoria: false, fija: false }
+    ]);
+
+    formularios.push(f);
+    formElegido = f.id;
+    pintarFormularios();
+    await editarFormulario(f.id);
+    pestanaEditor('aju');
+    setTimeout(() => { const t = document.getElementById('feTitulo'); t?.focus(); t?.select(); }, 80);
+    estadoPesq('✓ Creado. Ponele nombre y enlace, y después agregá las preguntas.', 'ok');
+  }
+
+  async function duplicarFormulario(){
+    const f = formularios.find(x => x.id === formEditando);
+    if(!f) return;
+
+    const slug = slugLibre(f.slug + '-copia');
+    const { id, creado_en, actualizado_en, ...resto } = f;
+    const { data: nuevo, error } = await sb.from('formularios')
+      .insert(Object.assign({}, resto, { slug: slug, titulo: f.titulo + ' (copia)' }))
+      .select().single();
+    if(error) return mostrarToast('No se pudo duplicar: ' + error.message, true);
+
+    const ps = await traerPreguntas(f.id, true);
+    if(ps.length){
+      await sb.from('formulario_preguntas').insert(ps.map(p => {
+        const { id, creado_en, formulario_id, ...q } = p;
+        return Object.assign(q, { formulario_id: nuevo.id });
+      }));
+    }
+
+    formularios.push(nuevo);
+    cerrarEditorForm();
+    await cargarPesquisa();
+    mostrarToast('✓ Duplicado como "' + nuevo.titulo + '"');
+  }
+
+  async function borrarFormulario(){
+    const f = formularios.find(x => x.id === formEditando);
+    if(!f) return;
+    const c = cuentaRespuestas[f.id]?.total || 0;
+
+    if(f.slug === 'pesquisa') return mostrarToast('Este es el formulario principal: se puede cerrar, pero no borrar', true);
+    if(c > 0){
+      return mostrarToast('Tiene ' + c + ' respuestas. Mejor cerralo con el interruptor de arriba: así no las perdés.', true);
+    }
+    if(!confirm('¿Borrar "' + f.titulo + '"? No se puede deshacer.')) return;
+
+    const { error } = await sb.from('formularios').delete().eq('id', f.id);
+    if(error) return mostrarToast('No se pudo borrar: ' + error.message, true);
+
+    formularios = formularios.filter(x => x.id !== f.id);
+    if(formElegido === f.id) formElegido = null;
+    cerrarEditorForm();
+    await cargarPesquisa();
+    mostrarToast('✓ Borrado');
+  }
+
+  // ═══ EL EDITOR ═══════════════════════════════════════════════════
+  async function editarFormulario(id){
+    const f = formularios.find(x => x.id === id);
+    if(!f) return;
+    formEditando = id;
+
+    document.getElementById('feTitVista').textContent = f.titulo;
+    document.getElementById('feTitulo').value = f.titulo || '';
+    document.getElementById('feSlug').value = f.slug || '';
+    document.getElementById('feSlug').disabled = f.slug === 'pesquisa';
+    document.getElementById('feSub').value = f.subtitulo || '';
+    document.getElementById('feGrupo').value = f.grupo_whatsapp || '';
+    document.getElementById('feGTit').value = f.gracias_titulo || '';
+    document.getElementById('feGTxt').value = f.gracias_texto || '';
+    document.getElementById('feActivo').classList.toggle('on', f.activo !== false);
+    document.getElementById('feCuenta').classList.toggle('on', f.mostrar_cuenta !== false);
+    document.getElementById('feVer').href = enlaceForm(f);
+
+    pestanaEditor('preg');
+    document.getElementById('frmFondo').classList.add('show');
+    document.body.style.overflow = 'hidden';
+
+    document.getElementById('fePreguntas').innerHTML = '<div class="met-vacio">Cargando…</div>';
+    await traerPreguntas(id, true);
+    pintarPreguntasEditor();
+  }
+
+  function cerrarEditorForm(){
+    document.getElementById('frmFondo').classList.remove('show');
+    document.body.style.overflow = '';
+    formEditando = null;
+  }
+
+  function pestanaEditor(cual){
+    document.getElementById('feZonaPreg').style.display = cual === 'preg' ? '' : 'none';
+    document.getElementById('feZonaAju').style.display = cual === 'aju' ? '' : 'none';
+    document.getElementById('fePesPreg').classList.toggle('on', cual === 'preg');
+    document.getElementById('fePesAju').classList.toggle('on', cual === 'aju');
+  }
+
+  async function guardarAjustesForm(){
+    const f = formularios.find(x => x.id === formEditando);
+    if(!f) return;
+
+    const titulo = document.getElementById('feTitulo').value.trim();
+    let slug = document.getElementById('feSlug').value.trim().replace(/^-+|-+$/g, '');
+    if(f.slug === 'pesquisa') slug = 'pesquisa';
+
+    if(!titulo) return mostrarToast('Ponele un nombre', true);
+    if(!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) return mostrarToast('El enlace solo puede tener minúsculas, números y guiones', true);
+    if(formularios.some(x => x.slug === slug && x.id !== f.id)) return mostrarToast('Ya hay otro formulario con ese enlace', true);
+
+    const grupo = document.getElementById('feGrupo').value.trim();
+    if(grupo && !/^https:\/\//.test(grupo)) return mostrarToast('El enlace del grupo tiene que empezar con https://', true);
+
+    const cambios = {
+      titulo: titulo,
+      slug: slug,
+      subtitulo: document.getElementById('feSub').value.trim(),
+      grupo_whatsapp: grupo,
+      gracias_titulo: document.getElementById('feGTit').value.trim() || 'Gracias, **{nombre}**',
+      gracias_texto: document.getElementById('feGTxt').value.trim(),
+      activo: document.getElementById('feActivo').classList.contains('on'),
+      mostrar_cuenta: document.getElementById('feCuenta').classList.contains('on'),
+      actualizado_en: new Date().toISOString()
+    };
+
+    const { error } = await sb.from('formularios').update(cambios).eq('id', f.id);
+    if(error){
+      return mostrarToast(String(error.message).includes('duplicate')
+        ? 'Ya hay otro formulario con ese enlace' : 'No se pudo guardar: ' + error.message, true);
+    }
+
+    Object.assign(f, cambios);
+    document.getElementById('feTitVista').textContent = f.titulo;
+    document.getElementById('feVer').href = enlaceForm(f);
+    pintarFormularios();
+    if(formElegido === f.id) document.getElementById('frmRespTit').textContent = 'Respuestas · ' + f.titulo;
+    mostrarToast('✓ Ajustes guardados');
+  }
+
+  // ═══ LAS PREGUNTAS, EN EL EDITOR ═════════════════════════════════
+  function pintarPreguntasEditor(){
+    const cont = document.getElementById('fePreguntas');
+    const ps = preguntasDe[formEditando] || [];
+
+    if(ps.length === 0){
+      cont.innerHTML = '<div class="met-vacio">Sin preguntas todavía.</div>';
+      return;
+    }
+
+    cont.innerHTML = ps.map((p, i) => {
+      const detalle = [TIPOS_TXT[p.tipo] || p.tipo];
+      if(p.obligatoria) detalle.push('obligatoria');
+      if((p.tipo === 'opciones' || p.tipo === 'varias') && Array.isArray(p.opciones)) detalle.push(p.opciones.length + ' opciones');
+      if(p.por_rubro && Object.keys(p.por_rubro).length) detalle.push('cambia por rubro');
+
+      return '<div class="fp-fila' + (p.activa ? '' : ' apagada') + '">' +
+        '<div class="fp-mover">' +
+          '<button onclick="moverPregunta(\'' + p.id + '\',-1)"' + (i === 0 ? ' disabled' : '') + ' title="Subir">▲</button>' +
+          '<button onclick="moverPregunta(\'' + p.id + '\',1)"' + (i === ps.length - 1 ? ' disabled' : '') + ' title="Bajar">▼</button>' +
+        '</div>' +
+        '<div class="fp-num">' + (i + 1) + '</div>' +
+        '<div class="fp-ico">' + (TIPOS_ICO[p.tipo] || '?') + '</div>' +
+        '<div class="fp-txt" onclick="editarPregunta(\'' + p.id + '\')">' +
+          '<div class="fp-tit">' + esc(sinMarcas(p.titulo)) + '</div>' +
+          '<div class="fp-det">' + esc(detalle.join(' · ')) + (p.fija ? ' · <span class="fp-fija">fija</span>' : '') + '</div>' +
+        '</div>' +
+        '<div class="toggle-switch' + (p.activa ? ' on' : '') + (p.fija ? ' bloqueado' : '') +
+          '" onclick="alternarPregunta(\'' + p.id + '\', this)" title="' + (p.fija ? 'Esta no se puede apagar' : 'Mostrar u ocultar') + '"></div>' +
+        '<button class="fp-btn" onclick="editarPregunta(\'' + p.id + '\')" title="Editar">✏️</button>' +
+        '<button class="fp-btn" onclick="borrarPregunta(\'' + p.id + '\')"' + (p.fija ? ' disabled' : '') + ' title="Borrar">🗑</button>' +
+      '</div>';
+    }).join('');
+  }
+
+  async function moverPregunta(id, dir){
+    const ps = preguntasDe[formEditando] || [];
+    const i = ps.findIndex(p => p.id === id);
+    const j = i + dir;
+    if(i < 0 || j < 0 || j >= ps.length) return;
+
+    [ps[i], ps[j]] = [ps[j], ps[i]];
+    ps.forEach((p, k) => p.orden = k + 1);
+    pintarPreguntasEditor();
+
+    const r = await Promise.all([
+      sb.from('formulario_preguntas').update({ orden: ps[i].orden }).eq('id', ps[i].id),
+      sb.from('formulario_preguntas').update({ orden: ps[j].orden }).eq('id', ps[j].id)
+    ]);
+    if(r.some(x => x.error)) mostrarToast('No se pudo guardar el orden', true);
+  }
+
+  async function alternarPregunta(id, el){
+    const p = (preguntasDe[formEditando] || []).find(x => x.id === id);
+    if(!p) return;
+    if(p.fija) return mostrarToast('Nombre y email van siempre: los necesitamos para crear la cuenta', true);
+
+    p.activa = !p.activa;
+    el.classList.toggle('on', p.activa);
+    el.closest('.fp-fila')?.classList.toggle('apagada', !p.activa);
+
+    const { error } = await sb.from('formulario_preguntas').update({ activa: p.activa }).eq('id', id);
+    if(error){ p.activa = !p.activa; pintarPreguntasEditor(); mostrarToast('No se pudo guardar', true); }
+  }
+
+  async function borrarPregunta(id){
+    const p = (preguntasDe[formEditando] || []).find(x => x.id === id);
+    if(!p || p.fija) return;
+    if(!confirm('¿Borrar la pregunta "' + sinMarcas(p.titulo).slice(0, 60) + '"?\n\n' +
+      'Las respuestas que ya llegaron se guardan igual. Si solo querés esconderla, apagala.')) return;
+
+    const { error } = await sb.from('formulario_preguntas').delete().eq('id', id);
+    if(error) return mostrarToast('No se pudo borrar: ' + error.message, true);
+
+    preguntasDe[formEditando] = (preguntasDe[formEditando] || []).filter(x => x.id !== id);
+    pintarPreguntasEditor();
+    mostrarToast('✓ Pregunta borrada');
+  }
+
+  // ─── Abrir una pregunta para editarla (o una nueva) ───
+  function editarPregunta(id){
+    const p = id ? (preguntasDe[formEditando] || []).find(x => x.id === id) : null;
+    pregEditando = p || null;
+
+    document.getElementById('peSub').textContent = p ? 'EDITAR PREGUNTA' : 'NUEVA PREGUNTA';
+    document.getElementById('peClave').textContent = p ? 'Se guarda como: ' + p.clave : '';
+    document.getElementById('peTipo').value = p?.tipo || 'opciones';
+    document.getElementById('peTipo').disabled = !!p?.fija;
+    document.getElementById('peCejilla').value = p?.cejilla || '';
+    document.getElementById('peTitulo').value = p?.titulo || '';
+    document.getElementById('peAyuda').value = p?.ayuda || '';
+    document.getElementById('pePh').value = p?.placeholder || '';
+    document.getElementById('peOpciones').value = (p?.opciones || []).join('\n');
+    document.getElementById('peSolas').value = (p?.solas || []).join(', ');
+    document.getElementById('peMinimo').value = p?.minimo || '';
+    document.getElementById('peRubro').value = Object.entries(p?.por_rubro || {})
+      .map(([k, v]) => k + ' = ' + v).join('\n');
+    document.getElementById('peObligatoria').classList.toggle('on', !!p?.obligatoria);
+    document.getElementById('peObligatoria').classList.toggle('bloqueado', !!p?.fija);
+
+    ajustarCamposPregunta();
+    document.getElementById('pregFondo').classList.add('show');
+    setTimeout(() => document.getElementById('peTitulo').focus(), 80);
+  }
+
+  function cerrarPregunta(){
+    document.getElementById('pregFondo').classList.remove('show');
+    pregEditando = null;
+  }
+
+  function ajustarCamposPregunta(){
+    const t = document.getElementById('peTipo').value;
+    const conOpciones = t === 'opciones' || t === 'varias';
+    document.getElementById('peZonaOp').style.display = conOpciones ? '' : 'none';
+    document.getElementById('peZonaSolas').style.display = t === 'varias' ? '' : 'none';
+    document.getElementById('peZonaPh').style.display = conOpciones ? 'none' : '';
+    document.getElementById('peZonaMin').style.display = (t === 'larga' || t === 'texto') ? '' : 'none';
+  }
+
+  function claveLibre(titulo){
+    const ps = preguntasDe[formEditando] || [];
+    let base = hacerSlug(sinMarcas(titulo)).replace(/-/g, '_').slice(0, 32).replace(/_+$/, '') || 'pregunta';
+    if(/^\d/.test(base)) base = 'p_' + base;
+    if(CLAVES_RESERVADAS.includes(base)) base = 'p_' + base;
+    let c = base, n = 2;
+    while(ps.some(p => p.clave === c)) c = base + '_' + (n++);
+    return c;
+  }
+
+  async function guardarPregunta(){
+    const fija = !!pregEditando?.fija;
+    const tipo = fija ? pregEditando.tipo : document.getElementById('peTipo').value;
+    const titulo = document.getElementById('peTitulo').value.trim();
+    if(!titulo) return mostrarToast('Escribí la pregunta', true);
+
+    const opciones = document.getElementById('peOpciones').value
+      .split('\n').map(x => x.trim()).filter(Boolean);
+    if((tipo === 'opciones' || tipo === 'varias') && opciones.length < 2){
+      return mostrarToast('Poné al menos dos opciones, una por renglón', true);
+    }
+    if(opciones.length > 8) return mostrarToast('Máximo 8 opciones (las letras van de la A a la H)', true);
+
+    const solas = document.getElementById('peSolas').value
+      .split(',').map(x => x.trim()).filter(x => x && opciones.includes(x));
+
+    const porRubro = {};
+    document.getElementById('peRubro').value.split('\n').forEach(l => {
+      const i = l.indexOf('=');
+      if(i < 1) return;
+      const k = hacerSlug(l.slice(0, i));
+      const v = l.slice(i + 1).trim();
+      if(k && v) porRubro[k] = v;
+    });
+
+    const fila = {
+      tipo: tipo,
+      cejilla: document.getElementById('peCejilla').value.trim(),
+      titulo: titulo,
+      ayuda: document.getElementById('peAyuda').value.trim(),
+      placeholder: document.getElementById('pePh').value.trim(),
+      opciones: (tipo === 'opciones' || tipo === 'varias') ? opciones : [],
+      solas: tipo === 'varias' ? solas : [],
+      obligatoria: fija ? true : document.getElementById('peObligatoria').classList.contains('on'),
+      minimo: (tipo === 'larga' || tipo === 'texto') ? Math.max(0, parseInt(document.getElementById('peMinimo').value) || 0) : 0,
+      por_rubro: porRubro
+    };
+
+    let error;
+    if(pregEditando){
+      ({ error } = await sb.from('formulario_preguntas').update(fila).eq('id', pregEditando.id));
+      if(!error) Object.assign(pregEditando, fila);
+    }else{
+      const ps = preguntasDe[formEditando] || [];
+      Object.assign(fila, {
+        formulario_id: formEditando,
+        clave: claveLibre(titulo),
+        orden: (ps.length ? Math.max(...ps.map(p => p.orden || 0)) : 0) + 1,
+        activa: true
+      });
+      let r = await sb.from('formulario_preguntas').insert(fila).select().single();
+      error = r.error;
+      if(!error) ps.push(r.data);
+      preguntasDe[formEditando] = ps;
+    }
+
+    if(error) return mostrarToast('No se pudo guardar: ' + error.message, true);
+
+    cerrarPregunta();
+    pintarPreguntasEditor();
+    mostrarToast('✓ Pregunta guardada');
   }
 
   function cambiarTab(tab){
@@ -11953,6 +12673,7 @@ body{visibility:hidden}
     guardarNumeros();
 
     verificarEmailConfigurado();
+    cargarPesquisa().catch(() => {});
   }, 40);
 
   // Cargar hashtags cuando Supabase esté listo

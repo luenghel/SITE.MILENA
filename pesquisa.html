@@ -299,7 +299,7 @@
   <div class="cabeza-fila">
     <div class="marca">
       <div class="marca-m">M</div>
-      <div class="marca-t">Milena Machado<br>Movimiento Directo</div>
+      <div class="marca-t">Milena Machado<br><span id="marcaSub">Movimiento Directo</span></div>
     </div>
     <div class="pastilla" id="pastilla"><span class="punto"></span><span id="cuentaPasos">1 / 15</span></div>
   </div>
@@ -319,7 +319,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
+<script src="/supabase-config.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════════
 // LA PESQUISA · una pregunta por vez
@@ -332,6 +332,15 @@
 const params = new URLSearchParams(location.search);
 const RUBRO = (params.get('rubro') || params.get('r') || '').trim().toLowerCase();
 const PIEZA = (params.get('pieza') || params.get('p') || '').trim();
+
+// El formulario: /f/mi-formulario, o ?form=mi-formulario, o el de siempre
+const SLUG = (function(){
+  const m = location.pathname.match(/^\/f\/([a-z0-9-]+)/i);
+  if(m) return m[1].toLowerCase();
+  return (params.get('form') || 'pesquisa').trim().toLowerCase();
+})();
+let FORM = null;
+const CLAVE_BORRADOR = 'cmm_form_' + SLUG;
 
 const NADIE_SABE = {
   nutricionista:     'Lo que nadie sabe de ser __nutricionista__ es…',
@@ -346,7 +355,8 @@ const NADIE_SABE = {
   estudiantes:       'Lo que nadie sabe de estar por __terminar__ la carrera es…'
 };
 
-const PASOS = [
+// Lo de abajo es solo un respaldo: las preguntas de verdad vienen del panel
+let PASOS = [
   { tipo:'texto', campo:'nombre', req:true, cejilla:'Empecemos',
     t:'Antes de nada, ¿cómo te **llamo**?',
     a:'Como te dicen tus amigas.',
@@ -470,10 +480,11 @@ function pintar(){
         (marcada(o) ? ' elegida' : '') + '" onclick="' + fn + '(' + i + ')">' +
           '<span class="op-tecla">' + LETRAS[i] + '</span><span>' + o + '</span>' +
         '</button>').join('') +
+      (p.req ? '' :
       '<button type="button" class="op callada' + (varias ? ' cuadrada' : '') +
       (marcada('prefiero no decir') ? ' elegida' : '') + '" onclick="' + fn + '(-1)">' +
         '<span class="op-tecla">·</span><span>prefiero no decir</span>' +
-      '</button>' +
+      '</button>') +
     '</div>';
   }
   else if(p.tipo === 'larga'){
@@ -661,12 +672,12 @@ function ocultarAviso(){ document.getElementById('aviso').className = 'aviso'; }
 
 // ═══ NO PERDER LO ESCRITO ══════════════════════════════════════════
 function guardarBorrador(){
-  try{ localStorage.setItem('cmm_pesquisa', JSON.stringify({ datos: datos, paso: paso })); }catch(e){}
+  try{ localStorage.setItem(CLAVE_BORRADOR, JSON.stringify({ datos: datos, paso: paso })); }catch(e){}
 }
 
 function traerBorrador(){
   try{
-    const d = JSON.parse(localStorage.getItem('cmm_pesquisa') || '{}');
+    const d = JSON.parse(localStorage.getItem(CLAVE_BORRADOR) || '{}');
     if(d.datos) Object.assign(datos, d.datos);
     if(typeof d.paso === 'number' && d.paso > 0 && d.paso < PASOS.length) paso = d.paso;
   }catch(e){}
@@ -681,6 +692,7 @@ async function enviar(){
   if(btn){ btn.disabled = true; btn.textContent = 'Enviando...'; }
 
   const fila = Object.assign({}, datos, {
+    formulario: SLUG,
     rubro: RUBRO,
     pieza: PIEZA,
     dispositivo: (typeof queDispositivo === 'function') ? queDispositivo() : '',
@@ -691,7 +703,7 @@ async function enviar(){
     const { error } = await sb.rpc('guardar_pesquisa', { p_datos: fila });
     if(error) throw error;
 
-    try{ localStorage.removeItem('cmm_pesquisa'); }catch(e){}
+    try{ localStorage.removeItem(CLAVE_BORRADOR); }catch(e){}
     try{
       sessionStorage.setItem('cmm_pre_nombre', datos.nombre || '');
       sessionStorage.setItem('cmm_pre_email', datos.email || '');
@@ -716,38 +728,127 @@ function mostrarGracias(){
   document.getElementById('pie').style.display = 'none';
   ocultarAviso();
 
-  const nombre = (datos.nombre || '').trim().split(' ')[0] || 'de verdad';
+  const nombre = ((datos.nombre || '').trim().split(' ')[0] || 'de verdad').replace(/[*_~]/g, '');
+  const tit = (FORM?.gracias_titulo || 'Gracias, **{nombre}**').replace(/\{nombre\}/g, nombre);
+  const txt = FORM?.gracias_texto || 'Lo voy a leer entero. Ahora el paso que sigue.';
+  const conCuenta = FORM ? FORM.mostrar_cuenta !== false : true;
+  const grupo = (FORM?.grupo_whatsapp || '').trim();
+  const flecha = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+  let accion = '';
+  if(conCuenta){
+    accion =
+      '<div class="tarjeta">' +
+        '<div class="tarjeta-t">Creá tu cuenta y entrá a la comunidad</div>' +
+        '<div class="tarjeta-d">Ahí están las clases abiertas, la comunidad para preguntar, ' +
+          'y todo lo que vaya saliendo. Es gratis y lleva un minuto.</div>' +
+        '<button class="btn btn-oro" onclick="crearCuenta()">Crear mi cuenta' + flecha + '</button>' +
+      '</div>' +
+      '<div class="ya-tengo">Ya tengo cuenta · <a href="/login">entrar acá</a></div>';
+  }else if(grupo){
+    accion =
+      '<div class="tarjeta">' +
+        '<div class="tarjeta-t">Entrá al grupo</div>' +
+        '<div class="tarjeta-d">Ahí adentro avisamos todo primero.</div>' +
+        '<a class="btn btn-oro" style="text-decoration:none" href="' + escaparAttr(grupo) +
+          '" target="_blank" rel="noopener">Entrar al grupo de WhatsApp' + flecha + '</a>' +
+      '</div>';
+  }
 
   document.getElementById('zona').innerHTML =
     '<div class="paso final">' +
       '<div class="final-ico">' +
         '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#9FE1CB" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
       '</div>' +
-      '<h1>' + titular('Gracias, **' + nombre.replace(/[*_~]/g, '') + '**') + '</h1>' +
-      '<p class="guia">Lo voy a leer entero. Ahora el paso que sigue.</p>' +
-      '<div class="cuerpo">' +
-        '<div class="tarjeta">' +
-          '<div class="tarjeta-t">Creá tu cuenta y entrá a la comunidad</div>' +
-          '<div class="tarjeta-d">Ahí están las clases abiertas, la comunidad para preguntar, ' +
-            'y todo lo que vaya saliendo. Es gratis y lleva un minuto.</div>' +
-          '<button class="btn btn-oro" onclick="crearCuenta()">Crear mi cuenta' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
-          '</button>' +
-        '</div>' +
-        '<div class="ya-tengo">Ya tengo cuenta · <a href="/login">entrar acá</a></div>' +
-      '</div>' +
+      '<h1>' + titular(tit) + '</h1>' +
+      (txt ? '<p class="guia">' + escaparTxt(txt) + '</p>' : '') +
+      '<div class="cuerpo">' + accion + '</div>' +
     '</div>';
 }
 
+function escaparTxt(t){
+  const d = document.createElement('div');
+  d.textContent = t == null ? '' : String(t);
+  return d.innerHTML;
+}
+function escaparAttr(t){ return escaparTxt(t).replace(/"/g, '&quot;'); }
+
 function crearCuenta(){
-  window.location.href = '/login?registro=1&desde=pesquisa';
+  window.location.href = '/login?registro=1&desde=pesquisa&form=' + encodeURIComponent(SLUG);
 }
 
 // ═══ ARRANCAR ══════════════════════════════════════════════════════
-traerBorrador();
-pintar();
+// Las preguntas se traen del panel. Si algo falla con el formulario
+// de siempre, usamos las que están escritas arriba como respaldo.
+function deFila(r){
+  const titulo = (r.por_rubro && RUBRO && r.por_rubro[RUBRO]) ? r.por_rubro[RUBRO] : r.titulo;
+  const deEscribir = ['texto','email','tel','larga'].includes(r.tipo);
+  return {
+    tipo: r.tipo,
+    campo: r.clave,
+    req: !!r.obligatoria,
+    saltable: deEscribir && !r.obligatoria,
+    minimo: r.minimo || 0,
+    cejilla: r.cejilla || '',
+    t: titulo || '',
+    a: r.ayuda || '',
+    ph: escaparAttr(r.placeholder || ''),
+    o: Array.isArray(r.opciones) ? r.opciones : [],
+    solos: Array.isArray(r.solas) ? r.solas : []
+  };
+}
+
+function noExiste(){
+  document.getElementById('pie').style.display = 'none';
+  document.getElementById('riel').style.width = '0%';
+  document.getElementById('pastilla').style.display = 'none';
+  document.getElementById('zona').innerHTML =
+    '<div class="paso">' +
+      '<div class="cejilla">Formulario</div>' +
+      '<h1>' + titular('Este formulario ya no está **abierto**') + '</h1>' +
+      '<p class="guia">Puede ser que haya cerrado o que el enlace tenga un error.</p>' +
+      '<div class="cuerpo"><a class="btn btn-oro" style="text-decoration:none" href="/index">Ir al sitio</a></div>' +
+    '</div>';
+}
+
+async function arrancar(){
+  document.getElementById('zona').innerHTML =
+    '<div style="text-align:center;padding:40px 0;color:var(--ink-mudo);font-size:13px;letter-spacing:.18em">CARGANDO…</div>';
+
+  let filas = null;
+  try{
+    const { data: f, error: e1 } = await sb.from('formularios')
+      .select('*').eq('slug', SLUG).eq('activo', true).maybeSingle();
+    if(e1) throw e1;
+
+    if(f){
+      FORM = f;
+      const { data: ps, error: e2 } = await sb.from('formulario_preguntas')
+        .select('*').eq('formulario_id', f.id).eq('activa', true).order('orden');
+      if(e2) throw e2;
+      filas = ps || [];
+    }
+  }catch(e){
+    console.log('[formulario]', e?.message || e);
+  }
+
+  if(FORM && filas && filas.length){
+    PASOS = filas.map(deFila);
+    if(FORM.subtitulo) document.getElementById('marcaSub').textContent = FORM.subtitulo;
+    if(FORM.titulo) document.title = FORM.titulo + ' · Milena Machado';
+  }else if(SLUG !== 'pesquisa'){
+    noExiste();
+    return;
+  }
+
+  traerBorrador();
+  if(paso >= PASOS.length) paso = 0;
+  pintar();
+}
+
+arrancar();
 </script>
 
-<script src="app-instalar.js"></script>
+<script src="/app-instalar.js"></script>
 </body>
 </html>

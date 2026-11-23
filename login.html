@@ -720,6 +720,7 @@ try{
   if(q.get('desde') === 'pesquisa'){
     vinoDePesquisa = true;
     sessionStorage.setItem('cmm_desde', 'pesquisa');
+    if(q.get('form')) sessionStorage.setItem('cmm_form', q.get('form'));
   }else if(sessionStorage.getItem('cmm_desde') === 'pesquisa'){
     vinoDePesquisa = true;
   }
@@ -746,11 +747,22 @@ async function mostrarGrupo(){
   let enlace = '';
   let texto = '';
 
+  // Primero, el grupo del formulario de donde vino
   try{
+    const slug = sessionStorage.getItem('cmm_form');
+    if(slug){
+      const { data: f } = await sb.from('formularios')
+        .select('grupo_whatsapp').eq('slug', slug).maybeSingle();
+      enlace = (f?.grupo_whatsapp || '').trim();
+    }
+  }catch(e){}
+
+  // Si ese formulario no tiene grupo, usamos el general
+  if(!enlace) try{
     const { data } = await sb.from('ajustes').select('clave, valor')
       .in('clave', ['grupo_whatsapp', 'grupo_whatsapp_texto']);
     (data || []).forEach(a => {
-      if(a.clave === 'grupo_whatsapp') enlace = (a.valor || '').trim();
+      if(a.clave === 'grupo_whatsapp' && !enlace) enlace = (a.valor || '').trim();
       if(a.clave === 'grupo_whatsapp_texto') texto = (a.valor || '').trim();
     });
   }catch(e){}
