@@ -821,6 +821,14 @@ async function hacerRegistro(){
 
   if(error) return mostrarAlerta(traducirError(error.message));
 
+  // Meta Pixel: se registró
+  try{
+    let desde = 'registro';
+    try{ desde = sessionStorage.getItem('cmm_form') || (sessionStorage.getItem('cmm_desde') ? 'pesquisa' : 'registro'); }catch(e){}
+    pixelPersona(email, nombre);
+    pixel('CompleteRegistration', { content_name: desde, status: 'creada' });
+  }catch(e){}
+
   // Si Supabase devuelve sesión directa, es que la confirmación está apagada
   if(data.session){
     // Aseguramos que el perfil exista con el nombre puesto

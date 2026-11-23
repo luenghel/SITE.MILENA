@@ -1308,17 +1308,21 @@
   .met-t-num.verde{color:#9FE1CB}
   .met-t-pie{font-size:11.5px;color:rgba(255,245,240,0.45);margin-top:7px}
 
-  .met-grafico{display:flex;align-items:flex-end;gap:3px;height:160px;padding:14px 4px 0;overflow-x:auto}
-  .met-barra{flex:1;min-width:11px;display:flex;flex-direction:column;justify-content:flex-end;
+  .met-grafico{display:flex;align-items:flex-end;gap:3px;height:170px;padding:0 2px;overflow:hidden;position:relative}
+  .met-grafico.denso{gap:1px}
+  .met-barra{flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;
     align-items:center;gap:5px;height:100%;position:relative;cursor:default}
   .met-barra-vis{width:100%;border-radius:4px 4px 0 0;
     background:linear-gradient(180deg,#FAC775,#D4A356);min-height:2px;transition:opacity 0.2s}
   .met-barra:hover .met-barra-vis{opacity:0.75}
   .met-barra-dia{font-size:8.5px;color:rgba(255,245,240,0.35);white-space:nowrap}
-  .met-globo{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:7px;
+  .met-globo{position:absolute;top:0;left:50%;transform:translateX(-50%);
     background:#2D0A18;border:0.5px solid rgba(212,163,86,0.45);border-radius:9px;padding:8px 11px;
     font-size:11.5px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.18s;z-index:5;line-height:1.5}
   .met-barra:hover .met-globo{opacity:1}
+  .met-barra.izq .met-globo{left:0;transform:none}
+  .met-barra.der .met-globo{left:auto;right:0;transform:none}
+  .met-barra-vis{max-height:calc(100% - 66px)}
 
   .met-dos{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 
@@ -1366,6 +1370,11 @@
   .met-clase-barra div{height:100%;border-radius:4px}
   .met-clase-val{font-size:12px;min-width:38px;text-align:right;font-variant-numeric:tabular-nums}
 
+  .px-caja{margin-bottom:22px}
+  .px-fila{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .px-txt{flex:1;min-width:220px}
+  .px-input{width:220px;font-variant-numeric:tabular-nums}
+  .px-on{color:#9FE1CB}
   .met-filtros{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
   .met-periodos{display:flex;gap:4px;padding:4px;border-radius:12px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.1)}
   .met-periodos button{padding:8px 14px;border-radius:9px;border:none;background:none;color:rgba(255,245,240,0.6);font-size:12.5px;cursor:pointer;font-family:inherit}
@@ -3418,6 +3427,23 @@ body{visibility:hidden}
 
     <div id="metricasFalta" class="met-aviso" style="display:none"></div>
 
+    <!-- Meta Pixel -->
+    <div class="pm-seccion px-caja">
+      <div class="px-fila">
+        <div class="px-txt">
+          <div class="chart-title" style="margin-bottom:2px">🎯 Meta Pixel</div>
+          <div class="chart-subtitle" id="pxEstado">Pegá el número del pixel (Administrador de eventos de Meta → Orígenes de datos).</div>
+        </div>
+        <input class="form-input px-input" id="pxId" inputmode="numeric" placeholder="123456789012345">
+        <button class="cta-gold btn-save" onclick="guardarPixel()">GUARDAR</button>
+      </div>
+      <div class="frm-nota" style="margin-top:10px">
+        Eventos que se mandan solos: <b>PageView</b> · <b>Lead</b> al enviar un formulario (con el nicho en <code>content_name</code>, según <code>?rubro=</code> del enlace) ·
+        <b>CompleteRegistration</b> · <b>ViewContent</b> · <b>AddToCart</b> · <b>InitiateCheckout</b> · <b>AddPaymentInfo</b> · <b>Contact</b> (WhatsApp) ·
+        <b>Purchase</b> (la primera vez que entra al curso que compró, con el valor en PYG). El panel de admin no se cuenta.
+      </div>
+    </div>
+
     <!-- Los números de arriba -->
     <div class="met-grupo-tit">GENTE</div>
     <div class="met-tarjetas" id="metTarjetas"></div>
@@ -5364,8 +5390,27 @@ body{visibility:hidden}
     return n;
   }
 
+  async function cargarPixel(){
+    const { data } = await sb.from('ajustes').select('valor').eq('clave', 'meta_pixel_id').maybeSingle();
+    const id = (data && data.valor) || '';
+    document.getElementById('pxId').value = id;
+    document.getElementById('pxEstado').innerHTML = id
+      ? '<span class="px-on">● Activo</span> en todo el sitio · pixel ' + esc(id)
+      : 'Pegá el número del pixel (Administrador de eventos de Meta → Orígenes de datos).';
+  }
+
+  async function guardarPixel(){
+    const id = document.getElementById('pxId').value.replace(/\D/g, '');
+    if(id && (id.length < 10 || id.length > 20)) return mostrarToast('Ese número no parece un pixel (son 15 o 16 números)', true);
+    const { error } = await sb.from('ajustes').upsert({ clave: 'meta_pixel_id', valor: id }, { onConflict: 'clave' });
+    if(error) return mostrarToast('No se pudo guardar: ' + error.message, true);
+    mostrarToast(id ? '✓ Pixel guardado. Ya está en todo el sitio' : 'Pixel desactivado');
+    cargarPixel();
+  }
+
   async function cargarMetricas(){
     const aviso = document.getElementById('metricasFalta');
+    cargarPixel().catch(() => {});
     const conEquipo = !!document.getElementById('metConEquipo')?.checked;
 
     try{
@@ -5479,10 +5524,12 @@ body{visibility:hidden}
     }
 
     const tope = Math.max(...filas.map(f => Number(f.s.personas) || 0), 1);
-    const cada = filas.length > 60 ? 7 : filas.length > 31 ? 3 : 1;
+    const cada = filas.length > 120 ? 30 : filas.length > 60 ? 7 : filas.length > 31 ? 3 : 1;
+    cont.classList.toggle('denso', filas.length > 45);
+    const lado = i => i < filas.length * 0.2 ? ' izq' : i > filas.length * 0.8 ? ' der' : '';
     cont.innerHTML = filas.map((f, i) => {
       const p = Number(f.s.personas) || 0;
-      return '<div class="met-barra">' +
+      return '<div class="met-barra' + lado(i) + '">' +
         '<div class="met-globo">' + f.lbl + '<br><b>' + p + '</b> personas · ' + (f.s.visitas || 0) + ' visitas<br>' +
           (f.s.paginas || 0) + ' páginas vistas</div>' +
         '<div class="met-barra-vis" style="height:' + Math.max(2, Math.round(100 * p / tope)) + '%"></div>' +
@@ -5497,7 +5544,7 @@ body{visibility:hidden}
     if(!horas.length){ cont.innerHTML = '<div class="met-vacio">Sin datos.</div>'; return; }
     cont.innerHTML = Array.from({ length: 24 }, (_, h) => {
       const v = Number((horas.find(x => x.h === h) || {}).visitas) || 0;
-      return '<div class="met-barra"><div class="met-globo">' + h + ':00 a ' + h + ':59<br>' + v + ' visitas</div>' +
+      return '<div class="met-barra' + (h < 5 ? ' izq' : h > 18 ? ' der' : '') + '"><div class="met-globo">' + h + ':00 a ' + h + ':59<br>' + v + ' visitas</div>' +
         '<div class="met-barra-vis" style="height:' + Math.max(2, Math.round(100 * v / tope)) + '%"></div>' +
         '<div class="met-barra-dia">' + (h % 3 === 0 ? h + 'h' : '&nbsp;') + '</div></div>';
     }).join('');

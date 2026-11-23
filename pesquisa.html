@@ -703,6 +703,18 @@ async function enviar(){
     const { error } = await sb.rpc('guardar_pesquisa', { p_datos: fila });
     if(error) throw error;
 
+    // Meta Pixel: Lead, separado por nicho (?rubro= del enlace)
+    try{
+      pixelPersona(datos.email, datos.nombre);
+      pixel('Lead', {
+        content_name: RUBRO || SLUG,
+        content_category: SLUG,
+        nicho: RUBRO || '',
+        pieza: PIEZA || '',
+        interes: Array.isArray(datos.interes) ? datos.interes.join(', ') : (datos.interes || '')
+      });
+    }catch(e){}
+
     try{ localStorage.removeItem(CLAVE_BORRADOR); }catch(e){}
     try{
       sessionStorage.setItem('cmm_pre_nombre', datos.nombre || '');

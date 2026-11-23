@@ -247,7 +247,7 @@
       await cargarDatosPago();
 
       // Anotamos que llegó al checkout
-      try { anotarPaso('vio_checkout', curso.id, curso.titulo); } catch(e){}
+      try { anotarEvento('vio_checkout', { curso: curso.id, detalle: curso.titulo, valor: curso.precio_gs || 0 }); } catch(e){}
 
       // Llenar resumen
       const precio = curso.precio_gs ? 'Gs ' + curso.precio_gs.toLocaleString('es-PY') : 'GRATIS';

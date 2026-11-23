@@ -1213,11 +1213,25 @@ const checkAccess = setInterval(async () => {
     // ¿Ya está anotada?
     const { data: compra } = await sb
       .from('compras')
-      .select('id, estado')
+      .select('id, estado, monto_gs, metodo_pago, pagado_en')
       .eq('usuario_id', user.id)
       .eq('curso_id', curso.id)
       .eq('estado', 'pagado')
       .maybeSingle();
+
+    // Meta Pixel: Purchase, una sola vez por compra (las de prueba y regaladas no)
+    if (compra && Number(compra.monto_gs) > 0 && !['prueba','cortesia','gratis'].includes(compra.metodo_pago || '')) {
+      const clave = 'cmm_px_compra_' + compra.id;
+      const reciente = !compra.pagado_en || (Date.now() - new Date(compra.pagado_en).getTime()) < 30 * 86400000;
+      let ya = false; try { ya = !!localStorage.getItem(clave); } catch(e){}
+      if (reciente && !ya) {
+        try {
+          pixel('Purchase', { value: Number(compra.monto_gs), currency: 'PYG', content_name: curso.titulo,
+            content_ids: [curso.id], content_type: 'product' }, { eventID: 'compra-' + compra.id });
+          localStorage.setItem(clave, '1');
+        } catch(e){}
+      }
+    }
 
     if (!compra) {
       // Gratis pero sin anotarse: le mostramos el botón para sumarse
@@ -1314,7 +1328,7 @@ async function pintarCursoReal(){
   }
 
   // Anotamos que miró este curso
-  try { anotarPaso('vio_curso', curso.id, curso.titulo); } catch(e){}
+  try { anotarEvento('vio_curso', { curso: curso.id, detalle: curso.titulo, valor: curso.precio_gs || 0 }); } catch(e){}
 
   // ─── Cuánto tiempo de acceso le queda ───
   pintarContadorAcceso(curso, compra);

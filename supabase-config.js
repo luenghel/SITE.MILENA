@@ -501,6 +501,7 @@ function anotarEvento(tipo, opciones) {
       });
     } catch (e) { /* seguimos igual */ }
   })();
+  try { pixelDeEvento(tipo, o); } catch (e) {}
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -539,6 +540,100 @@ function anotarEvento(tipo, opciones) {
 })();
 
 // Lo de antes, para no romper lo que ya estaba escrito
+
+// ═══════════════════════════════════════════════════════════
+// META PIXEL (Facebook / Instagram)
+//
+// El número del pixel se pone en Admin → Métricas → 🎯 Meta Pixel.
+// Sin número, no carga nada. El panel de admin nunca lo carga.
+//
+// Eventos que mandamos solos:
+//   PageView              cada página
+//   Lead                  al enviar un formulario  (content_name = nicho)
+//   CompleteRegistration  al crear la cuenta
+//   ViewContent           al ver un curso o la Premium
+//   AddToCart             al tocar "comprar"
+//   InitiateCheckout      al llegar al checkout
+//   AddPaymentInfo        al generar el pedido
+//   Contact               al tocar WhatsApp
+//   Purchase              la primera vez que entra a un curso que compró
+//
+// Desde cualquier página: pixel('Lead', { content_name: 'nicho-x' })
+// ═══════════════════════════════════════════════════════════
+const CMM_PX = { id: null, listo: false, cola: [] };
+const PX_ESTANDAR = ['PageView','Lead','CompleteRegistration','ViewContent','AddToCart','InitiateCheckout',
+  'AddPaymentInfo','Purchase','Contact','Subscribe','Search','Schedule','StartTrial','SubmitApplication'];
+
+function pixel(evento, datos, opciones) {
+  if (esPanel()) return;
+  if (!CMM_PX.listo) { CMM_PX.cola.push([evento, datos, opciones]); return; }
+  try {
+    const params = Object.assign({}, datos || {});
+    Object.keys(params).forEach(k => { if (params[k] === null || params[k] === undefined || params[k] === '') delete params[k]; });
+    window.fbq(PX_ESTANDAR.includes(evento) ? 'track' : 'trackCustom', evento, params, opciones || {});
+  } catch (e) {}
+}
+
+// Para Lead y registro: Meta usa el email (cifrado) para encontrar a la persona
+function pixelPersona(email, nombre) {
+  if (!CMM_PX.listo || !email) return;
+  try {
+    const d = { em: String(email).trim().toLowerCase() };
+    if (nombre) d.fn = String(nombre).trim().split(' ')[0].toLowerCase();
+    window.fbq('init', CMM_PX.id, d);
+  } catch (e) {}
+}
+
+function cargarPixel(id) {
+  if (CMM_PX.id || !id) return;
+  CMM_PX.id = id;
+  /* eslint-disable */
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  /* eslint-enable */
+  window.fbq('init', id);
+  window.fbq('track', 'PageView');
+  CMM_PX.listo = true;
+  const cola = CMM_PX.cola.splice(0);
+  cola.forEach(c => pixel(c[0], c[1], c[2]));
+}
+
+(function arrancarPixel() {
+  if (esPanel()) return;
+  if (queDispositivo() === 'bot') return;
+  let guardado = '';
+  try { guardado = localStorage.getItem('cmm_px_id') || ''; } catch (e) {}
+  if (guardado) cargarPixel(guardado);
+
+  // Leemos el número sin esperar a que cargue Supabase
+  fetch(SUPABASE_URL + '/rest/v1/ajustes?clave=eq.meta_pixel_id&select=valor', {
+    headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY }
+  }).then(r => r.ok ? r.json() : []).then(filas => {
+    const id = String((filas && filas[0] && filas[0].valor) || '').replace(/\D/g, '');
+    try { id ? localStorage.setItem('cmm_px_id', id) : localStorage.removeItem('cmm_px_id'); } catch (e) {}
+    if (id) cargarPixel(id);
+  }).catch(() => {});
+})();
+
+// Lo que ya anotamos para las métricas, también va al pixel
+const PX_DE_EVENTO = {
+  vio_curso: 'ViewContent', vio_premium: 'ViewContent', clic_comprar: 'AddToCart',
+  vio_checkout: 'InitiateCheckout', pedido: 'AddPaymentInfo', clic_whatsapp: 'Contact'
+};
+function pixelDeEvento(tipo, o) {
+  const ev = PX_DE_EVENTO[tipo];
+  if (!ev) return;
+  const d = { content_name: o.detalle || '', content_category: tipo === 'vio_premium' ? 'premium' : 'curso' };
+  if (o.curso) { d.content_ids = [o.curso]; d.content_type = 'product'; }
+  if (tipo === 'pedido') d.content_name = '';       // ahí detalle es el código
+  if (tipo === 'clic_comprar') d.content_name = ''; // ahí detalle es el precio
+  if (o.valor) { d.value = Number(o.valor); d.currency = 'PYG'; }
+  pixel(ev, d);
+}
+
 function anotarPaso(tipo, cursoId, detalle) {
   anotarEvento(tipo, { curso: cursoId, detalle: detalle });
 }
