@@ -2852,7 +2852,7 @@ body{visibility:hidden}
 
     <div class="cursos-toolbar">
       <div class="cursos-filtros">
-        <button class="filter-btn active" onclick="filtrarAlumnas('todas', this)">Todas</button>
+        <button class="filter-btn active" onclick="filtrarAlumnas('todas', this)">Alumnas</button>
         <button class="filter-btn" onclick="filtrarAlumnas('compradoras', this)">Con compras</button>
         <button class="filter-btn" onclick="filtrarAlumnas('activas', this)">Activas en comunidad</button>
         <button class="filter-btn" onclick="filtrarAlumnas('equipo', this)">Equipo</button>
@@ -10882,6 +10882,10 @@ body{visibility:hidden}
   // ============================
   let alumnas = [];
   let filtroAlumnas = 'todas';
+
+  // Equipo y cuentas de prueba: no cuentan como alumnas
+  let idsDeCasa = new Set();
+  function esDeCasa(a){ return !!a && (['admin','fundadora'].includes(a.rol) || !!a.es_tester); }
   let buscaAlumnas = '';
   let yoSoyId = null;
 
@@ -10972,14 +10976,16 @@ body{visibility:hidden}
       a._denRecib    = a.denuncias_recibidas ?? 0;
     });
 
-    document.getElementById('alumnasCount').textContent = alumnas.length;
+    idsDeCasa = new Set(alumnas.filter(esDeCasa).map(a => a.id));
+    document.getElementById('alumnasCount').textContent = alumnas.filter(a => !esDeCasa(a)).length;
     renderAlumnas();
   }
 
   function alumnaVisible(a){
     if(filtroAlumnas === 'compradoras' && a._compras === 0) return false;
     if(filtroAlumnas === 'activas' && (a._posts + a._comentarios) === 0) return false;
-    if(filtroAlumnas === 'equipo' && !['admin','fundadora'].includes(a.rol)) return false;
+    if(filtroAlumnas === 'equipo' && !esDeCasa(a)) return false;
+    if(filtroAlumnas !== 'equipo' && filtroAlumnas !== 'bloqueadas' && esDeCasa(a)) return false;
     if(filtroAlumnas === 'bloqueadas' && !a.bloqueado) return false;
     if(filtroAlumnas === 'denunciantes' && (a._denHechas || 0) < 3) return false;
     if(buscaAlumnas){
@@ -11428,10 +11434,15 @@ body{visibility:hidden}
   async function quitarCurso(compraId, titulo){
     if(!confirm('¿Quitarle el acceso a "' + titulo + '"?\n\nVa a dejar de ver las clases. Su progreso se conserva por si se lo devolvés.')) return;
 
-    const { error } = await sb.from('compras').delete().eq('id', compraId);
+    const { data: borradas, error } = await sb.from('compras').delete().eq('id', compraId).select('id');
     if(error) return mostrarToast('Error: ' + error.message, true);
 
-    mostrarToast('Acceso quitado');
+    // Supabase dice "ok" aunque no borre nada si falta el permiso
+    if(!borradas || borradas.length === 0){
+      return mostrarToast('No se pudo quitar: falta correr SQL-EQUIPO-NO-CUENTA.sql en Supabase', true);
+    }
+
+    mostrarToast('✓ Acceso quitado');
     await cargarCursosDeAlumna(document.getElementById('accUsuarioId').value);
     if(typeof cargarVentas === 'function') cargarVentas();
   }
@@ -12270,7 +12281,7 @@ body{visibility:hidden}
     }
     ventas.forEach(v => { v._persona = perfC[v.usuario_id] || null; });
 
-    const pagadas = ventas.filter(v => v.estado === 'pagado' && v.metodo_pago !== 'prueba');
+    const pagadas = ventas.filter(v => v.estado === 'pagado' && v.metodo_pago !== 'prueba' && !idsDeCasa.has(v.usuario_id));
     const pend = ventas.filter(v => v.estado === 'pendiente');
     const canc = ventas.filter(v => v.estado === 'cancelado');
     const total = pagadas.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
@@ -12373,7 +12384,7 @@ body{visibility:hidden}
   async function cargarDashboard(){
     if(!sb) return;
 
-    const pagadas = ventas.filter(v => v.estado === 'pagado' && v.metodo_pago !== 'prueba');
+    const pagadas = ventas.filter(v => v.estado === 'pagado' && v.metodo_pago !== 'prueba' && !idsDeCasa.has(v.usuario_id));
     const pend = ventas.filter(v => v.estado === 'pendiente');
     const total = pagadas.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
 
@@ -12397,11 +12408,12 @@ body{visibility:hidden}
       : 'Gs 0';
 
     // Personas
-    const nAlumnas = alumnas.length;
+    const soloAlumnas = alumnas.filter(a => !esDeCasa(a));
+    const nAlumnas = soloAlumnas.length;
     const hace30 = Date.now() - 30 * 24 * 60 * 60 * 1000;
-    const nuevas = alumnas.filter(a => new Date(a.creado_en).getTime() > hace30).length;
-    const compradoras = alumnas.filter(a => (a._compras || 0) > 0).length;
-    const activas = alumnas.filter(a => (a._posts || 0) + (a._comentarios || 0) > 0).length;
+    const nuevas = soloAlumnas.filter(a => new Date(a.creado_en).getTime() > hace30).length;
+    const compradoras = soloAlumnas.filter(a => (a._compras || 0) > 0).length;
+    const activas = soloAlumnas.filter(a => (a._posts || 0) + (a._comentarios || 0) > 0).length;
 
     document.getElementById('dashRegistradas').textContent = nAlumnas;
     document.getElementById('dashRegistradasSub').textContent = nuevas > 0
