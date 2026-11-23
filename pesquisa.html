@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Contame lo tuyo · Milena Machado</title>
+<meta name="description" content="Contame cómo es tu día de verdad. Nadie más lo lee.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0E0509">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     Misma energía que el sitio de LuenYo, con la marca de Milena:
+     vino oscuro, dorado cálido, Cormorant para los títulos.
+     ═══════════════════════════════════════════════════════════════ */
+  :root{
+    --bg:#0E0509;
+    --bg-elev:#17080F;
+    --bg-card:rgba(255,245,240,0.038);
+    --line:rgba(255,245,240,0.09);
+    --line-fuerte:rgba(255,245,240,0.2);
+    --ink:#FFF5F0;
+    --ink-soft:rgba(255,245,240,0.62);
+    --ink-mudo:rgba(255,245,240,0.34);
+    --oro:#FAC775;
+    --oro-claro:#FFE3AE;
+    --oro-hondo:#D4A356;
+    --rosa:#E8B8C4;
+    --vino:#7B1A3A;
+    --radio:16px;
+    --radio-g:22px;
+    --suave:cubic-bezier(.22,.61,.36,1);
+    --salida:cubic-bezier(.16,1,.3,1);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Jost',ui-sans-serif,system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;
+    overflow-x:hidden;
+  }
+
+  /* ── Las órbitas de atrás ── */
+  .orbe{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .orbe-luz{position:absolute;border-radius:50%;filter:blur(80px)}
+  .orbe-luz.a{width:520px;height:520px;left:-180px;top:-160px;
+    background:radial-gradient(circle,rgba(123,26,58,.6),transparent 65%)}
+  .orbe-luz.b{width:440px;height:440px;right:-160px;bottom:-140px;
+    background:radial-gradient(circle,rgba(212,163,86,.26),transparent 65%)}
+  .anillo{position:absolute;top:50%;left:50%;border-radius:50%;
+    border:1px solid rgba(212,163,86,.1);transform-style:preserve-3d}
+  .anillo.r1{width:620px;height:620px;margin:-310px 0 0 -310px;
+    border-color:rgba(212,163,86,.16);animation:giro1 26s linear infinite}
+  .anillo.r2{width:820px;height:820px;margin:-410px 0 0 -410px;
+    border-color:rgba(232,184,196,.09);animation:giro2 38s linear infinite reverse}
+  @keyframes giro1{from{transform:rotateX(76deg) rotateY(14deg) rotateZ(0)}
+                   to{transform:rotateX(76deg) rotateY(14deg) rotateZ(360deg)}}
+  @keyframes giro2{from{transform:rotateX(70deg) rotateY(-28deg) rotateZ(0)}
+                   to{transform:rotateX(70deg) rotateY(-28deg) rotateZ(360deg)}}
+
+  /* ── Arriba ── */
+  .cabeza{position:relative;z-index:3;padding:20px 22px 0;flex-shrink:0}
+  .cabeza-fila{display:flex;align-items:center;gap:12px;max-width:760px;margin:0 auto 16px}
+  .marca{display:flex;align-items:center;gap:11px;flex:1;min-width:0}
+  .marca-m{width:36px;height:36px;border-radius:11px;flex-shrink:0;
+    border:1px solid rgba(212,163,86,.5);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic;color:var(--oro)}
+  .marca-t{font-size:9.5px;letter-spacing:.22em;color:var(--ink-mudo);line-height:1.55;text-transform:uppercase}
+
+  .pastilla{display:inline-flex;align-items:center;gap:9px;flex-shrink:0;
+    padding:7px 14px;border:1px solid var(--line-fuerte);border-radius:999px;
+    font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);
+    font-variant-numeric:tabular-nums}
+  .pastilla .punto{width:6px;height:6px;background:var(--oro);border-radius:50%;
+    animation:latir 2s infinite}
+  @keyframes latir{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+
+  .riel{max-width:760px;margin:0 auto;height:2px;border-radius:2px;
+    background:rgba(255,245,240,.1);overflow:hidden}
+  .riel i{display:block;height:100%;width:0%;
+    background:linear-gradient(90deg,var(--oro-hondo),var(--oro),var(--oro-claro));
+    transition:width .55s var(--salida)}
+
+  /* ── El medio ── */
+  .medio{position:relative;z-index:2;flex:1;display:flex;align-items:center;
+    padding:30px 22px;min-height:0}
+  .caja{width:100%;max-width:760px;margin:0 auto}
+
+  .paso{animation:sube .5s var(--salida)}
+  @keyframes sube{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+  .paso.sale{animation:baja .2s ease forwards}
+  @keyframes baja{to{opacity:0;transform:translateY(-18px)}}
+
+  /* ── La etiqueta con la rayita, como en LuenYo ── */
+  .cejilla{display:inline-flex;align-items:center;gap:13px;
+    font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--oro);font-weight:600;margin-bottom:22px}
+  .cejilla::before{content:"";width:34px;height:1px;background:var(--oro)}
+
+  /* ── El titular grande ── */
+  h1{font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:clamp(34px,6.4vw,64px);font-weight:500;
+    line-height:1.04;letter-spacing:-.018em;
+    margin:0 0 16px;color:var(--ink)}
+  /* Cada palabra sube desde abajo. El padding deja lugar a las colas
+     de la g y la y, que si no las corta el overflow. */
+  .palabra{display:inline-block;overflow:hidden;vertical-align:bottom;
+    line-height:inherit;padding:.02em .02em .1em;margin-bottom:-.1em}
+  .palabra > span{display:inline-block;transform:translateY(112%);
+    animation:asoma .85s var(--salida) forwards}
+  @keyframes asoma{to{transform:none}}
+
+  /* El bloque dorado sobre la palabra clave */
+  .hl{background:linear-gradient(135deg,var(--oro),var(--oro-hondo));
+    color:#3D1208;padding:0 .16em;border-radius:5px}
+  .it{font-style:italic;color:var(--oro)}
+  .rs{font-style:italic;color:var(--rosa)}
+
+  .guia{font-size:clamp(14px,1.5vw,17px);line-height:1.68;color:var(--ink-soft);
+    max-width:58ch;margin:0 0 30px;
+    opacity:0;animation:aclara .6s var(--salida) .45s forwards}
+  @keyframes aclara{to{opacity:1}}
+
+  .cuerpo{opacity:0;animation:aclara .6s var(--salida) .55s forwards}
+
+  /* ── Campos ── */
+  input[type="text"],input[type="email"],input[type="tel"],textarea{
+    width:100%;padding:19px 22px;
+    background:var(--bg-card);border:1px solid var(--line);
+    border-radius:var(--radio);color:var(--ink);font-family:inherit;
+    font-size:17px;outline:none;transition:all .3s var(--suave);
+  }
+  input:focus,textarea:focus{
+    border-color:rgba(212,163,86,.65);background:rgba(255,245,240,.06);
+    box-shadow:0 0 0 4px rgba(212,163,86,.07)}
+  input::placeholder,textarea::placeholder{color:var(--ink-mudo)}
+  textarea{min-height:160px;resize:none;line-height:1.72;font-size:16.5px}
+
+  /* ── Las opciones, como las tarjetas de LuenYo ── */
+  .opciones{display:flex;flex-direction:column;gap:10px}
+  .op{position:relative;overflow:hidden;width:100%;
+    display:flex;align-items:center;gap:15px;
+    padding:17px 20px;border-radius:var(--radio);cursor:pointer;
+    background:var(--bg-card);border:1px solid var(--line);
+    color:var(--ink-soft);font-size:15.5px;font-family:inherit;text-align:left;
+    transition:all .32s var(--suave)}
+  .op::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),
+      rgba(212,163,86,.16),transparent 45%);
+    opacity:0;transition:opacity .4s}
+  .op:hover::before{opacity:1}
+  .op:hover{border-color:rgba(212,163,86,.45);color:var(--ink);transform:translateY(-2px);
+    box-shadow:0 14px 34px rgba(0,0,0,.4)}
+  .op > *{position:relative;z-index:1}
+  .op.elegida{border-color:var(--oro);color:var(--oro);
+    background:linear-gradient(135deg,rgba(212,163,86,.16),rgba(212,163,86,.04));
+    box-shadow:0 0 0 1px rgba(212,163,86,.35),0 0 34px rgba(212,163,86,.14)}
+  .op-tecla{width:27px;height:27px;border-radius:9px;flex-shrink:0;
+    border:1px solid var(--line-fuerte);
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:600;color:var(--ink-mudo);transition:all .28s var(--suave)}
+  .op:hover .op-tecla{border-color:rgba(212,163,86,.5);color:var(--oro)}
+  .op.elegida .op-tecla{background:var(--oro);border-color:var(--oro);color:#3D1208}
+  .op.callada{font-style:italic;opacity:.55;font-size:14px}
+  .op.cuadrada .op-tecla{border-radius:8px}
+  .op.cuadrada.elegida .op-tecla{color:transparent;position:relative}
+  .op.cuadrada.elegida .op-tecla::after{content:"";position:absolute;inset:0;border-radius:8px;
+    background:#3D1208;
+    -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center/14px no-repeat;
+    mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center/14px no-repeat}
+
+  h1 + .opciones,h1 + input,h1 + textarea{margin-top:18px}
+
+  /* ── Abajo ── */
+  .pie{position:relative;z-index:3;padding:0 22px 26px;flex-shrink:0}
+  .pie-caja{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:11px;
+    padding:17px 32px;border:none;border-radius:999px;cursor:pointer;
+    font-family:inherit;font-weight:600;font-size:12.5px;
+    letter-spacing:.14em;text-transform:uppercase;
+    transition:all .3s var(--suave);position:relative;overflow:hidden}
+  .btn svg{width:15px;height:15px;transition:transform .3s var(--suave)}
+  .btn:hover svg{transform:translateX(4px)}
+
+  .btn-oro{flex:0 0 auto;min-width:230px;
+    background:linear-gradient(135deg,var(--oro),var(--oro-hondo));color:#3D1208;
+    animation:palpita 3.6s ease-in-out infinite}
+  .btn-oro:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.05)}
+  .btn-oro:disabled{opacity:.5;cursor:default;transform:none;animation:none}
+  @keyframes palpita{
+    0%,100%{box-shadow:0 6px 20px rgba(212,163,86,.2),0 0 0 0 rgba(250,199,117,0)}
+    50%{box-shadow:0 8px 26px rgba(212,163,86,.3),0 0 0 9px rgba(250,199,117,0)}}
+
+  .btn-atras{width:54px;height:54px;border-radius:999px;flex-shrink:0;padding:0;
+    background:transparent;border:1px solid var(--line-fuerte);color:var(--ink-soft);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    transition:all .3s var(--suave)}
+  .btn-atras:hover{border-color:var(--oro);color:var(--oro);background:rgba(212,163,86,.05)}
+  .btn-atras svg{transition:transform .3s var(--suave)}
+  .btn-atras:hover svg{transform:translateX(-3px)}
+
+  .btn-saltar{padding:17px 20px;border:none;background:none;cursor:pointer;flex-shrink:0;
+    color:var(--ink-mudo);font-family:inherit;font-size:12.5px;
+    letter-spacing:.08em;transition:color .25s}
+  .btn-saltar:hover{color:var(--ink)}
+
+  .pista{max-width:760px;margin:13px auto 0;font-size:11px;
+    letter-spacing:.06em;color:var(--ink-mudo);text-align:center}
+  .pista kbd{display:inline-block;padding:2px 7px;border-radius:6px;
+    background:rgba(255,245,240,.06);border:1px solid var(--line);
+    font-family:inherit;font-size:10px;color:var(--ink-soft)}
+
+  .aviso{max-width:760px;margin:0 auto 18px;padding:14px 17px;border-radius:var(--radio);
+    font-size:13.5px;line-height:1.55;display:none;
+    background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.35);color:#FF9BA4}
+  .aviso.ver{display:block;animation:sube .3s var(--salida)}
+
+  /* ── El final ── */
+  .final{text-align:center}
+  .final-ico{width:82px;height:82px;margin:0 auto 26px;border-radius:50%;position:relative;
+    background:rgba(93,202,165,.12);border:1px solid rgba(93,202,165,.4);
+    display:flex;align-items:center;justify-content:center;
+    animation:brota .6s cubic-bezier(.68,-.4,.27,1.5) .1s both}
+  .final-ico::before{content:"";position:absolute;inset:-9px;border-radius:50%;
+    border:1px dashed rgba(93,202,165,.26);animation:giro1b 16s linear infinite}
+  @keyframes giro1b{to{transform:rotate(360deg)}}
+  @keyframes brota{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+  .final h1{font-size:clamp(30px,5.4vw,52px)}
+  .final .guia{margin-left:auto;margin-right:auto}
+
+  .tarjeta{position:relative;overflow:hidden;text-align:left;
+    padding:28px;border-radius:var(--radio-g);margin:28px 0 16px;
+    background:var(--bg-card);border:1px solid var(--line);
+    transition:all .4s var(--suave)}
+  .tarjeta::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(135deg,rgba(212,163,86,.08),transparent 55%);
+    opacity:0;transition:opacity .45s}
+  .tarjeta:hover{border-color:rgba(212,163,86,.4);
+    box-shadow:0 22px 54px rgba(0,0,0,.45),0 0 44px rgba(212,163,86,.1)}
+  .tarjeta:hover::after{opacity:1}
+  .tarjeta-t{position:relative;z-index:1;
+    font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;
+    color:var(--oro);margin-bottom:9px;letter-spacing:-.01em}
+  .tarjeta-d{position:relative;z-index:1;
+    font-size:14px;line-height:1.68;color:var(--ink-soft);margin-bottom:22px}
+  .tarjeta .btn-oro{position:relative;z-index:1;width:100%;flex:none}
+  .ya-tengo{font-size:13px;color:var(--ink-mudo);letter-spacing:.04em}
+  .ya-tengo a{color:var(--oro);text-decoration:none;border-bottom:1px solid rgba(212,163,86,.35)}
+  .ya-tengo a:hover{color:var(--oro-claro);border-color:var(--oro-claro)}
+
+  @media (max-width:620px){
+    .cabeza{padding:15px 17px 0}
+    .medio{padding:22px 17px}
+    .pie{padding:0 17px 20px}
+    .marca-t{display:none}
+    h1{letter-spacing:-.012em;line-height:1.07}
+    .cejilla{margin-bottom:17px;font-size:9.5px;letter-spacing:.2em}
+    .cejilla::before{width:24px}
+    .guia{margin-bottom:24px}
+    .op{padding:15px 17px;font-size:15px}
+    textarea{min-height:140px}
+    .pista{display:none}
+    .btn{padding:17px 24px}
+    .btn-oro{flex:1;min-width:0}
+    .tarjeta{padding:22px}
+  }
+  @media (max-height:660px){
+    .medio{align-items:flex-start}
+    h1{font-size:clamp(28px,5.4vw,40px)}
+    .guia{margin-bottom:20px}
+    textarea{min-height:120px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .anillo,.pastilla .punto,.btn-oro,.final-ico::before{animation:none}
+    .palabra > span{transform:none;animation:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="orbe">
+  <div class="orbe-luz a"></div>
+  <div class="orbe-luz b"></div>
+  <div class="anillo r1"></div>
+  <div class="anillo r2"></div>
+</div>
+
+<div class="cabeza">
+  <div class="cabeza-fila">
+    <div class="marca">
+      <div class="marca-m">M</div>
+      <div class="marca-t">Milena Machado<br>Movimiento Directo</div>
+    </div>
+    <div class="pastilla" id="pastilla"><span class="punto"></span><span id="cuentaPasos">1 / 15</span></div>
+  </div>
+  <div class="riel"><i id="riel"></i></div>
+</div>
+
+<div class="medio">
+  <div class="caja">
+    <div class="aviso" id="aviso"></div>
+    <div id="zona"></div>
+  </div>
+</div>
+
+<div class="pie" id="pie">
+  <div class="pie-caja" id="pieCaja"></div>
+  <div class="pista" id="pista"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// LA PESQUISA · una pregunta por vez
+//
+// En los títulos: **palabra** sale con bloque dorado,
+//                 __palabra__ sale en cursiva dorada,
+//                 ~~palabra~~ sale en cursiva rosa.
+// ═══════════════════════════════════════════════════════════════════
+
+const params = new URLSearchParams(location.search);
+const RUBRO = (params.get('rubro') || params.get('r') || '').trim().toLowerCase();
+const PIEZA = (params.get('pieza') || params.get('p') || '').trim();
+
+const NADIE_SABE = {
+  nutricionista:     'Lo que nadie sabe de ser __nutricionista__ es…',
+  abogada:           'Lo que nadie sabe de ser __abogada__ es…',
+  psicologa:         'Lo que nadie sabe de ser __psicóloga__ y mostrarte en redes es…',
+  arquitecta:        'Lo que nadie sabe de ser __arquitecta__ es…',
+  'personal-trainer':'Lo que nadie sabe de ser __personal trainer__ es…',
+  estetica:          'Lo que nadie sabe de trabajar en __estética__ es…',
+  contadora:         'Lo que nadie sabe de ser __contadora__ es…',
+  ingeniera:         'Lo que nadie sabe de ser __ingeniera__ es…',
+  empresas:          'Lo que nadie sabe de ser dueña de una __empresa__ es…',
+  estudiantes:       'Lo que nadie sabe de estar por __terminar__ la carrera es…'
+};
+
+const PASOS = [
+  { tipo:'texto', campo:'nombre', req:true, cejilla:'Empecemos',
+    t:'Antes de nada, ¿cómo te **llamo**?',
+    a:'Como te dicen tus amigas.',
+    ph:'Tu nombre' },
+
+  { tipo:'email', campo:'email', req:true, cejilla:'Para escribirte',
+    t:'Elegí tu **mejor** email',
+    a:'Poné el que mirás todos los días: ahí te llega todo lo importante.',
+    ph:'vos@ejemplo.com' },
+
+  { tipo:'tel', campo:'whatsapp', saltable:true, cejilla:'Por si te escribo',
+    t:'¿Y tu __WhatsApp__?',
+    a:'Por si quiero escribirte directo. Nunca lo comparto con nadie.',
+    ph:'09xx xxx xxx' },
+
+  { tipo:'opciones', campo:'edad', cejilla:'Quién sos · 1 de 6',
+    t:'¿Qué **edad** tenés?',
+    o:['Hasta 24','25 a 34','35 a 44','45 a 54','55 o más'] },
+
+  { tipo:'opciones', campo:'estado_civil', cejilla:'Quién sos · 2 de 6',
+    t:'¿Cómo estás __hoy__?',
+    o:['Soltera/o','En pareja','Casada/o','Separada/o o divorciada/o','Viuda/o'] },
+
+  { tipo:'varias', campo:'hijos', cejilla:'Quién sos · 3 de 6',
+    t:'¿**Hijos**?',
+    a:'Podés marcar varias, si tenés de distintas edades.',
+    solos:['No'],
+    o:['No','Sí, de 0 a 5 años','Sí, de 6 a 17 años','Sí, ya adultos','Estoy esperando uno'] },
+
+  { tipo:'opciones', campo:'anos_mercado', cejilla:'Quién sos · 4 de 6',
+    t:'¿Cuánto hace que estás en **esto**?',
+    o:['Todavía no empecé','Menos de 1 año','De 1 a 3 años','De 4 a 7 años','Más de 8 años'] },
+
+  { tipo:'opciones', campo:'como_trabaja', cejilla:'Quién sos · 5 de 6',
+    t:'¿Cómo **trabajás** hoy?',
+    o:['Sola/o','Con equipo','Tengo un empleo y esto es aparte','Estudio y trabajo'] },
+
+  { tipo:'opciones', campo:'facturacion', cejilla:'Quién sos · 6 de 6',
+    t:'¿Cuánto **facturás** por mes?',
+    a:'Esta es la más incómoda, y la que más me sirve para armar contenido que te hable a vos.',
+    o:['No facturo todavía','Hasta Gs 5.000.000','De Gs 5 a 15 millones',
+       'De Gs 15 a 40 millones','De Gs 40 a 100 millones','Más de Gs 100 millones'] },
+
+  { tipo:'larga', campo:'r1_momento', req:true, minimo:10, cejilla:'El confesionario · 1 de 6',
+    t:'¿Qué te hizo **comentar** la palabra hoy?',
+    a:'Contame el momento: dónde estabas y qué estabas pensando.',
+    ph:'Estaba…' },
+
+  { tipo:'larga', campo:'r2_peso', req:true, minimo:10, cejilla:'El confesionario · 2 de 6',
+    t:'Cuando cerrás el día, ¿qué es lo que más te ~~pesa~~ y no le contás a nadie?',
+    a:'Acá podés ser honesta. Esto lo leo yo y nadie más.',
+    ph:'Lo que más me pesa es…' },
+
+  { tipo:'larga', campo:'r3_cambio', saltable:true, cejilla:'El confesionario · 3 de 6',
+    t:'Si todo saliera como querés, ¿qué **cambiaría** en tu vida?',
+    a:'No solo en el trabajo.',
+    ph:'Cambiaría…' },
+
+  { tipo:'larga', campo:'r4_nadie_sabe', saltable:true, cejilla:'El confesionario · 4 de 6',
+    t: NADIE_SABE[RUBRO] || 'Lo que nadie sabe de __lo que hacés__ es…',
+    a:'Eso que solo entiende alguien que hace lo mismo.',
+    ph:'Nadie sabe que…' },
+
+  { tipo:'larga', campo:'r5_admira', saltable:true, cejilla:'El confesionario · 5 de 6',
+    t:'¿A quién **admirás** por lo que logró?',
+    a:'Y qué ves en esa persona que sentís que te falta.',
+    ph:'Admiro a…' },
+
+  { tipo:'larga', campo:'r6_porque', saltable:true, cejilla:'El confesionario · 6 de 6',
+    t:'Si le contaras a una amiga por qué me **seguís**, ¿qué le dirías?',
+    a:'Con tus palabras, como se lo dirías por audio.',
+    ph:'Le diría que…' }
+];
+
+const LETRAS = 'ABCDEFGH';
+const datos = {};
+let paso = 0;
+let enviando = false;
+let terminado = false;
+
+// ═══ EL TITULAR, PALABRA POR PALABRA ═══════════════════════════════
+function titular(txt){
+  return txt.split(' ').map((w, i) => {
+    // La marca puede venir con signos pegados: ¿**Hijos**?
+    let clase = '';
+    if(w.includes('**'))      clase = 'hl';
+    else if(w.includes('__')) clase = 'it';
+    else if(w.includes('~~')) clase = 'rs';
+    w = w.replace(/\*\*|__|~~/g, '');
+
+    const retraso = (0.045 * i + 0.06).toFixed(3);
+    return '<span class="palabra"><span style="animation-delay:' + retraso + 's"' +
+      (clase ? ' class="' + clase + '"' : '') + '>' + w + '</span></span>';
+  }).join(' ');
+}
+
+// ═══ DIBUJAR ═══════════════════════════════════════════════════════
+function pintar(){
+  const p = PASOS[paso];
+  const zona = document.getElementById('zona');
+  const pie = document.getElementById('pieCaja');
+  const pista = document.getElementById('pista');
+
+  ocultarAviso();
+
+  let dentro = (p.cejilla ? '<div class="cejilla">' + p.cejilla + '</div>' : '') +
+    '<h1>' + titular(p.t) + '</h1>' +
+    (p.a ? '<p class="guia">' + p.a + '</p>' : '');
+
+  let campoHTML = '';
+
+  if(p.tipo === 'opciones' || p.tipo === 'varias'){
+    const varias = p.tipo === 'varias';
+    const ya = varias ? (datos[p.campo] || '').split(' · ').filter(Boolean) : [];
+    const marcada = o => varias ? ya.includes(o) : datos[p.campo] === o;
+    const fn = varias ? 'marcar' : 'elegir';
+
+    campoHTML = '<div class="opciones">' +
+      p.o.map((o, i) =>
+        '<button type="button" class="op' + (varias ? ' cuadrada' : '') +
+        (marcada(o) ? ' elegida' : '') + '" onclick="' + fn + '(' + i + ')">' +
+          '<span class="op-tecla">' + LETRAS[i] + '</span><span>' + o + '</span>' +
+        '</button>').join('') +
+      '<button type="button" class="op callada' + (varias ? ' cuadrada' : '') +
+      (marcada('prefiero no decir') ? ' elegida' : '') + '" onclick="' + fn + '(-1)">' +
+        '<span class="op-tecla">·</span><span>prefiero no decir</span>' +
+      '</button>' +
+    '</div>';
+  }
+  else if(p.tipo === 'larga'){
+    campoHTML = '<textarea id="campo" placeholder="' + p.ph + '" oninput="alEscribir()"></textarea>';
+  }
+  else {
+    const t = p.tipo === 'email' ? 'email' : (p.tipo === 'tel' ? 'tel' : 'text');
+    const auto = p.tipo === 'email' ? 'email' : (p.tipo === 'tel' ? 'tel' : 'name');
+    campoHTML = '<input type="' + t + '" id="campo" placeholder="' + p.ph +
+      '" autocomplete="' + auto + '" oninput="alEscribir()">';
+  }
+
+  zona.innerHTML = '<div class="paso">' + dentro +
+    '<div class="cuerpo">' + campoHTML + '</div></div>';
+
+  // ─── Abajo ───
+  const atras = paso > 0
+    ? '<button class="btn-atras" onclick="volver()" title="Atrás">' +
+      '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>'
+    : '';
+
+  const flecha = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  const ultimo = paso === PASOS.length - 1;
+
+  if(p.tipo === 'opciones'){
+    pie.innerHTML = atras + '<div style="flex:1"></div>';
+    pista.innerHTML = 'Tocá una opción · o apretá <kbd>A</kbd> <kbd>B</kbd> <kbd>C</kbd>';
+  }else if(p.tipo === 'varias'){
+    pie.innerHTML = atras +
+      '<button class="btn btn-oro" id="btnSeguir" onclick="seguirVarias()">Seguir' + flecha + '</button>';
+    pista.innerHTML = 'Marcá todas las que correspondan';
+  }else{
+    pie.innerHTML = atras +
+      '<button class="btn btn-oro" id="btnSeguir" onclick="seguir()">' +
+        (ultimo ? 'Enviar' : 'Seguir') + flecha + '</button>' +
+      (p.saltable ? '<button class="btn-saltar" onclick="saltar()">Saltar</button>' : '');
+    pista.innerHTML = p.tipo === 'larga'
+      ? 'Escribí tranquila · <kbd>Ctrl</kbd> + <kbd>Enter</kbd> para seguir'
+      : 'Apretá <kbd>Enter</kbd> para seguir';
+  }
+
+  const campo = document.getElementById('campo');
+  if(campo){
+    campo.value = datos[p.campo] || '';
+    if(window.innerWidth > 760) setTimeout(() => campo.focus(), 500);
+  }
+
+  seguirElMouse();
+  pintarRiel();
+}
+
+// La luz que sigue al mouse dentro de cada opción, como en LuenYo
+function seguirElMouse(){
+  document.querySelectorAll('.op').forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const c = el.getBoundingClientRect();
+      el.style.setProperty('--mx', (e.clientX - c.left) + 'px');
+      el.style.setProperty('--my', (e.clientY - c.top) + 'px');
+    });
+  });
+}
+
+function pintarRiel(){
+  const pct = terminado ? 100 : Math.round((paso / PASOS.length) * 100);
+  document.getElementById('riel').style.width = pct + '%';
+  document.getElementById('cuentaPasos').textContent =
+    terminado ? 'Listo' : (paso + 1) + ' / ' + PASOS.length;
+}
+
+// ═══ ELEGIR UNA · pasa sola ════════════════════════════════════════
+function elegir(i){
+  const p = PASOS[paso];
+  datos[p.campo] = i === -1 ? 'prefiero no decir' : p.o[i];
+
+  const botones = document.querySelectorAll('.op');
+  botones.forEach(b => b.classList.remove('elegida'));
+  botones[i === -1 ? botones.length - 1 : i]?.classList.add('elegida');
+
+  guardarBorrador();
+  setTimeout(() => avanzar(), 280);
+}
+
+// ═══ MARCAR VARIAS · espera el botón ═══════════════════════════════
+function marcar(i){
+  const p = PASOS[paso];
+  const valor = i === -1 ? 'prefiero no decir' : p.o[i];
+  let ya = (datos[p.campo] || '').split(' · ').filter(Boolean);
+
+  const exclusivas = (p.solos || []).concat(['prefiero no decir']);
+
+  if(ya.includes(valor)) ya = ya.filter(x => x !== valor);
+  else if(exclusivas.includes(valor)) ya = [valor];
+  else { ya = ya.filter(x => !exclusivas.includes(x)); ya.push(valor); }
+
+  const orden = p.o.concat(['prefiero no decir']);
+  datos[p.campo] = orden.filter(x => ya.includes(x)).join(' · ');
+  guardarBorrador();
+
+  const botones = document.querySelectorAll('.op');
+  orden.forEach((o, k) => botones[k]?.classList.toggle('elegida', ya.includes(o)));
+}
+
+function seguirVarias(){ guardarBorrador(); avanzar(); }
+
+// ═══ CAMPOS DE ESCRIBIR ════════════════════════════════════════════
+function alEscribir(){
+  datos[PASOS[paso].campo] = document.getElementById('campo').value;
+  ocultarAviso();
+  guardarBorrador();
+}
+
+function seguir(){
+  const p = PASOS[paso];
+  const v = (document.getElementById('campo')?.value || '').trim();
+
+  if(p.req && !v){
+    return avisar(p.tipo === 'email' ? 'Necesito un email al que escribirte' : 'Esto no lo puedo saltar');
+  }
+  if(p.tipo === 'email' && v && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){
+    return avisar('Ese email parece tener algo raro. Revisalo.');
+  }
+  if(p.minimo && v.length < p.minimo){
+    return avisar('Contame un poquito más. Con una frase alcanza.');
+  }
+
+  datos[p.campo] = v;
+  guardarBorrador();
+  avanzar();
+}
+
+function saltar(){
+  datos[PASOS[paso].campo] = '';
+  guardarBorrador();
+  avanzar();
+}
+
+function avanzar(){
+  if(paso >= PASOS.length - 1){ enviar(); return; }
+  const viejo = document.querySelector('.paso');
+  if(viejo) viejo.classList.add('sale');
+  setTimeout(() => { paso++; pintar(); }, 180);
+}
+
+function volver(){
+  if(paso === 0) return;
+  const viejo = document.querySelector('.paso');
+  if(viejo) viejo.classList.add('sale');
+  setTimeout(() => { paso--; pintar(); }, 180);
+}
+
+// ═══ TECLADO ═══════════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if(terminado) return;
+  const p = PASOS[paso];
+
+  if(p.tipo === 'opciones'){
+    const i = LETRAS.indexOf(e.key.toUpperCase());
+    if(i >= 0 && i < p.o.length){ e.preventDefault(); elegir(i); }
+    return;
+  }
+
+  if(p.tipo === 'varias'){
+    const i = LETRAS.indexOf(e.key.toUpperCase());
+    if(i >= 0 && i < p.o.length){ e.preventDefault(); marcar(i); return; }
+    if(e.key === 'Enter'){ e.preventDefault(); seguirVarias(); }
+    return;
+  }
+
+  if(e.key === 'Enter'){
+    if(p.tipo === 'larga'){
+      if(e.ctrlKey || e.metaKey){ e.preventDefault(); seguir(); }
+    }else{
+      e.preventDefault(); seguir();
+    }
+  }
+});
+
+// ═══ AVISOS ════════════════════════════════════════════════════════
+function avisar(txt){
+  const a = document.getElementById('aviso');
+  a.className = 'aviso ver';
+  a.textContent = txt;
+}
+function ocultarAviso(){ document.getElementById('aviso').className = 'aviso'; }
+
+// ═══ NO PERDER LO ESCRITO ══════════════════════════════════════════
+function guardarBorrador(){
+  try{ localStorage.setItem('cmm_pesquisa', JSON.stringify({ datos: datos, paso: paso })); }catch(e){}
+}
+
+function traerBorrador(){
+  try{
+    const d = JSON.parse(localStorage.getItem('cmm_pesquisa') || '{}');
+    if(d.datos) Object.assign(datos, d.datos);
+    if(typeof d.paso === 'number' && d.paso > 0 && d.paso < PASOS.length) paso = d.paso;
+  }catch(e){}
+}
+
+// ═══ ENVIAR ════════════════════════════════════════════════════════
+async function enviar(){
+  if(enviando) return;
+  enviando = true;
+
+  const btn = document.getElementById('btnSeguir');
+  if(btn){ btn.disabled = true; btn.textContent = 'Enviando...'; }
+
+  const fila = Object.assign({}, datos, {
+    rubro: RUBRO,
+    pieza: PIEZA,
+    dispositivo: (typeof queDispositivo === 'function') ? queDispositivo() : '',
+    visitante: (typeof codigoVisitante === 'function') ? codigoVisitante() : ''
+  });
+
+  try{
+    const { error } = await sb.rpc('guardar_pesquisa', { p_datos: fila });
+    if(error) throw error;
+
+    try{ localStorage.removeItem('cmm_pesquisa'); }catch(e){}
+    try{
+      sessionStorage.setItem('cmm_pre_nombre', datos.nombre || '');
+      sessionStorage.setItem('cmm_pre_email', datos.email || '');
+    }catch(e){}
+
+    mostrarGracias();
+
+  }catch(e){
+    const falta = String(e?.message || '').includes('does not exist');
+    avisar(falta
+      ? 'Falta terminar de configurar el formulario. Avisale al equipo.'
+      : 'No pudimos enviarlo. Revisá tu internet y probá de nuevo.');
+    if(btn){ btn.disabled = false; btn.innerHTML = 'Enviar'; }
+  }
+
+  enviando = false;
+}
+
+function mostrarGracias(){
+  terminado = true;
+  pintarRiel();
+  document.getElementById('pie').style.display = 'none';
+  ocultarAviso();
+
+  const nombre = (datos.nombre || '').trim().split(' ')[0] || 'de verdad';
+
+  document.getElementById('zona').innerHTML =
+    '<div class="paso final">' +
+      '<div class="final-ico">' +
+        '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#9FE1CB" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+      '</div>' +
+      '<h1>' + titular('Gracias, **' + nombre.replace(/[*_~]/g, '') + '**') + '</h1>' +
+      '<p class="guia">Lo voy a leer entero. Ahora el paso que sigue.</p>' +
+      '<div class="cuerpo">' +
+        '<div class="tarjeta">' +
+          '<div class="tarjeta-t">Creá tu cuenta y entrá a la comunidad</div>' +
+          '<div class="tarjeta-d">Ahí están las clases abiertas, la comunidad para preguntar, ' +
+            'y todo lo que vaya saliendo. Es gratis y lleva un minuto.</div>' +
+          '<button class="btn btn-oro" onclick="crearCuenta()">Crear mi cuenta' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+          '</button>' +
+        '</div>' +
+        '<div class="ya-tengo">Ya tengo cuenta · <a href="/login">entrar acá</a></div>' +
+      '</div>' +
+    '</div>';
+}
+
+function crearCuenta(){
+  window.location.href = '/login?registro=1&desde=pesquisa';
+}
+
+// ═══ ARRANCAR ══════════════════════════════════════════════════════
+traerBorrador();
+pintar();
+</script>
+
+<script src="app-instalar.js"></script>
+</body>
+</html>

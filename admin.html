@@ -1293,6 +1293,140 @@
 
   .acc-nota-yo{padding:12px 14px;background:rgba(93,170,202,0.1);border:0.5px solid rgba(93,170,202,0.35);border-radius:11px;font-size:12.5px;color:#9FD3E1;line-height:1.5;margin-bottom:16px}
 
+
+  /* ═══ MÉTRICAS ═══ */
+  .met-aviso{padding:14px 16px;border-radius:12px;margin-bottom:18px;
+    background:rgba(250,199,117,0.1);border:0.5px solid rgba(250,199,117,0.35);
+    font-size:13px;line-height:1.6;color:rgba(255,245,240,0.85)}
+
+  .met-tarjetas{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:13px;margin-bottom:24px}
+  .met-t{padding:17px 18px;border-radius:14px;
+    background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.1)}
+  .met-t-lbl{font-size:10px;letter-spacing:0.16em;color:rgba(255,245,240,0.45);margin-bottom:8px}
+  .met-t-num{font-size:29px;font-weight:600;color:#FFF5F0;line-height:1;font-variant-numeric:tabular-nums}
+  .met-t-num.oro{color:#FAC775}
+  .met-t-num.verde{color:#9FE1CB}
+  .met-t-pie{font-size:11.5px;color:rgba(255,245,240,0.45);margin-top:7px}
+
+  .met-grafico{display:flex;align-items:flex-end;gap:3px;height:160px;padding:14px 4px 0;overflow-x:auto}
+  .met-barra{flex:1;min-width:11px;display:flex;flex-direction:column;justify-content:flex-end;
+    align-items:center;gap:5px;height:100%;position:relative;cursor:default}
+  .met-barra-vis{width:100%;border-radius:4px 4px 0 0;
+    background:linear-gradient(180deg,#FAC775,#D4A356);min-height:2px;transition:opacity 0.2s}
+  .met-barra:hover .met-barra-vis{opacity:0.75}
+  .met-barra-dia{font-size:8.5px;color:rgba(255,245,240,0.35);white-space:nowrap}
+  .met-globo{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:7px;
+    background:#2D0A18;border:0.5px solid rgba(212,163,86,0.45);border-radius:9px;padding:8px 11px;
+    font-size:11.5px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.18s;z-index:5;line-height:1.5}
+  .met-barra:hover .met-globo{opacity:1}
+
+  .met-dos{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+  .met-fila{display:flex;align-items:center;gap:12px;padding:11px 0;
+    border-bottom:0.5px solid rgba(255,245,240,0.07)}
+  .met-fila:last-child{border-bottom:none}
+  .met-fila-nom{flex:1;min-width:0;font-size:13.5px;color:#FFF5F0;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .met-fila-barra{width:90px;height:6px;border-radius:3px;background:rgba(255,245,240,0.08);overflow:hidden;flex-shrink:0}
+  .met-fila-barra div{height:100%;background:linear-gradient(90deg,#D4A356,#FAC775)}
+  .met-fila-num{font-size:13px;color:rgba(255,245,240,0.7);min-width:46px;text-align:right;
+    font-variant-numeric:tabular-nums;flex-shrink:0}
+
+  .met-tabla-wrap{overflow-x:auto}
+  .met-tabla{width:100%;border-collapse:collapse;font-size:13px}
+  .met-tabla th{text-align:left;padding:10px 12px;font-size:9.5px;letter-spacing:0.13em;
+    color:rgba(255,245,240,0.42);border-bottom:0.5px solid rgba(255,245,240,0.1);white-space:nowrap}
+  .met-tabla td{padding:13px 12px;border-bottom:0.5px solid rgba(255,245,240,0.06);
+    color:rgba(255,245,240,0.82);vertical-align:middle}
+  .met-tabla tr:last-child td{border-bottom:none}
+  .met-tabla .num{font-variant-numeric:tabular-nums}
+  .met-conv{display:inline-block;padding:3px 9px;border-radius:14px;font-size:11.5px;font-weight:600}
+  .met-conv.bien{background:rgba(93,202,165,0.18);color:#9FE1CB}
+  .met-conv.medio{background:rgba(250,199,117,0.16);color:#FAC775}
+  .met-conv.mal{background:rgba(255,130,140,0.14);color:#FF9BA4}
+
+  .met-cards{display:none}
+  .met-card{padding:15px;border-radius:13px;margin-bottom:11px;
+    background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.1)}
+  .met-card-tit{font-size:14.5px;font-weight:500;color:#FFF5F0;margin-bottom:11px}
+  .met-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .met-card-d{font-size:12px;color:rgba(255,245,240,0.6)}
+  .met-card-d b{display:block;font-size:17px;color:#FFF5F0;font-weight:600;margin-top:2px}
+
+  .met-vacio{padding:36px 20px;text-align:center;color:rgba(255,245,240,0.45);font-size:13.5px;line-height:1.7}
+
+  .met-clase{display:flex;align-items:center;gap:13px;padding:12px 0;
+    border-bottom:0.5px solid rgba(255,245,240,0.07)}
+  .met-clase:last-child{border-bottom:none}
+  .met-clase-txt{flex:1;min-width:0}
+  .met-clase-nom{font-size:13.5px;color:#FFF5F0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .met-clase-sub{font-size:11.5px;color:rgba(255,245,240,0.45);margin-top:3px}
+  .met-clase-pct{flex-shrink:0;width:124px;display:flex;align-items:center;gap:9px}
+  .met-clase-barra{flex:1;height:7px;border-radius:4px;background:rgba(255,245,240,0.08);overflow:hidden}
+  .met-clase-barra div{height:100%;border-radius:4px}
+  .met-clase-val{font-size:12px;min-width:38px;text-align:right;font-variant-numeric:tabular-nums}
+
+  @media (max-width:900px){
+    .met-dos{grid-template-columns:1fr}
+    .met-tabla-wrap{display:none}
+    .met-cards{display:block}
+    .met-grafico{height:130px}
+  }
+
+  /* ═══ PESQUISA ═══ */
+  .pesq-filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .pesq-chip{padding:9px 15px;border-radius:20px;cursor:pointer;
+    background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);
+    color:rgba(255,245,240,0.7);font-size:12px;font-family:inherit;transition:all 0.18s}
+  .pesq-chip:hover{background:rgba(255,245,240,0.09);color:#FFF5F0}
+  .pesq-chip.on{background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.06));
+    border-color:rgba(212,163,86,0.55);color:#FAC775}
+
+  .pesq-card{border-radius:15px;margin-bottom:13px;overflow:hidden;
+    background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.1);
+    transition:border-color 0.2s}
+  .pesq-card.nueva{border-color:rgba(212,163,86,0.4)}
+  .pesq-cab{display:flex;align-items:center;gap:13px;padding:15px 17px;cursor:pointer}
+  .pesq-cab:hover{background:rgba(255,245,240,0.025)}
+  .pesq-ava{width:38px;height:38px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,#7B1A3A,#2D0A18);
+    display:flex;align-items:center;justify-content:center;
+    font-family:Georgia,serif;font-size:16px;color:#FAC775}
+  .pesq-quien{flex:1;min-width:0}
+  .pesq-nom{font-size:14.5px;font-weight:500;color:#FFF5F0;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pesq-meta{font-size:11.5px;color:rgba(255,245,240,0.45);margin-top:3px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pesq-tags{display:flex;gap:6px;flex-shrink:0;align-items:center}
+  .pesq-tag{padding:3px 9px;border-radius:12px;font-size:10px;letter-spacing:0.08em;white-space:nowrap}
+  .pesq-tag.rubro{background:rgba(232,184,196,0.15);color:#E8B8C4}
+  .pesq-tag.cuenta{background:rgba(93,202,165,0.16);color:#9FE1CB}
+  .pesq-tag.nueva{background:rgba(250,199,117,0.16);color:#FAC775}
+  .pesq-flecha{color:rgba(255,245,240,0.35);transition:transform 0.22s;flex-shrink:0}
+  .pesq-card.abierta .pesq-flecha{transform:rotate(90deg)}
+
+  .pesq-cuerpo{display:none;padding:2px 17px 18px;border-top:0.5px solid rgba(255,245,240,0.07)}
+  .pesq-card.abierta .pesq-cuerpo{display:block}
+
+  .pesq-perfil{display:flex;flex-wrap:wrap;gap:7px;padding:14px 0 16px}
+  .pesq-dato{padding:6px 11px;border-radius:9px;background:rgba(255,245,240,0.05);
+    font-size:11.5px;color:rgba(255,245,240,0.75)}
+  .pesq-dato b{color:rgba(255,245,240,0.45);font-weight:400;margin-right:5px}
+
+  .pesq-r{padding:13px 0;border-top:0.5px solid rgba(255,245,240,0.055)}
+  .pesq-r-p{font-size:12px;color:#FAC775;margin-bottom:7px;line-height:1.45}
+  .pesq-r-t{font-size:14px;line-height:1.7;color:rgba(255,245,240,0.88);
+    white-space:pre-wrap;word-break:break-word}
+  .pesq-r.vacia .pesq-r-t{color:rgba(255,245,240,0.3);font-style:italic}
+
+  .pesq-pie{display:flex;gap:9px;flex-wrap:wrap;padding-top:16px;margin-top:4px;
+    border-top:0.5px solid rgba(255,245,240,0.07)}
+  .pesq-accion{padding:9px 15px;border-radius:10px;cursor:pointer;text-decoration:none;
+    background:rgba(255,245,240,0.05);border:0.5px solid rgba(255,245,240,0.14);
+    color:rgba(255,245,240,0.78);font-size:12px;font-family:inherit;transition:all 0.18s}
+  .pesq-accion:hover{background:rgba(255,245,240,0.09);color:#FFF5F0}
+  .pesq-accion.wa{background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.35);color:#5DE38F}
+  .pesq-accion.wa:hover{background:rgba(37,211,102,0.2)}
 </style>
 <style id="auth-splash-style">
 body{visibility:hidden}
@@ -1685,6 +1819,16 @@ body{visibility:hidden}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       Ventas
       <span class="sidebar-badge dim" id="ventasCount">0</span>
+    </a>
+    <a href="#" onclick="cambiarTab('pesquisa')" class="sidebar-item" id="nav-pesquisa">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+      Pesquisa
+      <span class="sidebar-badge" id="pesquisaCount">0</span>
+    </a>
+    <a href="#" onclick="cambiarTab('metricas')" class="sidebar-item" id="nav-metricas">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Métricas
+      <span class="sidebar-badge dim" id="metricasCount">0</span>
     </a>
     <a href="#" onclick="cambiarTab('secciones')" class="sidebar-item" id="nav-secciones">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="13" width="18" height="5" rx="1"/></svg>
@@ -2888,6 +3032,153 @@ body{visibility:hidden}
     </div>
 
     <div class="alumnas-cards" id="newsCards"></div>
+  </div>
+
+  <!-- ============================ -->
+  <!-- TAB: PESQUISA -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-pesquisa">
+
+    <div class="pm-cab" style="margin-bottom:18px">
+      <div>
+        <h3 class="chart-title" style="margin-bottom:2px">📋 El confesionario</h3>
+        <p class="chart-subtitle">Lo que te contaron con sus propias palabras</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-secondary" onclick="bajarPesquisa()">⬇ Descargar</button>
+        <button class="btn-secondary" onclick="cargarPesquisa()">Actualizar</button>
+      </div>
+    </div>
+
+    <div id="pesquisaFalta" class="met-aviso" style="display:none"></div>
+
+    <!-- El enlace del formulario y el grupo -->
+    <div class="funcs-caja" style="margin-bottom:20px">
+      <div class="func-fila">
+        <div class="func-info">
+          <div class="func-nom">🔗 El enlace del formulario</div>
+          <div class="func-des">Pegalo en ManyChat. Agregale <code>?rubro=nutricionista</code> para que la pregunta 4 cambie sola.</div>
+        </div>
+        <input class="func-input" id="pesqEnlace" readonly value="https://milenacmm.com/pesquisa">
+        <button class="func-btn" onclick="copiarEnlacePesquisa()">Copiar</button>
+      </div>
+
+      <div class="func-fila">
+        <div class="func-info">
+          <div class="func-nom">💬 Grupo de WhatsApp</div>
+          <div class="func-des">Se lo mostramos apenas crea la cuenta. Si lo dejás vacío, no aparece.</div>
+        </div>
+        <input class="func-input" id="grupoWhatsapp" placeholder="https://chat.whatsapp.com/...">
+        <button class="func-btn" onclick="guardarGrupo()">Guardar</button>
+      </div>
+
+      <div class="func-ayuda">
+        💡 Los rubros que ya están armados: nutricionista · abogada · psicologa · arquitecta ·
+        personal-trainer · estetica · contadora · ingeniera · empresas · estudiantes
+      </div>
+      <div class="func-estado" id="pesqEstado"></div>
+    </div>
+
+    <!-- Los números -->
+    <div class="met-tarjetas" id="pesqTarjetas"></div>
+
+    <!-- Filtro por rubro -->
+    <div class="pesq-filtros" id="pesqFiltros"></div>
+
+    <!-- Las respuestas -->
+    <div id="pesqLista"></div>
+  </div>
+
+  <!-- ============================ -->
+  <!-- TAB: MÉTRICAS -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-metricas">
+
+    <div class="pm-cab" style="margin-bottom:18px">
+      <div>
+        <h3 class="chart-title" style="margin-bottom:2px">📊 Qué pasa en el sitio</h3>
+        <p class="chart-subtitle">Los últimos 30 días. Se actualiza solo.</p>
+      </div>
+      <button class="btn-secondary" onclick="cargarMetricas()">Actualizar</button>
+    </div>
+
+    <div id="metricasFalta" class="met-aviso" style="display:none"></div>
+
+    <!-- Los números de arriba -->
+    <div class="met-tarjetas" id="metTarjetas"></div>
+
+    <!-- Día por día -->
+    <div class="pm-seccion">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">📈 Día por día</h3>
+          <p class="chart-subtitle" id="metDiasSub">Visitas y personas distintas</p>
+        </div>
+      </div>
+      <div class="met-grafico" id="metGrafico"></div>
+    </div>
+
+    <!-- Dos columnas: de dónde vienen y qué miran -->
+    <div class="met-dos">
+      <div class="pm-seccion">
+        <div class="pm-cab">
+          <div>
+            <h3 class="chart-title" style="margin-bottom:2px">🔗 De dónde vienen</h3>
+            <p class="chart-subtitle">Quién te está mandando gente</p>
+          </div>
+        </div>
+        <div id="metOrigen"></div>
+      </div>
+
+      <div class="pm-seccion">
+        <div class="pm-cab">
+          <div>
+            <h3 class="chart-title" style="margin-bottom:2px">📄 Qué páginas miran</h3>
+            <p class="chart-subtitle">Las más visitadas</p>
+          </div>
+        </div>
+        <div id="metPaginas"></div>
+      </div>
+    </div>
+
+    <!-- Curso por curso -->
+    <div class="pm-seccion">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">🎓 Curso por curso</h3>
+          <p class="chart-subtitle">Quién mira, quién toca comprar, cuánto tiempo le dedica</p>
+        </div>
+      </div>
+      <div class="met-tabla-wrap">
+        <table class="met-tabla">
+          <thead>
+            <tr>
+              <th>CURSO</th>
+              <th>DURA</th>
+              <th>MIRARON</th>
+              <th>TOCARON COMPRAR</th>
+              <th>COMPRARON</th>
+              <th>CONVERSIÓN</th>
+              <th>MINUTOS PROMEDIO</th>
+            </tr>
+          </thead>
+          <tbody id="metCursosBody"></tbody>
+        </table>
+      </div>
+      <div id="metCursosCards" class="met-cards"></div>
+    </div>
+
+    <!-- Clase por clase -->
+    <div class="pm-seccion">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">⏱️ Cuánto miran cada clase</h3>
+          <p class="chart-subtitle">Si una clase se ve poco, quizás haya que regrabarla o acortarla</p>
+        </div>
+      </div>
+      <div id="metClases"></div>
+    </div>
+
   </div>
 
   <!-- ============================ -->
@@ -4614,6 +4905,487 @@ body{visibility:hidden}
   // ============================
   // TABS
   // ============================
+
+  // ═══════════════════════════════════════════════════════════════
+  // MÉTRICAS
+  //
+  // Todo sale de las vistas que creó SQL-METRICAS.sql.
+  // Si falta correr el SQL, avisamos y no rompemos nada.
+  // ═══════════════════════════════════════════════════════════════
+
+  function numCorto(n){
+    const v = Number(n || 0);
+    if(v >= 1000000) return (v / 1000000).toFixed(1).replace('.0','') + 'M';
+    if(v >= 1000) return (v / 1000).toFixed(1).replace('.0','') + 'k';
+    return String(v);
+  }
+
+  function minutosBonito(min){
+    const m = Math.round(Number(min || 0));
+    if(m <= 0) return '—';
+    if(m < 60) return m + ' min';
+    const h = Math.floor(m / 60);
+    const r = m % 60;
+    return r ? h + ' h ' + r + ' min' : h + ' h';
+  }
+
+  async function cargarMetricas(){
+    const aviso = document.getElementById('metricasFalta');
+
+    try{
+      const [resumen, dias, origen, paginas, cursos, clases] = await Promise.all([
+        sb.from('metricas_resumen').select('*').maybeSingle(),
+        sb.from('metricas_dias').select('*'),
+        sb.from('metricas_origen').select('*').limit(8),
+        sb.from('metricas_paginas').select('*').limit(8),
+        sb.from('metricas_cursos').select('*'),
+        sb.from('metricas_clases').select('*').limit(30)
+      ]);
+
+      const falla = resumen.error || dias.error;
+      if(falla && String(falla.message || '').includes('does not exist')){
+        aviso.style.display = '';
+        aviso.innerHTML = '⚠️ Falta correr <strong>SQL-METRICAS.sql</strong> en Supabase. ' +
+          'Hasta que lo corras, esta pantalla queda vacía.';
+        return;
+      }
+      aviso.style.display = 'none';
+
+      pintarTarjetas(resumen.data || {});
+      pintarGrafico(dias.data || []);
+      pintarLista('metOrigen', origen.data || [], 'origen', 'visitas');
+      pintarLista('metPaginas', paginas.data || [], 'pagina', 'visitas');
+      pintarCursos(cursos.data || []);
+      pintarClases(clases.data || []);
+
+      const badge = document.getElementById('metricasCount');
+      if(badge) badge.textContent = numCorto(resumen.data?.visitas_mes || 0);
+
+    }catch(e){
+      aviso.style.display = '';
+      aviso.textContent = 'No pudimos leer las métricas: ' + (e?.message || e);
+    }
+  }
+
+  function pintarTarjetas(r){
+    const cont = document.getElementById('metTarjetas');
+    if(!cont) return;
+
+    const t = (lbl, num, pie, clase) =>
+      '<div class="met-t"><div class="met-t-lbl">' + lbl + '</div>' +
+      '<div class="met-t-num ' + (clase || '') + '">' + num + '</div>' +
+      '<div class="met-t-pie">' + pie + '</div></div>';
+
+    cont.innerHTML =
+      t('PERSONAS ESTE MES', numCorto(r.personas_mes), (r.personas_hoy || 0) + ' hoy', 'oro') +
+      t('VISITAS', numCorto(r.visitas_mes), numCorto(r.visitas_semana) + ' esta semana') +
+      t('SE REGISTRARON', numCorto(r.registros_mes), 'en 30 días') +
+      t('TOCARON COMPRAR', numCorto(r.clics_comprar_mes), 'en 30 días') +
+      t('COMPRARON', numCorto(r.compras_mes), 'en 30 días', 'verde');
+  }
+
+  function pintarGrafico(dias){
+    const cont = document.getElementById('metGrafico');
+    if(!cont) return;
+
+    if(dias.length === 0){
+      cont.innerHTML = '<div class="met-vacio">Todavía no hay visitas anotadas.<br>' +
+        'Empiezan a contarse apenas subas el sitio con el código nuevo.</div>';
+      return;
+    }
+
+    const techo = Math.max(...dias.map(d => Number(d.visitas || 0)), 1);
+
+    cont.innerHTML = dias.map(d => {
+      const v = Number(d.visitas || 0);
+      const alto = Math.max(2, Math.round((v / techo) * 100));
+      const f = new Date(d.dia + 'T12:00:00');
+      const etiqueta = f.getDate() + '/' + (f.getMonth() + 1);
+
+      return '<div class="met-barra">' +
+        '<div class="met-globo">' + etiqueta + '<br>' +
+          v + ' visitas · ' + (d.personas || 0) + ' personas' +
+          (Number(d.compras) ? '<br>' + d.compras + ' compras' : '') +
+        '</div>' +
+        '<div class="met-barra-vis" style="height:' + alto + '%"></div>' +
+        '<div class="met-barra-dia">' + f.getDate() + '</div>' +
+      '</div>';
+    }).join('');
+
+    const total = dias.reduce((a, d) => a + Number(d.visitas || 0), 0);
+    const sub = document.getElementById('metDiasSub');
+    if(sub) sub.textContent = total + ' visitas en ' + dias.length + ' días · pasá el mouse por una barra';
+  }
+
+  function pintarLista(id, filas, campoNom, campoNum){
+    const cont = document.getElementById(id);
+    if(!cont) return;
+
+    if(filas.length === 0){
+      cont.innerHTML = '<div class="met-vacio">Todavía sin datos.</div>';
+      return;
+    }
+
+    const techo = Math.max(...filas.map(f => Number(f[campoNum] || 0)), 1);
+
+    cont.innerHTML = filas.map(f => {
+      const v = Number(f[campoNum] || 0);
+      return '<div class="met-fila">' +
+        '<div class="met-fila-nom">' + esc(f[campoNom] || '—') + '</div>' +
+        '<div class="met-fila-barra"><div style="width:' + Math.round((v / techo) * 100) + '%"></div></div>' +
+        '<div class="met-fila-num">' + numCorto(v) + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function pintarCursos(cursos){
+    const body = document.getElementById('metCursosBody');
+    const cards = document.getElementById('metCursosCards');
+    if(!body) return;
+
+    if(cursos.length === 0){
+      body.innerHTML = '<tr><td colspan="7"><div class="met-vacio">Todavía sin datos.</div></td></tr>';
+      if(cards) cards.innerHTML = '';
+      return;
+    }
+
+    const chip = (c) => {
+      const v = Number(c || 0);
+      const cl = v >= 5 ? 'bien' : (v >= 1 ? 'medio' : 'mal');
+      return '<span class="met-conv ' + cl + '">' + v + '%</span>';
+    };
+
+    body.innerHTML = cursos.map(c =>
+      '<tr>' +
+        '<td>' + esc(c.titulo) + '</td>' +
+        '<td class="num">' + minutosBonito(c.duracion_minutos) + '</td>' +
+        '<td class="num">' + (c.miraron || 0) + '</td>' +
+        '<td class="num">' + (c.tocaron_comprar || 0) + '</td>' +
+        '<td class="num">' + (c.compraron || 0) + '</td>' +
+        '<td>' + chip(c.conversion) + '</td>' +
+        '<td class="num">' + (Number(c.minutos_promedio) ? minutosBonito(c.minutos_promedio) : '—') + '</td>' +
+      '</tr>').join('');
+
+    if(cards){
+      cards.innerHTML = cursos.map(c =>
+        '<div class="met-card">' +
+          '<div class="met-card-tit">' + esc(c.titulo) + '</div>' +
+          '<div class="met-card-grid">' +
+            '<div class="met-card-d">Miraron<b>' + (c.miraron || 0) + '</b></div>' +
+            '<div class="met-card-d">Tocaron comprar<b>' + (c.tocaron_comprar || 0) + '</b></div>' +
+            '<div class="met-card-d">Compraron<b>' + (c.compraron || 0) + '</b></div>' +
+            '<div class="met-card-d">Conversión<b>' + (c.conversion || 0) + '%</b></div>' +
+            '<div class="met-card-d">Dura<b>' + minutosBonito(c.duracion_minutos) + '</b></div>' +
+            '<div class="met-card-d">Miran en promedio<b>' +
+              (Number(c.minutos_promedio) ? minutosBonito(c.minutos_promedio) : '—') + '</b></div>' +
+          '</div>' +
+        '</div>').join('');
+    }
+  }
+
+  function pintarClases(clases){
+    const cont = document.getElementById('metClases');
+    if(!cont) return;
+
+    if(clases.length === 0){
+      cont.innerHTML = '<div class="met-vacio">Todavía nadie miró una clase con el sistema nuevo.<br>' +
+        'Los minutos empiezan a contarse cuando alguien entra a una clase.</div>';
+      return;
+    }
+
+    cont.innerHTML = clases.map(c => {
+      const pct = c.porcentaje_visto;
+      const tiene = pct !== null && pct !== undefined;
+      const v = Math.min(Number(pct || 0), 150);
+      const color = v >= 70 ? '#5DCAA5' : (v >= 35 ? '#FAC775' : '#FF8A94');
+
+      return '<div class="met-clase">' +
+        '<div class="met-clase-txt">' +
+          '<div class="met-clase-nom">' + esc(c.titulo) + '</div>' +
+          '<div class="met-clase-sub">' + esc(c.curso) + ' · ' +
+            (c.alumnas || 0) + (c.alumnas === 1 ? ' alumna' : ' alumnas') + ' · ' +
+            'miran ' + (c.minutos_promedio || 0) + ' min de ' + (c.dura || '?') + ' min' +
+          '</div>' +
+        '</div>' +
+        '<div class="met-clase-pct">' +
+          '<div class="met-clase-barra"><div style="width:' + Math.min(v, 100) + '%;background:' + color + '"></div></div>' +
+          '<div class="met-clase-val" style="color:' + color + '">' + (tiene ? v + '%' : '—') + '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+
+  // ═══════════════════════════════════════════════════════════════
+  // LA PESQUISA
+  // ═══════════════════════════════════════════════════════════════
+
+  let pesquisaTodas = [];
+  let pesquisaRubro = 'todos';
+
+  const PESQ_PREGUNTAS = [
+    ['r1_momento',    '1 · ¿Qué te hizo comentar la palabra hoy?'],
+    ['r2_peso',       '2 · Cuando cerrás el día, ¿qué te pesa y no le contás a nadie?'],
+    ['r3_cambio',     '3 · Si todo saliera como querés, ¿qué cambiaría en tu vida?'],
+    ['r4_nadie_sabe', '4 · Lo que nadie sabe de lo que hace es…'],
+    ['r5_admira',     '5 · ¿A quién admira y qué siente que le falta?'],
+    ['r6_porque',     '6 · Por qué te sigue, contado a una amiga']
+  ];
+
+  const PESQ_PERFIL = [
+    ['edad','Edad'], ['estado_civil','Estado civil'], ['hijos','Hijos'],
+    ['anos_mercado','En el mercado'], ['como_trabaja','Trabaja'], ['facturacion','Factura']
+  ];
+
+  function estadoPesq(msg, tipo){
+    const el = document.getElementById('pesqEstado');
+    if(!el) return;
+    if(!msg){ el.className = 'func-estado'; el.textContent = ''; return; }
+    el.className = 'func-estado show ' + (tipo || 'ok');
+    el.textContent = msg;
+  }
+
+  function cuandoPesq(iso){
+    const d = new Date(iso);
+    if(isNaN(d)) return '';
+    const h = Math.floor((Date.now() - d.getTime()) / 3600000);
+    if(h < 1) return 'recién';
+    if(h < 24) return 'hace ' + h + ' h';
+    const dias = Math.floor(h / 24);
+    if(dias < 7) return 'hace ' + dias + ' días';
+    return d.toLocaleDateString('es-PY', { day:'2-digit', month:'short' });
+  }
+
+  async function cargarPesquisa(){
+    const aviso = document.getElementById('pesquisaFalta');
+
+    try{
+      const [resumen, filas, grupo] = await Promise.all([
+        sb.from('pesquisa_resumen').select('*').maybeSingle(),
+        sb.from('pesquisa').select('*').order('creado_en', { ascending: false }).limit(400),
+        sb.from('ajustes').select('clave, valor').eq('clave', 'grupo_whatsapp').maybeSingle()
+      ]);
+
+      if(filas.error && String(filas.error.message || '').includes('does not exist')){
+        aviso.style.display = '';
+        aviso.innerHTML = '⚠️ Falta correr <strong>SQL-PESQUISA-Y-EMAILS.sql</strong> en Supabase.';
+        return;
+      }
+      aviso.style.display = 'none';
+
+      pesquisaTodas = filas.data || [];
+
+      const campo = document.getElementById('grupoWhatsapp');
+      if(campo && grupo.data) campo.value = grupo.data.valor || '';
+
+      pintarPesqTarjetas(resumen.data || {});
+      pintarPesqFiltros();
+      pintarPesquisa();
+
+      const badge = document.getElementById('pesquisaCount');
+      if(badge){
+        const sinLeer = pesquisaTodas.filter(r => !r.leida).length;
+        badge.textContent = sinLeer || pesquisaTodas.length;
+        badge.classList.toggle('dim', sinLeer === 0);
+      }
+
+    }catch(e){
+      aviso.style.display = '';
+      aviso.textContent = 'No pudimos leer la pesquisa: ' + (e?.message || e);
+    }
+  }
+
+  function pintarPesqTarjetas(r){
+    const cont = document.getElementById('pesqTarjetas');
+    if(!cont) return;
+    const t = (lbl, num, pie, cl) =>
+      '<div class="met-t"><div class="met-t-lbl">' + lbl + '</div>' +
+      '<div class="met-t-num ' + (cl || '') + '">' + (num || 0) + '</div>' +
+      '<div class="met-t-pie">' + pie + '</div></div>';
+
+    cont.innerHTML =
+      t('RESPUESTAS', r.total, (r.semana || 0) + ' esta semana', 'oro') +
+      t('HOY', r.hoy, 'desde ayer') +
+      t('SIN LEER', r.sin_leer, 'todavía no las abriste') +
+      t('CREARON CUENTA', r.crearon_cuenta, 'de ' + (r.total || 0), 'verde') +
+      t('RUBROS', r.rubros, 'distintos');
+  }
+
+  function pintarPesqFiltros(){
+    const cont = document.getElementById('pesqFiltros');
+    if(!cont) return;
+
+    const cuenta = {};
+    pesquisaTodas.forEach(r => {
+      const k = r.rubro || '(sin rubro)';
+      cuenta[k] = (cuenta[k] || 0) + 1;
+    });
+
+    const rubros = Object.keys(cuenta).sort((a, b) => cuenta[b] - cuenta[a]);
+
+    cont.innerHTML =
+      '<button class="pesq-chip' + (pesquisaRubro === 'todos' ? ' on' : '') +
+        '" onclick="filtrarPesq(\'todos\')">Todas · ' + pesquisaTodas.length + '</button>' +
+      '<button class="pesq-chip' + (pesquisaRubro === 'sinleer' ? ' on' : '') +
+        '" onclick="filtrarPesq(\'sinleer\')">Sin leer · ' +
+        pesquisaTodas.filter(r => !r.leida).length + '</button>' +
+      rubros.map(rb =>
+        '<button class="pesq-chip' + (pesquisaRubro === rb ? ' on' : '') +
+        '" onclick="filtrarPesq(' + JSON.stringify(rb).replace(/"/g, '&quot;') + ')">' +
+        esc(rb) + ' · ' + cuenta[rb] + '</button>').join('');
+  }
+
+  function filtrarPesq(rb){
+    pesquisaRubro = rb;
+    pintarPesqFiltros();
+    pintarPesquisa();
+  }
+
+  function pintarPesquisa(){
+    const cont = document.getElementById('pesqLista');
+    if(!cont) return;
+
+    let filas = pesquisaTodas;
+    if(pesquisaRubro === 'sinleer') filas = filas.filter(r => !r.leida);
+    else if(pesquisaRubro !== 'todos') filas = filas.filter(r => (r.rubro || '(sin rubro)') === pesquisaRubro);
+
+    if(filas.length === 0){
+      cont.innerHTML = '<div class="met-vacio">Todavía no llegó ninguna respuesta.<br>' +
+        'Pegá el enlace de arriba en ManyChat y empiezan a caer acá.</div>';
+      return;
+    }
+
+    cont.innerHTML = filas.map(r => {
+      const nom = r.nombre || 'Sin nombre';
+      const inicial = nom.trim()[0] ? nom.trim()[0].toUpperCase() : '?';
+
+      const perfil = PESQ_PERFIL
+        .filter(([k]) => r[k] && r[k] !== 'prefiero no decir')
+        .map(([k, lbl]) => '<div class="pesq-dato"><b>' + lbl + '</b>' + esc(r[k]) + '</div>')
+        .join('');
+
+      const respuestas = PESQ_PREGUNTAS.map(([k, preg]) => {
+        const hay = r[k] && String(r[k]).trim();
+        return '<div class="pesq-r' + (hay ? '' : ' vacia') + '">' +
+          '<div class="pesq-r-p">' + preg + '</div>' +
+          '<div class="pesq-r-t">' + (hay ? esc(r[k]) : 'No la respondió') + '</div>' +
+        '</div>';
+      }).join('');
+
+      const wa = (r.whatsapp || '').replace(/\D/g, '');
+      const waLink = wa ? (wa.length <= 10 ? '595' + wa.replace(/^0+/, '') : wa) : '';
+
+      return '<div class="pesq-card' + (r.leida ? '' : ' nueva') + '" id="pesq-' + r.id + '">' +
+        '<div class="pesq-cab" onclick="abrirPesq(\'' + r.id + '\')">' +
+          '<div class="pesq-ava">' + inicial + '</div>' +
+          '<div class="pesq-quien">' +
+            '<div class="pesq-nom">' + esc(nom) + '</div>' +
+            '<div class="pesq-meta">' + esc(r.email || 'sin email') + ' · ' + cuandoPesq(r.creado_en) + '</div>' +
+          '</div>' +
+          '<div class="pesq-tags">' +
+            (r.rubro ? '<span class="pesq-tag rubro">' + esc(r.rubro) + '</span>' : '') +
+            (r.creo_cuenta ? '<span class="pesq-tag cuenta">✓ CUENTA</span>' : '') +
+            (r.leida ? '' : '<span class="pesq-tag nueva">NUEVA</span>') +
+            '<svg class="pesq-flecha" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="pesq-cuerpo">' +
+          (perfil ? '<div class="pesq-perfil">' + perfil + '</div>' : '') +
+          respuestas +
+          '<div class="pesq-pie">' +
+            (waLink ? '<a class="pesq-accion wa" href="https://wa.me/' + waLink +
+              '" target="_blank" rel="noopener">💬 Escribirle</a>' : '') +
+            (r.email ? '<a class="pesq-accion" href="mailto:' + esc(r.email) + '">✉️ Email</a>' : '') +
+            '<button class="pesq-accion" onclick="copiarRespuesta(\'' + r.id + '\')">📋 Copiar todo</button>' +
+            (r.pieza ? '<span class="pesq-accion" style="cursor:default">Vino de: ' + esc(r.pieza) + '</span>' : '') +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  async function abrirPesq(id){
+    const card = document.getElementById('pesq-' + id);
+    if(!card) return;
+    card.classList.toggle('abierta');
+
+    // Al abrirla por primera vez, queda marcada como leída
+    const fila = pesquisaTodas.find(r => r.id === id);
+    if(card.classList.contains('abierta') && fila && !fila.leida){
+      fila.leida = true;
+      card.classList.remove('nueva');
+      card.querySelector('.pesq-tag.nueva')?.remove();
+      try{
+        await sb.from('pesquisa').update({ leida: true }).eq('id', id);
+        const badge = document.getElementById('pesquisaCount');
+        const sinLeer = pesquisaTodas.filter(r => !r.leida).length;
+        if(badge){ badge.textContent = sinLeer || pesquisaTodas.length; badge.classList.toggle('dim', sinLeer === 0); }
+        pintarPesqFiltros();
+      }catch(e){}
+    }
+  }
+
+  function copiarRespuesta(id){
+    const r = pesquisaTodas.find(x => x.id === id);
+    if(!r) return;
+
+    let txt = (r.nombre || 'Sin nombre') + ' · ' + (r.email || '') + ' · ' + (r.whatsapp || '') + '\n';
+    if(r.rubro) txt += 'Rubro: ' + r.rubro + '\n';
+    txt += '\n';
+    PESQ_PERFIL.forEach(([k, lbl]) => { if(r[k]) txt += lbl + ': ' + r[k] + '\n'; });
+    txt += '\n';
+    PESQ_PREGUNTAS.forEach(([k, preg]) => {
+      if(r[k]) txt += preg + '\n' + r[k] + '\n\n';
+    });
+
+    navigator.clipboard.writeText(txt.trim())
+      .then(() => mostrarToast('✓ Copiado'))
+      .catch(() => mostrarToast('No se pudo copiar', true));
+  }
+
+  function copiarEnlacePesquisa(){
+    navigator.clipboard.writeText('https://milenacmm.com/pesquisa')
+      .then(() => estadoPesq('✓ Copiado. Agregale ?rubro=nutricionista según la pieza.', 'ok'))
+      .catch(() => estadoPesq('No se pudo copiar', 'error'));
+  }
+
+  async function guardarGrupo(){
+    const v = document.getElementById('grupoWhatsapp').value.trim();
+
+    if(v && !v.startsWith('https://chat.whatsapp.com/') && !v.startsWith('https://')){
+      return estadoPesq('El enlace del grupo tiene que empezar con https://', 'error');
+    }
+
+    const { error } = await sb.from('ajustes')
+      .upsert({ clave: 'grupo_whatsapp', valor: v, actualizado_en: new Date().toISOString() },
+              { onConflict: 'clave' });
+
+    if(error) return estadoPesq('No se pudo guardar: ' + error.message, 'error');
+    estadoPesq(v ? '✓ Guardado. Se lo mostramos apenas creen la cuenta.' : '✓ Guardado (sin grupo, no aparece)', 'ok');
+  }
+
+  // ─── Bajarse todo en una planilla ───
+  function bajarPesquisa(){
+    if(pesquisaTodas.length === 0) return mostrarToast('Todavía no hay respuestas', true);
+
+    const col = ['creado_en','nombre','email','whatsapp','rubro','pieza',
+      'edad','estado_civil','hijos','anos_mercado','como_trabaja','facturacion',
+      'r1_momento','r2_peso','r3_cambio','r4_nadie_sabe','r5_admira','r6_porque','creo_cuenta'];
+
+    const limpio = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+
+    const csv = '\uFEFF' + col.join(';') + '\n' +
+      pesquisaTodas.map(r => col.map(c => limpio(r[c])).join(';')).join('\n');
+
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'pesquisa-cmm-' + new Date().toISOString().slice(0, 10) + '.csv';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    mostrarToast('✓ Descargando');
+  }
+
   function cambiarTab(tab){
     // Cerrar sidebar en móvil
     if (window.innerWidth <= 900) {
@@ -4628,6 +5400,10 @@ body{visibility:hidden}
     document.getElementById('content-' + tab).classList.add('active');
     const navEl = document.getElementById('nav-' + tab);
     if(navEl) navEl.classList.add('active');
+
+    // Se piden recién cuando entra a verlas
+    if(tab === 'metricas') cargarMetricas();
+    if(tab === 'pesquisa') cargarPesquisa();
   }
 
   // Cuánto se usa cada hashtag, con datos reales

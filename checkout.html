@@ -472,6 +472,7 @@
       'Nombre: ' + nombre + '\n' +
       'Email: ' + email;
 
+    try{ anotarEvento('clic_whatsapp', { curso: cursoActual ? cursoActual.id : null, detalle: codigo }); }catch(e){}
     window.open('https://wa.me/' + wa + '?text=' + encodeURIComponent(texto), '_blank', 'noopener');
   }
 

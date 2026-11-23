@@ -862,6 +862,15 @@ async function abrirClase(id, empujarHistorial){
   cargarOpinion(cl.id);
   cargarNota(cl.id);
 
+  // Cuánto tiempo pasa mirando esta clase
+  try{
+    if(relojClase){ relojClase.mandar(); relojClase.parar(); }
+    if(typeof medirTiempo === 'function' && usuario && tieneAcceso){
+      relojClase = medirTiempo(cl.id, curso?.id || null);
+    }
+    anotarEvento('vio_clase', { curso: curso?.id || null, detalle: cl.titulo });
+  }catch(e){}
+
   const mod = modulos.find(m => m.id === cl.modulo_id);
   document.getElementById('claseMeta').innerHTML =
     (mod ? '<span class="clase-modulo">' + esc(mod.titulo) + '</span>' : '') +
@@ -1094,6 +1103,7 @@ function miniDeClase(cl, hecha, bloqueada){
 // Un apunte por clase. Se guarda solo mientras escribe, y después
 // los ve todos juntos en su perfil.
 // ═══════════════════════════════════════════════════════════════════
+let relojClase = null;
 let notaActual = null;
 let notaTimer = null;
 let notaGuardando = false;

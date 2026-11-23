@@ -119,6 +119,40 @@
       font-size: 16px !important;
     }
   }
+
+  /* ── Nota debajo de un campo ── */
+  .campo-nota{font-size:11.5px;line-height:1.5;color:rgba(255,245,240,0.42);margin-top:7px}
+
+  /* ── El permiso para mandar emails ── */
+  .permiso{display:flex;align-items:flex-start;gap:11px;cursor:pointer;user-select:none;
+    padding:13px 14px;margin:4px 0 18px;border-radius:12px;
+    background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.1);
+    transition:all 0.2s}
+  .permiso:hover{background:rgba(255,245,240,0.06)}
+  .permiso-caja{width:20px;height:20px;border-radius:6px;flex-shrink:0;margin-top:1px;
+    border:1.5px solid rgba(255,245,240,0.3);background:none;
+    display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+  .permiso-caja svg{opacity:0;transition:opacity 0.15s}
+  .permiso-caja.marcada{background:linear-gradient(135deg,#FAC775,#D4A356);border-color:#D4A356}
+  .permiso-caja.marcada svg{opacity:1}
+  .permiso-txt{flex:1;font-size:13.5px;line-height:1.5;color:#FFF5F0}
+  .permiso-txt small{display:block;font-size:11.5px;line-height:1.55;
+    color:rgba(255,245,240,0.45);margin-top:5px}
+
+  /* ── El grupo de WhatsApp, después de crear la cuenta ── */
+  .wa-ico{width:74px;height:74px;margin:0 auto 22px;border-radius:50%;
+    background:rgba(37,211,102,0.14);border:0.5px solid rgba(37,211,102,0.45);
+    display:flex;align-items:center;justify-content:center}
+  .wa-btn{display:block;width:100%;padding:17px;border-radius:12px;text-align:center;
+    text-decoration:none;margin-bottom:12px;
+    background:linear-gradient(135deg,#25D366,#18A34A);color:#07240F;
+    font-family:inherit;font-size:13px;font-weight:600;letter-spacing:0.12em;
+    transition:transform 0.18s}
+  .wa-btn:hover{transform:translateY(-1px)}
+  .wa-saltar{display:block;width:100%;padding:14px;border:none;background:none;
+    color:rgba(255,245,240,0.5);font-family:inherit;font-size:13px;cursor:pointer;
+    text-align:center;transition:color 0.2s}
+  .wa-saltar:hover{color:#FFF5F0}
 </style>
 </head>
 <body>
@@ -196,11 +230,12 @@
     </div>
 
     <div class="field-group">
-      <label class="field-label">EMAIL</label>
+      <label class="field-label">ELEGÍ TU MEJOR EMAIL</label>
       <div class="input-wrap">
         <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,245,240,0.45)" stroke-width="1.7"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
-        <input class="input-padded" type="email" id="regEmail" placeholder="vos@ejemplo.com" autocomplete="email">
+        <input class="input-padded" type="email" id="regEmail" placeholder="el que mirás todos los días" autocomplete="email">
       </div>
+      <div class="campo-nota">Ahí te llega el código y todo lo importante. Poné el que realmente usás.</div>
     </div>
 
     <div class="field-group">
@@ -215,7 +250,33 @@
       <div id="medidorReg"></div>
     </div>
 
+    <label class="permiso" id="permisoEmails" onclick="alternarPermiso(event)">
+      <span class="permiso-caja marcada" id="permisoCaja">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#3D1208" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      <span class="permiso-txt">
+        Quiero recibir las novedades de la comunidad
+        <small>Clases nuevas, encuentros en vivo y lo que va pasando adentro de CMM. Podés darte de baja cuando quieras.</small>
+      </span>
+    </label>
+
     <button class="cta-gold submit-btn" id="btnRegistro" onclick="hacerRegistro()">CREAR MI CUENTA</button>
+  </div>
+
+  <!-- ═══ EL GRUPO DE WHATSAPP ═══ -->
+  <div class="tab-content" id="content-grupo">
+    <div class="wa-ico">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="#25D366"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.3.2-1.5-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.4A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .9.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z" opacity="0.65"/></svg>
+    </div>
+
+    <h1 class="login-title serif">Último paso: <span class="serif-it gradtext" style="font-size:30px">el grupo</span></h1>
+    <p class="login-subtitle" id="grupoTexto">Ahí adentro avisamos todo primero.</p>
+
+    <a class="wa-btn" id="grupoEnlace" href="#" target="_blank" rel="noopener" onclick="entroAlGrupo()">
+      ENTRAR AL GRUPO DE WHATSAPP
+    </a>
+
+    <button class="wa-saltar" onclick="irAlSitio()">Después lo hago, llevame al sitio →</button>
   </div>
 
   <!-- ═══ CÓDIGO DE VERIFICACIÓN ═══ -->
@@ -322,7 +383,7 @@ function cambiarTab(tab){
   ocultarAlerta();
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.getElementById('content-' + tab).classList.add('active');
-  const ocultar = (tab === 'codigo' || tab === 'dospasos');
+  const ocultar = (tab === 'codigo' || tab === 'dospasos' || tab === 'grupo');
   document.getElementById('tabsRow').style.display = ocultar ? 'none' : 'flex';
   if(!ocultar){
     document.getElementById('tabEntrar').classList.toggle('active', tab === 'entrar');
@@ -645,6 +706,81 @@ async function reenviar2Pasos(){
 }
 
 // ─── REGISTRO ──────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+// EL PERMISO PARA MANDAR EMAILS
+// Viene marcado. Si no quiere, lo desmarca.
+// ═══════════════════════════════════════════════════════════════════
+let permisoPendiente = true;
+
+// El grupo de WhatsApp es solo para quien vino del formulario.
+// Quien se registra normal, va derecho al sitio.
+let vinoDePesquisa = false;
+try{
+  const q = new URLSearchParams(window.location.search);
+  if(q.get('desde') === 'pesquisa'){
+    vinoDePesquisa = true;
+    sessionStorage.setItem('cmm_desde', 'pesquisa');
+  }else if(sessionStorage.getItem('cmm_desde') === 'pesquisa'){
+    vinoDePesquisa = true;
+  }
+}catch(e){}
+
+function alternarPermiso(e){
+  e.preventDefault();
+  document.getElementById('permisoCaja').classList.toggle('marcada');
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// EL GRUPO DE WHATSAPP, APENAS CREA LA CUENTA
+// Si no hay enlace cargado en el panel, saltamos esta pantalla.
+// ═══════════════════════════════════════════════════════════════════
+async function mostrarGrupo(){
+  // Quien se registró normal no ve esta pantalla: va derecho al sitio
+  if(!vinoDePesquisa){
+    mostrarAlerta('✓ Cuenta creada. Entrando...', 'success');
+    setTimeout(() => { window.location.href = '/index'; }, 600);
+    return;
+  }
+
+  let enlace = '';
+  let texto = '';
+
+  try{
+    const { data } = await sb.from('ajustes').select('clave, valor')
+      .in('clave', ['grupo_whatsapp', 'grupo_whatsapp_texto']);
+    (data || []).forEach(a => {
+      if(a.clave === 'grupo_whatsapp') enlace = (a.valor || '').trim();
+      if(a.clave === 'grupo_whatsapp_texto') texto = (a.valor || '').trim();
+    });
+  }catch(e){}
+
+  // Sin grupo cargado, derecho al sitio
+  if(!enlace){
+    mostrarAlerta('✓ Cuenta creada. Entrando...', 'success');
+    setTimeout(() => { window.location.href = '/index'; }, 600);
+    return;
+  }
+
+  const a = document.getElementById('grupoEnlace');
+  if(a) a.href = enlace;
+  if(texto) document.getElementById('grupoTexto').textContent = texto;
+
+  ocultarAlerta();
+  cambiarTab('grupo');
+}
+
+function entroAlGrupo(){
+  try{ anotarEvento('clic_whatsapp', { detalle: 'grupo al registrarse' }); }catch(e){}
+  try{ sessionStorage.removeItem('cmm_desde'); }catch(e){}
+  setTimeout(() => { window.location.href = '/index'; }, 1200);
+}
+
+function irAlSitio(){
+  try{ sessionStorage.removeItem('cmm_desde'); }catch(e){}
+  window.location.href = '/index';
+}
+
 async function hacerRegistro(){
   ocultarAlerta();
   const nombre = document.getElementById('regNombre').value.trim();
@@ -660,10 +796,13 @@ async function hacerRegistro(){
 
   cargando('btnRegistro', 'CREANDO');
 
+  const quiereEmails = document.getElementById('permisoCaja').classList.contains('marcada');
+  permisoPendiente = quiereEmails;
+
   const { data, error } = await sb.auth.signUp({
     email: email,
     password: pass,
-    options: { data: { nombre: nombre } }
+    options: { data: { nombre: nombre, acepta_emails: quiereEmails } }
   });
 
   listo('btnRegistro');
@@ -678,12 +817,12 @@ async function hacerRegistro(){
         id: data.user.id,
         email: email,
         nombre: nombre,
-        rol: 'alumna'
+        rol: 'alumna',
+        acepta_emails: quiereEmails
       }, { onConflict: 'id' });
     }
     await refrescarCacheSesion();
-    mostrarAlerta('✓ Cuenta creada. Entrando...', 'success');
-    window.location.href = '/index';
+    await mostrarGrupo();
     return;
   }
 
@@ -823,12 +962,12 @@ async function verificarCodigo(){
             id: intento.data.user.id,
             email: emailPendiente,
             nombre: nombrePendiente,
-            rol: 'alumna'
+            rol: 'alumna',
+            acepta_emails: permisoPendiente
           }, { onConflict: 'id' });
         }
         await refrescarCacheSesion();
-        mostrarAlerta('✓ Tu cuenta ya estaba confirmada. Entrando...', 'success');
-        setTimeout(() => { window.location.href = '/index'; }, 700);
+        await mostrarGrupo();
         return;
       }
     }
@@ -849,13 +988,15 @@ async function verificarCodigo(){
   }
 
   // Guardamos el nombre en el perfil
-  if(nombrePendiente && resultado.data?.user){
-    await sb.from('perfiles').update({ nombre: nombrePendiente }).eq('id', resultado.data.user.id);
+  if(resultado.data?.user){
+    const cambios = { acepta_emails: permisoPendiente };
+    if(nombrePendiente) cambios.nombre = nombrePendiente;
+    await sb.from('perfiles').update(cambios).eq('id', resultado.data.user.id);
   }
 
   await refrescarCacheSesion();
-  mostrarAlerta('✓ ¡Email verificado! Entrando...', 'success');
-  setTimeout(() => { window.location.href = '/index'; }, 700);
+  listo('btnVerificar');
+  await mostrarGrupo();
 }
 
 function cambiarLargoCodigo(){

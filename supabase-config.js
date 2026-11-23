@@ -403,22 +403,132 @@ function precioParaVos(curso, esPremium) {
 // EL CAMINO DE CADA PERSONA
 // Anota los pasos para saber quién se interesó y no compró
 // ═══════════════════════════════════════════════════════════
-function anotarPaso(tipo, cursoId, detalle) {
-  // No esperamos la respuesta: esto nunca debe frenar lo que la persona
-  // está haciendo. Si falla, no pasa nada.
+
+// ─── Quién es, cuando todavía no tiene cuenta ───
+// Un código al azar guardado en su navegador. No dice quién es
+// ni de dónde es: solo sirve para no contar diez veces a la misma.
+function codigoVisitante() {
+  try {
+    let v = localStorage.getItem('cmm_visitante');
+    if (!v) {
+      v = 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem('cmm_visitante', v);
+    }
+    return v;
+  } catch (e) {
+    // Navegador en privado: usamos uno que dura lo que dura la pestaña
+    if (!window.__visitanteTemp) {
+      window.__visitanteTemp = 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+    }
+    return window.__visitanteTemp;
+  }
+}
+
+function queDispositivo() {
+  const a = navigator.userAgent || '';
+  if (/iPad|Tablet|PlayBook|Silk|(Android(?!.*Mobile))/i.test(a)) return 'tablet';
+  if (/Mobi|Android|iPhone|iPod|Windows Phone/i.test(a)) return 'celular';
+  return 'computadora';
+}
+
+// ═══════════════════════════════════════════════════════════
+// ANOTAR CUALQUIER COSA
+// Funciona con cuenta y sin cuenta. Nunca frena nada:
+// no esperamos la respuesta y si falla, seguimos igual.
+// ═══════════════════════════════════════════════════════════
+function anotarEvento(tipo, opciones) {
+  const o = opciones || {};
   (async function () {
     try {
       if (typeof sb === 'undefined' || !sb) return;
-      const { data: { user } } = await sb.auth.getUser();
-      if (!user) return;
-
-      await sb.rpc('anotar_paso', {
+      await sb.rpc('anotar_evento', {
         p_tipo: tipo,
-        p_curso: cursoId || null,
-        p_detalle: detalle || null
+        p_visitante: codigoVisitante(),
+        p_curso: o.curso || null,
+        p_detalle: o.detalle || null,
+        p_ruta: o.ruta || (location.pathname + location.search).slice(0, 180),
+        p_referencia: o.referencia !== undefined ? o.referencia : (document.referrer || ''),
+        p_dispositivo: queDispositivo()
       });
-    } catch (e) {
-      // Si falta el SQL o falla la red, seguimos igual
-    }
+    } catch (e) { /* seguimos igual */ }
   })();
+}
+
+// Lo de antes, para no romper lo que ya estaba escrito
+function anotarPaso(tipo, cursoId, detalle) {
+  anotarEvento(tipo, { curso: cursoId, detalle: detalle });
+}
+
+// ─── La visita a esta página, apenas carga ───
+function anotarVisita(detalle) {
+  anotarEvento('visita', { detalle: detalle || document.title || '' });
+}
+
+// Lo llamamos solo en cuanto la página está lista
+(function () {
+  function arrancar() { setTimeout(anotarVisita, 800); }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', arrancar);
+  } else {
+    arrancar();
+  }
+})();
+
+
+// ═══════════════════════════════════════════════════════════
+// CUÁNTO TIEMPO PASÓ MIRANDO
+//
+// Cuenta mientras la pestaña está a la vista. Si se va a otra
+// pestaña o bloquea el celular, el reloj para. Manda lo juntado
+// cada 30 segundos y cuando se va de la página.
+// ═══════════════════════════════════════════════════════════
+function medirTiempo(claseId, cursoId) {
+  if (!claseId) return;
+
+  let desde = Date.now();
+  let acumulado = 0;
+  let mandando = false;
+
+  function juntar() {
+    if (desde) {
+      acumulado += Math.round((Date.now() - desde) / 1000);
+      desde = Date.now();
+    }
+  }
+
+  async function mandar(final) {
+    juntar();
+    if (acumulado < 5 || mandando) return;
+
+    const segundos = Math.min(acumulado, 1200);
+    acumulado = 0;
+    mandando = true;
+
+    try {
+      if (typeof sb !== 'undefined' && sb) {
+        await sb.rpc('sumar_tiempo', {
+          p_clase: claseId,
+          p_curso: cursoId || null,
+          p_segundos: segundos
+        });
+      }
+    } catch (e) { /* si falla, se pierde ese tramo y ya */ }
+
+    mandando = false;
+  }
+
+  // Cada 30 segundos
+  const reloj = setInterval(() => { if (!document.hidden) mandar(false); }, 30000);
+
+  // Cuando cambia de pestaña, paramos el reloj
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { juntar(); desde = 0; mandar(false); }
+    else { desde = Date.now(); }
+  });
+
+  // Cuando se va
+  window.addEventListener('pagehide', () => { clearInterval(reloj); mandar(true); });
+  window.addEventListener('beforeunload', () => { mandar(true); });
+
+  return { mandar: () => mandar(true), parar: () => clearInterval(reloj) };
 }
