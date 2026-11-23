@@ -426,18 +426,66 @@ function codigoVisitante() {
 
 function queDispositivo() {
   const a = navigator.userAgent || '';
+  if (navigator.webdriver || /bot|crawl|spider|slurp|preview|lighthouse|headless|facebookexternalhit|whatsapp\/|telegrambot/i.test(a)) return 'bot';
   if (/iPad|Tablet|PlayBook|Silk|(Android(?!.*Mobile))/i.test(a)) return 'tablet';
   if (/Mobi|Android|iPhone|iPod|Windows Phone/i.test(a)) return 'celular';
   return 'computadora';
 }
 
+// ─── De qué anuncio vino (utm_source, fbclid...) ───
+// Se guarda para toda la visita, aunque después cambie de página.
+function queCampana() {
+  try {
+    const p = new URLSearchParams(location.search);
+    let c = '';
+    if (p.get('utm_source') || p.get('utm_campaign')) {
+      c = [p.get('utm_source'), p.get('utm_medium'), p.get('utm_campaign')]
+        .filter(Boolean).join(' · ');
+    } else if (p.get('fbclid')) c = 'facebook · anuncio';
+    else if (p.get('gclid')) c = 'google · anuncio';
+    else if (p.get('ttclid')) c = 'tiktok · anuncio';
+    if (c) sessionStorage.setItem('cmm_campana', c.slice(0, 120));
+    return sessionStorage.getItem('cmm_campana') || '';
+  } catch (e) { return ''; }
+}
+
+// ─── De dónde vino ───
+// Instagram y Facebook abren el sitio en su propio navegador y casi
+// nunca dicen de dónde venís: lo sacamos del navegador mismo.
+function queReferencia() {
+  const r = document.referrer || '';
+  if (r && !/milenacmm\.com|vercel\.app|localhost/i.test(r)) return r;
+  const a = navigator.userAgent || '';
+  if (/Instagram/i.test(a)) return 'instagram-app';
+  if (/FBAN|FBAV|FB_IAB/i.test(a)) return 'facebook-app';
+  if (/musical_ly|TikTok|BytedanceWebview/i.test(a)) return 'tiktok-app';
+  return r;
+}
+
+// La página, sin los códigos de los anuncios
+function rutaLimpia() {
+  try {
+    const p = new URLSearchParams(location.search);
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','gclid','ttclid','igshid','mibextid']
+      .forEach(k => p.delete(k));
+    const q = p.toString();
+    return (location.pathname + (q ? '?' + q : '')).slice(0, 180);
+  } catch (e) { return location.pathname; }
+}
+
+function esPanel() { return /^\/admin/.test(location.pathname); }
+
 // ═══════════════════════════════════════════════════════════
 // ANOTAR CUALQUIER COSA
 // Funciona con cuenta y sin cuenta. Nunca frena nada:
 // no esperamos la respuesta y si falla, seguimos igual.
+// El panel de admin no se cuenta.
 // ═══════════════════════════════════════════════════════════
 function anotarEvento(tipo, opciones) {
   const o = opciones || {};
+  if (esPanel()) return;
+  const disp = queDispositivo();
+  if (disp === 'bot') return;
   (async function () {
     try {
       if (typeof sb === 'undefined' || !sb) return;
@@ -446,13 +494,49 @@ function anotarEvento(tipo, opciones) {
         p_visitante: codigoVisitante(),
         p_curso: o.curso || null,
         p_detalle: o.detalle || null,
-        p_ruta: o.ruta || (location.pathname + location.search).slice(0, 180),
-        p_referencia: o.referencia !== undefined ? o.referencia : (document.referrer || ''),
-        p_dispositivo: queDispositivo()
+        p_ruta: o.ruta || rutaLimpia(),
+        p_referencia: o.referencia !== undefined ? o.referencia : queReferencia(),
+        p_dispositivo: disp,
+        p_campana: queCampana()
       });
     } catch (e) { /* seguimos igual */ }
   })();
 }
+
+// ═══════════════════════════════════════════════════════════
+// CADA CLIC: qué tocó y en qué página
+// Botones, enlaces y tarjetas. No guarda lo que escribe.
+// Para ponerle un nombre fijo a algo: data-metrica="Comprar CMM"
+// ═══════════════════════════════════════════════════════════
+(function () {
+  if (esPanel()) return;
+  document.addEventListener('click', function (ev) {
+    try {
+      const el = ev.target.closest('[data-metrica],a,button,[onclick],[role="button"],summary');
+      if (!el) return;
+      if (el.matches('input,textarea,select')) return;
+
+      let que = el.getAttribute('data-metrica') || el.getAttribute('aria-label') || '';
+      if (!que) que = (el.innerText || '').replace(/\s+/g, ' ').trim();
+      if (!que) { const img = el.querySelector('img[alt]'); if (img) que = img.alt; }
+      if (!que) que = el.getAttribute('title') || '';
+      if (!que && el.tagName === 'A') que = (el.getAttribute('href') || '').slice(0, 60);
+      if (!que) que = '(' + el.tagName.toLowerCase() + ')';
+      que = que.slice(0, 70);
+
+      let destino = '';
+      const a = el.tagName === 'A' ? el : el.closest('a');
+      if (a && a.getAttribute('href')) {
+        try {
+          const u = new URL(a.getAttribute('href'), location.href);
+          destino = u.host === location.host ? u.pathname + u.search : u.host + u.pathname;
+        } catch (e) { destino = a.getAttribute('href'); }
+      }
+
+      anotarEvento('clic', { detalle: que, referencia: destino.slice(0, 180) });
+    } catch (e) {}
+  }, true);
+})();
 
 // Lo de antes, para no romper lo que ya estaba escrito
 function anotarPaso(tipo, cursoId, detalle) {

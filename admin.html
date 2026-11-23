@@ -1366,6 +1366,47 @@
   .met-clase-barra div{height:100%;border-radius:4px}
   .met-clase-val{font-size:12px;min-width:38px;text-align:right;font-variant-numeric:tabular-nums}
 
+  .met-filtros{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+  .met-periodos{display:flex;gap:4px;padding:4px;border-radius:12px;background:rgba(255,245,240,0.04);border:0.5px solid rgba(255,245,240,0.1)}
+  .met-periodos button{padding:8px 14px;border-radius:9px;border:none;background:none;color:rgba(255,245,240,0.6);font-size:12.5px;cursor:pointer;font-family:inherit}
+  .met-periodos button.on{background:rgba(212,163,86,0.2);color:#FAC775}
+  .met-equipo{font-size:12px;color:rgba(255,245,240,0.55);display:flex;align-items:center;gap:7px;cursor:pointer}
+  .met-equipo input{accent-color:#D4A356}
+  .met-grupo-tit{font-size:10px;letter-spacing:.2em;color:#D4A356;font-weight:600;margin:4px 0 10px}
+  .met-tarjetas{margin-bottom:20px}
+  .met-t-num small{font-size:15px;color:rgba(255,245,240,0.5);font-weight:500;margin-left:2px}
+  .met-embudo{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:24px}
+  .met-paso{padding:14px;border-radius:12px;background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.1);position:relative;overflow:hidden}
+  .met-paso-relleno{position:absolute;left:0;bottom:0;height:3px;background:linear-gradient(90deg,#D4A356,#FAC775)}
+  .met-paso-lbl{font-size:10.5px;color:rgba(255,245,240,0.55);letter-spacing:.06em}
+  .met-paso-num{font-size:24px;font-weight:600;margin-top:6px;font-variant-numeric:tabular-nums}
+  .met-paso-pct{font-size:11px;color:#FAC775;margin-top:3px}
+  .met-grafico.chico{height:120px}
+  .met-buscar{max-width:240px;padding:8px 12px;font-size:12.5px}
+  .met-clic{display:grid;grid-template-columns:1fr auto auto;gap:4px 14px;align-items:center;padding:11px 0;border-bottom:0.5px solid rgba(255,245,240,0.07)}
+  .met-clic:last-child{border-bottom:none}
+  .met-clic-que{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .met-clic-donde{grid-column:1;font-size:11.5px;color:rgba(255,245,240,0.45);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .met-clic-donde b{color:rgba(250,199,117,0.8);font-weight:500}
+  .met-clic-n{grid-row:1/3;grid-column:2;text-align:right;font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
+  .met-clic-n small{display:block;font-size:10.5px;color:rgba(255,245,240,0.45);font-weight:400}
+  .met-clic-p{grid-row:1/3;grid-column:3;text-align:right;font-size:13px;color:rgba(255,245,240,0.7);min-width:56px}
+  .met-clic-p small{display:block;font-size:10.5px;color:rgba(255,245,240,0.45)}
+  .met-mas{width:100%;margin-top:10px;padding:10px;border-radius:10px;background:none;border:0.5px dashed rgba(255,245,240,0.2);color:rgba(255,245,240,0.6);cursor:pointer;font-family:inherit;font-size:12px}
+  .met-persona{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:0.5px solid rgba(255,245,240,0.07)}
+  .met-persona:last-child{border-bottom:none}
+  .met-p-ava{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;
+    background:rgba(255,245,240,0.07);color:rgba(255,245,240,0.6)}
+  .met-p-ava.cuenta{background:linear-gradient(135deg,#6B1A2E,#3D0D1A);color:#FAC775}
+  .met-p-txt{flex:1;min-width:0}
+  .met-p-nom{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .met-p-nom .nueva{font-size:9px;letter-spacing:.14em;color:#9FE1CB;background:rgba(93,202,165,0.14);padding:2px 6px;border-radius:5px;margin-left:6px;vertical-align:middle}
+  .met-p-sub{font-size:11.5px;color:rgba(255,245,240,0.45);margin-top:2px}
+  .met-p-num{text-align:right;font-size:12px;color:rgba(255,245,240,0.6);flex-shrink:0;line-height:1.5}
+  @media (max-width:900px){
+    .met-embudo{grid-template-columns:repeat(2,1fr)}
+    .met-buscar{max-width:none;width:100%}
+  }
   @media (max-width:900px){
     .met-dos{grid-template-columns:1fr}
     .met-tabla-wrap{display:none}
@@ -1382,6 +1423,15 @@
   .pesq-chip.on{background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.06));
     border-color:rgba(212,163,86,0.55);color:#FAC775}
 
+  .tst-caja{margin-bottom:22px}
+  .tst-fila{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .tst-fila .form-input{flex:1;min-width:220px}
+  .tst-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;margin-bottom:8px;
+    background:rgba(155,107,196,0.07);border:0.5px dashed rgba(155,107,196,0.45);flex-wrap:wrap}
+  .tst-quien{flex:1;min-width:160px}
+  .tst-nom{font-size:13.5px}
+  .tst-mail{font-size:11.5px;color:rgba(255,245,240,0.5)}
+  .tst-item .btn-secondary{padding:8px 12px;font-size:11.5px}
   /* ═══ FORMULARIOS ═══ */
   .frm-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
   .frm-card{padding:18px;border-radius:15px;cursor:pointer;background:rgba(255,245,240,0.035);
@@ -3347,51 +3397,119 @@ body{visibility:hidden}
   <!-- ============================ -->
   <div class="tab-content" id="content-metricas">
 
-    <div class="pm-cab" style="margin-bottom:18px">
+    <div class="pm-cab" style="margin-bottom:14px">
       <div>
         <h3 class="chart-title" style="margin-bottom:2px">📊 Qué pasa en el sitio</h3>
-        <p class="chart-subtitle">Los últimos 30 días. Se actualiza solo.</p>
+        <p class="chart-subtitle" id="metSub">Cada persona cuenta una sola vez, aunque entre muchas veces o desde otro aparato.</p>
       </div>
       <button class="btn-secondary" onclick="cargarMetricas()">Actualizar</button>
+    </div>
+
+    <div class="met-filtros">
+      <div class="met-periodos" id="metPeriodos">
+        <button data-d="0" onclick="periodoMet(0)">Hoy</button>
+        <button data-d="7" onclick="periodoMet(7)">7 días</button>
+        <button data-d="30" class="on" onclick="periodoMet(30)">30 días</button>
+        <button data-d="90" onclick="periodoMet(90)">90 días</button>
+        <button data-d="365" onclick="periodoMet(365)">1 año</button>
+      </div>
+      <label class="met-equipo"><input type="checkbox" id="metConEquipo" onchange="cargarMetricas()"> Contar también al equipo y las cuentas de prueba</label>
     </div>
 
     <div id="metricasFalta" class="met-aviso" style="display:none"></div>
 
     <!-- Los números de arriba -->
+    <div class="met-grupo-tit">GENTE</div>
     <div class="met-tarjetas" id="metTarjetas"></div>
+    <div class="met-grupo-tit">CÓMO NAVEGAN</div>
+    <div class="met-tarjetas" id="metTarjetas2"></div>
+    <div class="met-grupo-tit">EL CAMINO A LA COMPRA · PERSONAS DISTINTAS</div>
+    <div class="met-embudo" id="metEmbudo"></div>
 
     <!-- Día por día -->
     <div class="pm-seccion">
       <div class="pm-cab">
         <div>
-          <h3 class="chart-title" style="margin-bottom:2px">📈 Día por día</h3>
-          <p class="chart-subtitle" id="metDiasSub">Visitas y personas distintas</p>
+          <h3 class="chart-title" style="margin-bottom:2px" id="metSerieTit">📈 Día por día</h3>
+          <p class="chart-subtitle" id="metDiasSub">Personas distintas por día · pasá el mouse por una barra</p>
         </div>
       </div>
       <div class="met-grafico" id="metGrafico"></div>
     </div>
 
-    <!-- Dos columnas: de dónde vienen y qué miran -->
+    <!-- Clics -->
+    <div class="pm-seccion">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">👆 Dónde hacen clic</h3>
+          <p class="chart-subtitle">Cada botón o enlace que tocan, y en qué página</p>
+        </div>
+        <input class="form-input met-buscar" id="metClicBuscar" placeholder="Buscar (ej. comprar, whatsapp)" oninput="pintarClics()">
+      </div>
+      <div id="metClics"></div>
+    </div>
+
     <div class="met-dos">
       <div class="pm-seccion">
-        <div class="pm-cab">
-          <div>
-            <h3 class="chart-title" style="margin-bottom:2px">🔗 De dónde vienen</h3>
-            <p class="chart-subtitle">Quién te está mandando gente</p>
-          </div>
-        </div>
+        <div class="pm-cab"><div>
+          <h3 class="chart-title" style="margin-bottom:2px">🔗 De dónde vienen</h3>
+          <p class="chart-subtitle">Visitas según quién te mandó la gente</p>
+        </div></div>
         <div id="metOrigen"></div>
       </div>
-
       <div class="pm-seccion">
-        <div class="pm-cab">
-          <div>
-            <h3 class="chart-title" style="margin-bottom:2px">📄 Qué páginas miran</h3>
-            <p class="chart-subtitle">Las más visitadas</p>
-          </div>
-        </div>
+        <div class="pm-cab"><div>
+          <h3 class="chart-title" style="margin-bottom:2px">📣 Campañas</h3>
+          <p class="chart-subtitle">Enlaces con <code>?utm_source=</code> o que vienen de anuncios</p>
+        </div></div>
+        <div id="metCampanas"></div>
+      </div>
+    </div>
+
+    <div class="met-dos">
+      <div class="pm-seccion">
+        <div class="pm-cab"><div>
+          <h3 class="chart-title" style="margin-bottom:2px">📄 Páginas más vistas</h3>
+          <p class="chart-subtitle">Vistas · personas distintas</p>
+        </div></div>
         <div id="metPaginas"></div>
       </div>
+      <div class="pm-seccion">
+        <div class="pm-cab"><div>
+          <h3 class="chart-title" style="margin-bottom:2px">🚪 Por dónde entran</h3>
+          <p class="chart-subtitle">La primera página de cada visita</p>
+        </div></div>
+        <div id="metEntrada"></div>
+      </div>
+    </div>
+
+    <div class="met-dos">
+      <div class="pm-seccion">
+        <div class="pm-cab"><div>
+          <h3 class="chart-title" style="margin-bottom:2px">🕐 A qué hora entran</h3>
+          <p class="chart-subtitle">Hora de Paraguay · buena para saber cuándo publicar</p>
+        </div></div>
+        <div class="met-grafico chico" id="metHoras"></div>
+      </div>
+      <div class="pm-seccion">
+        <div class="pm-cab"><div>
+          <h3 class="chart-title" style="margin-bottom:2px">📅 Qué día · 📱 Con qué</h3>
+          <p class="chart-subtitle">Visitas por día de la semana · personas por aparato</p>
+        </div></div>
+        <div id="metSemana"></div>
+        <div id="metDispositivos" style="margin-top:14px"></div>
+      </div>
+    </div>
+
+    <!-- La gente -->
+    <div class="pm-seccion">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">👥 Quién entró</h3>
+          <p class="chart-subtitle">Las últimas 60 personas. Con nombre si tienen cuenta.</p>
+        </div>
+      </div>
+      <div id="metGente"></div>
     </div>
 
     <!-- Curso por curso -->
@@ -3471,6 +3589,21 @@ body{visibility:hidden}
         <button class="btn-secondary" onclick="abrirDatosPago()">⚙️ Datos de pago</button>
       </div>
       <div id="pedidosLista"></div>
+    </div>
+
+    <!-- Cuentas de prueba -->
+    <div class="pm-seccion tst-caja">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">🧪 Cuentas de prueba</h3>
+          <p class="chart-subtitle">Compran sin pagar con el botón "Simular compra" del checkout. No suman en las ventas.</p>
+        </div>
+      </div>
+      <div class="tst-fila">
+        <input class="form-input" id="tstEmail" type="email" placeholder="email de la cuenta (ya creada en /login)" onkeydown="if(event.key==='Enter')marcarTester()">
+        <button class="cta-gold btn-save" onclick="marcarTester()">MARCAR COMO PRUEBA</button>
+      </div>
+      <div id="tstLista"></div>
     </div>
 
     <div class="pg-caja">
@@ -5182,37 +5315,94 @@ body{visibility:hidden}
     return r ? h + ' h ' + r + ' min' : h + ' h';
   }
 
+  // ═══ MÉTRICAS V2 ═════════════════════════════════════════════════
+  let metDias = 30;
+  let metDatos = null;
+  let metClicsTodos = false;
+  let metGenteTodos = false;
+  const DIAS_SEM = ['', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+
+  function periodoMet(d){
+    metDias = d;
+    document.querySelectorAll('#metPeriodos button').forEach(b => b.classList.toggle('on', Number(b.dataset.d) === d));
+    cargarMetricas();
+  }
+
+  function duracionTxt(seg){
+    seg = Math.round(Number(seg) || 0);
+    if(seg < 60) return seg + '<small>s</small>';
+    const m = Math.floor(seg / 60), s = seg % 60;
+    if(m < 60) return m + '<small>m</small> ' + (s ? s + '<small>s</small>' : '');
+    return Math.floor(m / 60) + '<small>h</small> ' + (m % 60) + '<small>m</small>';
+  }
+
+  function hace(iso){
+    const min = Math.floor((Date.now() - new Date(iso)) / 60000);
+    if(min < 1) return 'ahora';
+    if(min < 60) return 'hace ' + min + ' min';
+    const h = Math.floor(min / 60);
+    if(h < 24) return 'hace ' + h + ' h';
+    const d = Math.floor(h / 24);
+    return 'hace ' + d + (d === 1 ? ' día' : ' días');
+  }
+
+  function nombrePagina(r){
+    const limpia = String(r || '/');
+    const base = limpia.split('?')[0];
+    const nombres = { '/': 'Inicio', '/cursos': 'Catálogo de cursos', '/login': 'Entrar / registrarse',
+      '/perfil': 'Mi perfil', '/comunidad': 'Comunidad', '/premium': 'Premium', '/blog': 'Blog',
+      '/checkout': 'Checkout (pagar)', '/curso-detalle': 'Página del curso', '/clase': 'Clase',
+      '/pesquisa': 'Formulario', '/articulo': 'Artículo del blog', '/resultado-pago': 'Resultado del pago',
+      '/index.html': 'Inicio' };
+    let n = nombres[base] || (base.startsWith('/f/') ? 'Formulario ' + base.slice(3) : base);
+    const q = limpia.split('?')[1];
+    if(q){
+      const p = new URLSearchParams(q);
+      const extra = p.get('curso') || p.get('id') || p.get('slug') || '';
+      if(extra) n += ' · ' + extra;
+    }
+    return n;
+  }
+
   async function cargarMetricas(){
     const aviso = document.getElementById('metricasFalta');
+    const conEquipo = !!document.getElementById('metConEquipo')?.checked;
 
     try{
-      const [resumen, dias, origen, paginas, cursos, clases] = await Promise.all([
-        sb.from('metricas_resumen').select('*').maybeSingle(),
-        sb.from('metricas_dias').select('*'),
-        sb.from('metricas_origen').select('*').limit(8),
-        sb.from('metricas_paginas').select('*').limit(8),
+      const [panel, cursos, clases] = await Promise.all([
+        sb.rpc('metricas_panel', { p_dias: metDias, p_con_equipo: conEquipo }),
         sb.from('metricas_cursos').select('*'),
         sb.from('metricas_clases').select('*').limit(30)
       ]);
 
-      const falla = resumen.error || dias.error;
-      if(falla && String(falla.message || '').includes('does not exist')){
+      if(panel.error){
         aviso.style.display = '';
-        aviso.innerHTML = '⚠️ Falta correr <strong>SQL-METRICAS.sql</strong> en Supabase. ' +
-          'Hasta que lo corras, esta pantalla queda vacía.';
+        aviso.innerHTML = String(panel.error.message || '').includes('metricas_panel')
+          ? '⚠️ Falta correr <strong>SQL-METRICAS-V2.sql</strong> en Supabase.'
+          : 'No pudimos leer las métricas: ' + esc(panel.error.message);
         return;
       }
       aviso.style.display = 'none';
+      metDatos = panel.data || {};
 
-      pintarTarjetas(resumen.data || {});
-      pintarGrafico(dias.data || []);
-      pintarLista('metOrigen', origen.data || [], 'origen', 'visitas');
-      pintarLista('metPaginas', paginas.data || [], 'pagina', 'visitas');
+      pintarTarjetas(metDatos.resumen || {});
+      pintarGrafico(metDatos.serie || []);
+      pintarClics();
+      pintarLista('metOrigen', metDatos.origen || [], 'nombre', 'visitas', 'personas');
+      pintarLista('metCampanas', metDatos.campanas || [], 'nombre', 'visitas', 'personas',
+        'Todavía ninguna. Agregá <code>?utm_source=instagram&amp;utm_campaign=black</code> a tus enlaces para saber qué publicación trae gente.');
+      pintarLista('metPaginas', (metDatos.paginas || []).map(p => Object.assign({}, p, { nombre: nombrePagina(p.nombre) })), 'nombre', 'vistas', 'personas');
+      pintarLista('metEntrada', (metDatos.entrada || []).map(p => Object.assign({}, p, { nombre: nombrePagina(p.nombre) })), 'nombre', 'visitas');
+      pintarHoras(metDatos.horas || []);
+      pintarLista('metSemana', [1,2,3,4,5,6,7].map(d => ({ nombre: DIAS_SEM[d],
+        visitas: ((metDatos.semana || []).find(x => x.d === d) || {}).visitas || 0 })), 'nombre', 'visitas');
+      pintarLista('metDispositivos', metDatos.dispositivos || [], 'nombre', 'personas');
+      pintarGente(metDatos.gente || []);
       pintarCursos(cursos.data || []);
       pintarClases(clases.data || []);
 
       const badge = document.getElementById('metricasCount');
-      if(badge) badge.textContent = numCorto(resumen.data?.visitas_mes || 0);
+      if(badge) badge.textContent = numCorto(metDatos.resumen?.personas || 0);
 
     }catch(e){
       aviso.style.display = '';
@@ -5221,72 +5411,162 @@ body{visibility:hidden}
   }
 
   function pintarTarjetas(r){
-    const cont = document.getElementById('metTarjetas');
-    if(!cont) return;
-
     const t = (lbl, num, pie, clase) =>
       '<div class="met-t"><div class="met-t-lbl">' + lbl + '</div>' +
       '<div class="met-t-num ' + (clase || '') + '">' + num + '</div>' +
       '<div class="met-t-pie">' + pie + '</div></div>';
+    const n = x => numCorto(Number(x) || 0);
+    const per = Number(r.personas) || 0;
 
-    cont.innerHTML =
-      t('PERSONAS ESTE MES', numCorto(r.personas_mes), (r.personas_hoy || 0) + ' hoy', 'oro') +
-      t('VISITAS', numCorto(r.visitas_mes), numCorto(r.visitas_semana) + ' esta semana') +
-      t('SE REGISTRARON', numCorto(r.registros_mes), 'en 30 días') +
-      t('TOCARON COMPRAR', numCorto(r.clics_comprar_mes), 'en 30 días') +
-      t('COMPRARON', numCorto(r.compras_mes), 'en 30 días', 'verde');
+    document.getElementById('metTarjetas').innerHTML =
+      t('PERSONAS', n(r.personas), 'distintas, cada una cuenta 1 vez', 'oro') +
+      t('NUEVAS', n(r.nuevas), 'primera vez en el sitio') +
+      t('VOLVIERON', n(r.volvieron), per ? Math.round(100 * r.volvieron / per) + '% entró más de una vez' : 'entraron más de una vez') +
+      t('CON CUENTA', n(r.con_cuenta), 'sabemos quiénes son', 'verde');
+
+    document.getElementById('metTarjetas2').innerHTML =
+      t('VISITAS', n(r.visitas), 'cada vez que entran (30 min sin uso = otra)') +
+      t('PÁGINAS VISTAS', n(r.paginas), (r.pag_por_visita || 0) + ' por visita') +
+      t('CLICS', n(r.clics), per ? (Math.round(10 * r.clics / per) / 10) + ' por persona' : '') +
+      t('TIEMPO POR VISITA', duracionTxt(r.segundos_visita), 'de las que navegan') +
+      t('SE VAN SIN HACER NADA', (r.rebote || 0) + '<small>%</small>', 'abren una página y se van');
+
+    const pasos = [
+      ['Entraron', r.personas], ['Vieron un curso', r.vieron_curso],
+      ['Tocaron comprar', r.tocaron_comprar], ['Hicieron pedido', r.pedidos], ['Compraron', r.compras]
+    ];
+    const tope = Math.max(Number(r.personas) || 0, 1);
+    document.getElementById('metEmbudo').innerHTML = pasos.map(([l, v], i) => {
+      v = Number(v) || 0;
+      const ant = i ? Number(pasos[i - 1][1]) || 0 : 0;
+      return '<div class="met-paso"><div class="met-paso-lbl">' + l + '</div>' +
+        '<div class="met-paso-num">' + n(v) + '</div>' +
+        '<div class="met-paso-pct">' + (i ? (ant ? Math.round(100 * v / ant) + '% del paso anterior' : '—') : '100%') + '</div>' +
+        '<div class="met-paso-relleno" style="width:' + Math.round(100 * v / tope) + '%"></div></div>';
+    }).join('') +
+    '<div class="frm-nota" style="grid-column:1/-1">Registros en el período: <b>' + n(r.registros) + '</b> · Las compras no cuentan las gratis ni las de prueba.</div>';
   }
 
-  function pintarGrafico(dias){
+  function pintarGrafico(serie){
     const cont = document.getElementById('metGrafico');
-    if(!cont) return;
+    const porHora = metDias <= 1;
+    document.getElementById('metSerieTit').textContent = porHora ? '📈 Hora por hora' : '📈 Día por día';
 
-    if(dias.length === 0){
-      cont.innerHTML = '<div class="met-vacio">Todavía no hay visitas anotadas.<br>' +
-        'Empiezan a contarse apenas subas el sitio con el código nuevo.</div>';
+    // Rellenamos los huecos para que se vean los días/horas sin nadie
+    const mapa = {};
+    serie.forEach(s => { mapa[s.t.slice(0, porHora ? 13 : 10)] = s; });
+    const filas = [];
+    const pad = x => String(x).padStart(2, '0');
+    if(porHora){
+      const hoy = new Date();
+      const base = hoy.getFullYear() + '-' + pad(hoy.getMonth() + 1) + '-' + pad(hoy.getDate());
+      for(let h = 0; h <= hoy.getHours(); h++){
+        const k = base + 'T' + pad(h);
+        filas.push({ k, lbl: h + 'h', s: mapa[k] || {} });
+      }
+    }else{
+      const dias = Math.min(metDias, 365);
+      for(let i = dias - 1; i >= 0; i--){
+        const d = new Date(Date.now() - i * 86400000);
+        const k = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+        filas.push({ k, lbl: d.getDate() + '/' + (d.getMonth() + 1), s: mapa[k] || {} });
+      }
+    }
+
+    if(!serie.length){
+      cont.innerHTML = '<div class="met-vacio">Todavía nadie en este período.</div>';
       return;
     }
 
-    const techo = Math.max(...dias.map(d => Number(d.visitas || 0)), 1);
-
-    cont.innerHTML = dias.map(d => {
-      const v = Number(d.visitas || 0);
-      const alto = Math.max(2, Math.round((v / techo) * 100));
-      const f = new Date(d.dia + 'T12:00:00');
-      const etiqueta = f.getDate() + '/' + (f.getMonth() + 1);
-
+    const tope = Math.max(...filas.map(f => Number(f.s.personas) || 0), 1);
+    const cada = filas.length > 60 ? 7 : filas.length > 31 ? 3 : 1;
+    cont.innerHTML = filas.map((f, i) => {
+      const p = Number(f.s.personas) || 0;
       return '<div class="met-barra">' +
-        '<div class="met-globo">' + etiqueta + '<br>' +
-          v + ' visitas · ' + (d.personas || 0) + ' personas' +
-          (Number(d.compras) ? '<br>' + d.compras + ' compras' : '') +
-        '</div>' +
-        '<div class="met-barra-vis" style="height:' + alto + '%"></div>' +
-        '<div class="met-barra-dia">' + f.getDate() + '</div>' +
+        '<div class="met-globo">' + f.lbl + '<br><b>' + p + '</b> personas · ' + (f.s.visitas || 0) + ' visitas<br>' +
+          (f.s.paginas || 0) + ' páginas vistas</div>' +
+        '<div class="met-barra-vis" style="height:' + Math.max(2, Math.round(100 * p / tope)) + '%"></div>' +
+        '<div class="met-barra-dia">' + (i % cada === 0 ? (porHora ? f.lbl : f.lbl.split('/')[0]) : '&nbsp;') + '</div>' +
       '</div>';
     }).join('');
-
-    const total = dias.reduce((a, d) => a + Number(d.visitas || 0), 0);
-    const sub = document.getElementById('metDiasSub');
-    if(sub) sub.textContent = total + ' visitas en ' + dias.length + ' días · pasá el mouse por una barra';
   }
 
-  function pintarLista(id, filas, campoNom, campoNum){
-    const cont = document.getElementById(id);
-    if(!cont) return;
+  function pintarHoras(horas){
+    const cont = document.getElementById('metHoras');
+    const tope = Math.max(...horas.map(h => Number(h.visitas) || 0), 1);
+    if(!horas.length){ cont.innerHTML = '<div class="met-vacio">Sin datos.</div>'; return; }
+    cont.innerHTML = Array.from({ length: 24 }, (_, h) => {
+      const v = Number((horas.find(x => x.h === h) || {}).visitas) || 0;
+      return '<div class="met-barra"><div class="met-globo">' + h + ':00 a ' + h + ':59<br>' + v + ' visitas</div>' +
+        '<div class="met-barra-vis" style="height:' + Math.max(2, Math.round(100 * v / tope)) + '%"></div>' +
+        '<div class="met-barra-dia">' + (h % 3 === 0 ? h + 'h' : '&nbsp;') + '</div></div>';
+    }).join('');
+  }
 
-    if(filas.length === 0){
-      cont.innerHTML = '<div class="met-vacio">Todavía sin datos.</div>';
+  function pintarClics(){
+    const cont = document.getElementById('metClics');
+    if(!cont || !metDatos) return;
+    const q = (document.getElementById('metClicBuscar')?.value || '').toLowerCase().trim();
+    let filas = metDatos.clics || [];
+    if(q) filas = filas.filter(c => (c.que + ' ' + c.donde + ' ' + (c.a_donde || '')).toLowerCase().includes(q));
+
+    if(!filas.length){
+      cont.innerHTML = '<div class="met-vacio">' + (q ? 'Nada con "' + esc(q) + '".' :
+        'Todavía no hay clics anotados. Empiezan a contarse apenas subas esta versión.') + '</div>';
       return;
     }
+    const ver = (metClicsTodos || q) ? filas : filas.slice(0, 15);
+    cont.innerHTML = ver.map(c =>
+      '<div class="met-clic">' +
+        '<div class="met-clic-que">' + esc(c.que) + '</div>' +
+        '<div class="met-clic-n">' + numCorto(c.clics) + '<small>clics</small></div>' +
+        '<div class="met-clic-p">' + numCorto(c.personas) + '<small>personas</small></div>' +
+        '<div class="met-clic-donde">en <b>' + esc(nombrePagina(c.donde)) + '</b>' +
+          (c.a_donde ? ' → ' + esc(String(c.a_donde).slice(0, 60)) : '') + '</div>' +
+      '</div>').join('') +
+      (!metClicsTodos && !q && filas.length > 15
+        ? '<button class="met-mas" onclick="metClicsTodos=true;pintarClics()">Ver los ' + filas.length + '</button>' : '');
+  }
 
-    const techo = Math.max(...filas.map(f => Number(f[campoNum] || 0)), 1);
+  function pintarGente(gente){
+    const cont = document.getElementById('metGente');
+    if(!gente.length){ cont.innerHTML = '<div class="met-vacio">Nadie en este período.</div>'; return; }
+    const ico = { celular: '📱', computadora: '💻', tablet: '📲' };
+    const total = gente.length;
+    if(!metGenteTodos) gente = gente.slice(0, 15);
+    cont.innerHTML = gente.map(g => {
+      const cuenta = !!g.nombre || !!g.email;
+      const nom = cuenta ? (g.nombre || g.email) : 'Visitante sin cuenta';
+      return '<div class="met-persona">' +
+        '<div class="met-p-ava' + (cuenta ? ' cuenta' : '') + '">' + (cuenta ? esc(nom.trim()[0] || '?').toUpperCase() : '👤') + '</div>' +
+        '<div class="met-p-txt">' +
+          '<div class="met-p-nom">' + esc(nom) + (g.nueva ? '<span class="nueva">NUEVA</span>' : '') + '</div>' +
+          '<div class="met-p-sub">' + (ico[g.disp] || '') + ' ' + esc(g.origen || '') + ' · ' + hace(g.ultima) +
+            (cuenta && g.email && g.nombre ? ' · ' + esc(g.email) : '') + '</div>' +
+        '</div>' +
+        '<div class="met-p-num">' + g.visitas + (g.visitas === 1 ? ' visita' : ' visitas') + '<br>' +
+          (g.paginas || 0) + ' pág · ' + (g.clics || 0) + ' clics</div>' +
+      '</div>';
+    }).join('');
+    if(!metGenteTodos && total > 15)
+      cont.innerHTML += '<button class="met-mas" onclick="metGenteTodos=true;pintarGente(metDatos.gente||[])">Ver las ' + total + '</button>';
+  }
 
+  function pintarLista(id, filas, campoNom, campoNum, campoExtra, vacio){
+    const cont = document.getElementById(id);
+    if(!cont) return;
+    if(!filas.length || filas.every(f => !Number(f[campoNum]))){
+      cont.innerHTML = '<div class="met-vacio">' + (vacio || 'Todavía sin datos.') + '</div>';
+      return;
+    }
+    const tope = Math.max(...filas.map(f => Number(f[campoNum] || 0)), 1);
     cont.innerHTML = filas.map(f => {
       const v = Number(f[campoNum] || 0);
       return '<div class="met-fila">' +
-        '<div class="met-fila-nom">' + esc(f[campoNom] || '—') + '</div>' +
-        '<div class="met-fila-barra"><div style="width:' + Math.round((v / techo) * 100) + '%"></div></div>' +
-        '<div class="met-fila-num">' + numCorto(v) + '</div>' +
+        '<div class="met-fila-nom" title="' + esc(String(f[campoNom] || '')) + '">' + esc(f[campoNom] || '—') + '</div>' +
+        '<div class="met-fila-barra"><div style="width:' + Math.round((v / tope) * 100) + '%"></div></div>' +
+        '<div class="met-fila-num">' + numCorto(v) +
+          (campoExtra ? '<span style="opacity:.55;font-size:11px"> · ' + numCorto(f[campoExtra] || 0) + '</span>' : '') + '</div>' +
       '</div>';
     }).join('');
   }
@@ -6104,6 +6384,57 @@ body{visibility:hidden}
     cerrarPregunta();
     pintarPreguntasEditor();
     mostrarToast('✓ Pregunta guardada');
+  }
+
+  // ═══ CUENTAS DE PRUEBA ═══════════════════════════════════════════
+  async function cargarTesters(){
+    const cont = document.getElementById('tstLista');
+    if(!cont || !sb) return;
+    const { data, error } = await sb.from('perfiles').select('id, nombre, email').eq('es_tester', true);
+    if(error){
+      cont.innerHTML = String(error.message).includes('es_tester')
+        ? '<div class="met-aviso">⚠️ Falta correr <strong>SQL-CUENTA-PRUEBA.sql</strong> en Supabase.</div>' : '';
+      return;
+    }
+    if(!data || data.length === 0){
+      cont.innerHTML = '<div class="frm-nota">Todavía no hay cuentas de prueba.</div>';
+      return;
+    }
+    cont.innerHTML = data.map(p =>
+      '<div class="tst-item">' +
+        '<div class="tst-quien"><div class="tst-nom">🧪 ' + esc(p.nombre || 'Sin nombre') + '</div>' +
+        '<div class="tst-mail">' + esc(p.email || '') + '</div></div>' +
+        '<button class="btn-secondary" onclick="reiniciarTester(\'' + p.id + '\')">↺ Reiniciar a cero</button>' +
+        '<button class="btn-secondary" onclick="quitarTester(' + JSON.stringify(p.email || '').replace(/"/g, '&quot;') + ')">Quitar</button>' +
+      '</div>').join('');
+  }
+
+  async function marcarTester(){
+    const el = document.getElementById('tstEmail');
+    const email = el.value.trim();
+    if(!email) return mostrarToast('Escribí el email', true);
+    const { data, error } = await sb.rpc('marcar_tester', { p_email: email, p_si: true });
+    if(error || !data?.exito) return mostrarToast((data && data.error) || (error && error.message) || 'No se pudo', true);
+    el.value = '';
+    mostrarToast('✓ ' + (data.nombre || email) + ' ahora es cuenta de prueba');
+    cargarTesters();
+  }
+
+  async function quitarTester(email){
+    if(!confirm('¿Sacarle la marca de prueba a ' + email + '?\n\nLo que ya compró queda.')) return;
+    const { data, error } = await sb.rpc('marcar_tester', { p_email: email, p_si: false });
+    if(error || !data?.exito) return mostrarToast((data && data.error) || (error && error.message) || 'No se pudo', true);
+    mostrarToast('✓ Ya no es cuenta de prueba');
+    cargarTesters();
+  }
+
+  async function reiniciarTester(id){
+    if(!confirm('¿Reiniciar esta cuenta?\n\nSe borran sus compras, pedidos, suscripciones, progreso y apuntes. La cuenta queda, lista para probar todo de nuevo.')) return;
+    const { data, error } = await sb.rpc('reiniciar_tester', { p_usuario: id });
+    if(error || !data?.exito) return mostrarToast((data && data.error) || (error && error.message) || 'No se pudo', true);
+    mostrarToast('✓ Cuenta reiniciada');
+    if(typeof cargarVentas === 'function') cargarVentas();
+    if(typeof cargarPedidos === 'function') cargarPedidos();
   }
 
   function cambiarTab(tab){
@@ -11939,7 +12270,7 @@ body{visibility:hidden}
     }
     ventas.forEach(v => { v._persona = perfC[v.usuario_id] || null; });
 
-    const pagadas = ventas.filter(v => v.estado === 'pagado');
+    const pagadas = ventas.filter(v => v.estado === 'pagado' && v.metodo_pago !== 'prueba');
     const pend = ventas.filter(v => v.estado === 'pendiente');
     const canc = ventas.filter(v => v.estado === 'cancelado');
     const total = pagadas.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
@@ -12042,7 +12373,7 @@ body{visibility:hidden}
   async function cargarDashboard(){
     if(!sb) return;
 
-    const pagadas = ventas.filter(v => v.estado === 'pagado');
+    const pagadas = ventas.filter(v => v.estado === 'pagado' && v.metodo_pago !== 'prueba');
     const pend = ventas.filter(v => v.estado === 'pendiente');
     const total = pagadas.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
 
@@ -12674,6 +13005,7 @@ body{visibility:hidden}
 
     verificarEmailConfigurado();
     cargarPesquisa().catch(() => {});
+    cargarTesters().catch(() => {});
   }, 40);
 
   // Cargar hashtags cuando Supabase esté listo
