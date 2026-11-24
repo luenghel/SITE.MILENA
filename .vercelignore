@@ -1,0 +1,10 @@
+# Archivos de trabajo que NO tienen que publicarse en milenacmm.com
+*.sql
+*.ts
+*.md
+*.zip
+*.bak
+*.BAK.html
+LEEME.txt
+PENDIENTE-CUANDO-TENGAMOS-DOMINIO.txt
+Correo-Pagopar.html

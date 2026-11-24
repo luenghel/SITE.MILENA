@@ -8,7 +8,7 @@
 //    Eso le avisa a los celulares que hay algo nuevo.
 // ═══════════════════════════════════════════════════════════════════
 
-const VERSION = 'cmm-v10';
+const VERSION = 'cmm-v12';
 
 // Lo que guardamos para que abra al instante
 const BASICOS = [
@@ -16,6 +16,7 @@ const BASICOS = [
   '/index',
   '/styles.css',
   '/supabase-config.js',
+  '/vendor/supabase-2.119.2.js',
   '/header-dinamico.js',
   '/manifest.json',
   '/icon-192.png',

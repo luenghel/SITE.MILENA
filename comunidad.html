@@ -1061,10 +1061,7 @@ async function cargarFeed(){
 
   // Perfiles de los autores
   if(idsUsuario.length){
-    const { data: perfiles } = await sb
-      .from('perfiles')
-      .select('id, nombre, email, rol, avatar_url, genero, insignia_destacada')
-      .in('id', idsUsuario);
+    const { data: perfiles } = await traerPerfilesPublicos(idsUsuario);
     (perfiles || []).forEach(p => { perfilesCache[p.id] = p; });
   }
 
@@ -1088,10 +1085,7 @@ async function cargarFeed(){
   const idsComentaristas = [...new Set((comentarios || []).map(c => c.usuario_id).filter(Boolean))]
     .filter(id => !perfilesCache[id]);
   if(idsComentaristas.length){
-    const { data: perfilesC } = await sb
-      .from('perfiles')
-      .select('id, nombre, email, rol, avatar_url, genero, insignia_destacada')
-      .in('id', idsComentaristas);
+    const { data: perfilesC } = await traerPerfilesPublicos(idsComentaristas);
     (perfilesC || []).forEach(p => { perfilesCache[p.id] = p; });
   }
 

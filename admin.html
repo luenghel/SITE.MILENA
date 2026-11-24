@@ -5390,7 +5390,7 @@ body{visibility:hidden}
     return n;
   }
 
-  async function cargarPixel(){
+  async function leerPixelAdmin(){
     const { data } = await sb.from('ajustes').select('valor').eq('clave', 'meta_pixel_id').maybeSingle();
     const id = (data && data.valor) || '';
     document.getElementById('pxId').value = id;
@@ -5405,12 +5405,12 @@ body{visibility:hidden}
     const { error } = await sb.from('ajustes').upsert({ clave: 'meta_pixel_id', valor: id }, { onConflict: 'clave' });
     if(error) return mostrarToast('No se pudo guardar: ' + error.message, true);
     mostrarToast(id ? '✓ Pixel guardado. Ya está en todo el sitio' : 'Pixel desactivado');
-    cargarPixel();
+    leerPixelAdmin();
   }
 
   async function cargarMetricas(){
     const aviso = document.getElementById('metricasFalta');
-    cargarPixel().catch(() => {});
+    try{ leerPixelAdmin().catch(() => {}); }catch(e){}
     const conEquipo = !!document.getElementById('metConEquipo')?.checked;
 
     try{
@@ -7396,7 +7396,7 @@ body{visibility:hidden}
       );
 
       return '<div class="qn-fila">' +
-        '<div class="qn-avatar">' + (x.avatar_url ? '<img src="' + x.avatar_url + '" alt="">' : ini) + '</div>' +
+        '<div class="qn-avatar">' + (urlSegura(x.avatar_url) ? '<img src="' + esc(urlSegura(x.avatar_url)) + '" alt="">' : ini) + '</div>' +
         '<div class="qn-info">' +
           '<div class="qn-nom">' + esc(x.nombre || 'Sin nombre') + '</div>' +
           '<div class="qn-sub">' + esc(x.email || '') +
@@ -7517,7 +7517,7 @@ body{visibility:hidden}
       );
 
       return '<div class="int-fila' + (caliente ? ' caliente' : '') + '">' +
-        '<div class="int-avatar">' + (x.avatar_url ? '<img src="' + x.avatar_url + '" alt="">' : ini) + '</div>' +
+        '<div class="int-avatar">' + (urlSegura(x.avatar_url) ? '<img src="' + esc(urlSegura(x.avatar_url)) + '" alt="">' : ini) + '</div>' +
         '<div class="int-info">' +
           '<div class="int-nom">' + esc(x.nombre || 'Sin nombre') + '</div>' +
           '<div class="int-sub">' + esc(x.curso_titulo || '') + ' · ' + cuando + '</div>' +
@@ -7614,7 +7614,7 @@ body{visibility:hidden}
         : 'hace ' + p.dias_esperando + ' días';
 
       return '<div class="ped-fila' + (viejo ? ' viejo' : '') + '">' +
-        '<div class="ped-avatar">' + (p.avatar_url ? '<img src="' + p.avatar_url + '" alt="">' : ini) + '</div>' +
+        '<div class="ped-avatar">' + (urlSegura(p.avatar_url) ? '<img src="' + esc(urlSegura(p.avatar_url)) + '" alt="">' : ini) + '</div>' +
         '<div class="ped-info">' +
           '<div class="ped-nom">' + esc(p.nombre || 'Sin nombre') + '</div>' +
           '<div class="ped-detalle">' + esc(que) + ' · ' +
@@ -7908,7 +7908,7 @@ body{visibility:hidden}
       const ini = (s.nombre || s.email || '?').charAt(0).toUpperCase();
       return '<div class="pm-fila ' + e.clave + '" onclick="abrirSuscripcion(\'' + s.id + '\')">' +
         '<div class="pm-avatar">' +
-          (s.avatar_url ? '<img src="' + s.avatar_url + '" alt="">' : ini) +
+          (urlSegura(s.avatar_url) ? '<img src="' + esc(urlSegura(s.avatar_url)) + '" alt="">' : ini) +
         '</div>' +
         '<div class="pm-info">' +
           '<div class="pm-nom">' + esc(s.nombre || 'Sin nombre') + '</div>' +
@@ -7952,7 +7952,7 @@ body{visibility:hidden}
       const hace = dias === 0 ? 'hoy' : (dias === 1 ? 'ayer' : 'hace ' + dias + ' días');
 
       return '<div class="pm-fila porvencer">' +
-        '<div class="pm-avatar">' + (p.avatar_url ? '<img src="' + p.avatar_url + '" alt="">' : ini) + '</div>' +
+        '<div class="pm-avatar">' + (urlSegura(p.avatar_url) ? '<img src="' + esc(urlSegura(p.avatar_url)) + '" alt="">' : ini) + '</div>' +
         '<div class="pm-info">' +
           '<div class="pm-nom">' + esc(p.nombre || 'Sin nombre') + '</div>' +
           '<div class="pm-mail">' + esc(p.email || i.email || '') + ' · ' + hace + '</div>' +
@@ -12150,7 +12150,7 @@ body{visibility:hidden}
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+          'Authorization': 'Bearer ' + ((await sb.auth.getSession()).data.session?.access_token || SUPABASE_ANON_KEY),
           'apikey': SUPABASE_ANON_KEY
         },
         body: JSON.stringify({})   // sin articulo_id: solo queremos ver si responde
@@ -12266,7 +12266,7 @@ body{visibility:hidden}
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+          'Authorization': 'Bearer ' + ((await sb.auth.getSession()).data.session?.access_token || SUPABASE_ANON_KEY),
           'apikey': SUPABASE_ANON_KEY
         },
         body: JSON.stringify({ articulo_id: id })

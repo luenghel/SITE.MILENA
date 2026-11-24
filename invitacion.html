@@ -150,8 +150,16 @@
       return;
     }
 
-    const { data, error } = await sb.from('invitaciones')
-      .select('*').eq('codigo', codigo).maybeSingle();
+    // La invitación se busca solo con su código (no se puede listar)
+    let { data, error } = await sb.rpc('ver_invitacion', { p_codigo: codigo });
+    let cuentaSabida = null;
+    if(error){
+      // Por si el SQL de seguridad todavía no se corrió
+      const viejo = await sb.from('invitaciones').select('*').eq('codigo', codigo).maybeSingle();
+      data = viejo.data; error = viejo.error;
+    } else if(data){
+      cuentaSabida = !!data.tiene_cuenta;
+    }
 
     if(error || !data){
       document.getElementById('cargando').innerHTML =
@@ -174,9 +182,14 @@
     }
 
     // ¿Ya tiene cuenta?
-    const { data: perfil } = await sb.from('perfiles')
-      .select('id, nombre').ilike('email', data.email).maybeSingle();
-    yaTieneCuenta = !!perfil;
+    let perfil = null;
+    if(cuentaSabida === null){
+      const r = await sb.from('perfiles').select('id, nombre').ilike('email', data.email).maybeSingle();
+      perfil = r.data;
+      yaTieneCuenta = !!perfil;
+    } else {
+      yaTieneCuenta = cuentaSabida;
+    }
 
     document.getElementById('campoEmail').value = data.email;
     document.getElementById('entradaNombre').value = data.nombre || perfil?.nombre || '';

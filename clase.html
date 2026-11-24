@@ -1338,7 +1338,7 @@ const esperarSupa = setInterval(async () => {
 
   const [rMod, rCla] = await Promise.all([
     sb.from('modulos').select('*').eq('curso_id', c.id).eq('publicado', true).order('orden', { ascending: true }),
-    sb.from('clases').select('*').eq('curso_id', c.id).eq('publicado', true).order('orden', { ascending: true })
+    traerClases(c.id)
   ]);
 
   modulos = rMod.data || [];
@@ -1517,8 +1517,7 @@ async function cargarComentarios(claseId){
   // Quiénes escribieron
   const ids = [...new Set(comentarios.map(x => x.usuario_id))];
   if(ids.length){
-    const { data: perf } = await sb.from('perfiles')
-      .select('id, nombre, avatar_url, rol').in('id', ids);
+    const { data: perf } = await traerPerfilesPublicos(ids, 'id, nombre, avatar_url, rol');
     perfilesCom = {};
     (perf || []).forEach(p => { perfilesCom[p.id] = p; });
   }
@@ -1584,7 +1583,7 @@ function dibujarComentario(c, esRespuesta){
 
   return '<div class="com-item' + (esRespuesta ? ' respuesta' : '') + '">' +
     '<div class="com-top">' +
-      '<div class="com-avatar">' + (p.avatar_url ? '<img src="' + p.avatar_url + '" alt="">' : ini) + '</div>' +
+      '<div class="com-avatar">' + (urlSegura(p.avatar_url) ? '<img src="' + esc(urlSegura(p.avatar_url)) + '" alt="">' : ini) + '</div>' +
       '<div style="flex:1;min-width:0">' +
         '<div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">' +
           '<span class="com-nom">' + esc(p.nombre || 'Alguien') + '</span>' +

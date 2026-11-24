@@ -9,20 +9,56 @@ const SUPABASE_ANON_KEY = 'sb_publishable_3ED52aGMAAPuOTnFGRWM1Q_IHjmgmOp';
 // Cliente de Supabase (se inicializa cuando carga la librería)
 let sb = null;
 
-// Cargar Supabase desde CDN
+// La librería de Supabase vive en nuestro propio sitio (carpeta /vendor),
+// en una versión fija. Así no dependemos de un servidor de afuera que,
+// si lo atacan, podría meter código en todas las páginas.
 const supabaseScript = document.createElement('script');
-supabaseScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';
-document.head.appendChild(supabaseScript);
+supabaseScript.src = '/vendor/supabase-2.119.2.js';
 
-supabaseScript.onload = () => {
+function conectarSupabase() {
+  if (sb || !window.supabase) return;
   sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  console.log('✅ Supabase conectado');
   if (window.onSupabaseReady) window.onSupabaseReady();
-};
+}
 
-supabaseScript.onerror = () => {
-  console.error('❌ No se pudo cargar Supabase. Verificá tu conexión a internet o que estés sirviendo el sitio con un servidor local.');
-};
+if (window.supabase && window.supabase.createClient) {
+  conectarSupabase();              // la página ya la había cargado
+} else {
+  supabaseScript.onload = conectarSupabase;
+  supabaseScript.onerror = () => {
+    console.error('No se pudo cargar Supabase. Revisá tu conexión a internet.');
+  };
+  document.head.appendChild(supabaseScript);
+}
+
+
+// ═══════════════════════════════════════════════════════
+// LECTURAS PROTEGIDAS
+// ═══════════════════════════════════════════════════════
+
+// Las clases de un curso. Trae el temario completo; el video y el
+// contenido solo vienen si esa persona tiene acceso a la clase.
+async function traerClases(cursoId) {
+  const r = await sb.rpc('clases_de_curso', { p_curso: cursoId });
+  if (!r.error) return r;
+  // Por si el SQL de seguridad todavía no se corrió
+  return sb.from('clases').select('*').eq('curso_id', cursoId)
+    .eq('publicado', true).order('orden', { ascending: true });
+}
+
+// Nombre y foto de otras personas (sin email)
+async function traerPerfilesPublicos(ids, columnas) {
+  const cols = columnas || 'id, nombre, rol, avatar_url, genero, insignia_destacada';
+  let r = await sb.from('perfiles_publicos').select(cols).in('id', ids);
+  if (r.error) r = await sb.from('perfiles').select(cols).in('id', ids);
+  return r;
+}
+
+// Solo deja pasar direcciones http(s): nada de javascript: ni comillas
+function urlSegura(u) {
+  const t = String(u || '').trim();
+  return /^https?:\/\/[^\s"'<>]+$/i.test(t) ? t : '';
+}
 
 
 // ═══════════════════════════════════════════════════════
@@ -584,7 +620,7 @@ function pixelPersona(email, nombre) {
   } catch (e) {}
 }
 
-function cargarPixel(id) {
+function pxCargar(id) {
   if (CMM_PX.id || !id) return;
   CMM_PX.id = id;
   /* eslint-disable */
@@ -606,7 +642,7 @@ function cargarPixel(id) {
   if (queDispositivo() === 'bot') return;
   let guardado = '';
   try { guardado = localStorage.getItem('cmm_px_id') || ''; } catch (e) {}
-  if (guardado) cargarPixel(guardado);
+  if (guardado) pxCargar(guardado);
 
   // Leemos el número sin esperar a que cargue Supabase
   fetch(SUPABASE_URL + '/rest/v1/ajustes?clave=eq.meta_pixel_id&select=valor', {
@@ -614,7 +650,7 @@ function cargarPixel(id) {
   }).then(r => r.ok ? r.json() : []).then(filas => {
     const id = String((filas && filas[0] && filas[0].valor) || '').replace(/\D/g, '');
     try { id ? localStorage.setItem('cmm_px_id', id) : localStorage.removeItem('cmm_px_id'); } catch (e) {}
-    if (id) cargarPixel(id);
+    if (id) pxCargar(id);
   }).catch(() => {});
 })();
 

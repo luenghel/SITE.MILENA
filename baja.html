@@ -96,10 +96,11 @@
     btn.disabled = true;
     btn.textContent = 'PROCESANDO...';
 
-    const { error } = await sb
-      .from('newsletter_suscriptores')
-      .update({ activo: false })
-      .eq('email', email);
+    let { error } = await sb.rpc('baja_newsletter', { p_email: email });
+    if(error && String(error.message || '').includes('baja_newsletter')){
+      // Por si el SQL de seguridad todavía no se corrió
+      ({ error } = await sb.from('newsletter_suscriptores').update({ activo: false }).eq('email', email));
+    }
 
     if(error){
       document.getElementById('errorTxt').textContent = error.message;

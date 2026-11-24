@@ -616,7 +616,7 @@ function pintarSinContenido(curso){
 async function mostrarTemario(curso, user, compraDeEsta){
   const [rMod, rCla] = await Promise.all([
     sb.from('modulos').select('*').eq('curso_id', curso.id).eq('publicado', true).order('orden', { ascending: true }),
-    sb.from('clases').select('*').eq('curso_id', curso.id).eq('publicado', true).order('orden', { ascending: true })
+    traerClases(curso.id)
   ]);
 
   const modulos = rMod.data || [];
@@ -1307,7 +1307,7 @@ async function pintarCursoReal(){
   // ─── Módulos y clases ───
   const [rMod, rCla] = await Promise.all([
     sb.from('modulos').select('*').eq('curso_id', curso.id).eq('publicado', true).order('orden', { ascending:true }),
-    sb.from('clases').select('*').eq('curso_id', curso.id).eq('publicado', true).order('orden', { ascending:true })
+    traerClases(curso.id)
   ]);
 
   const modulos = rMod.data || [];
