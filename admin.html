@@ -1441,6 +1441,19 @@
   .tst-nom{font-size:13.5px}
   .tst-mail{font-size:11.5px;color:rgba(255,245,240,0.5)}
   .tst-item .btn-secondary{padding:8px 12px;font-size:11.5px}
+  /* ═══ ORDEN DE LOS CURSOS ═══ */
+  .curso-card-admin[draggable="true"]{cursor:grab}
+  .curso-card-admin.arrastrando{opacity:.35;transform:scale(.97)}
+  .curso-card-admin.soltar-aca{border-color:#FAC775 !important;box-shadow:0 0 0 2px rgba(250,199,117,0.5)}
+  .curso-orden{position:absolute;top:9px;left:9px;z-index:3;display:flex;align-items:center;gap:2px;
+    padding:3px;border-radius:9px;background:rgba(18,8,14,0.78);backdrop-filter:blur(8px);
+    border:0.5px solid rgba(255,245,240,0.16)}
+  .curso-orden span{font-size:11.5px;font-weight:600;color:#FAC775;min-width:24px;text-align:center}
+  .curso-orden button{width:24px;height:24px;border:none;border-radius:6px;background:none;color:rgba(255,245,240,0.8);
+    font-size:10px;cursor:pointer;font-family:inherit}
+  .curso-orden button:hover:not(:disabled){background:rgba(250,199,117,0.2);color:#FAC775}
+  .curso-orden button:disabled{opacity:.25;cursor:default}
+
   /* ═══ SEGUIMIENTO ═══ */
   .seg-cursos{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
   .seg-curso{padding:16px;border-radius:14px;cursor:pointer;background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.1);transition:all .2s}
@@ -2316,6 +2329,8 @@ body{visibility:hidden}
         <button class="filter-btn" onclick="filtrarCursos('borrador', this)">Borradores</button>
       </div>
     </div>
+
+    <div class="frm-nota" style="margin:-4px 0 14px">↔ Arrastrá una tarjeta (o usá las flechas ◀ ▶) para cambiar el orden. El <b>1º</b> es el que aparece primero en el sitio.</div>
 
     <div class="cursos-grid" id="cursosGrid"></div>
   </div>
@@ -7393,8 +7408,17 @@ body{visibility:hidden}
       return;
     }
 
-    grid.innerHTML = cursosFiltrados.map(c => `
-      <div class="curso-card-admin ${c.publicado ? '' : 'borrador'}" onclick="editarCurso('${c.id}')">
+    grid.innerHTML = cursosFiltrados.map((c, i) => `
+      <div class="curso-card-admin ${c.publicado ? '' : 'borrador'}" onclick="editarCurso('${c.id}')"
+           draggable="true" data-curso="${c.id}"
+           ondragstart="cursoArrastra(event, '${c.id}')" ondragend="cursoSuelta()"
+           ondragover="cursoEncima(event, this)" ondragleave="this.classList.remove('soltar-aca')"
+           ondrop="cursoCae(event, '${c.id}')">
+        <div class="curso-orden" onclick="event.stopPropagation()">
+          <button onclick="moverCurso('${c.id}', -1)" ${i === 0 ? 'disabled' : ''} title="Mover antes">◀</button>
+          <span title="Posición en el sitio">${i + 1}º</span>
+          <button onclick="moverCurso('${c.id}', 1)" ${i === cursosFiltrados.length - 1 ? 'disabled' : ''} title="Mover después">▶</button>
+        </div>
         <div class="curso-card-poster ${c.foto_portada ? 'con-foto' : ''}" style="${c.foto_portada
             ? `background-image:url('${c.foto_portada}')`
             : `background:${c.color_gradient || 'linear-gradient(160deg,#2D0A18,#4A0F1E,#1A0509)'}`}">
@@ -7421,6 +7445,71 @@ body{visibility:hidden}
         </div>
       </div>
     `).join('');
+  }
+
+  // ─── El orden de los cursos ───
+  // El 1º es el que aparece primero en el sitio (home y catálogo).
+  let cursoArrastrado = null;
+
+  function cursoArrastra(ev, id){
+    cursoArrastrado = id;
+    ev.dataTransfer.effectAllowed = 'move';
+    try { ev.dataTransfer.setData('text/plain', id); } catch(e){}
+    setTimeout(() => document.querySelector('[data-curso="' + id + '"]')?.classList.add('arrastrando'), 0);
+  }
+  function cursoSuelta(){
+    cursoArrastrado = null;
+    document.querySelectorAll('.curso-card-admin').forEach(c => c.classList.remove('arrastrando', 'soltar-aca'));
+  }
+  function cursoEncima(ev, el){
+    if(!cursoArrastrado || el.dataset.curso === cursoArrastrado) return;
+    ev.preventDefault();
+    el.classList.add('soltar-aca');
+  }
+  function cursoCae(ev, destinoId){
+    ev.preventDefault();
+    const origenId = cursoArrastrado;
+    cursoSuelta();
+    if(!origenId || origenId === destinoId) return;
+    const desde = cursos.findIndex(c => c.id === origenId);
+    const hasta = cursos.findIndex(c => c.id === destinoId);
+    if(desde < 0 || hasta < 0) return;
+    const [m] = cursos.splice(desde, 1);
+    cursos.splice(hasta, 0, m);
+    guardarOrdenCursos();
+  }
+
+  // Con las flechitas (para el celular): cambia de lugar con el vecino que se ve
+  function moverCurso(id, dir){
+    let visibles = cursos;
+    if (filtroCursos === 'publicado') visibles = cursos.filter(c => c.publicado);
+    if (filtroCursos === 'borrador') visibles = cursos.filter(c => !c.publicado);
+    const i = visibles.findIndex(c => c.id === id);
+    const vecino = visibles[i + dir];
+    if(i < 0 || !vecino) return;
+    const a = cursos.findIndex(c => c.id === id);
+    const b = cursos.findIndex(c => c.id === vecino.id);
+    [cursos[a], cursos[b]] = [cursos[b], cursos[a]];
+    guardarOrdenCursos();
+  }
+
+  async function guardarOrdenCursos(){
+    const cambios = [];
+    cursos.forEach((c, i) => {
+      if(c.orden !== i + 1){ c.orden = i + 1; cambios.push(c); }
+    });
+    renderCursos();
+    if(!cambios.length) return;
+
+    const res = await Promise.all(cambios.map(c =>
+      sb.from('cursos').update({ orden: c.orden }).eq('id', c.id).select('id')));
+    const fallo = res.find(r => r.error || !r.data || r.data.length === 0);
+    if(fallo){
+      mostrarToast('No se pudo guardar el orden' + (fallo.error ? ': ' + fallo.error.message : ''), true);
+      cargarCursos();
+      return;
+    }
+    mostrarToast('✓ Orden guardado. Así se ve en el sitio');
   }
 
   function filtrarCursos(filtro, btn) {
@@ -7603,7 +7692,8 @@ body{visibility:hidden}
       modulos_count: parseInt(document.getElementById('cursoModulos').value) || null,
       clases_count: parseInt(document.getElementById('cursoClases').value) || null,
       duracion_minutos: parseInt(document.getElementById('cursoDuracion').value) || 0,
-      orden: cursoOrdenAuto,
+      // Uno nuevo va al final; al editar conserva su lugar
+      orden: cursoEditando ? cursoOrdenAuto : (Math.max(0, ...cursos.map(c => c.orden || 0)) + 1),
       color_gradient: gradientSeleccionado,
       publicado: document.getElementById('cursoPublicado').classList.contains('on'),
       destacado_home: document.getElementById('cursoDestacado').classList.contains('on'),
