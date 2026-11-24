@@ -947,6 +947,7 @@
     const tieneCompra = comprasIds.includes(curso.id);
     const acceso = curso.acceso || (curso.precio_gs ? 'pago' : 'gratis');
     const esGratis = acceso === 'gratis';
+    completarEnlaceCanal(curso);
     const esExterno = !!curso.enlace_externo;
     // Aunque sea gratis, hasta que no se anote va con candado
     const esProximo = !!curso.proximamente;

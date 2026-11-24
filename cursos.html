@@ -335,6 +335,7 @@
     const acceso = curso.acceso || (curso.precio_gs ? 'pago' : 'gratis');
     const esGratis = acceso === 'gratis';
     const esSuscripcion = acceso === 'suscripcion';
+    completarEnlaceCanal(curso);
     const esExterno = !!curso.enlace_externo;
 
     // Aunque sea gratis, hasta que no se anote va con candado

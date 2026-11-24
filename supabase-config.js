@@ -54,6 +54,18 @@ async function traerPerfilesPublicos(ids, columnas) {
   return r;
 }
 
+// El canal de YouTube de Milena. Si la tarjeta del canal no tiene enlace
+// cargado en el panel, igual lleva ahí (antes no llevaba a ningún lado).
+const CANAL_YOUTUBE = 'https://www.youtube.com/@milenamachadocmm';
+function completarEnlaceCanal(curso) {
+  if (!curso || curso.enlace_externo) return curso;
+  const t = String(curso.titulo || '');
+  if ((curso.tipo === 'canal' && /youtube/i.test(t)) || /^\s*(canal\s+(de\s+)?)?youtube\s*$/i.test(t)) {
+    curso.enlace_externo = CANAL_YOUTUBE;
+  }
+  return curso;
+}
+
 // Solo deja pasar direcciones http(s): nada de javascript: ni comillas
 function urlSegura(u) {
   const t = String(u || '').trim();
