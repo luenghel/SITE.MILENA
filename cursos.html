@@ -522,10 +522,8 @@
     let html = '';
 
     filas.forEach(function(f){
-      // La fila de gratuitos junta todo lo libre, esté donde esté
-      const deEsta = (f.clave === 'gratis')
-        ? todos.filter(c => (c.acceso === 'gratis' || !c.precio_gs) && c.seccion !== 'oculto')
-        : todos.filter(c => (c.seccion || 'principal') === f.clave);
+      // Cada curso aparece solo en la fila donde lo pusiste en el panel
+      const deEsta = todos.filter(c => (c.seccion || 'principal') === f.clave);
 
       if(deEsta.length === 0) return;
       algunaConCursos = true;

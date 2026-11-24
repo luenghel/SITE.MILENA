@@ -1181,13 +1181,8 @@
 
       for(const s of filas){
         // Qué cursos van en esta fila
-        let deLaFila;
-        if(s.clave === 'gratis'){
-          // Especial: todo lo que sea gratis, esté donde esté
-          deLaFila = todos.filter(x => (x.acceso === 'gratis' || !x.precio_gs) && x.seccion !== 'oculto');
-        } else {
-          deLaFila = todos.filter(x => (x.seccion || 'principal') === s.clave);
-        }
+        // Cada curso aparece solo en la fila donde lo pusiste en el panel
+        const deLaFila = todos.filter(x => (x.seccion || 'principal') === s.clave);
 
         if(deLaFila.length === 0) continue;
 

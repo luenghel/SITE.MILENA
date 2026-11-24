@@ -1441,6 +1441,24 @@
   .tst-nom{font-size:13.5px}
   .tst-mail{font-size:11.5px;color:rgba(255,245,240,0.5)}
   .tst-item .btn-secondary{padding:8px 12px;font-size:11.5px}
+  /* ═══ CURSOS AGRUPADOS POR TÍTULO ═══ */
+  .cg-grupo{margin-bottom:22px;padding:16px;border-radius:16px;background:rgba(255,245,240,0.02);border:0.5px solid rgba(255,245,240,0.08);transition:border-color .2s}
+  .cg-grupo.soltar-aca{border-color:#FAC775;background:rgba(250,199,117,0.05)}
+  .cg-grupo.apagada{opacity:.6}
+  .cg-grupo.oculto{border-style:dashed}
+  .cg-cab{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+  .cg-mover{display:flex;flex-direction:column;gap:3px}
+  .cg-mover button{width:30px;height:22px;border-radius:6px;border:0.5px solid rgba(255,245,240,0.16);background:rgba(255,245,240,0.04);
+    color:rgba(255,245,240,0.8);font-size:9px;cursor:pointer;font-family:inherit}
+  .cg-mover button:hover:not(:disabled){background:rgba(250,199,117,0.18);color:#FAC775;border-color:rgba(250,199,117,0.5)}
+  .cg-mover button:disabled{opacity:.25;cursor:default}
+  .cg-titulos{flex:1;min-width:160px}
+  .cg-nom{font-family:'Cormorant Garamond',Georgia,serif;font-size:23px;line-height:1.15;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .cg-sub{font-size:11.5px;color:rgba(255,245,240,0.45);margin-top:3px}
+  .cg-apagada{font-family:inherit;font-size:9.5px;letter-spacing:.12em;color:rgba(255,245,240,0.5);background:rgba(255,245,240,0.07);padding:3px 7px;border-radius:5px}
+  .cg-editar{padding:8px 12px;font-size:11.5px}
+  .cg-vacio{padding:22px;text-align:center;font-size:12.5px;color:rgba(255,245,240,0.4);border:1px dashed rgba(255,245,240,0.15);border-radius:12px}
+
   /* ═══ ORDEN DE LOS CURSOS ═══ */
   .curso-card-admin[draggable="true"]{cursor:grab}
   .curso-card-admin.arrastrando{opacity:.35;transform:scale(.97)}
@@ -2330,9 +2348,13 @@ body{visibility:hidden}
       </div>
     </div>
 
-    <div class="frm-nota" style="margin:-4px 0 14px">↔ Arrastrá una tarjeta (o usá las flechas ◀ ▶) para cambiar el orden. El <b>1º</b> es el que aparece primero en el sitio.</div>
+    <div class="frm-nota" style="margin:-4px 0 14px">
+      Los cursos están agrupados por <b>título</b> (las filas del sitio), en el mismo orden en que se ven.
+      Subí o bajá un título con <b>▲ ▼</b>. Arrastrá un curso para cambiarlo de lugar o pasarlo a otro título
+      (o usá las flechas ◀ ▶). Cada curso aparece solo debajo de su título.
+    </div>
 
-    <div class="cursos-grid" id="cursosGrid"></div>
+    <div id="cursosGrid"></div>
   </div>
 
   <!-- MODAL EDITAR/CREAR CURSO -->
@@ -7374,6 +7396,7 @@ body{visibility:hidden}
   let cursoEditando = null;
   let gradientSeleccionado = 'linear-gradient(160deg,#2D0A18 0%,#4A0F1E 45%,#1A0509 100%)';
   let filtroCursos = 'todos';
+  let cursosOriginal = [];   // cómo estaban guardados, para mandar solo lo que cambió
 
   async function cargarCursos() {
     if (!sb) return;
@@ -7387,28 +7410,14 @@ body{visibility:hidden}
       return;
     }
     cursos = data || [];
+    cursosOriginal = cursos.map(c => ({ id: c.id, orden: c.orden, seccion: c.seccion }));
     renderCursos();
     document.getElementById('cursosCount').textContent = cursos.length;
   }
 
-  function renderCursos() {
-    const grid = document.getElementById('cursosGrid');
-    let cursosFiltrados = cursos;
-    if (filtroCursos === 'publicado') cursosFiltrados = cursos.filter(c => c.publicado);
-    if (filtroCursos === 'borrador') cursosFiltrados = cursos.filter(c => !c.publicado);
-
-    if (cursosFiltrados.length === 0) {
-      grid.innerHTML = `
-        <div class="empty-cursos">
-          <div class="empty-cursos-icon">📚</div>
-          <div style="font-size:14px;margin-bottom:6px">${filtroCursos === 'todos' ? 'Aún no tenés cursos' : 'No hay cursos en esta categoría'}</div>
-          <div style="font-size:12px;color:rgba(255,245,240,0.4)">Hacé click en "NUEVO CURSO" arriba para crear el primero</div>
-        </div>
-      `;
-      return;
-    }
-
-    grid.innerHTML = cursosFiltrados.map((c, i) => `
+  // Una tarjeta de curso
+  function tarjetaCurso(c, i, n){
+    return `
       <div class="curso-card-admin ${c.publicado ? '' : 'borrador'}" onclick="editarCurso('${c.id}')"
            draggable="true" data-curso="${c.id}"
            ondragstart="cursoArrastra(event, '${c.id}')" ondragend="cursoSuelta()"
@@ -7417,7 +7426,7 @@ body{visibility:hidden}
         <div class="curso-orden" onclick="event.stopPropagation()">
           <button onclick="moverCurso('${c.id}', -1)" ${i === 0 ? 'disabled' : ''} title="Mover antes">◀</button>
           <span title="Posición en el sitio">${i + 1}º</span>
-          <button onclick="moverCurso('${c.id}', 1)" ${i === cursosFiltrados.length - 1 ? 'disabled' : ''} title="Mover después">▶</button>
+          <button onclick="moverCurso('${c.id}', 1)" ${i === n - 1 ? 'disabled' : ''} title="Mover después">▶</button>
         </div>
         <div class="curso-card-poster ${c.foto_portada ? 'con-foto' : ''}" style="${c.foto_portada
             ? `background-image:url('${c.foto_portada}')`
@@ -7444,11 +7453,80 @@ body{visibility:hidden}
           </div>
         </div>
       </div>
-    `).join('');
+    `;
   }
 
-  // ─── El orden de los cursos ───
-  // El 1º es el que aparece primero en el sitio (home y catálogo).
+  // Los cursos, agrupados por título (fila), en el orden del sitio
+  function gruposDeCursos(lista){
+    const filas = (secciones || []).slice().sort((a, b) => (a.orden || 0) - (b.orden || 0));
+    const claves = filas.map(f => f.clave);
+    const grupos = filas.map(f => ({ fila: f, clave: f.clave, cursos: lista.filter(c => (c.seccion || 'principal') === f.clave) }));
+
+    // Si no hay filas cargadas, todo junto
+    if(filas.length === 0) return [{ fila: null, clave: 'principal', cursos: lista.filter(c => c.seccion !== 'oculto') },
+                                   { fila: null, clave: 'oculto', cursos: lista.filter(c => c.seccion === 'oculto') }];
+
+    // Los que no se muestran (o quedaron con un título que ya no existe)
+    grupos.push({ fila: null, clave: 'oculto',
+      cursos: lista.filter(c => c.seccion === 'oculto' || !claves.includes(c.seccion || 'principal')) });
+    return grupos;
+  }
+
+  function renderCursos() {
+    const grid = document.getElementById('cursosGrid');
+    let cursosFiltrados = cursos;
+    if (filtroCursos === 'publicado') cursosFiltrados = cursos.filter(c => c.publicado);
+    if (filtroCursos === 'borrador') cursosFiltrados = cursos.filter(c => !c.publicado);
+
+    if (cursos.length === 0) {
+      grid.innerHTML = `
+        <div class="empty-cursos">
+          <div class="empty-cursos-icon">📚</div>
+          <div style="font-size:14px;margin-bottom:6px">Aún no tenés cursos</div>
+          <div style="font-size:12px;color:rgba(255,245,240,0.4)">Hacé click en "NUEVO CURSO" arriba para crear el primero</div>
+        </div>
+      `;
+      return;
+    }
+
+    const grupos = gruposDeCursos(cursosFiltrados);
+    const filasReales = grupos.filter(g => g.fila);
+
+    grid.innerHTML = grupos.map(g => {
+      const oculto = g.clave === 'oculto';
+      if(oculto && g.cursos.length === 0) return '';
+      const f = g.fila;
+      const pos = f ? filasReales.findIndex(x => x.clave === g.clave) : -1;
+      const col = (f && f.color_etiqueta) || '#5DCAA5';
+
+      return '<div class="cg-grupo' + (f && !f.activa ? ' apagada' : '') + (oculto ? ' oculto' : '') + '"' +
+          ' ondragover="filaEncima(event, this)" ondragleave="this.classList.remove(\'soltar-aca\')" ondrop="cursoCaeEnFila(event, \'' + g.clave + '\')">' +
+        '<div class="cg-cab">' +
+          (f ? '<div class="cg-mover">' +
+                 '<button onclick="moverFila(\'' + f.id + '\', -1)"' + (pos === 0 ? ' disabled' : '') + ' title="Subir este título">▲</button>' +
+                 '<button onclick="moverFila(\'' + f.id + '\', 1)"' + (pos === filasReales.length - 1 ? ' disabled' : '') + ' title="Bajar este título">▼</button>' +
+               '</div>' : '') +
+          '<div class="cg-titulos">' +
+            '<div class="cg-nom">' + (oculto ? '🙈 No se muestran en el catálogo' : esc(f ? f.nombre : 'Cursos')) +
+              (f && f.etiqueta ? '<span class="sec-chip" style="background:' + col + '22;border-color:' + col + '66;color:' + col + '">' + esc(f.etiqueta) + '</span>' : '') +
+              (f && !f.activa ? '<span class="cg-apagada">APAGADA · no se ve en el sitio</span>' : '') +
+            '</div>' +
+            '<div class="cg-sub">' + g.cursos.length + (g.cursos.length === 1 ? ' curso' : ' cursos') +
+              (f && f.subtitulo ? ' · ' + esc(f.subtitulo) : '') + '</div>' +
+          '</div>' +
+          (f ? '<button class="btn-secondary cg-editar" onclick="abrirSeccion(\'' + f.id + '\')">✏️ Editar título</button>' : '') +
+        '</div>' +
+        (g.cursos.length
+          ? '<div class="cursos-grid">' + g.cursos.map((c, i) => tarjetaCurso(c, i, g.cursos.length)).join('') + '</div>'
+          : '<div class="cg-vacio">' + (filtroCursos === 'todos' ? 'Sin cursos. Arrastrá uno acá.' : 'Ninguno con este filtro.') + '</div>') +
+      '</div>';
+    }).join('') +
+    '<button class="frm-agregar" onclick="abrirSeccion()">+ Nuevo título (fila del catálogo)</button>';
+  }
+
+  // ─── El orden de los cursos y de los títulos ───
+  // Se ve igual que en el sitio: primero el título de arriba, y adentro
+  // el 1º es el que aparece primero.
   let cursoArrastrado = null;
 
   function cursoArrastra(ev, id){
@@ -7459,34 +7537,60 @@ body{visibility:hidden}
   }
   function cursoSuelta(){
     cursoArrastrado = null;
-    document.querySelectorAll('.curso-card-admin').forEach(c => c.classList.remove('arrastrando', 'soltar-aca'));
+    document.querySelectorAll('.curso-card-admin, .cg-grupo').forEach(c => c.classList.remove('arrastrando', 'soltar-aca'));
   }
   function cursoEncima(ev, el){
     if(!cursoArrastrado || el.dataset.curso === cursoArrastrado) return;
     ev.preventDefault();
+    ev.stopPropagation();
     el.classList.add('soltar-aca');
   }
+  function filaEncima(ev, el){
+    if(!cursoArrastrado) return;
+    ev.preventDefault();
+    el.classList.add('soltar-aca');
+  }
+
+  // Soltó un curso sobre otro: va a ese lugar (y a ese título)
   function cursoCae(ev, destinoId){
     ev.preventDefault();
+    ev.stopPropagation();
     const origenId = cursoArrastrado;
     cursoSuelta();
     if(!origenId || origenId === destinoId) return;
     const desde = cursos.findIndex(c => c.id === origenId);
-    const hasta = cursos.findIndex(c => c.id === destinoId);
-    if(desde < 0 || hasta < 0) return;
+    const destino = cursos.find(c => c.id === destinoId);
+    if(desde < 0 || !destino) return;
     const [m] = cursos.splice(desde, 1);
-    cursos.splice(hasta, 0, m);
+    m.seccion = destino.seccion || 'principal';
+    cursos.splice(cursos.findIndex(c => c.id === destinoId), 0, m);
     guardarOrdenCursos();
   }
 
-  // Con las flechitas (para el celular): cambia de lugar con el vecino que se ve
+  // Soltó un curso sobre un título (o en su espacio vacío): va al final de ese título
+  function cursoCaeEnFila(ev, clave){
+    ev.preventDefault();
+    const origenId = cursoArrastrado;
+    cursoSuelta();
+    if(!origenId) return;
+    const desde = cursos.findIndex(c => c.id === origenId);
+    if(desde < 0) return;
+    const [m] = cursos.splice(desde, 1);
+    m.seccion = clave;
+    cursos.push(m);
+    guardarOrdenCursos();
+  }
+
+  // Con las flechitas: cambia de lugar con el vecino dentro de su título
   function moverCurso(id, dir){
     let visibles = cursos;
     if (filtroCursos === 'publicado') visibles = cursos.filter(c => c.publicado);
     if (filtroCursos === 'borrador') visibles = cursos.filter(c => !c.publicado);
-    const i = visibles.findIndex(c => c.id === id);
-    const vecino = visibles[i + dir];
-    if(i < 0 || !vecino) return;
+    const grupo = gruposDeCursos(visibles).find(g => g.cursos.some(c => c.id === id));
+    if(!grupo) return;
+    const i = grupo.cursos.findIndex(c => c.id === id);
+    const vecino = grupo.cursos[i + dir];
+    if(!vecino) return;
     const a = cursos.findIndex(c => c.id === id);
     const b = cursos.findIndex(c => c.id === vecino.id);
     [cursos[a], cursos[b]] = [cursos[b], cursos[a]];
@@ -7494,22 +7598,61 @@ body{visibility:hidden}
   }
 
   async function guardarOrdenCursos(){
+    // Reacomodamos toda la lista: título por título, y adentro en su orden
+    const antes = {};
+    cursosOriginal.forEach(o => { antes[o.id] = o; });
+
+    const ordenados = [];
+    gruposDeCursos(cursos).forEach(g => g.cursos.forEach(c => { if(!ordenados.includes(c)) ordenados.push(c); }));
+    cursos.forEach(c => { if(!ordenados.includes(c)) ordenados.push(c); });
+    cursos = ordenados;
+
     const cambios = [];
     cursos.forEach((c, i) => {
-      if(c.orden !== i + 1){ c.orden = i + 1; cambios.push(c); }
+      c.orden = i + 1;
+      const o = antes[c.id] || {};
+      if(o.orden !== c.orden || (o.seccion || 'principal') !== (c.seccion || 'principal')) cambios.push(c);
     });
     renderCursos();
+    if(typeof renderSecciones === 'function') renderSecciones();
     if(!cambios.length) return;
 
     const res = await Promise.all(cambios.map(c =>
-      sb.from('cursos').update({ orden: c.orden }).eq('id', c.id).select('id')));
+      sb.from('cursos').update({ orden: c.orden, seccion: c.seccion || 'principal' }).eq('id', c.id).select('id')));
     const fallo = res.find(r => r.error || !r.data || r.data.length === 0);
     if(fallo){
       mostrarToast('No se pudo guardar el orden' + (fallo.error ? ': ' + fallo.error.message : ''), true);
       cargarCursos();
       return;
     }
-    mostrarToast('✓ Orden guardado. Así se ve en el sitio');
+    cursosOriginal = cursos.map(c => ({ id: c.id, orden: c.orden, seccion: c.seccion }));
+    mostrarToast('✓ Guardado. Así se ve en el sitio');
+  }
+
+  // Subir o bajar un título entero
+  async function moverFila(id, dir){
+    const filas = secciones.slice().sort((a, b) => (a.orden || 0) - (b.orden || 0));
+    const i = filas.findIndex(f => f.id === id);
+    const j = i + dir;
+    if(i < 0 || j < 0 || j >= filas.length) return;
+    [filas[i], filas[j]] = [filas[j], filas[i]];
+
+    const cambios = [];
+    filas.forEach((f, k) => { if(f.orden !== k + 1){ f.orden = k + 1; cambios.push(f); } });
+    secciones = filas;
+    renderCursos();
+    if(typeof renderSecciones === 'function') renderSecciones();
+
+    const res = await Promise.all(cambios.map(f =>
+      sb.from('secciones').update({ orden: f.orden }).eq('id', f.id).select('id')));
+    if(res.some(r => r.error || !r.data || r.data.length === 0)){
+      mostrarToast('No se pudo guardar el orden de los títulos', true);
+      cargarSecciones();
+      return;
+    }
+    // Los cursos siguen el orden de sus títulos
+    guardarOrdenCursos();
+    mostrarToast('✓ Título movido');
   }
 
   function filtrarCursos(filtro, btn) {
@@ -7827,6 +7970,7 @@ body{visibility:hidden}
     secciones = data || [];
     renderSecciones();
     llenarSelectorSecciones();
+    if(typeof renderCursos === 'function' && Array.isArray(cursos)) renderCursos();
   }
 
 
