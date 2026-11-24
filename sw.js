@@ -8,7 +8,7 @@
 //    Eso le avisa a los celulares que hay algo nuevo.
 // ═══════════════════════════════════════════════════════════════════
 
-const VERSION = 'cmm-v14';
+const VERSION = 'cmm-v15';
 
 // Lo que guardamos para que abra al instante
 const BASICOS = [

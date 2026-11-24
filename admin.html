@@ -1441,6 +1441,66 @@
   .tst-nom{font-size:13.5px}
   .tst-mail{font-size:11.5px;color:rgba(255,245,240,0.5)}
   .tst-item .btn-secondary{padding:8px 12px;font-size:11.5px}
+  /* ═══ SEGUIMIENTO ═══ */
+  .seg-cursos{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+  .seg-curso{padding:16px;border-radius:14px;cursor:pointer;background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.1);transition:all .2s}
+  .seg-curso:hover{border-color:rgba(212,163,86,0.4)}
+  .seg-curso.on{border-color:rgba(212,163,86,0.65);background:rgba(212,163,86,0.08)}
+  .seg-curso-nom{font-family:'Cormorant Garamond',Georgia,serif;font-size:19px;line-height:1.15}
+  .seg-curso-num{font-size:12px;color:rgba(255,245,240,0.6);margin-top:8px;line-height:1.7}
+  .seg-curso-num b{color:#FFF5F0}
+  .seg-barra{height:6px;border-radius:4px;background:rgba(255,245,240,0.08);overflow:hidden;margin-top:10px}
+  .seg-barra > div{height:100%;border-radius:4px;background:linear-gradient(90deg,#D4A356,#FAC775)}
+  .seg-barra.verde > div{background:linear-gradient(90deg,#3FA47F,#9FE1CB)}
+  .seg-tabla{margin-top:18px;border-top:0.5px solid rgba(255,245,240,0.08);padding-top:14px}
+  .seg-cl{display:grid;grid-template-columns:28px 1fr 90px 130px 80px;gap:10px;align-items:center;padding:9px 0;border-bottom:0.5px solid rgba(255,245,240,0.06);font-size:12.5px}
+  .seg-cl.cab{font-size:10px;letter-spacing:.12em;color:rgba(255,245,240,0.45);border-bottom-color:rgba(255,245,240,0.12)}
+  .seg-cl-n{color:rgba(255,245,240,0.4);text-align:center}
+  .seg-cl-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .seg-cl-d{color:rgba(255,245,240,0.7);text-align:right;font-variant-numeric:tabular-nums}
+  .seg-cl-d small{color:rgba(255,245,240,0.4)}
+  .seg-cae{color:#FF9AA5;font-size:10.5px;margin-left:6px}
+  .seg-p{display:grid;grid-template-columns:38px minmax(0,1.3fr) minmax(0,1fr) 110px 96px;gap:12px;align-items:center;padding:12px 6px;border-bottom:0.5px solid rgba(255,245,240,0.07);cursor:pointer;border-radius:8px}
+  .seg-p:hover{background:rgba(255,245,240,0.03)}
+  .seg-p-nom{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .seg-p-sub{font-size:11.5px;color:rgba(255,245,240,0.45);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .seg-p-av{font-size:11.5px;color:rgba(255,245,240,0.6)}
+  .seg-p-t{font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums}
+  .seg-p-t small{display:block;font-size:10.5px;color:rgba(255,245,240,0.45)}
+  .seg-estado{font-size:9.5px;letter-spacing:.12em;font-weight:600;padding:5px 8px;border-radius:6px;text-align:center;white-space:nowrap}
+  .seg-estado.activa{background:rgba(93,202,165,0.14);color:#9FE1CB}
+  .seg-estado.se_enfrio{background:rgba(250,199,117,0.14);color:#FAC775}
+  .seg-estado.se_fue{background:rgba(255,128,144,0.14);color:#FF9AA5}
+  .seg-estado.no_empezo{background:rgba(255,245,240,0.07);color:rgba(255,245,240,0.55)}
+  .seg-estado.termino{background:rgba(155,107,196,0.18);color:#D2B4EC}
+  .seg-ficha-contacto{font-size:12px;color:rgba(255,245,240,0.55);margin-top:5px}
+  .seg-diag{padding:14px 16px;border-radius:12px;background:rgba(212,163,86,0.08);border:0.5px solid rgba(212,163,86,0.3);font-size:13.5px;line-height:1.65;margin-bottom:14px}
+  .seg-diag b{color:#FAC775}
+  .seg-recordar{margin-bottom:18px}
+  .seg-recordar textarea{box-sizing:border-box;width:100%;min-height:92px;resize:vertical;line-height:1.5;font-size:13px}
+  .seg-recordar-acc{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .seg-fc-curso{font-family:'Cormorant Garamond',Georgia,serif;font-size:19px;margin:16px 0 4px}
+  .seg-fc-sub{font-size:11.5px;color:rgba(255,245,240,0.5);margin-bottom:8px}
+  .seg-fc{display:grid;grid-template-columns:24px 1fr 150px 86px;gap:10px;align-items:center;padding:8px 0;border-bottom:0.5px solid rgba(255,245,240,0.06);font-size:12.5px}
+  .seg-fc.nada{opacity:.45}
+  .seg-fc-ok{color:#9FE1CB;text-align:center}
+  .seg-fc-tiempo{text-align:right;font-variant-numeric:tabular-nums}
+  .seg-fc-tiempo small{display:block;font-size:10.5px;color:rgba(255,245,240,0.45)}
+  .seg-dia{font-size:10px;letter-spacing:.18em;color:#D4A356;font-weight:600;margin:18px 0 6px}
+  .seg-h{display:grid;grid-template-columns:48px 22px 1fr;gap:8px;padding:6px 0;font-size:12.5px;line-height:1.5;align-items:baseline}
+  .seg-h-hora{color:rgba(255,245,240,0.4);font-variant-numeric:tabular-nums;font-size:11.5px}
+  .seg-h.clase{background:rgba(212,163,86,0.07);border-radius:8px;padding:8px 8px;margin:3px -8px}
+  .seg-h b{color:#FAC775;font-weight:500}
+  .seg-h small{color:rgba(255,245,240,0.45)}
+  @media (max-width:900px){
+    .seg-p{grid-template-columns:34px 1fr 84px}
+    .seg-p > .seg-p-av, .seg-p > .seg-p-t{display:none}
+    .seg-cl{grid-template-columns:22px 1fr 70px}
+    .seg-cl > :nth-child(4), .seg-cl > :nth-child(5){display:none}
+    .seg-fc{grid-template-columns:20px 1fr 80px}
+    .seg-fc > .seg-barra{display:none}
+  }
+
   /* ═══ FORMULARIOS ═══ */
   .frm-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
   .frm-card{padding:18px;border-radius:15px;cursor:pointer;background:rgba(255,245,240,0.035);
@@ -1974,6 +2034,11 @@ body{visibility:hidden}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       Métricas
       <span class="sidebar-badge dim" id="metricasCount">0</span>
+    </a>
+    <a href="#" onclick="cambiarTab('seguimiento')" class="sidebar-item" id="nav-seguimiento">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg>
+      Seguimiento
+      <span class="sidebar-badge dim" id="seguimientoCount">0</span>
     </a>
     <a href="#" onclick="cambiarTab('secciones')" class="sidebar-item" id="nav-secciones">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="13" width="18" height="5" rx="1"/></svg>
@@ -3577,6 +3642,77 @@ body{visibility:hidden}
       <div id="metClases"></div>
     </div>
 
+  </div>
+
+  <!-- ============================ -->
+  <!-- TAB: SEGUIMIENTO -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-seguimiento">
+
+    <div class="pm-cab" style="margin-bottom:14px">
+      <div>
+        <h3 class="chart-title" style="margin-bottom:2px">🎓 Seguimiento de alumnas</h3>
+        <p class="chart-subtitle">Qué curso tiene cada una, qué clases vio, cuánto tiempo y dónde se quedó.</p>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <label class="met-equipo"><input type="checkbox" id="segConEquipo" onchange="cargarSeguimiento()"> Contar también al equipo</label>
+        <button class="btn-secondary" onclick="bajarSeguimiento()">⬇ Descargar</button>
+        <button class="btn-secondary" onclick="cargarSeguimiento()">Actualizar</button>
+      </div>
+    </div>
+
+    <div id="segFalta" class="met-aviso" style="display:none"></div>
+
+    <div class="met-tarjetas" id="segTarjetas"></div>
+
+    <!-- Curso por curso -->
+    <div class="pm-seccion">
+      <div class="pm-cab"><div>
+        <h3 class="chart-title" style="margin-bottom:2px">📚 Curso por curso</h3>
+        <p class="chart-subtitle">Tocá un curso para ver clase por clase dónde se quedan</p>
+      </div></div>
+      <div class="seg-cursos" id="segCursos"></div>
+      <div id="segClases"></div>
+    </div>
+
+    <!-- Persona por persona -->
+    <div class="pm-seccion">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">👤 Persona por persona</h3>
+          <p class="chart-subtitle">Tocá una para ver su ficha completa y escribirle</p>
+        </div>
+        <input class="form-input met-buscar" id="segBuscar" placeholder="Buscar por nombre o email" oninput="pintarSegPersonas()">
+      </div>
+      <div class="pesq-filtros" id="segFiltros"></div>
+      <div id="segPersonas"></div>
+    </div>
+  </div>
+
+  <!-- ═══ FICHA DE UNA PERSONA ═══ -->
+  <div class="frm-fondo" id="segFondo" onclick="if(event.target===this)cerrarFicha()">
+    <div class="frm-modal">
+      <div class="frm-modal-cab">
+        <div style="min-width:0">
+          <div class="frm-modal-sub">FICHA DE SEGUIMIENTO</div>
+          <div class="frm-modal-tit" id="sfNombre">—</div>
+          <div class="seg-ficha-contacto" id="sfContacto"></div>
+        </div>
+        <button class="frm-x" onclick="cerrarFicha()" title="Cerrar">×</button>
+      </div>
+      <div class="frm-modal-cuerpo">
+        <div class="seg-diag" id="sfDiag"></div>
+
+        <div class="seg-recordar" id="sfRecordar"></div>
+
+        <div class="frm-pestanas">
+          <button class="frm-pestana on" id="sfPesClases" onclick="pestanaFicha('clases')">Clase por clase</button>
+          <button class="frm-pestana" id="sfPesHist" onclick="pestanaFicha('hist')">Todo lo que hizo</button>
+        </div>
+        <div id="sfClases"></div>
+        <div id="sfHist" style="display:none"></div>
+      </div>
+    </div>
   </div>
 
   <!-- ============================ -->
@@ -6484,6 +6620,459 @@ body{visibility:hidden}
     if(typeof cargarPedidos === 'function') cargarPedidos();
   }
 
+  // ═══════════════════════════════════════════════════════════════
+  // SEGUIMIENTO DE ALUMNAS
+  // Qué curso tiene cada una, qué vio, cuánto, y dónde se quedó.
+  // ═══════════════════════════════════════════════════════════════
+  let segDatos = null;
+  let segFiltro = 'todas';
+  let segCurso = null;          // curso elegido arriba (null = todos)
+  let segFicha = null;          // la ficha abierta
+
+  const SEG_ESTADOS = {
+    activa:    'ACTIVA',
+    se_enfrio: 'SE ENFRIÓ',
+    se_fue:    'SE FUE',
+    no_empezo: 'NO EMPEZÓ',
+    termino:   'TERMINÓ'
+  };
+
+  // 620 → "10 min 20 s"
+  function tiempoLargo(seg){
+    seg = Math.round(Number(seg) || 0);
+    if(seg <= 0) return '0 s';
+    const h = Math.floor(seg / 3600), m = Math.floor((seg % 3600) / 60), s = seg % 60;
+    if(h) return h + ' h ' + (m ? m + ' min' : '');
+    if(m) return m + ' min' + (s ? ' ' + s + ' s' : '');
+    return s + ' s';
+  }
+
+  function haceCuanto(iso){
+    if(!iso) return 'nunca';
+    const min = Math.floor((Date.now() - new Date(iso)) / 60000);
+    if(min < 2) return 'recién';
+    if(min < 60) return 'hace ' + min + ' min';
+    const h = Math.floor(min / 60);
+    if(h < 24) return 'hace ' + h + ' h';
+    const d = Math.floor(h / 24);
+    if(d < 30) return 'hace ' + d + (d === 1 ? ' día' : ' días');
+    const me = Math.floor(d / 30);
+    return 'hace ' + me + (me === 1 ? ' mes' : ' meses');
+  }
+
+  function primerNombre(n){ return String(n || '').trim().split(/\s+/)[0] || ''; }
+
+  // ═══ CARGAR ══════════════════════════════════════════════════════
+  async function cargarSeguimiento(){
+    const aviso = document.getElementById('segFalta');
+    try{
+      const { data, error } = await sb.rpc('seguimiento_general', {
+        p_con_equipo: !!document.getElementById('segConEquipo')?.checked
+      });
+      if(error || (data && data.error)){
+        const msg = (error && error.message) || data.error;
+        aviso.style.display = '';
+        aviso.innerHTML = String(msg).includes('seguimiento_general')
+          ? '⚠️ Falta correr <strong>SQL-SEGUIMIENTO.sql</strong> en Supabase.'
+          : 'No pudimos leer el seguimiento: ' + esc(msg);
+        return;
+      }
+      aviso.style.display = 'none';
+      segDatos = data || { personas: [], cursos: [], clases: [] };
+
+      pintarSegTarjetas();
+      pintarSegCursos();
+      pintarSegFiltros();
+      pintarSegPersonas();
+
+      const badge = document.getElementById('seguimientoCount');
+      if(badge){
+        const frias = segDatos.personas.filter(p => ['se_enfrio','se_fue','no_empezo'].includes(p.estado)).length;
+        badge.textContent = frias;
+        badge.classList.toggle('dim', frias === 0);
+      }
+    }catch(e){
+      aviso.style.display = '';
+      aviso.textContent = 'No pudimos leer el seguimiento: ' + (e?.message || e);
+    }
+  }
+
+  function personasFiltradas(){
+    let filas = (segDatos?.personas || []);
+    if(segCurso) filas = filas.filter(p => p.curso_id === segCurso);
+    return filas;
+  }
+
+  // ═══ LOS NÚMEROS GENERALES ═══════════════════════════════════════
+  function pintarSegTarjetas(){
+    const ps = personasFiltradas();
+    const cuenta = e => ps.filter(p => p.estado === e).length;
+    const gente = new Set(ps.map(p => p.usuario_id)).size;
+    const seg = ps.reduce((a, p) => a + (Number(p.segundos) || 0), 0);
+    const t = (lbl, num, pie, cl) =>
+      '<div class="met-t"><div class="met-t-lbl">' + lbl + '</div>' +
+      '<div class="met-t-num ' + (cl || '') + '">' + num + '</div>' +
+      '<div class="met-t-pie">' + pie + '</div></div>';
+
+    document.getElementById('segTarjetas').innerHTML =
+      t('ALUMNAS CON CURSO', gente, ps.length + ' inscripciones', 'oro') +
+      t('ACTIVAS', cuenta('activa'), 'entraron en los últimos 7 días', 'verde') +
+      t('SE ENFRIARON', cuenta('se_enfrio') + cuenta('se_fue'), 'más de 7 días sin entrar') +
+      t('NO EMPEZARON', cuenta('no_empezo'), 'tienen el curso y no lo abrieron') +
+      t('TERMINARON', cuenta('termino'), 'completaron todas las clases') +
+      t('TIEMPO VISTO', tiempoLargo(seg), 'sumando todas las clases');
+  }
+
+  // ═══ CURSO POR CURSO ═════════════════════════════════════════════
+  function pintarSegCursos(){
+    const cont = document.getElementById('segCursos');
+    const cs = segDatos?.cursos || [];
+    if(!cs.length){
+      cont.innerHTML = '<div class="met-vacio">Todavía no hay alumnas con un curso.</div>';
+      document.getElementById('segClases').innerHTML = '';
+      return;
+    }
+    cont.innerHTML = cs.map(c =>
+      '<div class="seg-curso' + (segCurso === c.curso_id ? ' on' : '') + '" onclick="elegirSegCurso(\'' + c.curso_id + '\')">' +
+        '<div class="seg-curso-nom">' + esc(c.curso) + '</div>' +
+        '<div class="seg-barra"><div style="width:' + (c.avance_medio || 0) + '%"></div></div>' +
+        '<div class="seg-curso-num">' +
+          'Avance promedio <b>' + (c.avance_medio || 0) + '%</b><br>' +
+          '<b>' + c.alumnas + '</b> alumnas · <b>' + c.empezaron + '</b> empezaron · <b>' + c.terminaron + '</b> terminaron<br>' +
+          '<b>' + c.activas + '</b> activas · <b>' + c.se_enfriaron + '</b> se enfriaron<br>' +
+          'Tiempo visto: <b>' + tiempoLargo(c.segundos) + '</b>' +
+        '</div>' +
+      '</div>').join('');
+    pintarSegClases();
+  }
+
+  function elegirSegCurso(id){
+    segCurso = segCurso === id ? null : id;
+    pintarSegTarjetas();
+    pintarSegCursos();
+    pintarSegFiltros();
+    pintarSegPersonas();
+  }
+
+  // Clase por clase: dónde se caen
+  function pintarSegClases(){
+    const cont = document.getElementById('segClases');
+    if(!segCurso){ cont.innerHTML = ''; return; }
+    const cls = (segDatos.clases || []).filter(c => c.curso_id === segCurso);
+    const alumnas = (segDatos.cursos.find(c => c.curso_id === segCurso) || {}).alumnas || 0;
+    if(!cls.length){ cont.innerHTML = ''; return; }
+
+    let anterior = alumnas;
+    cont.innerHTML = '<div class="seg-tabla">' +
+      '<div class="seg-cl cab"><div>#</div><div>CLASE</div><div style="text-align:right">LA ABRIERON</div>' +
+      '<div style="text-align:right">VIERON EN PROMEDIO</div><div style="text-align:right">TERMINARON</div></div>' +
+      cls.map((c, i) => {
+        const caida = anterior > 0 ? Math.round(100 * (anterior - c.abrieron) / anterior) : 0;
+        const aviso = (i > 0 && caida >= 40 && anterior >= 3) ? '<span class="seg-cae">▼ acá se va el ' + caida + '%</span>' : '';
+        anterior = c.abrieron;
+        return '<div class="seg-cl">' +
+          '<div class="seg-cl-n">' + (c.numero || i + 1) + '</div>' +
+          '<div class="seg-cl-t">' + esc(c.titulo) + aviso + '</div>' +
+          '<div class="seg-cl-d">' + c.abrieron + ' <small>de ' + alumnas + '</small></div>' +
+          '<div class="seg-cl-d">' + (c.abrieron ? tiempoLargo(c.segundos_medio) : '—') +
+            (c.dura_seg ? ' <small>de ' + tiempoLargo(c.dura_seg) + '</small>' : '') + '</div>' +
+          '<div class="seg-cl-d">' + c.terminaron + '</div>' +
+        '</div>';
+      }).join('') + '</div>';
+  }
+
+  // ═══ PERSONA POR PERSONA ═════════════════════════════════════════
+  function pintarSegFiltros(){
+    const ps = personasFiltradas();
+    const n = e => ps.filter(p => p.estado === e).length;
+    const chip = (id, txt, cant) =>
+      '<button class="pesq-chip' + (segFiltro === id ? ' on' : '') + '" onclick="filtrarSeg(\'' + id + '\')">' + txt + ' · ' + cant + '</button>';
+    document.getElementById('segFiltros').innerHTML = ps.length === 0 ? '' :
+      chip('todas', 'Todas', ps.length) +
+      chip('activa', 'Activas', n('activa')) +
+      chip('fria', 'Se enfriaron', n('se_enfrio') + n('se_fue')) +
+      chip('no_empezo', 'No empezaron', n('no_empezo')) +
+      chip('termino', 'Terminaron', n('termino'));
+  }
+
+  function filtrarSeg(f){ segFiltro = f; pintarSegFiltros(); pintarSegPersonas(); }
+
+  function pintarSegPersonas(){
+    const cont = document.getElementById('segPersonas');
+    let ps = personasFiltradas();
+    if(segFiltro === 'fria') ps = ps.filter(p => p.estado === 'se_enfrio' || p.estado === 'se_fue');
+    else if(segFiltro !== 'todas') ps = ps.filter(p => p.estado === segFiltro);
+
+    const q = (document.getElementById('segBuscar')?.value || '').toLowerCase().trim();
+    if(q) ps = ps.filter(p => ((p.nombre || '') + ' ' + (p.email || '')).toLowerCase().includes(q));
+
+    if(!ps.length){
+      cont.innerHTML = '<div class="met-vacio">' + (q ? 'Nadie con "' + esc(q) + '".' : 'Nadie en este grupo.') + '</div>';
+      return;
+    }
+
+    cont.innerHTML = ps.map(p => {
+      const nom = p.nombre || p.email || 'Sin nombre';
+      const pct = p.clases_total ? Math.round(100 * p.completadas / p.clases_total) : 0;
+      const donde = p.ultima_clase
+        ? 'Última: clase ' + (p.ultima_numero || '') + ' «' + p.ultima_clase + '» · ' + haceCuanto(p.ultima)
+        : 'Todavía no abrió ninguna clase';
+      const foto = urlSegura(p.avatar_url);
+      return '<div class="seg-p" onclick="abrirFicha(\'' + p.usuario_id + '\',\'' + p.curso_id + '\')">' +
+        '<div class="met-p-ava cuenta">' + (foto ? '<img src="' + esc(foto) + '" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover">' : esc((nom.trim()[0] || '?').toUpperCase())) + '</div>' +
+        '<div style="min-width:0"><div class="seg-p-nom">' + esc(nom) + '</div>' +
+          '<div class="seg-p-sub">' + esc(p.curso) + ' · ' + esc(donde) + '</div></div>' +
+        '<div class="seg-p-av"><div class="seg-barra' + (pct >= 100 ? ' verde' : '') + '" style="margin:0 0 5px"><div style="width:' + pct + '%"></div></div>' +
+          p.completadas + ' de ' + p.clases_total + ' clases · ' + pct + '%</div>' +
+        '<div class="seg-p-t">' + tiempoLargo(p.segundos) + '<small>vistos</small></div>' +
+        '<div class="seg-estado ' + p.estado + '">' + (SEG_ESTADOS[p.estado] || p.estado) + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function bajarSeguimiento(){
+    const ps = personasFiltradas();
+    if(!ps.length) return mostrarToast('No hay nada para descargar', true);
+    const limpio = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+    const cab = ['Nombre','Email','Curso','Estado','Clases hechas','Clases del curso','Avance %','Minutos vistos','Última clase','Última vez','Tiene el curso desde'];
+    const csv = '﻿' + cab.map(limpio).join(';') + '\n' + ps.map(p => [
+      p.nombre, p.email, p.curso, SEG_ESTADOS[p.estado] || p.estado, p.completadas, p.clases_total,
+      p.clases_total ? Math.round(100 * p.completadas / p.clases_total) : 0,
+      Math.round((p.segundos || 0) / 60), p.ultima_clase || '',
+      p.ultima ? new Date(p.ultima).toLocaleString('es-PY') : '',
+      p.desde ? new Date(p.desde).toLocaleDateString('es-PY') : ''
+    ].map(limpio).join(';')).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'seguimiento-' + new Date().toISOString().slice(0, 10) + '.csv';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+
+  // ═══ LA FICHA ════════════════════════════════════════════════════
+  async function abrirFicha(usuarioId, cursoId){
+    document.getElementById('segFondo').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('sfNombre').textContent = 'Cargando…';
+    document.getElementById('sfContacto').textContent = '';
+    document.getElementById('sfDiag').innerHTML = '';
+    document.getElementById('sfRecordar').innerHTML = '';
+    document.getElementById('sfClases').innerHTML = '<div class="met-vacio">Cargando…</div>';
+    document.getElementById('sfHist').innerHTML = '';
+    pestanaFicha('clases');
+
+    const { data, error } = await sb.rpc('seguimiento_persona', { p_usuario: usuarioId });
+    if(error || !data || data.error){
+      document.getElementById('sfNombre').textContent = 'No se pudo abrir';
+      document.getElementById('sfClases').innerHTML = '<div class="met-vacio">' + esc((error && error.message) || (data && data.error) || '') + '</div>';
+      return;
+    }
+    segFicha = data;
+    segFicha._curso = cursoId || (data.cursos[0] && data.cursos[0].curso_id) || null;
+    pintarFicha();
+  }
+
+  function cerrarFicha(){
+    document.getElementById('segFondo').classList.remove('show');
+    document.body.style.overflow = '';
+    segFicha = null;
+  }
+
+  function pestanaFicha(cual){
+    document.getElementById('sfClases').style.display = cual === 'clases' ? '' : 'none';
+    document.getElementById('sfHist').style.display = cual === 'hist' ? '' : 'none';
+    document.getElementById('sfPesClases').classList.toggle('on', cual === 'clases');
+    document.getElementById('sfPesHist').classList.toggle('on', cual === 'hist');
+  }
+
+  // Resumen de un curso de la ficha
+  function resumenCurso(c){
+    const cls = c.clases || [];
+    const hechas = cls.filter(x => x.completada).length;
+    const seg = cls.reduce((a, x) => a + (Number(x.segundos) || 0), 0);
+    const vistas = cls.filter(x => x.segundos > 0);
+    const ultima = vistas.slice().sort((a, b) => new Date(b.ultima) - new Date(a.ultima))[0] || null;
+    const proxima = cls.find(x => !x.completada) || null;
+    const dias = ultima ? Math.floor((Date.now() - new Date(ultima.ultima)) / 86400000) : null;
+    return { total: cls.length, hechas, seg, ultima, proxima, dias,
+             pct: cls.length ? Math.round(100 * hechas / cls.length) : 0 };
+  }
+
+  function pintarFicha(){
+    const f = segFicha;
+    const p = f.perfil || {};
+    const nom = p.nombre || p.email || 'Sin nombre';
+    document.getElementById('sfNombre').textContent = nom;
+    document.getElementById('sfContacto').textContent =
+      [p.email, f.telefono ? '📱 ' + f.telefono : 'sin teléfono guardado',
+       p.creado_en ? 'cuenta creada ' + haceCuanto(p.creado_en) : ''].filter(Boolean).join(' · ');
+
+    const c = (f.cursos || []).find(x => x.curso_id === f._curso) || (f.cursos || [])[0];
+
+    // ─── El diagnóstico, en palabras ───
+    let diag = '';
+    if(!c){
+      diag = '<b>' + esc(primerNombre(nom)) + '</b> todavía no tiene ningún curso.';
+    }else{
+      const r = resumenCurso(c);
+      diag = 'Tiene <b>' + esc(c.curso) + '</b> desde ' + haceCuanto(c.desde).replace('hace ', 'hace ') + '. ';
+      if(!r.ultima && r.hechas === 0){
+        diag += 'Todavía <b>no abrió ninguna clase</b>.';
+      }else{
+        diag += 'Hizo <b>' + r.hechas + ' de ' + r.total + ' clases</b> (' + r.pct + '%) y lleva <b>' + tiempoLargo(r.seg) + '</b> vistos. ';
+        if(r.ultima){
+          diag += 'La última vez entró <b>' + haceCuanto(r.ultima.ultima) + '</b>, a la clase ' + (r.ultima.numero || '') +
+            ' «' + esc(r.ultima.titulo) + '»: vio <b>' + tiempoLargo(r.ultima.segundos) + '</b>' +
+            (r.ultima.dura_seg ? ' de ' + tiempoLargo(r.ultima.dura_seg) : '') +
+            (r.ultima.completada ? ' y la marcó como hecha.' : ' y no la terminó.');
+        }
+        if(r.hechas >= r.total && r.total > 0) diag += ' <b>Terminó el curso.</b> 🎉';
+        else if(r.dias !== null && r.dias >= 7) diag += ' <b>Hace ' + r.dias + ' días que no entra.</b>';
+      }
+      if(c.hasta){
+        const quedan = Math.ceil((new Date(c.hasta) - Date.now()) / 86400000);
+        if(quedan <= 30) diag += quedan > 0 ? ' Su acceso vence en <b>' + quedan + ' días</b>.' : ' <b>Su acceso ya venció.</b>';
+      }
+    }
+    document.getElementById('sfDiag').innerHTML = diag;
+
+    pintarRecordatorio(c, nom);
+    pintarFichaClases();
+    pintarFichaHistorial();
+  }
+
+  // ─── El mensaje para escribirle, según dónde está ───
+  function mensajeRecordatorio(c, nom){
+    const n = primerNombre(nom) || 'hola';
+    if(!c) return 'Hola ' + n + ' 💛 ¿Cómo estás? Te escribo de parte de Milena.';
+    const r = resumenCurso(c);
+    const link = 'https://milenacmm.com/curso-detalle?id=' + (c.slug || '');
+
+    if(r.hechas >= r.total && r.total > 0){
+      return 'Hola ' + n + ' 💛 ¡Terminaste ' + c.curso + '! Felicitaciones de verdad. ¿Me contás qué fue lo que más te sirvió?';
+    }
+    if(!r.ultima && r.hechas === 0){
+      const primera = c.clases[0];
+      return 'Hola ' + n + ' 💛 Vi que ya tenés tu acceso a ' + c.curso + ' pero todavía no arrancaste.' +
+        (primera ? ' La primera clase es «' + primera.titulo + '»' + (primera.dura_seg ? ' y dura ' + tiempoLargo(primera.dura_seg) : '') + '.' : '') +
+        ' ¿Te ayudo con algo para empezar?\n' + link;
+    }
+    const sigue = r.proxima || r.ultima;
+    const faltan = r.total - r.hechas;
+    if(r.dias !== null && r.dias >= 7){
+      return 'Hola ' + n + ' 💛 Te quedaste en la clase ' + (sigue.numero || '') + ' «' + sigue.titulo + '» de ' + c.curso + '. ' +
+        'Ya hiciste ' + r.hechas + ' de ' + r.total + ': te ' + (faltan === 1 ? 'falta una sola' : 'faltan ' + faltan) + '. ¿La retomamos esta semana?\n' + link;
+    }
+    return 'Hola ' + n + ' 💛 ¡Vas muy bien con ' + c.curso + '! Ya hiciste ' + r.hechas + ' de ' + r.total + ' clases. ' +
+      'La que sigue es «' + sigue.titulo + '». Cualquier duda me escribís.\n' + link;
+  }
+
+  function pintarRecordatorio(c, nom){
+    const f = segFicha;
+    const msg = mensajeRecordatorio(c, nom);
+    const tel = String(f.telefono || '').replace(/\D/g, '');
+    const telWa = tel ? (tel.length <= 10 ? '595' + tel.replace(/^0+/, '') : tel) : '';
+    document.getElementById('sfRecordar').innerHTML =
+      '<span class="form-label">MENSAJE PARA RECORDARLE · LO PODÉS CAMBIAR</span>' +
+      '<textarea class="form-input" id="sfMensaje"></textarea>' +
+      '<div class="seg-recordar-acc">' +
+        (telWa ? '<button class="pesq-accion wa" onclick="mandarRecordatorio(\'wa\',\'' + telWa + '\')">💬 Mandar por WhatsApp</button>' : '') +
+        (f.perfil?.email ? '<button class="pesq-accion" onclick="mandarRecordatorio(\'mail\')">✉️ Mandar por email</button>' : '') +
+        '<button class="pesq-accion" onclick="mandarRecordatorio(\'copiar\')">📋 Copiar</button>' +
+      '</div>';
+    document.getElementById('sfMensaje').value = msg;
+  }
+
+  function mandarRecordatorio(como, tel){
+    const msg = document.getElementById('sfMensaje').value;
+    if(como === 'wa'){
+      window.open('https://wa.me/' + tel + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    }else if(como === 'mail'){
+      window.location.href = 'mailto:' + encodeURIComponent(segFicha.perfil.email) +
+        '?subject=' + encodeURIComponent('Tu curso en Creando Mentes Millonarias') + '&body=' + encodeURIComponent(msg);
+    }else{
+      navigator.clipboard.writeText(msg).then(() => mostrarToast('✓ Copiado')).catch(() => mostrarToast('No se pudo copiar', true));
+    }
+  }
+
+  // ─── Clase por clase ───
+  function pintarFichaClases(){
+    const cont = document.getElementById('sfClases');
+    const cs = segFicha.cursos || [];
+    if(!cs.length){ cont.innerHTML = '<div class="met-vacio">No tiene cursos.</div>'; return; }
+
+    cont.innerHTML = cs.map(c => {
+      const r = resumenCurso(c);
+      return '<div class="seg-fc-curso">' + esc(c.curso) + '</div>' +
+        '<div class="seg-fc-sub">' + r.hechas + ' de ' + r.total + ' clases · ' + r.pct + '% · ' + tiempoLargo(r.seg) + ' vistos</div>' +
+        (c.clases || []).map((x, i) => {
+          const pct = x.dura_seg ? Math.min(100, Math.round(100 * x.segundos / x.dura_seg)) : (x.segundos > 0 ? 100 : 0);
+          return '<div class="seg-fc' + (x.segundos > 0 || x.completada ? '' : ' nada') + '">' +
+            '<div class="seg-fc-ok">' + (x.completada ? '✓' : (x.numero || i + 1)) + '</div>' +
+            '<div style="min-width:0"><div class="seg-cl-t">' + esc(x.titulo) + '</div>' +
+              '<div class="seg-p-sub">' + (x.segundos > 0
+                ? 'entró ' + x.veces + (x.veces === 1 ? ' vez' : ' veces') + ' · última ' + haceCuanto(x.ultima)
+                : 'no la abrió') + '</div></div>' +
+            '<div class="seg-barra' + (x.completada ? ' verde' : '') + '" style="margin:0"><div style="width:' + pct + '%"></div></div>' +
+            '<div class="seg-fc-tiempo">' + (x.segundos > 0 ? tiempoLargo(x.segundos) : '—') +
+              (x.dura_seg ? '<small>de ' + tiempoLargo(x.dura_seg) + '</small>' : '') + '</div>' +
+          '</div>';
+        }).join('');
+    }).join('');
+  }
+
+  // ─── Todo lo que hizo, día por día ───
+  function pintarFichaHistorial(){
+    const cont = document.getElementById('sfHist');
+    const f = segFicha;
+    const filas = [];
+
+    (f.sesiones || []).forEach(s => filas.push({
+      t: new Date(s.inicio), clase: true, ico: '🎬',
+      txt: 'Vio <b>' + tiempoLargo(s.segundos) + '</b> de la clase ' + (s.numero || '') + ' «' + esc(s.clase) + '»' +
+        (s.dura_seg ? ' <small>(dura ' + tiempoLargo(s.dura_seg) + ')</small>' : '') +
+        ' <small>· ' + esc(s.curso || '') + ' · salió a las ' +
+        new Date(s.fin).toLocaleTimeString('es-PY', { hour: '2-digit', minute: '2-digit', hour12: false }) + '</small>'
+    }));
+
+    const TXT = {
+      registro: ['✨', 'Creó su cuenta'],
+      vio_curso: ['👀', 'Miró la página del curso'],
+      vio_checkout: ['🛒', 'Llegó a la página de pago'],
+      clic_comprar: ['🛍', 'Tocó comprar'],
+      pedido: ['🧾', 'Hizo un pedido'],
+      compra: ['💛', 'Compró'],
+      clic_whatsapp: ['💬', 'Tocó WhatsApp'],
+      vio_premium: ['💎', 'Miró la Premium'],
+      clic_premium: ['💎', 'Tocó la Premium']
+    };
+    (f.eventos || []).forEach(e => {
+      if(e.tipo === 'vio_clase') return;   // ya está en las sentadas
+      let ico = '·', txt = '';
+      if(e.tipo === 'visita'){ ico = '📄'; txt = 'Abrió <b>' + esc(nombrePagina(e.ruta)) + '</b>'; }
+      else if(e.tipo === 'clic'){ ico = '👆'; txt = 'Tocó «' + esc(e.detalle || '') + '» <small>en ' + esc(nombrePagina(e.ruta)) + '</small>'; }
+      else if(TXT[e.tipo]){ ico = TXT[e.tipo][0]; txt = '<b>' + TXT[e.tipo][1] + '</b>' + (e.curso ? ' <small>· ' + esc(e.curso) + '</small>' : ''); }
+      else { txt = esc(e.tipo); }
+      filas.push({ t: new Date(e.cuando), ico, txt });
+    });
+
+    if(!filas.length){
+      cont.innerHTML = '<div class="met-vacio">Todavía no hay nada anotado de esta persona.</div>';
+      return;
+    }
+    filas.sort((a, b) => b.t - a.t);
+
+    let dia = '', html = '';
+    filas.slice(0, 400).forEach(x => {
+      const d = x.t.toLocaleDateString('es-PY', { weekday: 'long', day: 'numeric', month: 'long' });
+      if(d !== dia){ dia = d; html += '<div class="seg-dia">' + esc(d.toUpperCase()) + '</div>'; }
+      html += '<div class="seg-h' + (x.clase ? ' clase' : '') + '">' +
+        '<div class="seg-h-hora">' + x.t.toLocaleTimeString('es-PY', { hour: '2-digit', minute: '2-digit', hour12: false }) + '</div>' +
+        '<div>' + x.ico + '</div><div>' + x.txt + '</div></div>';
+    });
+    cont.innerHTML = html;
+  }
+
   function cambiarTab(tab){
     // Cerrar sidebar en móvil
     if (window.innerWidth <= 900) {
@@ -6502,6 +7091,7 @@ body{visibility:hidden}
     // Se piden recién cuando entra a verlas
     if(tab === 'metricas') cargarMetricas();
     if(tab === 'pesquisa') cargarPesquisa();
+    if(tab === 'seguimiento') cargarSeguimiento();
   }
 
   // Cuánto se usa cada hashtag, con datos reales
@@ -13043,6 +13633,7 @@ body{visibility:hidden}
       cargarFunciones(),
       cargarAvisos(),
       leerPixelAdmin().catch(() => {}),
+      cargarSeguimiento().catch(() => {}),
       cargarClasesParaAnuncio(),
       cargarHashtags(),
       cargarSecciones(),
