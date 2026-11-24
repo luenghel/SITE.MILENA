@@ -3072,6 +3072,24 @@ body{visibility:hidden}
       <div class="func-estado" id="funcEstado"></div>
     </div>
 
+    <!-- ═══ META PIXEL (anuncios de Facebook / Instagram) ═══ -->
+    <div class="funcs-caja px-caja" style="border-color:rgba(120,160,255,0.3)">
+      <div class="px-fila">
+        <div class="px-txt">
+          <div class="chart-title" style="margin-bottom:2px">🎯 Meta Pixel · anuncios de Facebook e Instagram</div>
+          <div class="chart-subtitle" id="pxEstado">Pegá el número del pixel (Administrador de eventos de Meta → Orígenes de datos).</div>
+        </div>
+        <input class="form-input px-input" id="pxId" inputmode="numeric" placeholder="123456789012345">
+        <button class="cta-gold btn-save" onclick="guardarPixel()">GUARDAR</button>
+      </div>
+      <div class="frm-nota" style="margin-top:10px">
+        Eventos que se mandan solos: <b>PageView</b> · <b>Lead</b> al enviar un formulario (con el nicho en <code>content_name</code>, según <code>?rubro=</code> del enlace) ·
+        <b>CompleteRegistration</b> · <b>ViewContent</b> · <b>AddToCart</b> · <b>InitiateCheckout</b> · <b>AddPaymentInfo</b> · <b>Contact</b> (WhatsApp) ·
+        <b>Purchase</b> (la primera vez que entra al curso que compró, con el valor en PYG). El panel de admin no se cuenta.<br>Esto es solo para los anuncios de Meta: <b>no tiene nada que ver con las Métricas del panel</b>, que se guardan en nuestra propia base.
+      </div>
+    </div>
+
+
     <!-- ═══ AVISOS AL EQUIPO ═══ -->
     <div class="funcs-caja" style="border-color:rgba(159,225,203,0.3)">
       <div class="funcs-cab">
@@ -3426,23 +3444,6 @@ body{visibility:hidden}
     </div>
 
     <div id="metricasFalta" class="met-aviso" style="display:none"></div>
-
-    <!-- Meta Pixel -->
-    <div class="pm-seccion px-caja">
-      <div class="px-fila">
-        <div class="px-txt">
-          <div class="chart-title" style="margin-bottom:2px">🎯 Meta Pixel</div>
-          <div class="chart-subtitle" id="pxEstado">Pegá el número del pixel (Administrador de eventos de Meta → Orígenes de datos).</div>
-        </div>
-        <input class="form-input px-input" id="pxId" inputmode="numeric" placeholder="123456789012345">
-        <button class="cta-gold btn-save" onclick="guardarPixel()">GUARDAR</button>
-      </div>
-      <div class="frm-nota" style="margin-top:10px">
-        Eventos que se mandan solos: <b>PageView</b> · <b>Lead</b> al enviar un formulario (con el nicho en <code>content_name</code>, según <code>?rubro=</code> del enlace) ·
-        <b>CompleteRegistration</b> · <b>ViewContent</b> · <b>AddToCart</b> · <b>InitiateCheckout</b> · <b>AddPaymentInfo</b> · <b>Contact</b> (WhatsApp) ·
-        <b>Purchase</b> (la primera vez que entra al curso que compró, con el valor en PYG). El panel de admin no se cuenta.
-      </div>
-    </div>
 
     <!-- Los números de arriba -->
     <div class="met-grupo-tit">GENTE</div>
@@ -5410,7 +5411,6 @@ body{visibility:hidden}
 
   async function cargarMetricas(){
     const aviso = document.getElementById('metricasFalta');
-    try{ leerPixelAdmin().catch(() => {}); }catch(e){}
     const conEquipo = !!document.getElementById('metConEquipo')?.checked;
 
     try{
@@ -13042,6 +13042,7 @@ body{visibility:hidden}
       cargarAnuncios(),
       cargarFunciones(),
       cargarAvisos(),
+      leerPixelAdmin().catch(() => {}),
       cargarClasesParaAnuncio(),
       cargarHashtags(),
       cargarSecciones(),
