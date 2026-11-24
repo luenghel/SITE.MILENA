@@ -8,7 +8,7 @@
 //    Eso le avisa a los celulares que hay algo nuevo.
 // ═══════════════════════════════════════════════════════════════════
 
-const VERSION = 'cmm-v13';
+const VERSION = 'cmm-v14';
 
 // Lo que guardamos para que abra al instante
 const BASICOS = [
@@ -27,7 +27,12 @@ const BASICOS = [
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(VERSION)
-      .then(c => c.addAll(BASICOS).catch(() => { /* si alguno falla, seguimos */ }))
+      // cache:'reload' = pedirlos de verdad al servidor, no la copia vieja del navegador
+      .then(c => Promise.all(BASICOS.map(u =>
+        fetch(new Request(u, { cache: 'reload' }))
+          .then(r => { if (r.ok) return c.put(u, r); })
+          .catch(() => { /* si alguno falla, seguimos */ })
+      )))
       .then(() => self.skipWaiting())
   );
 });
@@ -57,18 +62,24 @@ self.addEventListener('fetch', e => {
   const esPagina = e.request.mode === 'navigate' ||
                    e.request.headers.get('accept')?.includes('text/html');
 
-  if (esPagina) {
+  // El código (.js y .css) también va primero por la red: si queda una
+  // copia vieja guardada, el sitio se rompe cuando cambia algo importante.
+  const esCodigo = /\.(js|css)$/.test(url.pathname) && !url.pathname.startsWith('/vendor/');
+
+  if (esPagina || esCodigo) {
     // Las páginas: primero la red, para que siempre vean lo último.
     // Si no hay señal, mostramos lo que teníamos guardado.
     e.respondWith(
-      fetch(e.request)
+      fetch(e.request, esCodigo ? { cache: 'no-cache' } : undefined)
         .then(r => {
-          const copia = r.clone();
-          caches.open(VERSION).then(c => c.put(e.request, copia));
+          if (r.ok) {
+            const copia = r.clone();
+            caches.open(VERSION).then(c => c.put(e.request, copia));
+          }
           return r;
         })
         .catch(() =>
-          caches.match(e.request).then(r => r || caches.match('/index'))
+          caches.match(e.request).then(r => r || (esPagina ? caches.match('/index') : Response.error()))
         )
     );
     return;
