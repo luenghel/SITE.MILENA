@@ -191,6 +191,58 @@
     .hoja{border-radius:22px 22px 0 0;padding:26px 20px calc(22px + env(safe-area-inset-bottom));max-width:none}
   }
 
+  /* ─── Fotos: portada, eventos y testimonios ─── */
+  .a-foto{align-self:stretch;min-height:440px;position:relative;margin:0 -26px}
+  .a-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 12%;
+    -webkit-mask-image:linear-gradient(to bottom,transparent,#000 16%,#000 68%,transparent),linear-gradient(to right,transparent,#000 20%,#000 80%,transparent);
+    -webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,transparent,#000 16%,#000 68%,transparent),linear-gradient(to right,transparent,#000 20%,#000 80%,transparent);mask-composite:intersect}
+  .a-hero.confoto{grid-template-columns:1.05fr .72fr .9fr;gap:30px}
+  .a-hero.confoto h1{font-size:clamp(36px,4.3vw,56px)}
+  .b-hero.confoto{display:grid;grid-template-columns:1.08fr .92fr;gap:54px;align-items:center;text-align:left;max-width:none}
+  .b-hero.confoto h1{font-size:clamp(40px,5.2vw,68px)}
+  .b-hero.confoto .sub{margin-left:0}
+  .b-hero.confoto .b-cuando{justify-content:flex-start}
+  .b-hero.confoto .nota-boton{text-align:left;max-width:430px;text-align:center}
+  .b-foto{position:relative;max-width:440px;justify-self:center;width:100%}
+  .b-foto::before{content:'';position:absolute;inset:18px -16px -16px 18px;border:1.5px solid #C8923A;border-radius:28px}
+  .b-foto img{position:relative;display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 10%;border-radius:28px;
+    box-shadow:0 30px 70px rgba(74,15,30,.25)}
+  .sec{padding:66px 0}
+  .sec h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(28px,3.8vw,44px);line-height:1.08;text-align:center;margin-bottom:8px}
+  .sec .sec-sub{text-align:center;color:var(--suave);font-size:16px;margin:0 auto 30px;max-width:560px}
+  body.tpl-a .sec{border-top:1px solid var(--linea)}
+  .galeria{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:190px;gap:12px}
+  .galeria img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;border-radius:16px;display:block;background:var(--caja)}
+  .galeria img:nth-child(1){grid-column:span 2;grid-row:span 2}
+  .galeria img:nth-child(6n+4),.galeria img:nth-child(6n+5),.galeria img:nth-child(6n+6){grid-column:span 2}
+  .testis{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 22px 16px;margin:0 -22px;scrollbar-width:none}
+  .testis::-webkit-scrollbar{display:none}
+  .testis img{flex:0 0 auto;height:420px;width:auto;max-width:82vw;border-radius:18px;scroll-snap-align:center;display:block;
+    border:1px solid var(--linea);box-shadow:0 18px 40px rgba(0,0,0,.22);background:var(--caja)}
+  .testis.pocos{justify-content:center}
+  @media(max-width:1099px){
+    .a-hero.confoto{grid-template-columns:1.12fr .88fr}
+    .a-hero.confoto .a-foto{display:none}
+  }
+  @media(max-width:899px){
+    .a-hero.confoto{grid-template-columns:1fr}
+    .a-hero.confoto .a-foto{display:block;order:-1;min-height:0;height:330px;margin:-14px -22px -120px}
+    .a-foto img{object-position:50% 8%;-webkit-mask-image:linear-gradient(to bottom,#000 45%,transparent 96%);-webkit-mask-composite:source-over;mask-image:linear-gradient(to bottom,#000 45%,transparent 96%);mask-composite:add}
+    .galeria img:nth-child(n){grid-column:auto;grid-row:auto}
+    .a-hero.confoto > div:first-of-type{position:relative}
+    .b-hero.confoto{grid-template-columns:1fr;gap:26px;text-align:center}
+    .b-hero.confoto .sub{margin-left:auto}
+    .b-hero.confoto .b-cuando{justify-content:center}
+    .b-hero.confoto .nota-boton{max-width:none}
+    .b-foto{order:-1;max-width:270px}
+    .b-foto img{aspect-ratio:1/1.08}
+    .sec{padding:46px 0}
+    .galeria{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding:0 22px 12px;margin:0 -22px;scrollbar-width:none}
+    .galeria::-webkit-scrollbar{display:none}
+    .galeria img{flex:0 0 78%;height:250px;scroll-snap-align:center}
+    .testis img{height:380px}
+  }
+
   /* ═══ GRACIAS (los dos diseños) ═══ */
   .gracias{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:24px;overflow-y:auto;
     background:radial-gradient(60% 50% at 50% 0%,rgba(107,26,46,.85),transparent 70%),#14090F;color:#FFF5F0;text-align:center}
@@ -296,9 +348,34 @@ function htmlReloj(){
     '<div><b data-m>00</b><small>MIN</small></div><div><b data-s>00</b><small>SEG</small></div></div>';
 }
 
+const urlFoto = u => /^https:\/\/[^\s"'<>]+$/.test(u || '') ? u : '';
+const listaFotos = l => (Array.isArray(l) ? l : []).map(urlFoto).filter(Boolean).slice(0, 12);
+function htmlPortada(clase){
+  const u = urlFoto(PAG.foto_portada);
+  return u ? '<div class="' + clase + '"><img src="' + limpiar(u) + '" alt="Milena Machado" fetchpriority="high" decoding="async"></div>' : '';
+}
+function htmlEventos(){
+  const fotos = listaFotos(PAG.galeria);
+  if(!fotos.length) return '';
+  return '<section class="sec"><div class="ancho">' +
+    '<h2>' + conMarcas(PAG.galeria_titulo || 'Así se vive **aprender con Milena**') + '</h2>' +
+    '<p class="sec-sub">Salas llenas, gente que llega con dudas y se va con un plan.</p>' +
+    '<div class="galeria">' + fotos.map(u => '<img src="' + limpiar(u) + '" alt="Evento de Milena Machado" loading="lazy" decoding="async">').join('') + '</div>' +
+  '</div></section>';
+}
+function htmlTestimonios(){
+  const fotos = listaFotos(PAG.testimonios);
+  if(!fotos.length) return '';
+  return '<section class="sec"><div class="ancho">' +
+    '<h2>' + conMarcas(PAG.testimonios_titulo || 'Lo que dicen **quienes ya pasaron**') + '</h2>' +
+    '<p class="sec-sub">Mensajes reales de alumnas. Los nombres están tapados para cuidar su privacidad.</p>' +
+    '<div class="testis' + (fotos.length < 4 ? ' pocos' : '') + '">' + fotos.map(u => '<img src="' + limpiar(u) + '" alt="Testimonio de una alumna" loading="lazy" decoding="async">').join('') + '</div>' +
+  '</div></section>';
+}
+
 function htmlBio(){
   if(!PAG.bio) return '';
-  const foto = /^https:\/\/[^\s"'<>]+$/.test(PAG.foto_url || '') ? PAG.foto_url : '';
+  const foto = urlFoto(PAG.foto_url);
   return '<div class="bio">' +
     (foto ? '<img class="bio-foto" src="' + limpiar(foto) + '" alt="Milena Machado" loading="lazy" width="112" height="112">'
           : '<div class="bio-letra">M</div>') +
@@ -315,7 +392,7 @@ function pintarA(){
   '<header class="a-cab"><div class="ancho"><div class="marca"><div class="marca-m">M</div><div class="marca-t">MILENA<br>MACHADO</div></div></div></header>' +
 
   '<main class="ancho">' +
-    '<section class="a-hero">' +
+    '<section class="a-hero' + (urlFoto(PAG.foto_portada) ? ' confoto' : '') + '">' +
       '<div>' +
         (PAG.etiqueta ? '<div class="ceja">' + limpiar(PAG.etiqueta) + '</div>' : '') +
         '<h1>' + conMarcas(PAG.titulo) + '</h1>' +
@@ -326,6 +403,7 @@ function pintarA(){
         '</div>' +
         (f && f > new Date() ? htmlReloj() : '') +
       '</div>' +
+      htmlPortada('a-foto') +
 
       '<div class="a-tarjeta" id="formulario">' +
         '<h2>Reservá tu lugar</h2>' +
@@ -339,6 +417,7 @@ function pintarA(){
         '<ul class="puntos">' + puntos.map(p => '<li><span class="tilde">' + TILDE + '</span><span>' + limpiar(p) + '</span></li>').join('') + '</ul></div>' : '<div></div>') +
       '<div>' + htmlBio() + '</div>' +
     '</div></section>' : '') +
+    htmlEventos() + htmlTestimonios() +
   '</main>' +
 
   '<footer class="pie">Creando Mentes Millonarias · <a href="/privacidad">Privacidad</a></footer>';
@@ -355,7 +434,7 @@ function pintarB(){
   '<header class="b-cab"><div class="marca"><div class="marca-m">M</div><div class="marca-t">MILENA<br>MACHADO</div></div></header>' +
 
   '<main>' +
-    '<section class="ancho"><div class="b-hero">' +
+    '<section class="ancho"><div class="b-hero' + (urlFoto(PAG.foto_portada) ? ' confoto' : '') + '"><div>' +
       (PAG.etiqueta ? '<div class="pildora">' + limpiar(PAG.etiqueta) + '</div>' : '') +
       '<h1>' + conMarcas(PAG.titulo) + '</h1>' +
       (PAG.subtitulo ? '<p class="sub">' + limpiar(PAG.subtitulo) + '</p>' : '') +
@@ -365,7 +444,7 @@ function pintarB(){
         (f ? '<span>📅 ' + limpiar(fechaLarga(f)) + '</span><span>🕗 ' + horaCorta(f) + '</span>' : '') +
         (PAG.lugar ? '<span>📍 ' + limpiar(PAG.lugar) + '</span>' : '') +
       '</div>' +
-    '</div>' +
+    '</div>' + htmlPortada('b-foto') + '</div>' +
 
     '<div class="b-pasos">' +
       '<div class="b-paso"><i>1</i><b>Te registrás gratis</b><span>Nombre, email y WhatsApp. Menos de un minuto.</span></div>' +
@@ -377,6 +456,8 @@ function pintarB(){
       '<h2>Lo que te vas a <span class="oro" style="color:#FAC775">llevar</span></h2>' +
       '<div class="b-tarjetas">' + puntos.map((p, i) => '<div><i>' + (i + 1) + '</i><span>' + limpiar(p) + '</span></div>').join('') + '</div>' +
     '</div></section>' : '') +
+
+    htmlEventos() + htmlTestimonios() +
 
     (PAG.bio ? '<section class="b-bloque"><div class="ancho"><div class="b-bio">' + htmlBio() + '</div></div></section>' : '<div style="height:50px"></div>') +
 

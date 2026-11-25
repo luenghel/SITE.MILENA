@@ -4061,9 +4061,24 @@ body{visibility:hidden}
           </label>
 
           <label class="frm-campo ancho">
-            <span class="form-label">FOTO DE MILENA · ENLACE DE LA IMAGEN · OPCIONAL</span>
+            <span class="form-label">FOTO GRANDE DE ARRIBA · ENLACE DE LA IMAGEN</span>
+            <input class="form-input" id="cePortada" placeholder="https://milenacmm.com/img/captura/...">
+            <span class="frm-nota">La foto de Milena al lado del título. Diseño A: mejor con fondo oscuro. Diseño B: con fondo claro.</span>
+          </label>
+          <label class="frm-campo ancho">
+            <span class="form-label">FOTO CHICA · EN "QUIÉN ES MILENA"</span>
             <input class="form-input" id="ceFoto" placeholder="https://...">
             <span class="frm-nota">Sin foto, aparece la M dorada.</span>
+          </label>
+          <label class="frm-campo ancho">
+            <span class="form-label">FOTOS DE EVENTOS · UN ENLACE POR RENGLÓN</span>
+            <textarea class="form-input" id="ceGaleria" rows="4" placeholder="https://milenacmm.com/img/captura/..."></textarea>
+            <span class="frm-nota">Hasta 12. La primera sale más grande. Vacío = la sección no aparece.</span>
+          </label>
+          <label class="frm-campo ancho">
+            <span class="form-label">TESTIMONIOS · CAPTURAS · UN ENLACE POR RENGLÓN</span>
+            <textarea class="form-input" id="ceTestis" rows="3" placeholder="https://milenacmm.com/img/captura/..."></textarea>
+            <span class="frm-nota">Capturas de mensajes con los nombres tapados. Vacío = la sección no aparece.</span>
           </label>
           <label class="frm-campo ancho">
             <span class="form-label">QUIÉN ES MILENA</span>
@@ -7884,7 +7899,8 @@ body{visibility:hidden}
     pone('ceNombre', p.nombre); pone('ceSlug', p.slug); pone('ceEtiqueta', p.etiqueta);
     pone('ceTitulo', p.titulo); pone('ceSub', p.subtitulo); pone('ceFecha', fechaParaCampo(p.fecha_evento));
     pone('ceLugar', p.lugar); pone('cePuntos', (Array.isArray(p.puntos) ? p.puntos : []).join('\n'));
-    pone('ceBoton', p.boton); pone('ceNota', p.nota_boton); pone('ceFoto', p.foto_url); pone('ceBio', p.bio);
+    pone('ceBoton', p.boton); pone('ceNota', p.nota_boton); pone('ceFoto', p.foto_url); pone('ceBio', p.bio); pone('cePortada', p.foto_portada);
+    pone('ceGaleria', (Array.isArray(p.galeria) ? p.galeria : []).join('\n')); pone('ceTestis', (Array.isArray(p.testimonios) ? p.testimonios : []).join('\n'));
     pone('ceGrupo', p.grupo_whatsapp); pone('ceGTit', p.gracias_titulo); pone('ceGTxt', p.gracias_texto);
     document.getElementById('ceWa').classList.toggle('on', p.pedir_whatsapp !== false);
     document.getElementById('ceActiva').classList.toggle('on', p.activa !== false);
@@ -7935,8 +7951,14 @@ body{visibility:hidden}
       if(v && !/^https:\/\//i.test(v)){ mostrarToast(que + ' tiene que empezar con https://', true); throw 0; }
       return v || null;
     };
-    let foto, grupo;
-    try{ foto = enlace('ceFoto', 'La foto'); grupo = enlace('ceGrupo', 'El grupo'); }catch(e){ return; }
+    const enlaces = (id, que) => {
+      const l = ceVal(id).split('\n').map(x => x.trim()).filter(Boolean).slice(0, 12);
+      if(l.some(v => !/^https:\/\/\S+$/i.test(v))){ mostrarToast(que + ': cada renglón tiene que ser un enlace que empiece con https://', true); throw 0; }
+      return l;
+    };
+    let foto, grupo, portada, galeria, testis;
+    try{ foto = enlace('ceFoto', 'La foto chica'); grupo = enlace('ceGrupo', 'El grupo'); portada = enlace('cePortada', 'La foto grande');
+      galeria = enlaces('ceGaleria', 'Fotos de eventos'); testis = enlaces('ceTestis', 'Testimonios'); }catch(e){ return; }
     const f = ceVal('ceFecha');
     const fila = {
       nombre, slug, titulo, plantilla: capPlantilla,
@@ -7944,7 +7966,7 @@ body{visibility:hidden}
       fecha_evento: f ? new Date(f).toISOString() : null, lugar: ceVal('ceLugar') || null,
       puntos: ceVal('cePuntos').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 8),
       boton: ceVal('ceBoton') || 'QUIERO MI LUGAR GRATIS', nota_boton: ceVal('ceNota') || null,
-      foto_url: foto, bio: ceVal('ceBio') || null, grupo_whatsapp: grupo,
+      foto_url: foto, foto_portada: portada, galeria, testimonios: testis, bio: ceVal('ceBio') || null, grupo_whatsapp: grupo,
       gracias_titulo: ceVal('ceGTit') || null, gracias_texto: ceVal('ceGTxt') || null,
       pedir_whatsapp: document.getElementById('ceWa').classList.contains('on'),
       activa: document.getElementById('ceActiva').classList.contains('on')
