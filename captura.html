@@ -228,9 +228,9 @@
   .testi blockquote{font-size:16.5px;line-height:1.5;margin:0 0 16px;flex:1}
   .testi figcaption{font-size:11px;letter-spacing:.14em;font-weight:700;color:var(--oro);text-transform:uppercase}
   .cta-medio{max-width:430px;margin:34px auto 0;text-align:center}
-  .testis.prints{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:860px;margin:0 auto;padding:0;overflow:visible;align-items:start}
-  .testis.prints img{width:100%;max-width:none}
-  @media(max-width:640px){ .testis.prints{grid-template-columns:1fr;gap:10px} }
+  .testis.prints{display:block;columns:2;column-gap:14px;max-width:860px;margin:0 auto;padding:0;overflow:visible}
+  .testis.prints img{width:100%;max-width:none;margin:0 0 14px;break-inside:avoid}
+  @media(max-width:640px){ .testis.prints{columns:1} .testis.prints img{margin-bottom:10px} }
   .a-bloque .cta-medio{margin-top:42px}
   @media(max-width:1099px){
     .a-hero.confoto{grid-template-columns:1.12fr .88fr}
