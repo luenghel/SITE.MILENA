@@ -7718,7 +7718,10 @@ body{visibility:hidden}
     ['contadora', 'Contadora', 'CONTA'], ['ingeniera', 'Ingeniera', 'INGE'], ['empresas', 'Dueña de empresa con equipo', 'EMPRESA'],
     ['estudiantes', 'Estudiante de último año', 'ESTUDIANTE']
   ];
-  const nombreRubro = k => (RUBROS_CAP.find(r => r[0] === k) || [k, k || 'Sin rubro'])[1];
+  const nombreRubro = k => {
+    if(k && k.startsWith('otro')) return 'Otro' + (k.length > 5 ? ': ' + k.slice(5).replace(/-/g, ' ') : '');
+    return (RUBROS_CAP.find(r => r[0] === k) || [k, k || 'Sin rubro'])[1];
+  };
   const pctCap = (leads, personas) => {
     leads = Number(leads) || 0; personas = Number(personas) || 0;
     if(!personas) return leads ? '—' : '0%';
@@ -7837,6 +7840,11 @@ body{visibility:hidden}
       const rs = mias('rubros');
       const fila = k => rs.find(r => (r.nombre || '') === k) || { leads: 0, total: 0, con_cuenta: 0 };
       const todos = RUBROS_CAP.map(r => [r[0], r[1], fila(r[0])]);
+      // Todos los "otro-…" juntos en una fila
+      const otros = rs.filter(r => (r.nombre || '').startsWith('otro')).reduce((t, r) => ({
+        leads: t.leads + (Number(r.leads) || 0), total: t.total + (Number(r.total) || 0), con_cuenta: t.con_cuenta + (Number(r.con_cuenta) || 0) }),
+        { leads: 0, total: 0, con_cuenta: 0 });
+      if(otros.total) todos.push(['otro', 'Otro (ver en la lista)', otros]);
       const sin = fila('');
       if(sin.total) todos.push(['', 'Sin rubro', sin]);
       const tope = Math.max(...todos.map(t => Number(t[2].total) || 0), 1);

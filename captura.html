@@ -380,8 +380,14 @@ const RUBROS = {
   'contadora':        { nombre: 'Contadora',                   para: 'contadoras',                   palabras: ['conta', 'contador', 'contadoras'] },
   'ingeniera':        { nombre: 'Ingeniera',                   para: 'ingenieras',                   palabras: ['inge', 'ingeniero', 'ingenieras'] },
   'empresas':         { nombre: 'Dueña de empresa con equipo', para: 'dueñas de empresa con equipo', palabras: ['empresa', 'empresaria'] },
-  'estudiantes':      { nombre: 'Estudiante de último año',    para: 'estudiantes de último año',    palabras: ['estudiante'] }
+  'estudiantes':      { nombre: 'Estudiante de último año',    para: 'estudiantes de último año',    palabras: ['estudiante'] },
+  'otro':             { nombre: 'Otro',                        para: 'tu profesión',                 palabras: ['otra', 'otros'] }
 };
+// Si elige "Otro", lo que escribe va en el rubro: otro-peluquera
+let RUBRO_OTRO = '';
+const rubroParaGuardar = () => RUBRO === 'otro'
+  ? ('otro-' + quitarTildes(RUBRO_OTRO).toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 25)).replace(/-$/, '')
+  : RUBRO;
 const quitarTildes = t => String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '');
 function rubroDe(t){
   const k = quitarTildes(t).toLowerCase().trim().replace(/[\s_]+/g, '-');
@@ -414,7 +420,8 @@ function htmlFormulario(){
       ? '<label class="campo"><span>¿A QUÉ TE DEDICÁS?</span><select name="rubro" required onchange="cambiarRubro(this.value)">' +
           '<option value="">Elegí tu profesión</option>' +
           Object.keys(RUBROS).map(k => '<option value="' + k + '"' + (k === RUBRO ? ' selected' : '') + '>' + limpiar(RUBROS[k].nombre) + '</option>').join('') +
-        '</select></label>'
+        '</select></label>' +
+        '<label class="campo" data-otro hidden><span>¿CUÁL?</span><input name="rubro_otro" maxlength="40" placeholder="Ej.: peluquera, odontóloga, fotógrafa" oninput="RUBRO_OTRO = this.value.trim()"></label>'
       : '') +
     '<label class="campo"><span>TU NOMBRE</span><input name="nombre" autocomplete="given-name" placeholder="Cómo te llamás" required maxlength="80"></label>' +
     '<label class="campo"><span>TU MEJOR EMAIL</span><input name="email" type="email" inputmode="email" autocomplete="email" placeholder="vos@ejemplo.com" required maxlength="120"></label>' +
@@ -431,6 +438,10 @@ const RUBRO_DEL_ENLACE = !!RUBRO;
 function cambiarRubro(v){
   RUBRO = rubroDe(v);
   document.querySelectorAll('select[name=rubro]').forEach(x => { x.value = RUBRO; });   // A y B tienen cada uno el suyo
+  document.querySelectorAll('[data-otro]').forEach(x => {
+    x.hidden = RUBRO !== 'otro';
+    if(RUBRO === 'otro') setTimeout(() => { if(x.offsetParent) x.querySelector('input').focus(); }, 50);
+  });
   document.querySelectorAll('[data-con-rubro]').forEach(el => { el.innerHTML = conMarcas(conRubro(el.dataset.conRubro)); });
 }
 function horaVisible(f){ return f && (f.getHours() || f.getMinutes()); }
@@ -658,6 +669,7 @@ async function registrar(ev, form){
 
   if(form.sitio.value) return false;                         // un robot llenó el campo escondido
   if(PAG.con_rubro && form.rubro && !RUBRO){ ver('Elegí a qué te dedicás, así te llega la clase de tu profesión'); form.rubro.focus(); return false; }
+  if(RUBRO === 'otro' && form.rubro_otro && RUBRO_OTRO.length < 3){ ver('Contanos a qué te dedicás'); form.rubro_otro.focus(); return false; }
   if(nombre.length < 2){ ver('Poné tu nombre'); form.nombre.focus(); return false; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ ver('Revisá tu email: parece que falta algo'); form.email.focus(); return false; }
   if(PAG.pedir_whatsapp && whatsapp.replace(/\D/g, '').length < 7){ ver('Poné tu WhatsApp, así te avisamos cuando empiece'); form.whatsapp.focus(); return false; }
@@ -671,7 +683,7 @@ async function registrar(ev, form){
   try{
     const r = await fetch(CAP_URL + '/rest/v1/rpc/guardar_lead', {
       method: 'POST', headers: cabeceras(),
-      body: JSON.stringify({ p_datos: Object.assign({ pagina: CAP_SLUG, nombre, email, whatsapp, rubro: RUBRO, origen: ORIGEN }, deDonde()) })
+      body: JSON.stringify({ p_datos: Object.assign({ pagina: CAP_SLUG, nombre, email, whatsapp, rubro: rubroParaGuardar(), origen: ORIGEN }, deDonde()) })
     });
     const d = await r.json().catch(() => null);
     if(!r.ok || !d || !d.exito) throw new Error((d && d.error) || 'No pudimos guardar tu registro. Probá de nuevo.');
