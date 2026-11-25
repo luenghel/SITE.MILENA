@@ -217,7 +217,8 @@
   .galeria img:nth-child(6n+4),.galeria img:nth-child(6n+5),.galeria img:nth-child(6n+6){grid-column:span 2}
   .testis{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 22px 16px;margin:0 -22px;scrollbar-width:none}
   .testis::-webkit-scrollbar{display:none}
-  .testis img{flex:0 0 auto;height:420px;width:auto;max-width:82vw;border-radius:18px;scroll-snap-align:center;display:block;
+  .testis{align-items:flex-start}
+  .testis img{flex:0 0 auto;width:min(360px,80vw);height:auto;border-radius:18px;scroll-snap-align:center;display:block;
     border:1px solid var(--linea);box-shadow:0 18px 40px rgba(0,0,0,.22);background:var(--caja)}
   .testis.pocos{justify-content:center}
   .testi{flex:0 0 300px;max-width:82vw;scroll-snap-align:center;margin:0;padding:24px 22px 20px;border-radius:20px;position:relative;
@@ -227,6 +228,9 @@
   .testi blockquote{font-size:16.5px;line-height:1.5;margin:0 0 16px;flex:1}
   .testi figcaption{font-size:11px;letter-spacing:.14em;font-weight:700;color:var(--oro);text-transform:uppercase}
   .cta-medio{max-width:430px;margin:34px auto 0;text-align:center}
+  .testis.prints{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:860px;margin:0 auto;padding:0;overflow:visible;align-items:start}
+  .testis.prints img{width:100%;max-width:none}
+  @media(max-width:640px){ .testis.prints{grid-template-columns:1fr;gap:10px} }
   .a-bloque .cta-medio{margin-top:42px}
   @media(max-width:1099px){
     .a-hero.confoto{grid-template-columns:1.12fr .88fr}
@@ -248,7 +252,7 @@
     .galeria{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding:0 22px 12px;margin:0 -22px;scrollbar-width:none}
     .galeria::-webkit-scrollbar{display:none}
     .galeria img{flex:0 0 78%;height:250px;scroll-snap-align:center}
-    .testis img{height:380px}
+    .testis img{width:80vw}
   }
 
   /* ─── Rubro, camino y datos de Milena ─── */
@@ -509,7 +513,7 @@ function htmlTestimonios(){
   return '<section class="sec"><div class="ancho">' +
     '<h2>' + conMarcas(PAG.testimonios_titulo || 'Lo que dicen **quienes aprendieron conmigo**') + '</h2>' +
     '<p class="sec-sub">Mensajes reales. Sin nombres, para cuidar su privacidad.</p>' +
-    '<div class="testis' + (l.length < 4 ? ' pocos' : '') + '">' + l.map(tarjeta).join('') + '</div>' +
+    '<div class="testis' + (l.every(t => /^https:\/\//i.test(t)) ? ' prints' : (l.length < 4 ? ' pocos' : '')) + '">' + l.map(tarjeta).join('') + '</div>' +
     htmlCta('Botón después de testimonios') +
   '</div></section>';
 }
