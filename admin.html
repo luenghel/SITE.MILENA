@@ -3969,6 +3969,23 @@ body{visibility:hidden}
         </div>
       </div>
 
+      <div id="capRubrosZona" style="display:none">
+        <div class="pm-seccion">
+          <div class="pm-cab"><div>
+            <h3 class="chart-title" style="margin-bottom:2px">🎯 Por rubro</h3>
+            <p class="chart-subtitle">Registros del período · desde siempre · 🔐 cuántas crearon su cuenta en la plataforma</p>
+          </div></div>
+          <div id="capRubros"></div>
+        </div>
+        <div class="pm-seccion">
+          <div class="pm-cab"><div>
+            <h3 class="chart-title" style="margin-bottom:2px">🔗 Enlaces para ManyChat</h3>
+            <p class="chart-subtitle">Cada palabra con su enlace: así cada registro queda con su rubro y la pieza que lo trajo</p>
+          </div></div>
+          <div id="capEnlaces"></div>
+        </div>
+      </div>
+
       <div class="pm-seccion">
         <div class="pm-cab">
           <div>
@@ -4034,6 +4051,7 @@ body{visibility:hidden}
           <label class="frm-campo ancho">
             <span class="form-label">TEXTO DE ABAJO DEL TÍTULO</span>
             <textarea class="form-input" id="ceSub" rows="2"></textarea>
+            <span class="frm-nota">Con "Pedir el rubro" encendido, <code>{rubro}</code> se cambia por la profesión: "nutricionistas", "abogadas"… (o "tu profesión").</span>
           </label>
 
           <label class="frm-campo">
@@ -4051,6 +4069,14 @@ body{visibility:hidden}
             <textarea class="form-input" id="cePuntos" rows="4"></textarea>
           </label>
 
+          <label class="frm-campo">
+            <span class="form-label">TÍTULO DEL FORMULARIO</span>
+            <input class="form-input" id="ceFTit" placeholder="Reservá tu lugar">
+          </label>
+          <label class="frm-campo">
+            <span class="form-label">TEXTO DEL FORMULARIO</span>
+            <input class="form-input" id="ceFTxt" placeholder="Completá tus datos y te mandamos el acceso.">
+          </label>
           <label class="frm-campo">
             <span class="form-label">TEXTO DEL BOTÓN</span>
             <input class="form-input" id="ceBoton" placeholder="QUIERO MI LUGAR GRATIS">
@@ -4084,6 +4110,15 @@ body{visibility:hidden}
             <span class="form-label">QUIÉN ES MILENA</span>
             <textarea class="form-input" id="ceBio" rows="3"></textarea>
           </label>
+          <label class="frm-campo ancho">
+            <span class="form-label">DATOS DE MILENA · UNO POR RENGLÓN</span>
+            <textarea class="form-input" id="ceBioDatos" rows="3" placeholder="Más de 500 alumnas"></textarea>
+          </label>
+          <label class="frm-campo ancho">
+            <span class="form-label">LO QUE VIENE DESPUÉS · UN PASO POR RENGLÓN</span>
+            <textarea class="form-input" id="ceCamino" rows="4" placeholder="04/01 · 19:30 | Clase en vivo | No es sobre volumen…"></textarea>
+            <span class="frm-nota">Formato: <code>fecha | título | detalle</code>. El primero sale marcado como el paso de ahora. Vacío = no aparece.</span>
+          </label>
 
           <label class="frm-campo ancho">
             <span class="form-label">GRUPO DE WHATSAPP · APARECE DESPUÉS DE REGISTRARSE</span>
@@ -4100,6 +4135,20 @@ body{visibility:hidden}
           </label>
         </div>
 
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">🎯 Pedir el rubro</div>
+            <div class="toggle-help">Para lanzamientos por profesión. El enlace de cada reel lleva su rubro (<code>?rubro=nutri</code>); sin rubro en el enlace, la persona lo elige</div>
+          </div>
+          <div class="toggle-switch" id="ceRubro" onclick="this.classList.toggle('on')"></div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">🔐 Ofrecer crear la cuenta al terminar</div>
+            <div class="toggle-help">En el gracias: "¿Creamos tu cuenta?" con sus datos ya puestos, solo elige la contraseña. Después, el grupo de WhatsApp</div>
+          </div>
+          <div class="toggle-switch" id="ceCuenta" onclick="this.classList.toggle('on')"></div>
+        </div>
         <div class="toggle-row">
           <div class="toggle-info">
             <div class="toggle-label">📱 Pedir el WhatsApp</div>
@@ -7662,6 +7711,14 @@ body{visibility:hidden}
   let capPlantilla = 'a';
 
   const enlaceCap = p => 'https://milenacmm.com/c/' + p.slug;
+  // Los rubros de Movimiento Directo: clave (la de la pesquisa) · nombre · palabra de ManyChat
+  const RUBROS_CAP = [
+    ['nutricionista', 'Nutricionista', 'NUTRI'], ['abogada', 'Abogada', 'ABOGADA'], ['psicologa', 'Psicóloga', 'PSICO'],
+    ['arquitecta', 'Arquitecta', 'ARQUI'], ['personal-trainer', 'Personal trainer', 'TRAINER'], ['estetica', 'Estética', 'ESTETICA'],
+    ['contadora', 'Contadora', 'CONTA'], ['ingeniera', 'Ingeniera', 'INGE'], ['empresas', 'Dueña de empresa con equipo', 'EMPRESA'],
+    ['estudiantes', 'Estudiante de último año', 'ESTUDIANTE']
+  ];
+  const nombreRubro = k => (RUBROS_CAP.find(r => r[0] === k) || [k, k || 'Sin rubro'])[1];
   const pctCap = (leads, personas) => {
     leads = Number(leads) || 0; personas = Number(personas) || 0;
     if(!personas) return leads ? '—' : '0%';
@@ -7734,6 +7791,12 @@ body{visibility:hidden}
     }).join('');
   }
 
+  function copiarTexto(t){
+    navigator.clipboard.writeText(t)
+      .then(() => mostrarToast('✓ Enlace copiado'))
+      .catch(() => mostrarToast('No se pudo copiar', true));
+  }
+
   function copiarEnlaceCap(id){
     const p = ((capDatos && capDatos.paginas) || []).find(x => x.id === id);
     if(!p) return;
@@ -7760,13 +7823,41 @@ body{visibility:hidden}
       t('PERSONAS QUE ENTRARON', numCorto(personas), 'cada una cuenta una sola vez') +
       t('VISITAS', numCorto(p.vistas), 'contando las que volvieron') +
       t('REGISTROS', numCorto(leads), (Number(p.leads_hoy) || 0) + ' hoy · ' + (Number(p.leads_total) || 0) + ' desde siempre', 'verde') +
-      t('CONVERSIÓN', pctCap(leads, personas), 'de cada 100 que entran, cuántas se registran', 'oro');
+      t('CONVERSIÓN', pctCap(leads, personas), 'de cada 100 que entran, cuántas se registran', 'oro') +
+      (p.ofrecer_cuenta !== false ? t('CREARON SU CUENTA', numCorto(p.con_cuenta), 'de las ' + leads + ' registradas en el período') : '');
 
     const mias = k => ((capDatos[k] || []).filter(x => x.pagina_id === id));
     pintarSerieCap(mias('serie'));
     pintarTablaCap('capOrigen', mias('origen'), 'Todavía nadie entró en este período.');
     pintarTablaCap('capCampanas', mias('campanas').filter(c => c.nombre),
       'Sin campañas todavía. Aparecen cuando el enlace lleva <code>?utm_source=</code>.');
+
+    document.getElementById('capRubrosZona').style.display = p.con_rubro ? '' : 'none';
+    if(p.con_rubro){
+      const rs = mias('rubros');
+      const fila = k => rs.find(r => (r.nombre || '') === k) || { leads: 0, total: 0, con_cuenta: 0 };
+      const todos = RUBROS_CAP.map(r => [r[0], r[1], fila(r[0])]);
+      const sin = fila('');
+      if(sin.total) todos.push(['', 'Sin rubro', sin]);
+      const tope = Math.max(...todos.map(t => Number(t[2].total) || 0), 1);
+      document.getElementById('capRubros').innerHTML = todos.map(t =>
+        '<div class="cap-fila">' +
+          '<div class="cap-fila-nom">' + esc(t[1]) + '</div>' +
+          '<div class="met-fila-barra" style="width:100%"><div style="width:' + Math.round(100 * (Number(t[2].total) || 0) / tope) + '%"></div></div>' +
+          '<div class="cap-fila-num">' + (Number(t[2].leads) || 0) + ' · <b>' + (Number(t[2].total) || 0) + '</b> · 🔐 ' + (Number(t[2].con_cuenta) || 0) + '</div>' +
+        '</div>').join('');
+
+      const base = enlaceCap(p);
+      const enl = RUBROS_CAP.map(r => [r[2], r[1], base + '?rubro=' + r[0] + '&origen=' + r[2]])
+        .concat([['CLASE', 'Elige su rubro', base + '?origen=CLASE'], ['ACCESO', 'Elige su rubro', base + '?origen=ACCESO'],
+                 ['METODO', 'Elige su rubro', base + '?origen=METODO'], ['BIO', 'Link.Yo / bio', base + '?origen=bio']]);
+      document.getElementById('capEnlaces').innerHTML = enl.map(e =>
+        '<div class="cap-fila" style="grid-template-columns:110px minmax(0,1fr) auto">' +
+          '<div class="cap-fila-nom"><b>' + esc(e[0]) + '</b></div>' +
+          '<div class="cap-fila-nom" style="color:rgba(255,245,240,0.55);font-size:12px" title="' + esc(e[2]) + '">' + esc(e[1]) + ' · ' + esc(e[2].replace('https://', '')) + '</div>' +
+          '<button class="pesq-accion" style="padding:6px 10px;font-size:11.5px" data-enlace="' + esc(e[2]) + '" onclick="copiarTexto(this.dataset.enlace)">Copiar</button>' +
+        '</div>').join('');
+    }
 
     const { data, error } = await sb.from('leads_captura').select('*')
       .eq('pagina_id', id).order('creado_en', { ascending: false }).limit(5000);
@@ -7827,7 +7918,7 @@ body{visibility:hidden}
     const cont = document.getElementById('capLeads');
     const q = (document.getElementById('capBuscar').value || '').trim().toLowerCase();
     const lista = !q ? capLeads : capLeads.filter(l =>
-      [l.nombre, l.email, l.whatsapp, l.campana].some(x => String(x || '').toLowerCase().includes(q)));
+      [l.nombre, l.email, l.whatsapp, l.campana, l.origen, l.rubro ? nombreRubro(l.rubro) : ''].some(x => String(x || '').toLowerCase().includes(q)));
     document.getElementById('capLeadsSub').textContent = capLeads.length +
       (capLeads.length === 1 ? ' persona' : ' personas') + ' desde siempre' + (q ? ' · ' + lista.length + ' con esa búsqueda' : '');
     if(!lista.length){
@@ -7842,9 +7933,13 @@ body{visibility:hidden}
         '<div style="min-width:0"><div style="font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(l.nombre) +
             (l.leida ? '' : ' <span class="frm-nuevas" style="font-size:10px;letter-spacing:.12em">NUEVA</span>') + '</div>' +
           '<div style="font-size:12px;color:rgba(255,245,240,0.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(l.email) +
-            (l.whatsapp ? ' · ' + esc(l.whatsapp) : '') + '</div></div>' +
+            (l.whatsapp ? ' · ' + esc(l.whatsapp) : '') + '</div>' +
+          ((l.rubro || l.con_cuenta) ? '<div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap">' +
+            (l.rubro ? '<span class="cap-letra" style="letter-spacing:.06em">' + esc(nombreRubro(l.rubro)) + '</span>' : '') +
+            (l.con_cuenta ? '<span class="cap-letra" style="letter-spacing:.06em;background:rgba(93,202,165,0.15);color:#9FE1CB">🔐 CREÓ SU CUENTA</span>' : '') +
+          '</div>' : '') + '</div>' +
         '<div style="font-size:11.5px;color:rgba(255,245,240,0.5);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
-          cuandoCap(l.creado_en) + '<br>' + esc(l.campana || 'sin campaña') + (l.dispositivo ? ' · ' + esc(l.dispositivo) : '') + '</div>' +
+          cuandoCap(l.creado_en) + '<br>' + esc(l.origen || l.campana || 'sin campaña') + (l.dispositivo ? ' · ' + esc(l.dispositivo) : '') + '</div>' +
         '<div class="cap-lead-acc">' +
           (tel ? '<a class="pesq-accion" href="https://wa.me/' + tel + '" target="_blank" rel="noopener">WhatsApp</a>' : '') +
           '<a class="pesq-accion" href="mailto:' + esc(l.email) + '">Email</a>' +
@@ -7871,8 +7966,8 @@ body{visibility:hidden}
     // Sin saltos de línea ni fórmulas (por si alguien escribe "=..." en su nombre)
     const limpio = x => { let t = String(x == null ? '' : x).replace(/[\r\n;]+/g, ' ').trim();
       if(/^[=+\-@]/.test(t)) t = "'" + t; return t; };
-    const csv = '﻿' + ['Fecha', 'Nombre', 'Email', 'WhatsApp', 'Campaña', 'Vino de', 'Dispositivo'].join(';') + '\n' +
-      capLeads.map(l => [new Date(l.creado_en).toLocaleString('es'), l.nombre, l.email, l.whatsapp, l.campana, l.referencia, l.dispositivo]
+    const csv = '﻿' + ['Fecha', 'Nombre', 'Email', 'WhatsApp', 'Rubro', 'Palabra', 'Creó su cuenta', 'Campaña', 'Vino de', 'Dispositivo'].join(';') + '\n' +
+      capLeads.map(l => [new Date(l.creado_en).toLocaleString('es'), l.nombre, l.email, l.whatsapp, l.rubro ? nombreRubro(l.rubro) : '', l.origen, l.con_cuenta ? 'sí' : 'no', l.campana, l.referencia, l.dispositivo]
         .map(limpio).join(';')).join('\n');
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
@@ -7900,6 +7995,11 @@ body{visibility:hidden}
     pone('ceTitulo', p.titulo); pone('ceSub', p.subtitulo); pone('ceFecha', fechaParaCampo(p.fecha_evento));
     pone('ceLugar', p.lugar); pone('cePuntos', (Array.isArray(p.puntos) ? p.puntos : []).join('\n'));
     pone('ceBoton', p.boton); pone('ceNota', p.nota_boton); pone('ceFoto', p.foto_url); pone('ceBio', p.bio); pone('cePortada', p.foto_portada);
+    pone('ceFTit', p.form_titulo); pone('ceFTxt', p.form_texto);
+    pone('ceBioDatos', (Array.isArray(p.bio_datos) ? p.bio_datos : []).join('\n'));
+    pone('ceCamino', (Array.isArray(p.camino) ? p.camino : []).join('\n'));
+    document.getElementById('ceRubro').classList.toggle('on', !!p.con_rubro);
+    document.getElementById('ceCuenta').classList.toggle('on', p.ofrecer_cuenta !== false);
     pone('ceGaleria', (Array.isArray(p.galeria) ? p.galeria : []).join('\n')); pone('ceTestis', (Array.isArray(p.testimonios) ? p.testimonios : []).join('\n'));
     pone('ceGrupo', p.grupo_whatsapp); pone('ceGTit', p.gracias_titulo); pone('ceGTxt', p.gracias_texto);
     document.getElementById('ceWa').classList.toggle('on', p.pedir_whatsapp !== false);
@@ -7969,6 +8069,11 @@ body{visibility:hidden}
       foto_url: foto, foto_portada: portada, galeria, testimonios: testis, bio: ceVal('ceBio') || null, grupo_whatsapp: grupo,
       gracias_titulo: ceVal('ceGTit') || null, gracias_texto: ceVal('ceGTxt') || null,
       pedir_whatsapp: document.getElementById('ceWa').classList.contains('on'),
+      con_rubro: document.getElementById('ceRubro').classList.contains('on'),
+      ofrecer_cuenta: document.getElementById('ceCuenta').classList.contains('on'),
+      form_titulo: ceVal('ceFTit') || null, form_texto: ceVal('ceFTxt') || null,
+      bio_datos: ceVal('ceBioDatos').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 8),
+      camino: ceVal('ceCamino').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 8),
       activa: document.getElementById('ceActiva').classList.contains('on')
     };
     const r = capEditando

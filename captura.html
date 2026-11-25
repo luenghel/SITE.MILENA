@@ -243,11 +243,32 @@
     .testis img{height:380px}
   }
 
+  /* ─── Rubro, camino y datos de Milena ─── */
+  .campo select{width:100%;padding:15px 16px;border-radius:12px;border:1px solid var(--linea);background:var(--campo);color:var(--tinta);
+    font-size:16px;outline:none;appearance:none;-webkit-appearance:none;font-family:inherit;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23D4A356' stroke-width='2'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 16px center}
+  .campo select:focus{border-color:var(--oro2);box-shadow:0 0 0 3px rgba(212,163,86,.2)}
+  body.tpl-a .campo select option{background:#1E0D15;color:#FFF5F0}
+  .camino{list-style:none;max-width:720px;margin:0 auto;position:relative}
+  .camino::before{content:'';position:absolute;left:17px;top:10px;bottom:10px;width:1px;background:var(--linea)}
+  .camino li{display:flex;gap:18px;padding:0 0 26px;position:relative}
+  .camino li:last-child{padding-bottom:0}
+  .camino .pt{flex-shrink:0;width:35px;height:35px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    background:var(--fondo);border:1px solid var(--linea);font-size:13px;font-weight:700;color:var(--mudo);position:relative}
+  .camino li.ahora .pt{background:linear-gradient(135deg,#F7CD7C,#DDA63F);border-color:transparent;color:#3A1608;box-shadow:0 0 0 6px rgba(221,166,63,.15)}
+  .camino small{display:block;font-size:11px;letter-spacing:.16em;font-weight:700;color:var(--oro);margin:6px 0 3px}
+  .camino b{display:block;font-size:17px;line-height:1.3}
+  .camino span{display:block;font-size:14.5px;color:var(--suave);margin-top:3px}
+  .datos{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+  .datos span{font-size:12px;padding:6px 11px;border-radius:999px;background:var(--caja);border:1px solid var(--linea);color:var(--suave)}
+  @media(max-width:899px){ .bio .datos{justify-content:center} }
+
   /* ═══ GRACIAS (los dos diseños) ═══ */
-  .gracias{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:24px;overflow-y:auto;
+  .gracias{position:fixed;inset:0;z-index:80;display:none;align-items:flex-start;justify-content:center;padding:34px 18px 40px;overflow-y:auto;
     background:radial-gradient(60% 50% at 50% 0%,rgba(107,26,46,.85),transparent 70%),#14090F;color:#FFF5F0;text-align:center}
   .gracias.ver{display:flex}
-  .gracias-caja{max-width:520px;animation:sube .4s cubic-bezier(.2,.9,.3,1)}
+  .gracias-caja{max-width:520px;width:100%;margin:auto;animation:sube .4s cubic-bezier(.2,.9,.3,1)}
   .gracias-ok{width:76px;height:76px;border-radius:50%;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;
     background:linear-gradient(135deg,#F7CD7C,#DDA63F);color:#3A1608;box-shadow:0 0 0 12px rgba(221,166,63,.14)}
   .gracias h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(34px,6vw,50px);line-height:1.05;margin-bottom:14px}
@@ -255,6 +276,37 @@
   .gracias p{font-size:17px;color:rgba(255,245,240,.75);margin-bottom:28px}
   .boton.wa{background:linear-gradient(135deg,#2BD46B,#1DB954);color:#06371A;box-shadow:0 10px 30px rgba(37,211,102,.35)}
   .gracias small{display:block;margin-top:16px;font-size:12.5px;color:rgba(255,245,240,.45)}
+  .gracias p.g-lead{margin-bottom:22px}
+  .g-paso{display:flex;gap:14px;text-align:left;padding:20px 18px;border-radius:18px;margin-bottom:12px;
+    background:rgba(255,245,240,.045);border:1px solid rgba(255,245,240,.12);transition:border-color .3s,background .3s}
+  .g-paso.ahora{border-color:rgba(212,163,86,.6);background:linear-gradient(160deg,rgba(212,163,86,.12),rgba(255,245,240,.03))}
+  .g-paso.hecho{opacity:.8}
+  .g-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
+    border:1px solid rgba(255,245,240,.25);color:rgba(255,245,240,.7)}
+  .g-paso.ahora .g-num{background:linear-gradient(135deg,#F7CD7C,#DDA63F);color:#3A1608;border:none}
+  .g-paso.hecho .g-num{background:#5DCAA5;color:#06371A;border:none}
+  .g-cont{flex:1;min-width:0}
+  .g-cont > b{display:block;font-size:16.5px;margin-bottom:4px}
+  .gracias .g-cont p{font-size:14.5px;margin:0 0 14px;color:rgba(255,245,240,.72)}
+  .g-datos{font-size:13px;color:#FAC775;margin:-6px 0 14px;word-break:break-all}
+  .g-acc{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .g-acc .boton{width:auto;flex:1;padding:15px 18px;font-size:12.5px}
+  .g-no{background:none;border:none;color:rgba(255,245,240,.55);font-size:13.5px;cursor:pointer;padding:10px 6px;text-decoration:underline;font-family:inherit}
+  .g-pass{position:relative}
+  .g-pass input{padding-right:60px !important}
+  .g-pass button{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:#FAC775;font-size:12.5px;cursor:pointer;padding:8px;font-family:inherit}
+  .g-reglas{font-size:12px;color:rgba(255,245,240,.5);margin:-4px 0 12px;line-height:1.45}
+  .g-reglas.mal{color:#FF8090}
+  .g-codigo input{letter-spacing:.5em;text-align:center;font-size:22px !important;font-variant-numeric:tabular-nums}
+  .g-ok{font-size:14.5px;color:#9FE1CB;line-height:1.5}
+  .g-ok a{color:#FAC775}
+  .g-mini{display:block;margin-top:8px;font-size:13px;color:rgba(255,245,240,.55)}
+  .g-mini a, .g-mini button{color:#FAC775;background:none;border:none;font:inherit;cursor:pointer;text-decoration:underline;padding:0}
+  .g-extra{display:block;text-align:left;padding:16px 18px;border-radius:16px;border:1px dashed rgba(255,245,240,.18);color:rgba(255,245,240,.75);
+    font-size:14px;text-decoration:none;margin-top:4px}
+  .g-extra b{color:#FAC775}
+  .gracias .campo span{color:rgba(255,245,240,.5)}
+  .gracias .campo input{background:rgba(255,245,240,.07);border-color:rgba(255,245,240,.14);color:#FFF5F0}
 
   @media (prefers-reduced-motion:reduce){ *{animation:none !important;transition:none !important} html{scroll-behavior:auto} }
 </style>
@@ -279,11 +331,8 @@
   <div class="gracias-caja">
     <div class="gracias-ok"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
     <h2 id="graciasTit"></h2>
-    <p id="graciasTxt"></p>
-    <a class="boton wa" id="graciasGrupo" href="#" target="_blank" rel="noopener" data-metrica="Entrar al grupo de WhatsApp" hidden>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.7-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg>
-      ENTRAR AL GRUPO DE WHATSAPP
-    </a>
+    <p class="g-lead" id="graciasTxt"></p>
+    <div id="graciasPasos"></div>
     <small id="graciasPie">Guardá este enlace: por acá te avisamos todo.</small>
   </div>
 </div>
@@ -318,6 +367,36 @@ const conMarcas = t => limpiar(t).replace(/\*\*(.+?)\*\*/g, '<span class="oro">$
 const FLECHA = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 const TILDE = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>';
 
+// ─── Rubros (Movimiento Directo) ───
+// La clave es la misma que usa la pesquisa (/pesquisa?rubro=…).
+// "palabras" son las de ManyChat, así el enlace puede llevar ?rubro=NUTRI.
+const RUBROS = {
+  'nutricionista':    { nombre: 'Nutricionista',               para: 'nutricionistas',               palabras: ['nutri', 'nutricionistas'] },
+  'abogada':          { nombre: 'Abogada',                     para: 'abogadas',                     palabras: ['abogado', 'abogadas'] },
+  'psicologa':        { nombre: 'Psicóloga',                   para: 'psicólogas',                   palabras: ['psico', 'psicologo', 'psicologas'] },
+  'arquitecta':       { nombre: 'Arquitecta',                  para: 'arquitectas',                  palabras: ['arqui', 'arquitecto', 'arquitectas'] },
+  'personal-trainer': { nombre: 'Personal trainer',            para: 'personal trainers',            palabras: ['trainer', 'personal', 'personaltrainer'] },
+  'estetica':         { nombre: 'Estética',                    para: 'profesionales de estética',    palabras: ['esteticista'] },
+  'contadora':        { nombre: 'Contadora',                   para: 'contadoras',                   palabras: ['conta', 'contador', 'contadoras'] },
+  'ingeniera':        { nombre: 'Ingeniera',                   para: 'ingenieras',                   palabras: ['inge', 'ingeniero', 'ingenieras'] },
+  'empresas':         { nombre: 'Dueña de empresa con equipo', para: 'dueñas de empresa con equipo', palabras: ['empresa', 'empresaria'] },
+  'estudiantes':      { nombre: 'Estudiante de último año',    para: 'estudiantes de último año',    palabras: ['estudiante'] }
+};
+const quitarTildes = t => String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '');
+function rubroDe(t){
+  const k = quitarTildes(t).toLowerCase().trim().replace(/[\s_]+/g, '-');
+  if(!k) return '';
+  if(RUBROS[k]) return k;
+  for(const r in RUBROS) if(RUBROS[r].palabras.includes(k) || RUBROS[r].palabras.includes(k.replace(/-/g, ''))) return r;
+  return '';
+}
+const PARAMS = new URLSearchParams(location.search);
+let RUBRO = rubroDe(PARAMS.get('rubro') || PARAMS.get('r') || '');
+// La palabra de ManyChat que trajo a la persona (NUTRI, CLASE, ACCESO…), o "bio"
+const ORIGEN = String(PARAMS.get('origen') || PARAMS.get('o') || PARAMS.get('pieza') || '').replace(/[^A-Za-z0-9 _-]/g, '').slice(0, 30).toUpperCase();
+// {rubro} en los textos → "nutricionistas" (o "tu profesión" si no sabemos)
+const conRubro = t => String(t == null ? '' : t).replace(/\{rubro\}/g, RUBRO ? RUBROS[RUBRO].para : 'tu profesión');
+
 function cabeceras(){ return { apikey: CAP_KEY, Authorization: 'Bearer ' + CAP_KEY, 'Content-Type': 'application/json' }; }
 
 // ─── Fechas ───
@@ -331,6 +410,12 @@ function horaCorta(d){ return d.toLocaleTimeString('es-PY', { hour: '2-digit', m
 function htmlFormulario(){
   return '<form onsubmit="return registrar(event, this)" novalidate>' +
     '<div class="error" role="alert"></div>' +
+    ((PAG.con_rubro && !RUBRO_DEL_ENLACE)
+      ? '<label class="campo"><span>¿A QUÉ TE DEDICÁS?</span><select name="rubro" required onchange="cambiarRubro(this.value)">' +
+          '<option value="">Elegí tu profesión</option>' +
+          Object.keys(RUBROS).map(k => '<option value="' + k + '"' + (k === RUBRO ? ' selected' : '') + '>' + limpiar(RUBROS[k].nombre) + '</option>').join('') +
+        '</select></label>'
+      : '') +
     '<label class="campo"><span>TU NOMBRE</span><input name="nombre" autocomplete="given-name" placeholder="Cómo te llamás" required maxlength="80"></label>' +
     '<label class="campo"><span>TU MEJOR EMAIL</span><input name="email" type="email" inputmode="email" autocomplete="email" placeholder="vos@ejemplo.com" required maxlength="120"></label>' +
     (PAG.pedir_whatsapp
@@ -340,6 +425,29 @@ function htmlFormulario(){
     '<button class="boton" type="submit"><span>' + limpiar(PAG.boton || 'QUIERO MI LUGAR GRATIS') + '</span>' + FLECHA + '</button>' +
     (PAG.nota_boton ? '<div class="nota-boton">🔒 ' + limpiar(PAG.nota_boton) + '</div>' : '') +
   '</form>';
+}
+
+const RUBRO_DEL_ENLACE = !!RUBRO;
+function cambiarRubro(v){
+  RUBRO = rubroDe(v);
+  document.querySelectorAll('select[name=rubro]').forEach(x => { x.value = RUBRO; });   // A y B tienen cada uno el suyo
+  document.querySelectorAll('[data-con-rubro]').forEach(el => { el.innerHTML = conMarcas(conRubro(el.dataset.conRubro)); });
+}
+function horaVisible(f){ return f && (f.getHours() || f.getMinutes()); }
+
+function htmlCamino(){
+  const l = (Array.isArray(PAG.camino) ? PAG.camino : []).map(x => String(x).split('|').map(y => y.trim())).filter(x => x[0] || x[1]);
+  if(!l.length) return '';
+  return '<section class="sec"><div class="ancho">' +
+    '<h2>' + conMarcas(PAG.camino_titulo || 'Lo que viene **después**') + '</h2>' +
+    '<p class="sec-sub">Así sigue después de registrarte.</p>' +
+    '<ol class="camino">' + l.map((x, i) =>
+      '<li class="' + (i === 0 ? 'ahora' : '') + '"><div class="pt">' + (i + 1) + '</div><div>' +
+        (x[0] ? '<small>' + limpiar(x[0]).toUpperCase() + '</small>' : '') +
+        '<b>' + limpiar(conRubro(x[1] || '')) + '</b>' +
+        (x[2] ? '<span>' + limpiar(conRubro(x[2])) + '</span>' : '') +
+      '</div></li>').join('') + '</ol>' +
+  '</div></section>';
 }
 
 function htmlReloj(){
@@ -380,7 +488,9 @@ function htmlBio(){
     (foto ? '<img class="bio-foto" src="' + limpiar(foto) + '" alt="Milena Machado" loading="lazy" width="112" height="112">'
           : '<div class="bio-letra">M</div>') +
     '<div><h3>' + limpiar((PAG.bio_titulo || 'Quién te va a acompañar').toUpperCase()) + '</h3>' +
-    '<strong>Milena Machado</strong><p>' + limpiar(PAG.bio) + '</p></div></div>';
+    '<strong>Milena Machado</strong><p>' + limpiar(PAG.bio) + '</p>' +
+    ((Array.isArray(PAG.bio_datos) && PAG.bio_datos.length) ? '<div class="datos">' + PAG.bio_datos.slice(0, 8).map(d => '<span>' + limpiar(d) + '</span>').join('') + '</div>' : '') +
+    '</div></div>';
 }
 
 // ═══ DISEÑO A ═══════════════════════════════════════════════════════
@@ -394,11 +504,11 @@ function pintarA(){
   '<main class="ancho">' +
     '<section class="a-hero' + (urlFoto(PAG.foto_portada) ? ' confoto' : '') + '">' +
       '<div>' +
-        (PAG.etiqueta ? '<div class="ceja">' + limpiar(PAG.etiqueta) + '</div>' : '') +
-        '<h1>' + conMarcas(PAG.titulo) + '</h1>' +
-        (PAG.subtitulo ? '<p class="sub">' + limpiar(PAG.subtitulo) + '</p>' : '') +
+        (PAG.etiqueta ? '<div class="ceja">' + limpiar(conRubro(PAG.etiqueta)) + '</div>' : '') +
+        '<h1 data-con-rubro="' + limpiar(PAG.titulo) + '">' + conMarcas(conRubro(PAG.titulo)) + '</h1>' +
+        (PAG.subtitulo ? '<p class="sub">' + limpiar(conRubro(PAG.subtitulo)) + '</p>' : '') +
         '<div class="chips">' +
-          (f ? '<span class="chip">📅 ' + limpiar(fechaLarga(f)) + '</span><span class="chip">🕗 ' + horaCorta(f) + '</span>' : '') +
+          (f ? '<span class="chip">📅 ' + limpiar(fechaLarga(f)) + '</span>' + (horaVisible(f) ? '<span class="chip">🕗 ' + horaCorta(f) + '</span>' : '') : '') +
           (PAG.lugar ? '<span class="chip">📍 ' + limpiar(PAG.lugar) + '</span>' : '') +
         '</div>' +
         (f && f > new Date() ? htmlReloj() : '') +
@@ -406,18 +516,18 @@ function pintarA(){
       htmlPortada('a-foto') +
 
       '<div class="a-tarjeta" id="formulario">' +
-        '<h2>Reservá tu lugar</h2>' +
-        '<p class="bajada">Completá tus datos y te mandamos el acceso.</p>' +
+        '<h2>' + limpiar(PAG.form_titulo || 'Reservá tu lugar') + '</h2>' +
+        '<p class="bajada">' + limpiar(PAG.form_texto || 'Completá tus datos y te mandamos el acceso.') + '</p>' +
         htmlFormulario() +
       '</div>' +
     '</section>' +
 
     ((puntos.length || PAG.bio) ? '<section class="a-bloque"><div class="a-dos">' +
       (puntos.length ? '<div><h2>Lo que te vas a <span class="oro">llevar</span></h2>' +
-        '<ul class="puntos">' + puntos.map(p => '<li><span class="tilde">' + TILDE + '</span><span>' + limpiar(p) + '</span></li>').join('') + '</ul></div>' : '<div></div>') +
+        '<ul class="puntos">' + puntos.map(p => '<li><span class="tilde">' + TILDE + '</span><span>' + limpiar(conRubro(p)) + '</span></li>').join('') + '</ul></div>' : '<div></div>') +
       '<div>' + htmlBio() + '</div>' +
     '</div></section>' : '') +
-    htmlEventos() + htmlTestimonios() +
+    htmlCamino() + htmlEventos() + htmlTestimonios() +
   '</main>' +
 
   '<footer class="pie">Creando Mentes Millonarias · <a href="/privacidad">Privacidad</a></footer>';
@@ -435,13 +545,13 @@ function pintarB(){
 
   '<main>' +
     '<section class="ancho"><div class="b-hero' + (urlFoto(PAG.foto_portada) ? ' confoto' : '') + '"><div>' +
-      (PAG.etiqueta ? '<div class="pildora">' + limpiar(PAG.etiqueta) + '</div>' : '') +
-      '<h1>' + conMarcas(PAG.titulo) + '</h1>' +
-      (PAG.subtitulo ? '<p class="sub">' + limpiar(PAG.subtitulo) + '</p>' : '') +
+      (PAG.etiqueta ? '<div class="pildora">' + limpiar(conRubro(PAG.etiqueta)) + '</div>' : '') +
+      '<h1 data-con-rubro="' + limpiar(PAG.titulo) + '">' + conMarcas(conRubro(PAG.titulo)) + '</h1>' +
+      (PAG.subtitulo ? '<p class="sub">' + limpiar(conRubro(PAG.subtitulo)) + '</p>' : '') +
       boton('Botón principal') +
       (PAG.nota_boton ? '<div class="nota-boton">🔒 ' + limpiar(PAG.nota_boton) + '</div>' : '') +
       '<div class="b-cuando">' +
-        (f ? '<span>📅 ' + limpiar(fechaLarga(f)) + '</span><span>🕗 ' + horaCorta(f) + '</span>' : '') +
+        (f ? '<span>📅 ' + limpiar(fechaLarga(f)) + '</span>' + (horaVisible(f) ? '<span>🕗 ' + horaCorta(f) + '</span>' : '') : '') +
         (PAG.lugar ? '<span>📍 ' + limpiar(PAG.lugar) + '</span>' : '') +
       '</div>' +
     '</div>' + htmlPortada('b-foto') + '</div>' +
@@ -454,10 +564,10 @@ function pintarB(){
 
     (puntos.length ? '<section class="b-oscuro"><div class="ancho">' +
       '<h2>Lo que te vas a <span class="oro" style="color:#FAC775">llevar</span></h2>' +
-      '<div class="b-tarjetas">' + puntos.map((p, i) => '<div><i>' + (i + 1) + '</i><span>' + limpiar(p) + '</span></div>').join('') + '</div>' +
+      '<div class="b-tarjetas">' + puntos.map((p, i) => '<div><i>' + (i + 1) + '</i><span>' + limpiar(conRubro(p)) + '</span></div>').join('') + '</div>' +
     '</div></section>' : '') +
 
-    htmlEventos() + htmlTestimonios() +
+    htmlCamino() + htmlEventos() + htmlTestimonios() +
 
     (PAG.bio ? '<section class="b-bloque"><div class="ancho"><div class="b-bio">' + htmlBio() + '</div></div></section>' : '<div style="height:50px"></div>') +
 
@@ -547,6 +657,7 @@ async function registrar(ev, form){
   const whatsapp = form.whatsapp ? form.whatsapp.value.trim() : '';
 
   if(form.sitio.value) return false;                         // un robot llenó el campo escondido
+  if(PAG.con_rubro && form.rubro && !RUBRO){ ver('Elegí a qué te dedicás, así te llega la clase de tu profesión'); form.rubro.focus(); return false; }
   if(nombre.length < 2){ ver('Poné tu nombre'); form.nombre.focus(); return false; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ ver('Revisá tu email: parece que falta algo'); form.email.focus(); return false; }
   if(PAG.pedir_whatsapp && whatsapp.replace(/\D/g, '').length < 7){ ver('Poné tu WhatsApp, así te avisamos cuando empiece'); form.whatsapp.focus(); return false; }
@@ -560,16 +671,17 @@ async function registrar(ev, form){
   try{
     const r = await fetch(CAP_URL + '/rest/v1/rpc/guardar_lead', {
       method: 'POST', headers: cabeceras(),
-      body: JSON.stringify({ p_datos: Object.assign({ pagina: CAP_SLUG, nombre, email, whatsapp }, deDonde()) })
+      body: JSON.stringify({ p_datos: Object.assign({ pagina: CAP_SLUG, nombre, email, whatsapp, rubro: RUBRO, origen: ORIGEN }, deDonde()) })
     });
     const d = await r.json().catch(() => null);
     if(!r.ok || !d || !d.exito) throw new Error((d && d.error) || 'No pudimos guardar tu registro. Probá de nuevo.');
 
     // Para los anuncios de Meta y para nuestras métricas
     try{ if(typeof pixelPersona === 'function') pixelPersona(email, nombre); }catch(e){}
-    try{ if(typeof pixel === 'function') pixel('Lead', { content_name: CAP_SLUG, content_category: 'captura' }); }catch(e){}
+    try{ if(typeof pixel === 'function') pixel('Lead', { content_name: RUBRO || CAP_SLUG, content_category: CAP_SLUG, nicho: RUBRO || '', pieza: ORIGEN || '' }); }catch(e){}
     try{ if(typeof anotarEvento === 'function') anotarEvento('clic', { detalle: 'Se registró', referencia: '' }); }catch(e){}
 
+    YO = { nombre, email, whatsapp };
     mostrarGracias(nombre, d.grupo || PAG.grupo_whatsapp || '');
   }catch(e){
     ver(e.message || 'No pudimos guardar tu registro. Probá de nuevo.');
@@ -580,23 +692,267 @@ async function registrar(ev, form){
   return false;
 }
 
+let YO = null;          // lo que dejó en el formulario
+let GRUPO = '';
+
+const ICONO_WA = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.7-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg>';
+
 function mostrarGracias(nombre, grupo){
   cerrarHoja();
   const n = nombre.split(/\s+/)[0];
   document.getElementById('graciasTit').innerHTML =
     conMarcas(String(PAG.gracias_titulo || '¡Listo, **{nombre}**!').replace(/\{nombre\}/g, n));
-  document.getElementById('graciasTxt').textContent = PAG.gracias_texto || '';
+  document.getElementById('graciasTxt').textContent = conRubro(PAG.gracias_texto || '');
 
-  const a = document.getElementById('graciasGrupo');
-  const conGrupo = /^https:\/\//.test(grupo);
-  if(conGrupo){ a.href = grupo; a.hidden = false; }
-  else { a.hidden = true; }
-  document.getElementById('graciasPie').hidden = !conGrupo;
+  GRUPO = /^https:\/\//.test(grupo) ? grupo : '';
+  const conCuenta = PAG.ofrecer_cuenta !== false;
+  let num = 0;
+  let html = '';
+
+  // ── Paso: la cuenta en la plataforma, con sus datos ya puestos ──
+  if(conCuenta){
+    num++;
+    html += '<div class="g-paso ahora" id="gCuenta"><div class="g-num">' + num + '</div><div class="g-cont">' +
+      '<b>¿Creamos tu cuenta en la plataforma?</b>' +
+      '<p>Es donde vas a ver tu clase. Tus datos ya están cargados: solo elegí una contraseña.</p>' +
+      '<div class="g-datos">' + limpiar(YO.nombre) + ' · ' + limpiar(YO.email) + '</div>' +
+
+      '<div id="gPregunta" class="g-acc">' +
+        '<button class="boton" onclick="cuentaSi()" data-metrica="Gracias: sí, crear cuenta"><span>SÍ, CREAR MI CUENTA</span></button>' +
+        '<button class="g-no" onclick="cuentaNo()" data-metrica="Gracias: cuenta ahora no">Ahora no</button>' +
+      '</div>' +
+
+      '<form id="gForm" hidden onsubmit="crearCuentaCap(event)" novalidate>' +
+        '<label class="campo"><span>ELEGÍ UNA CONTRASEÑA</span><div class="g-pass">' +
+          '<input id="gPass" type="password" autocomplete="new-password" maxlength="72" oninput="revisarPass()">' +
+          '<button type="button" onclick="verPass(this)">Ver</button></div></label>' +
+        '<div class="g-reglas" id="gReglas">Mínimo 8, con mayúscula, minúscula, número y un símbolo (. - _ ! @ #)</div>' +
+        '<div class="error" id="gErr" role="alert"></div>' +
+        '<button class="boton" type="submit" id="gBtn"><span>CREAR MI CUENTA</span></button>' +
+      '</form>' +
+
+      '<form id="gCodigo" hidden onsubmit="verificarCap(event)" novalidate>' +
+        '<p>Te mandamos un código a <b>' + limpiar(YO.email) + '</b>. Escribilo acá para activar tu cuenta.</p>' +
+        '<label class="campo g-codigo"><span>CÓDIGO</span><input id="gCod" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="······"></label>' +
+        '<div class="error" id="gErr2" role="alert"></div>' +
+        '<button class="boton" type="submit" id="gBtn2"><span>ACTIVAR MI CUENTA</span></button>' +
+        '<span class="g-mini">¿No te llegó? Mirá en spam o <button type="button" id="gReenviar" onclick="reenviarCap()">reenviá el código</button></span>' +
+      '</form>' +
+
+      '<div id="gListo" class="g-ok" hidden></div>' +
+    '</div></div>';
+  }
+
+  // ── Paso: el grupo de WhatsApp ──
+  if(GRUPO){
+    num++;
+    html += '<div class="g-paso' + (conCuenta ? '' : ' ahora') + '" id="gGrupo"><div class="g-num">' + num + '</div><div class="g-cont">' +
+      '<b>¿Querés entrar a la comunidad de WhatsApp?</b>' +
+      '<p>Por ahí aviso cada paso: cuándo se libera tu clase, la clase en vivo y todo lo que viene.</p>' +
+      '<a class="boton wa" href="' + limpiar(GRUPO) + '" target="_blank" rel="noopener" onclick="entroGrupo()" data-metrica="Entrar al grupo de WhatsApp">' +
+        ICONO_WA + '<span>SÍ, ENTRAR AL GRUPO</span></a>' +
+    '</div></div>';
+  }
+
+  // ── Extra: la pesquisa, con lo que ya escribió ──
+  if(PAG.con_rubro){
+    html += '<a class="g-extra" href="' + linkPesquisa() + '" onclick="prepararPesquisa()" data-metrica="Gracias: ir a la pesquisa">' +
+      '<b>¿Me contás un poco de vos?</b> Son 2 minutos y me ayudan a preparar la clase en vivo pensando en lo que vivís →</a>';
+  }
+
+  document.getElementById('graciasPasos').innerHTML = html;
+  document.getElementById('graciasPie').hidden = !GRUPO;
 
   document.getElementById('pegado').classList.remove('ver');
   document.getElementById('gracias').classList.add('ver');
   document.body.style.overflow = 'hidden';
   window.scrollTo(0, 0);
+
+  // Si ya está adentro con ese mismo email, no le pedimos nada
+  if(conCuenta) yaTieneSesion();
+}
+
+async function yaTieneSesion(){
+  try{
+    if(typeof sb === 'undefined' || !sb) return;
+    const { data } = await sb.auth.getSession();
+    const e = data && data.session && data.session.user && data.session.user.email;
+    if(e && e.toLowerCase() === YO.email) cuentaLista('Ya tenés tu cuenta y estás adentro. <a href="/index">Ir a la plataforma →</a>');
+  }catch(e){}
+}
+
+// ─── El paso de la cuenta ───
+function pasarAlGrupo(){
+  const g = document.getElementById('gGrupo');
+  if(!g) return;
+  g.classList.add('ahora');
+  setTimeout(() => g.scrollIntoView({ behavior: 'smooth', block: 'center' }), 250);
+}
+function cuentaSi(){
+  document.getElementById('gPregunta').hidden = true;
+  document.getElementById('gForm').hidden = false;
+  setTimeout(() => document.getElementById('gPass').focus(), 60);
+}
+function cuentaNo(){
+  const c = document.getElementById('gCuenta');
+  c.classList.remove('ahora');
+  document.getElementById('gPregunta').outerHTML =
+    '<span class="g-mini">Podés crearla cuando quieras desde <a href="/login?registro=1">milenacmm.com</a>.' +
+    ' <button type="button" onclick="volverACuenta()">Mejor la creo ahora</button></span>';
+  pasarAlGrupo();
+}
+function volverACuenta(){
+  const c = document.getElementById('gCuenta');
+  c.classList.add('ahora');
+  c.querySelector('.g-mini').remove();
+  document.getElementById('gForm').hidden = false;
+  setTimeout(() => document.getElementById('gPass').focus(), 60);
+}
+function verPass(b){
+  const i = document.getElementById('gPass');
+  i.type = i.type === 'password' ? 'text' : 'password';
+  b.textContent = i.type === 'password' ? 'Ver' : 'Ocultar';
+}
+function revisarPass(){
+  const r = document.getElementById('gReglas');
+  if(typeof evaluarPassword !== 'function') return;
+  const v = document.getElementById('gPass').value;
+  if(!v){ r.className = 'g-reglas'; r.textContent = 'Mínimo 8, con mayúscula, minúscula, número y un símbolo (. - _ ! @ #)'; return; }
+  const f = evaluarPassword(v);
+  r.className = 'g-reglas' + (f.aceptable ? '' : ' mal');
+  r.textContent = f.aceptable ? '✓ ' + f.etiqueta : f.faltantes[0];
+}
+function errorCuenta(m){
+  m = String(m || '').toLowerCase();
+  if(m.includes('already') || m.includes('registered')) return 'Ese email ya tiene una cuenta.';
+  if(m.includes('expired') || (m.includes('invalid') && m.includes('token'))) return 'El código no sirve: puede estar vencido. Usá el del último email o pedí uno nuevo.';
+  if(m.includes('rate limit') || m.includes('too many')) return 'Demasiados intentos. Esperá unos minutos.';
+  if(m.includes('password')) return 'Elegí una contraseña más segura.';
+  if(m.includes('failed to fetch')) return 'Sin conexión. Revisá tu internet.';
+  return 'No pudimos crear tu cuenta. Probá de nuevo.';
+}
+function cuentaLista(html){
+  ['gPregunta', 'gForm', 'gCodigo'].forEach(id => { const el = document.getElementById(id); if(el) el.hidden = true; });
+  const c = document.getElementById('gCuenta');
+  c.classList.remove('ahora'); c.classList.add('hecho');
+  c.querySelector('.g-num').innerHTML = TILDE;
+  c.querySelector('.g-cont > b').textContent = 'Tu cuenta está lista';
+  c.querySelector('.g-cont > p').hidden = true;
+  const l = document.getElementById('gListo'); l.innerHTML = html; l.hidden = false;
+  pasarAlGrupo();
+}
+async function guardarPerfil(user){
+  try{
+    await sb.from('perfiles').upsert({ id: user.id, email: YO.email, nombre: YO.nombre, rol: 'alumna', acepta_emails: true }, { onConflict: 'id' });
+  }catch(e){}
+  try{ if(typeof refrescarCacheSesion === 'function') await refrescarCacheSesion(); }catch(e){}
+  try{ if(typeof pixel === 'function') pixel('CompleteRegistration', { content_name: RUBRO || CAP_SLUG, status: 'creada' }); }catch(e){}
+  try{ if(typeof anotarEvento === 'function') anotarEvento('clic', { detalle: 'Creó su cuenta (captura)' }); }catch(e){}
+}
+const listoTxt = () => 'Ya podés entrar con <b>' + limpiar(YO.email) + '</b> y tu contraseña. ' +
+  (PAG.con_rubro ? 'Ahí te espera tu clase. ' : '') + '<a href="/index">Ir a la plataforma →</a>';
+
+let PASS = '';
+async function crearCuentaCap(ev){
+  ev.preventDefault();
+  const err = document.getElementById('gErr'), btn = document.getElementById('gBtn');
+  const ver = m => { err.innerHTML = m; err.classList.add('ver'); };
+  err.classList.remove('ver');
+  const pass = document.getElementById('gPass').value;
+  if(typeof evaluarPassword === 'function'){
+    const f = evaluarPassword(pass);
+    if(!f.aceptable) return ver(limpiar(f.faltantes[0] || 'Elegí una contraseña más segura'));
+  }else if(pass.length < 8) return ver('Necesita al menos 8 caracteres');
+
+  // Sin la librería todavía (conexión muy lenta): seguimos en la pantalla de siempre
+  if(typeof sb === 'undefined' || !sb){
+    try{ sessionStorage.setItem('cmm_pre_nombre', YO.nombre); sessionStorage.setItem('cmm_pre_email', YO.email); }catch(e){}
+    location.href = '/login?registro=1&desde=pesquisa&form=' + encodeURIComponent(CAP_SLUG);
+    return;
+  }
+
+  btn.disabled = true; btn.querySelector('span').textContent = 'CREANDO…';
+  const { data, error } = await sb.auth.signUp({
+    email: YO.email, password: pass,
+    options: { data: { nombre: YO.nombre, acepta_emails: true, rubro: RUBRO || null, origen: 'captura:' + CAP_SLUG } }
+  });
+  btn.disabled = false; btn.querySelector('span').textContent = 'CREAR MI CUENTA';
+
+  if(error){
+    const m = errorCuenta(error.message);
+    return ver(m.startsWith('Ese email') ? m + ' <a href="/login" style="color:#FAC775">Entrá acá</a>' : m);
+  }
+  // Supabase no avisa con error si el email ya existía: devuelve un usuario sin identidades
+  if(data && data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0){
+    return cuentaLista('Ese email ya tiene una cuenta: entrá con tu contraseña de siempre. <a href="/login">Entrar →</a>' +
+      '<span class="g-mini">¿No te acordás? <a href="/recuperar">Recuperala acá</a></span>');
+  }
+  PASS = pass;
+  if(data && data.session){
+    await guardarPerfil(data.user);
+    return cuentaLista(listoTxt());
+  }
+  // Hay que confirmar el email con el código
+  document.getElementById('gForm').hidden = true;
+  document.getElementById('gCodigo').hidden = false;
+  setTimeout(() => document.getElementById('gCod').focus(), 60);
+}
+
+async function verificarCap(ev){
+  ev.preventDefault();
+  const err = document.getElementById('gErr2'), btn = document.getElementById('gBtn2');
+  const ver = m => { err.textContent = m; err.classList.add('ver'); };
+  err.classList.remove('ver');
+  const cod = document.getElementById('gCod').value.replace(/\D/g, '');
+  if(cod.length < 4) return ver('Escribí el código que te llegó por email');
+
+  btn.disabled = true; btn.querySelector('span').textContent = 'ACTIVANDO…';
+  let r = await sb.auth.verifyOtp({ email: YO.email, token: cod, type: 'signup' });
+  if(r.error) r = await sb.auth.verifyOtp({ email: YO.email, token: cod, type: 'email' });
+  if(r.error && PASS){
+    // Puede que ya esté confirmada (por el enlace del email): probamos entrar
+    const i = await sb.auth.signInWithPassword({ email: YO.email, password: PASS });
+    if(!i.error && i.data && i.data.session) r = i;
+  }
+  btn.disabled = false; btn.querySelector('span').textContent = 'ACTIVAR MI CUENTA';
+  if(r.error) return ver(errorCuenta(r.error.message));
+
+  const user = r.data && (r.data.user || (r.data.session && r.data.session.user));
+  if(user) await guardarPerfil(user);
+  cuentaLista(listoTxt());
+}
+
+let esperaReenvio = 0;
+async function reenviarCap(){
+  if(Date.now() < esperaReenvio) return;
+  const b = document.getElementById('gReenviar');
+  esperaReenvio = Date.now() + 60000;
+  const { error } = await sb.auth.resend({ type: 'signup', email: YO.email });
+  b.textContent = error ? errorCuenta(error.message) : '✓ Te mandamos uno nuevo';
+  setTimeout(() => { b.textContent = 'reenviá el código'; }, 60000);
+}
+
+function entroGrupo(){
+  const g = document.getElementById('gGrupo');
+  if(g){ g.classList.remove('ahora'); g.classList.add('hecho'); g.querySelector('.g-num').innerHTML = TILDE; }
+}
+
+// ─── La pesquisa, con nombre, email y WhatsApp ya puestos ───
+function linkPesquisa(){
+  const q = new URLSearchParams();
+  if(RUBRO) q.set('rubro', RUBRO);
+  q.set('pieza', ORIGEN || ('captura-' + CAP_SLUG));
+  return '/pesquisa?' + q.toString();
+}
+function prepararPesquisa(){
+  try{
+    const k = 'cmm_form_pesquisa';
+    const b = JSON.parse(localStorage.getItem(k) || '{}');
+    b.datos = Object.assign({}, b.datos || {}, { nombre: YO.nombre, email: YO.email }, YO.whatsapp ? { whatsapp: YO.whatsapp } : {});
+    if(typeof b.paso !== 'number') b.paso = 0;
+    localStorage.setItem(k, JSON.stringify(b));
+    sessionStorage.setItem('cmm_saltar_datos', '1');
+  }catch(e){}
 }
 
 function noEsta(){
@@ -620,12 +976,14 @@ function noEsta(){
   if(!PAG) return noEsta();
 
   document.body.className = PAG.plantilla === 'b' ? 'tpl-b' : 'tpl-a';
-  document.title = String(PAG.titulo || '').replace(/\*\*/g, '') + ' · Milena Machado';
+  document.title = conRubro(String(PAG.titulo || '').replace(/\*\*/g, '')) + ' · Milena Machado';
   if(PAG.plantilla === 'b') document.querySelector('meta[name=theme-color]').setAttribute('content', '#4A0F1E');
 
   const cont = document.getElementById('pagina');
   cont.innerHTML = PAG.plantilla === 'b' ? pintarB() : pintarA();
   document.getElementById('hojaForm').innerHTML = PAG.plantilla === 'b' ? htmlFormulario() : '';
+  if(PAG.form_titulo) document.querySelector('.hoja h2').textContent = PAG.form_titulo;
+  if(PAG.form_texto) document.getElementById('hojaBajada').textContent = PAG.form_texto;
   document.getElementById('pegadoTxt').textContent = PAG.boton || 'QUIERO MI LUGAR GRATIS';
   document.getElementById('cargando').remove();
   cont.hidden = false;
@@ -647,5 +1005,6 @@ function noEsta(){
 
 <!-- Métricas del panel y Meta Pixel: se cargan después, sin frenar la página -->
 <script src="/supabase-config.js" defer></script>
+<script src="/password-fuerza.js" defer></script>
 </body>
 </html>

@@ -884,6 +884,15 @@ async function arrancar(){
 
   traerBorrador();
   if(paso >= PASOS.length) paso = 0;
+
+  // Viene de una página de captura: nombre, email y WhatsApp ya los dejó ahí
+  try{
+    if(sessionStorage.getItem('cmm_saltar_datos')){
+      sessionStorage.removeItem('cmm_saltar_datos');
+      while(paso < PASOS.length - 1 && ['nombre', 'email', 'whatsapp'].includes(PASOS[paso].campo) &&
+            String(datos[PASOS[paso].campo] || '').trim()) paso++;
+    }
+  }catch(e){}
   pintar();
 }
 
