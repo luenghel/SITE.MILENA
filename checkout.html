@@ -154,6 +154,8 @@
         <input class="field-input" id="ckDocumento" placeholder="1234567">
       </div>
 
+      <div id="bonoCaja" style="display:none"></div>
+
       <button class="pay-button" id="payBtn" onclick="iniciarPago()" style="display:none">
         <span id="payBtnText">IR A PAGAR</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -238,6 +240,9 @@
         return;
       }
       cursoActual = curso;
+
+      // Bonos que están corriendo para este curso
+      try { pintarBonos(curso.id, 'bonoCaja', true); } catch(e){}
 
       // Cuenta de prueba: puede simular la compra (no en los gratis)
       const gratis = curso.precio_gs === 0 || curso.acceso === 'gratis';

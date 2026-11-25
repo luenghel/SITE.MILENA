@@ -402,6 +402,7 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="#3D1208"><path d="M8 5v14l11-7z"/></svg>
       <span id="btnContinuarTxt">CONTINUAR APRENDIENDO</span>
     </a>
+    <div id="bonoCajaPagina" style="display:none"></div>
 
     <div class="course-actions">
       <button class="action-btn">
@@ -471,6 +472,7 @@
 
       <h2 class="compra-modal-title serif">Adquirí <span class="serif-it gradtext" style="font-size:24px">este curso</span></h2>
       <p class="compra-modal-subtitle" id="modalSubtitle">Empezá hoy mismo y transformá tu negocio.</p>
+      <div id="bonoCajaModal" style="display:none"></div>
 
       <div class="compra-includes">
         <div class="compra-includes-label">QUÉ INCLUYE</div>
@@ -1329,6 +1331,10 @@ async function pintarCursoReal(){
 
   // Anotamos que miró este curso
   try { anotarEvento('vio_curso', { curso: curso.id, detalle: curso.titulo, valor: curso.precio_gs || 0 }); } catch(e){}
+  // Bonos que están corriendo: solo a quien todavía no lo compró
+  if(!compra){
+    try { pintarBonos(curso.id, 'bonoCajaModal', false); pintarBonos(curso.id, 'bonoCajaPagina', false); } catch(e){}
+  }
 
   // ─── Cuánto tiempo de acceso le queda ───
   pintarContadorAcceso(curso, compra);

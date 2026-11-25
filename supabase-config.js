@@ -54,6 +54,75 @@ async function traerPerfilesPublicos(ids, columnas) {
   return r;
 }
 
+// ═══════════════════════════════════════════════════════
+// BONOS POR FECHA
+// "Si comprás hasta tal día, te llevás de regalo tal curso."
+// Se definen en Admin → Ventas → 🎁 Bonos. Se cierran solos.
+// ═══════════════════════════════════════════════════════
+async function traerBonosDe(cursoId) {
+  try {
+    const ahora = new Date().toISOString();
+    const { data, error } = await sb.from('bonos')
+      .select('id, nombre, texto, hasta, cursos_regalo')
+      .eq('curso_id', cursoId).eq('activo', true).eq('mostrar', true)
+      .lte('desde', ahora).gte('hasta', ahora)
+      .order('hasta', { ascending: true });
+    if (error || !data || !data.length) return [];
+
+    const ids = [...new Set(data.flatMap(b => b.cursos_regalo || []))];
+    let titulos = {};
+    if (ids.length) {
+      const { data: cs } = await sb.from('cursos').select('id, titulo').in('id', ids);
+      (cs || []).forEach(c => { titulos[c.id] = c.titulo; });
+    }
+    return data.map(b => Object.assign({}, b, {
+      regalos: (b.cursos_regalo || []).map(id => titulos[id]).filter(Boolean)
+    })).filter(b => b.regalos.length);
+  } catch (e) { return []; }
+}
+
+function cuantoFaltaBono(hasta) {
+  const ms = new Date(hasta).getTime() - Date.now();
+  if (ms <= 0) return '';
+  const d = Math.floor(ms / 86400000), h = Math.floor((ms % 86400000) / 3600000), m = Math.floor((ms % 3600000) / 60000);
+  if (d >= 2) return 'Quedan ' + d + ' días';
+  if (d === 1) return 'Queda 1 día y ' + h + ' h';
+  if (h >= 1) return 'Quedan ' + h + ' h ' + m + ' min';
+  return 'Quedan ' + Math.max(1, m) + ' min';
+}
+
+// Pinta los bonos que están corriendo dentro del elemento con ese id.
+// claro = true para fondos claros (el checkout).
+async function pintarBonos(cursoId, idElemento, claro) {
+  const el = document.getElementById(idElemento);
+  if (!el || !cursoId) return;
+  const bonos = await traerBonosDe(cursoId);
+  if (!bonos.length) { el.style.display = 'none'; el.innerHTML = ''; return; }
+
+  const limpio = t => { const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; };
+  const tinta = claro ? '#4A2B12' : '#FFF5F0';
+  const suave = claro ? 'rgba(74,43,18,0.7)' : 'rgba(255,245,240,0.7)';
+  const oro = claro ? '#9A6A1C' : '#FAC775';
+
+  el.innerHTML = bonos.map(b => {
+    const fin = new Date(b.hasta);
+    const hasta = fin.toLocaleDateString('es-PY', { day: 'numeric', month: 'long' }) + ' a las ' +
+      fin.toLocaleTimeString('es-PY', { hour: '2-digit', minute: '2-digit', hour12: false });
+    return '<div style="margin:14px 0;padding:14px 16px;border-radius:14px;text-align:left;' +
+        'background:linear-gradient(135deg,rgba(212,163,86,0.2),rgba(212,163,86,0.07));' +
+        'border:1px solid rgba(212,163,86,0.55);color:' + tinta + '">' +
+      '<div style="font-size:10px;letter-spacing:.18em;font-weight:700;color:' + oro + '">🎁 BONO POR TIEMPO LIMITADO</div>' +
+      '<div style="font-size:14.5px;line-height:1.5;margin-top:6px">' +
+        (b.texto ? limpio(b.texto) : 'Comprando ahora te llevás de regalo:') + '</div>' +
+      '<ul style="margin:8px 0 0;padding-left:18px;font-size:14px;line-height:1.6">' +
+        b.regalos.map(r => '<li><b>' + limpio(r) + '</b></li>').join('') + '</ul>' +
+      '<div style="font-size:12px;margin-top:9px;color:' + suave + '">Hasta el ' + limpio(hasta) +
+        ' · <b style="color:' + oro + '">' + cuantoFaltaBono(b.hasta) + '</b></div>' +
+    '</div>';
+  }).join('');
+  el.style.display = '';
+}
+
 // El canal de YouTube de Milena. Si la tarjeta del canal no tiene enlace
 // cargado en el panel, igual lleva ahí (antes no llevaba a ningún lado).
 const CANAL_YOUTUBE = 'https://www.youtube.com/@milenamachadocmm';

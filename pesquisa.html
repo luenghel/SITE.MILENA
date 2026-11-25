@@ -91,6 +91,14 @@
     transition:width .55s var(--salida)}
 
   /* ── El medio ── */
+  /* El título de arriba del formulario (se edita en el panel) */
+  .encabezado{position:relative;z-index:3;flex-shrink:0;max-width:760px;width:calc(100% - 44px);margin:18px auto 0;
+    padding:13px 18px;border-radius:14px;text-align:center;
+    font-family:'Cormorant Garamond',Georgia,serif;font-size:19px;line-height:1.35;color:#FFF5F0;
+    background:linear-gradient(135deg,rgba(212,163,86,0.16),rgba(212,163,86,0.05));
+    border:0.5px solid rgba(212,163,86,0.45)}
+  .encabezado b{color:#FAC775;font-weight:600}
+  @media(max-width:640px){ .encabezado{font-size:16.5px;padding:11px 14px;margin-top:13px;width:calc(100% - 34px)} }
   .medio{position:relative;z-index:2;flex:1;display:flex;align-items:center;
     padding:30px 22px;min-height:0}
   .caja{width:100%;max-width:760px;margin:0 auto}
@@ -305,6 +313,8 @@
   </div>
   <div class="riel"><i id="riel"></i></div>
 </div>
+
+<div class="encabezado" id="encabezado" style="display:none"></div>
 
 <div class="medio">
   <div class="caja">
@@ -734,6 +744,22 @@ async function enviar(){
   enviando = false;
 }
 
+// El título de arriba. Sale del panel (Formularios → Editar → Ajustes).
+// Mientras la base no tenga ese campo, el formulario principal usa este.
+const ENCABEZADO_DE_FABRICA = 'Para acceder a las clases el día **27/12**, completá el formulario y registrate gratuitamente.';
+function ponerEncabezado(){
+  const el = document.getElementById('encabezado');
+  if(!el) return;
+  let txt = FORM ? FORM.encabezado : null;
+  if(txt === undefined || txt === null) txt = (SLUG === 'pesquisa') ? ENCABEZADO_DE_FABRICA : '';
+  txt = String(txt).trim();
+  if(!txt){ el.style.display = 'none'; return; }
+  const d = document.createElement('div');
+  d.textContent = txt;
+  el.innerHTML = d.innerHTML.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/__(.+?)__/g, '<b>$1</b>');
+  el.style.display = '';
+}
+
 function mostrarGracias(){
   terminado = true;
   pintarRiel();
@@ -848,9 +874,12 @@ async function arrancar(){
     PASOS = filas.map(deFila);
     if(FORM.subtitulo) document.getElementById('marcaSub').textContent = FORM.subtitulo;
     if(FORM.titulo) document.title = FORM.titulo + ' · Milena Machado';
+    ponerEncabezado();
   }else if(SLUG !== 'pesquisa'){
     noExiste();
     return;
+  }else{
+    ponerEncabezado();   // sin conexión a la base: el de fábrica
   }
 
   traerBorrador();

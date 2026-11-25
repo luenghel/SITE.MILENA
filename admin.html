@@ -1472,6 +1472,29 @@
   .curso-orden button:hover:not(:disabled){background:rgba(250,199,117,0.2);color:#FAC775}
   .curso-orden button:disabled{opacity:.25;cursor:default}
 
+  /* ═══ BONOS ═══ */
+  .bono-caja{margin-bottom:22px}
+  .bono-fila{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:13px;margin-bottom:9px;cursor:pointer;flex-wrap:wrap;
+    background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.1)}
+  .bono-fila:hover{border-color:rgba(212,163,86,0.4)}
+  .bono-fila.corriendo{border-color:rgba(93,202,165,0.45);background:rgba(93,202,165,0.05)}
+  .bono-fila.terminado, .bono-fila.apagado{opacity:.6}
+  .bono-info{flex:1;min-width:220px}
+  .bono-nom{font-size:14.5px}
+  .bono-que{font-size:12px;color:rgba(255,245,240,0.6);margin-top:4px;line-height:1.55}
+  .bono-que b{color:#FAC775;font-weight:500}
+  .bono-fechas{font-size:11.5px;color:rgba(255,245,240,0.5);text-align:right;line-height:1.6}
+  .bono-estado{font-size:9.5px;letter-spacing:.12em;font-weight:600;padding:5px 9px;border-radius:6px;white-space:nowrap}
+  .bono-estado.corriendo{background:rgba(93,202,165,0.16);color:#9FE1CB}
+  .bono-estado.programado{background:rgba(250,199,117,0.14);color:#FAC775}
+  .bono-estado.terminado, .bono-estado.apagado{background:rgba(255,245,240,0.07);color:rgba(255,245,240,0.55)}
+  .bono-regalos{display:flex;flex-direction:column;gap:6px;max-height:210px;overflow-y:auto;padding:4px}
+  .bono-regalos label{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:9px;cursor:pointer;font-size:13px;
+    background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.1)}
+  .bono-regalos label:has(input:checked){border-color:rgba(212,163,86,0.6);background:rgba(212,163,86,0.1)}
+  .bono-regalos input{accent-color:#D4A356}
+  .bono-regalos small{color:rgba(255,245,240,0.45);margin-left:auto;font-size:10.5px}
+
   /* ═══ SEGUIMIENTO ═══ */
   .seg-cursos{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
   .seg-curso{padding:16px;border-radius:14px;cursor:pointer;background:rgba(255,245,240,0.035);border:0.5px solid rgba(255,245,240,0.1);transition:all .2s}
@@ -3386,6 +3409,12 @@ body{visibility:hidden}
               <input class="form-input" id="feSub" placeholder="Movimiento Directo">
             </label>
 
+            <label class="frm-campo ancho">
+              <span class="form-label">TÍTULO GRANDE ARRIBA DEL FORMULARIO · OPCIONAL</span>
+              <textarea class="form-input" id="feEncabezado" rows="2" placeholder="Para acceder a las clases el día **27/12**, completá el formulario y registrate gratuitamente."></textarea>
+              <span class="frm-nota">Se ve arriba de todas las preguntas. <code>**palabra**</code> la marca en dorado. Vacío = no aparece.</span>
+            </label>
+
             <label class="frm-campo">
               <span class="form-label">GRUPO DE WHATSAPP</span>
               <input class="form-input" id="feGrupo" placeholder="https://chat.whatsapp.com/...">
@@ -3726,6 +3755,78 @@ body{visibility:hidden}
     </div>
   </div>
 
+  <!-- ═══ EDITAR UN BONO ═══ -->
+  <div class="frm-fondo" id="bonoFondo" onclick="if(event.target===this)cerrarBono()">
+    <div class="frm-modal chico">
+      <div class="frm-modal-cab">
+        <div>
+          <div class="frm-modal-sub" id="boSub">NUEVO BONO</div>
+          <div class="frm-modal-tit">🎁 Bono por fecha</div>
+        </div>
+        <button class="frm-x" onclick="cerrarBono()" title="Cerrar">×</button>
+      </div>
+      <div class="frm-modal-cuerpo">
+        <div class="frm-campos">
+          <label class="frm-campo ancho">
+            <span class="form-label">NOMBRE · SOLO LO VES VOS</span>
+            <input class="form-input" id="boNombre" placeholder="Lanzamiento de diciembre">
+          </label>
+
+          <label class="frm-campo ancho">
+            <span class="form-label">SI COMPRAN ESTE CURSO…</span>
+            <select class="form-input" id="boCurso" onchange="pintarRegalosBono()"></select>
+          </label>
+
+          <label class="frm-campo">
+            <span class="form-label">DESDE</span>
+            <input class="form-input" id="boDesde" type="datetime-local">
+          </label>
+          <label class="frm-campo">
+            <span class="form-label">HASTA · SE CIERRA SOLO</span>
+            <input class="form-input" id="boHasta" type="datetime-local">
+          </label>
+
+          <div class="frm-campo ancho">
+            <span class="form-label">…RECIBEN DE REGALO EL ACCESO A</span>
+            <div class="bono-regalos" id="boRegalos"></div>
+            <span class="frm-nota">Pueden ser cursos en borrador o que no se muestran en el catálogo (por ejemplo, un bono que solo se consigue así).</span>
+          </div>
+
+          <label class="frm-campo ancho">
+            <span class="form-label">LO QUE VE LA PERSONA EN LA PÁGINA DE VENTA · OPCIONAL</span>
+            <input class="form-input" id="boTexto" placeholder="Comprando esta semana te llevás de regalo:">
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">👁 Mostrarlo en la página del curso y en el pago</div>
+            <div class="toggle-help">Con la fecha de cierre y cuánto falta. Apagado, se entrega igual pero no se anuncia.</div>
+          </div>
+          <div class="toggle-switch on" id="boMostrar" onclick="this.classList.toggle('on')"></div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">🟢 Bono encendido</div>
+            <div class="toggle-help">Apagado no se entrega, aunque esté dentro de las fechas</div>
+          </div>
+          <div class="toggle-switch on" id="boActivo" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="frm-nota" style="margin-top:12px">
+          Cuenta el día en que la persona <b>hizo el pedido</b>. Si pidió el último día y confirmás el pago después, igual lo recibe.
+          No se entrega en los cursos que das de cortesía (monto 0).
+        </div>
+
+        <div class="frm-pie">
+          <button class="frm-peligro" id="boBorrar" onclick="borrarBono()">Borrar bono</button>
+          <button class="btn-secondary" onclick="cerrarBono()">Cancelar</button>
+          <button class="cta-gold btn-save" onclick="guardarBono()">GUARDAR BONO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══ FICHA DE UNA PERSONA ═══ -->
   <div class="frm-fondo" id="segFondo" onclick="if(event.target===this)cerrarFicha()">
     <div class="frm-modal">
@@ -3789,6 +3890,18 @@ body{visibility:hidden}
         <button class="btn-secondary" onclick="abrirDatosPago()">⚙️ Datos de pago</button>
       </div>
       <div id="pedidosLista"></div>
+    </div>
+
+    <!-- Bonos por fecha -->
+    <div class="pm-seccion bono-caja">
+      <div class="pm-cab">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px">🎁 Bonos por fecha</h3>
+          <p class="chart-subtitle">Quien compre un curso entre dos fechas recibe de regalo el acceso a otros. Se entrega y se cierra solo.</p>
+        </div>
+        <button class="btn-secondary" onclick="abrirBono()">+ Nuevo bono</button>
+      </div>
+      <div id="bonosLista"></div>
     </div>
 
     <!-- Cuentas de prueba -->
@@ -6347,6 +6460,7 @@ body{visibility:hidden}
     document.getElementById('feGrupo').value = f.grupo_whatsapp || '';
     document.getElementById('feGTit').value = f.gracias_titulo || '';
     document.getElementById('feGTxt').value = f.gracias_texto || '';
+    document.getElementById('feEncabezado').value = f.encabezado || '';
     document.getElementById('feActivo').classList.toggle('on', f.activo !== false);
     document.getElementById('feCuenta').classList.toggle('on', f.mostrar_cuenta !== false);
     document.getElementById('feVer').href = enlaceForm(f);
@@ -6400,7 +6514,15 @@ body{visibility:hidden}
       actualizado_en: new Date().toISOString()
     };
 
-    const { error } = await sb.from('formularios').update(cambios).eq('id', f.id);
+    // El título de arriba (si la base todavía no tiene el campo, guardamos lo demás)
+    const encabezado = document.getElementById('feEncabezado').value.trim();
+    let { error } = await sb.from('formularios').update(Object.assign({ encabezado: encabezado }, cambios)).eq('id', f.id);
+    if(error && String(error.message).includes('encabezado')){
+      ({ error } = await sb.from('formularios').update(cambios).eq('id', f.id));
+      if(!error && encabezado) mostrarToast('Para guardar el título de arriba falta correr SQL-BONOS.sql', true);
+    } else if(!error){
+      cambios.encabezado = encabezado;
+    }
     if(error){
       return mostrarToast(String(error.message).includes('duplicate')
         ? 'Ya hay otro formulario con ese enlace' : 'No se pudo guardar: ' + error.message, true);
@@ -6604,6 +6726,155 @@ body{visibility:hidden}
     cerrarPregunta();
     pintarPreguntasEditor();
     mostrarToast('✓ Pregunta guardada');
+  }
+
+  // ═══ BONOS POR FECHA ═════════════════════════════════════════════
+  let bonos = [];
+  let bonoEditando = null;
+
+  const BONO_ESTADOS = { corriendo: 'CORRIENDO', programado: 'PROGRAMADO', terminado: 'TERMINADO', apagado: 'APAGADO' };
+
+  // Para los campos de fecha y hora del navegador (hora local)
+  function aCampoFecha(iso){
+    if(!iso) return '';
+    const d = new Date(iso);
+    if(isNaN(d)) return '';
+    const p = x => String(x).padStart(2, '0');
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + 'T' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+  function fechaBono(iso){
+    const d = new Date(iso);
+    return d.toLocaleDateString('es-PY', { day: 'numeric', month: 'short' }) + ' ' +
+      d.toLocaleTimeString('es-PY', { hour: '2-digit', minute: '2-digit', hour12: false });
+  }
+
+  async function cargarBonos(){
+    const cont = document.getElementById('bonosLista');
+    if(!cont || !sb) return;
+    const { data, error } = await sb.from('bonos_resumen').select('*').order('desde', { ascending: false });
+    if(error){
+      cont.innerHTML = '<div class="met-aviso">⚠️ Falta correr <strong>SQL-BONOS.sql</strong> en Supabase.</div>';
+      return;
+    }
+    bonos = data || [];
+    if(!bonos.length){
+      cont.innerHTML = '<div class="frm-nota">Todavía no hay bonos. Creá el primero con el botón de arriba.</div>';
+      return;
+    }
+    // Primero los que corren, después los programados, al final los terminados
+    const peso = { corriendo: 0, programado: 1, apagado: 2, terminado: 3 };
+    bonos.sort((a, b) => (peso[a.estado] - peso[b.estado]) || (new Date(b.desde) - new Date(a.desde)));
+
+    cont.innerHTML = bonos.map(b => {
+      const regalos = (b.regalos || []).map(r => '<b>' + esc(r.titulo) + '</b>').join(', ') || '<span style="color:#FF9AA5">ningún curso elegido</span>';
+      let falta = '';
+      if(b.estado === 'corriendo'){
+        const h = Math.max(0, Math.floor((new Date(b.hasta) - Date.now()) / 3600000));
+        falta = h >= 48 ? 'cierra en ' + Math.floor(h / 24) + ' días' : 'cierra en ' + h + ' h';
+      }else if(b.estado === 'programado'){
+        const h = Math.max(0, Math.floor((new Date(b.desde) - Date.now()) / 3600000));
+        falta = h >= 48 ? 'empieza en ' + Math.floor(h / 24) + ' días' : 'empieza en ' + h + ' h';
+      }
+      return '<div class="bono-fila ' + b.estado + '" onclick="abrirBono(\'' + b.id + '\')">' +
+        '<div class="bono-info">' +
+          '<div class="bono-nom">' + esc(b.nombre) + '</div>' +
+          '<div class="bono-que">Comprando <b>' + esc(b.curso || '—') + '</b> reciben: ' + regalos + '</div>' +
+        '</div>' +
+        '<div class="bono-fechas">' + fechaBono(b.desde) + ' → ' + fechaBono(b.hasta) +
+          '<br>' + (falta ? falta + ' · ' : '') + (b.personas || 0) + ((b.personas || 0) === 1 ? ' persona lo recibió' : ' personas lo recibieron') + '</div>' +
+        '<div class="bono-estado ' + b.estado + '">' + (BONO_ESTADOS[b.estado] || b.estado) + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function pintarRegalosBono(marcados){
+    const cont = document.getElementById('boRegalos');
+    const principal = document.getElementById('boCurso').value;
+    const ya = marcados || Array.from(cont.querySelectorAll('input:checked')).map(i => i.value);
+    const lista = (cursos || []).filter(c => c.id !== principal);
+    cont.innerHTML = lista.length ? lista.map(c =>
+      '<label><input type="checkbox" value="' + c.id + '"' + (ya.includes(c.id) ? ' checked' : '') + '>' +
+      esc(c.titulo) + '<small>' + (c.publicado ? '' : 'borrador') + (c.seccion === 'oculto' ? ' · oculto' : '') + '</small></label>').join('')
+      : '<div class="frm-nota">No hay otros cursos. Creá primero el curso que vas a regalar.</div>';
+  }
+
+  function abrirBono(id){
+    const b = id ? bonos.find(x => x.id === id) : null;
+    bonoEditando = b || null;
+
+    document.getElementById('boSub').textContent = b ? 'EDITAR BONO' : 'NUEVO BONO';
+    document.getElementById('boBorrar').style.display = b ? '' : 'none';
+    document.getElementById('boNombre').value = b?.nombre || '';
+    document.getElementById('boTexto').value = b?.texto || '';
+    document.getElementById('boMostrar').classList.toggle('on', b ? !!b.mostrar : true);
+    document.getElementById('boActivo').classList.toggle('on', b ? !!b.activo : true);
+
+    const sel = document.getElementById('boCurso');
+    sel.innerHTML = (cursos || []).map(c => '<option value="' + c.id + '">' + esc(c.titulo) + '</option>').join('');
+    if(b) sel.value = b.curso_id;
+
+    const ahora = new Date();
+    const enSiete = new Date(Date.now() + 7 * 86400000); enSiete.setHours(23, 59, 0, 0);
+    document.getElementById('boDesde').value = aCampoFecha(b ? b.desde : ahora);
+    document.getElementById('boHasta').value = aCampoFecha(b ? b.hasta : enSiete);
+
+    pintarRegalosBono(b ? (b.cursos_regalo || []) : []);
+    document.getElementById('bonoFondo').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function cerrarBono(){
+    document.getElementById('bonoFondo').classList.remove('show');
+    document.body.style.overflow = '';
+    bonoEditando = null;
+  }
+
+  async function guardarBono(){
+    const nombre = document.getElementById('boNombre').value.trim();
+    const curso = document.getElementById('boCurso').value;
+    const desde = document.getElementById('boDesde').value;
+    const hasta = document.getElementById('boHasta').value;
+    const regalos = Array.from(document.querySelectorAll('#boRegalos input:checked')).map(i => i.value);
+
+    if(!nombre) return mostrarToast('Ponele un nombre al bono', true);
+    if(!curso) return mostrarToast('Elegí el curso que hay que comprar', true);
+    if(!desde || !hasta) return mostrarToast('Poné las dos fechas', true);
+    if(new Date(hasta) <= new Date(desde)) return mostrarToast('La fecha de cierre tiene que ser después del inicio', true);
+    if(!regalos.length) return mostrarToast('Elegí al menos un curso de regalo', true);
+
+    const fila = {
+      nombre: nombre,
+      curso_id: curso,
+      cursos_regalo: regalos,
+      desde: new Date(desde).toISOString(),
+      hasta: new Date(hasta).toISOString(),
+      texto: document.getElementById('boTexto').value.trim() || null,
+      mostrar: document.getElementById('boMostrar').classList.contains('on'),
+      activo: document.getElementById('boActivo').classList.contains('on')
+    };
+
+    const r = bonoEditando
+      ? await sb.from('bonos').update(fila).eq('id', bonoEditando.id).select('id')
+      : await sb.from('bonos').insert(fila).select('id');
+
+    if(r.error || !r.data || !r.data.length){
+      return mostrarToast('No se pudo guardar: ' + (r.error ? r.error.message : 'sin permiso'), true);
+    }
+    cerrarBono();
+    mostrarToast('✓ Bono guardado');
+    cargarBonos();
+  }
+
+  async function borrarBono(){
+    if(!bonoEditando) return;
+    const n = bonoEditando.personas || 0;
+    if(!confirm('¿Borrar el bono "' + bonoEditando.nombre + '"?' +
+      (n ? '\n\nLas ' + n + ' personas que ya lo recibieron conservan su acceso.' : ''))) return;
+    const { data, error } = await sb.from('bonos').delete().eq('id', bonoEditando.id).select('id');
+    if(error || !data || !data.length) return mostrarToast('No se pudo borrar' + (error ? ': ' + error.message : ''), true);
+    cerrarBono();
+    mostrarToast('✓ Bono borrado');
+    cargarBonos();
   }
 
   // ═══ CUENTAS DE PRUEBA ═══════════════════════════════════════════
@@ -13152,7 +13423,7 @@ body{visibility:hidden}
     }
     ventas.forEach(v => { v._persona = perfC[v.usuario_id] || null; });
 
-    const pagadas = ventas.filter(v => v.estado === 'pagado' && v.metodo_pago !== 'prueba' && !idsDeCasa.has(v.usuario_id));
+    const pagadas = ventas.filter(v => v.estado === 'pagado' && v.metodo_pago !== 'prueba' && v.metodo_pago !== 'bono' && !idsDeCasa.has(v.usuario_id));
     const pend = ventas.filter(v => v.estado === 'pendiente');
     const canc = ventas.filter(v => v.estado === 'cancelado');
     const total = pagadas.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
@@ -13255,7 +13526,7 @@ body{visibility:hidden}
   async function cargarDashboard(){
     if(!sb) return;
 
-    const pagadas = ventas.filter(v => v.estado === 'pagado' && v.metodo_pago !== 'prueba' && !idsDeCasa.has(v.usuario_id));
+    const pagadas = ventas.filter(v => v.estado === 'pagado' && v.metodo_pago !== 'prueba' && v.metodo_pago !== 'bono' && !idsDeCasa.has(v.usuario_id));
     const pend = ventas.filter(v => v.estado === 'pendiente');
     const total = pagadas.reduce((s, v) => s + (Number(v.monto_gs) || 0), 0);
 
@@ -13868,6 +14139,7 @@ body{visibility:hidden}
       cargarAvisos(),
       leerPixelAdmin().catch(() => {}),
       cargarSeguimiento().catch(() => {}),
+      cargarBonos().catch(() => {}),
       cargarClasesParaAnuncio(),
       cargarHashtags(),
       cargarSecciones(),
