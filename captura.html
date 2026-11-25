@@ -220,6 +220,14 @@
   .testis img{flex:0 0 auto;height:420px;width:auto;max-width:82vw;border-radius:18px;scroll-snap-align:center;display:block;
     border:1px solid var(--linea);box-shadow:0 18px 40px rgba(0,0,0,.22);background:var(--caja)}
   .testis.pocos{justify-content:center}
+  .testi{flex:0 0 300px;max-width:82vw;scroll-snap-align:center;margin:0;padding:24px 22px 20px;border-radius:20px;position:relative;
+    background:var(--caja);border:1px solid var(--linea);display:flex;flex-direction:column;box-shadow:0 18px 40px rgba(0,0,0,.18)}
+  body.tpl-a .testi{background:linear-gradient(160deg,rgba(255,245,240,.07),rgba(255,245,240,.025))}
+  .testi-com{font-family:'Cormorant Garamond',Georgia,serif;font-size:64px;line-height:.6;color:var(--oro2);height:26px;display:block}
+  .testi blockquote{font-size:16.5px;line-height:1.5;margin:0 0 16px;flex:1}
+  .testi figcaption{font-size:11px;letter-spacing:.14em;font-weight:700;color:var(--oro);text-transform:uppercase}
+  .cta-medio{max-width:430px;margin:34px auto 0;text-align:center}
+  .a-bloque .cta-medio{margin-top:42px}
   @media(max-width:1099px){
     .a-hero.confoto{grid-template-columns:1.12fr .88fr}
     .a-hero.confoto .a-foto{display:none}
@@ -458,6 +466,7 @@ function htmlCamino(){
         '<b>' + limpiar(conRubro(x[1] || '')) + '</b>' +
         (x[2] ? '<span>' + limpiar(conRubro(x[2])) + '</span>' : '') +
       '</div></li>').join('') + '</ol>' +
+    htmlCta('Botón después del camino') +
   '</div></section>';
 }
 
@@ -482,14 +491,34 @@ function htmlEventos(){
     '<div class="galeria">' + fotos.map(u => '<img src="' + limpiar(u) + '" alt="Evento de Milena Machado" loading="lazy" decoding="async">').join('') + '</div>' +
   '</div></section>';
 }
+// Testimonios: cada renglón es una imagen (https://…) o un mensaje escrito "texto | quién"
+// (escrito queda nítido y sin el nombre de nadie)
 function htmlTestimonios(){
-  const fotos = listaFotos(PAG.testimonios);
-  if(!fotos.length) return '';
+  const l = (Array.isArray(PAG.testimonios) ? PAG.testimonios : []).map(x => String(x || '').trim()).filter(Boolean).slice(0, 12);
+  if(!l.length) return '';
+  const tarjeta = t => {
+    if(/^https:\/\//i.test(t)){
+      const u = urlFoto(t);
+      return u ? '<img src="' + limpiar(u) + '" alt="Testimonio" loading="lazy" decoding="async">' : '';
+    }
+    const [txt, quien] = t.split('|').map(x => x.trim());
+    return '<figure class="testi"><span class="testi-com">“</span>' +
+      '<blockquote>' + limpiar(txt) + '</blockquote>' +
+      (quien ? '<figcaption>' + limpiar(quien) + '</figcaption>' : '') + '</figure>';
+  };
   return '<section class="sec"><div class="ancho">' +
-    '<h2>' + conMarcas(PAG.testimonios_titulo || 'Lo que dicen **quienes ya pasaron**') + '</h2>' +
-    '<p class="sec-sub">Mensajes reales de alumnas. Los nombres están tapados para cuidar su privacidad.</p>' +
-    '<div class="testis' + (fotos.length < 4 ? ' pocos' : '') + '">' + fotos.map(u => '<img src="' + limpiar(u) + '" alt="Testimonio de una alumna" loading="lazy" decoding="async">').join('') + '</div>' +
+    '<h2>' + conMarcas(PAG.testimonios_titulo || 'Lo que dicen **quienes aprendieron conmigo**') + '</h2>' +
+    '<p class="sec-sub">Mensajes reales. Sin nombres, para cuidar su privacidad.</p>' +
+    '<div class="testis' + (l.length < 4 ? ' pocos' : '') + '">' + l.map(tarjeta).join('') + '</div>' +
+    htmlCta('Botón después de testimonios') +
   '</div></section>';
+}
+
+// Botón para registrarse en el medio de la página
+function htmlCta(donde){
+  return '<div class="cta-medio"><button class="boton" onclick="irAlFormulario()" data-metrica="' + limpiar(donde) + '"><span>' +
+    limpiar(PAG.boton || 'QUIERO MI LUGAR GRATIS') + '</span>' + FLECHA + '</button>' +
+    (PAG.nota_boton ? '<div class="nota-boton">🔒 ' + limpiar(PAG.nota_boton) + '</div>' : '') + '</div>';
 }
 
 function htmlBio(){
@@ -537,8 +566,8 @@ function pintarA(){
       (puntos.length ? '<div><h2>Lo que te vas a <span class="oro">llevar</span></h2>' +
         '<ul class="puntos">' + puntos.map(p => '<li><span class="tilde">' + TILDE + '</span><span>' + limpiar(conRubro(p)) + '</span></li>').join('') + '</ul></div>' : '<div></div>') +
       '<div>' + htmlBio() + '</div>' +
-    '</div></section>' : '') +
-    htmlCamino() + htmlEventos() + htmlTestimonios() +
+    '</div>' + htmlCta('Botón después de lo que te llevás') + '</section>' : '') +
+    htmlTestimonios() + htmlCamino() + htmlEventos() +
   '</main>' +
 
   '<footer class="pie">Creando Mentes Millonarias · <a href="/privacidad">Privacidad</a></footer>';
@@ -576,9 +605,10 @@ function pintarB(){
     (puntos.length ? '<section class="b-oscuro"><div class="ancho">' +
       '<h2>Lo que te vas a <span class="oro" style="color:#FAC775">llevar</span></h2>' +
       '<div class="b-tarjetas">' + puntos.map((p, i) => '<div><i>' + (i + 1) + '</i><span>' + limpiar(conRubro(p)) + '</span></div>').join('') + '</div>' +
+      htmlCta('Botón después de lo que te llevás') +
     '</div></section>' : '') +
 
-    htmlCamino() + htmlEventos() + htmlTestimonios() +
+    htmlTestimonios() + htmlCamino() + htmlEventos() +
 
     (PAG.bio ? '<section class="b-bloque"><div class="ancho"><div class="b-bio">' + htmlBio() + '</div></div></section>' : '<div style="height:50px"></div>') +
 

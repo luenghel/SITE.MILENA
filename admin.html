@@ -4102,9 +4102,9 @@ body{visibility:hidden}
             <span class="frm-nota">Hasta 12. La primera sale más grande. Vacío = la sección no aparece.</span>
           </label>
           <label class="frm-campo ancho">
-            <span class="form-label">TESTIMONIOS · CAPTURAS · UN ENLACE POR RENGLÓN</span>
+            <span class="form-label">TESTIMONIOS · UNO POR RENGLÓN</span>
             <textarea class="form-input" id="ceTestis" rows="3" placeholder="https://milenacmm.com/img/captura/..."></textarea>
-            <span class="frm-nota">Capturas de mensajes con los nombres tapados. Vacío = la sección no aparece.</span>
+            <span class="frm-nota">Dos formas: un enlace de imagen (https://…), o el mensaje escrito como <code>texto | quién</code> (ej.: <code>Superó todas mis expectativas | Nutricionista · evento presencial</code>). Escrito queda nítido y sin nombres.</span>
           </label>
           <label class="frm-campo ancho">
             <span class="form-label">QUIÉN ES MILENA</span>
@@ -8066,7 +8066,11 @@ body{visibility:hidden}
     };
     let foto, grupo, portada, galeria, testis;
     try{ foto = enlace('ceFoto', 'La foto chica'); grupo = enlace('ceGrupo', 'El grupo'); portada = enlace('cePortada', 'La foto grande');
-      galeria = enlaces('ceGaleria', 'Fotos de eventos'); testis = enlaces('ceTestis', 'Testimonios'); }catch(e){ return; }
+      galeria = enlaces('ceGaleria', 'Fotos de eventos');
+      // Testimonios: enlace de imagen o mensaje escrito ("texto | quién")
+      testis = ceVal('ceTestis').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 12).map(x => x.slice(0, 400));
+      if(testis.some(v => /^http/i.test(v) && !/^https:\/\/\S+$/i.test(v))){ mostrarToast('Testimonios: los enlaces tienen que empezar con https://', true); throw 0; }
+    }catch(e){ return; }
     const f = ceVal('ceFecha');
     const fila = {
       nombre, slug, titulo, plantilla: capPlantilla,
