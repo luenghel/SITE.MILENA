@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Milena Machado</title>
+<meta name="description" content="Clases gratuitas con Milena Machado. Registrate y reservá tu lugar.">
+<meta name="theme-color" content="#14090F">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="preconnect" href="https://pdwooahpyustbqlrvlxz.supabase.co" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     PÁGINA DE CAPTURA
+     Un solo archivo para todas: milenacmm.com/c/su-enlace
+     El contenido y el diseño (A o B) salen del panel de admin.
+     ═══════════════════════════════════════════════════════════════ */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.55;min-height:100vh;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .serif{font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif}
+  button,input{font-family:inherit}
+  [hidden]{display:none !important}
+
+  /* ─── Colores de cada diseño ─── */
+  body.tpl-a{--fondo:#14090F;--tinta:#FFF5F0;--suave:rgba(255,245,240,.72);--mudo:rgba(255,245,240,.45);
+    --linea:rgba(255,245,240,.12);--caja:rgba(255,245,240,.045);--oro:#FAC775;--oro2:#D4A356;--campo:rgba(255,245,240,.07);
+    background:var(--fondo);color:var(--tinta)}
+  body.tpl-b{--fondo:#FBF4EC;--tinta:#2A1118;--suave:#5E4148;--mudo:#93777D;
+    --linea:rgba(74,15,30,.14);--caja:#FFFFFF;--oro:#A8721F;--oro2:#C8923A;--campo:#FBF4EC;
+    background:var(--fondo);color:var(--tinta)}
+
+  .cargando{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#14090F;color:rgba(255,245,240,.4);
+    font-size:12px;letter-spacing:.2em}
+
+  .ancho{max-width:1120px;margin:0 auto;padding:0 22px}
+  .oro{color:var(--oro);font-style:italic}
+
+  /* ─── Marca ─── */
+  .marca{display:flex;align-items:center;gap:11px}
+  .marca-m{width:38px;height:38px;border-radius:10px;border:1px solid var(--oro2);display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:21px;color:var(--oro)}
+  .marca-t{font-size:10.5px;letter-spacing:.24em;font-weight:600;line-height:1.5;color:var(--suave)}
+
+  /* ─── Botón ─── */
+  .boton{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;border:none;cursor:pointer;
+    padding:18px 26px;border-radius:14px;font-size:14px;font-weight:700;letter-spacing:.14em;color:#3A1608;
+    background:linear-gradient(135deg,#F7CD7C,#DDA63F);box-shadow:0 10px 30px rgba(221,166,63,.35),inset 0 1px 0 rgba(255,255,255,.5);
+    transition:transform .18s,box-shadow .18s}
+  .boton:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(221,166,63,.48),inset 0 1px 0 rgba(255,255,255,.5)}
+  .boton:active{transform:translateY(0)}
+  .boton:disabled{opacity:.6;cursor:wait;transform:none}
+  .boton svg{transition:transform .2s}
+  .boton:hover svg{transform:translateX(4px)}
+  a.boton{text-decoration:none}
+  .nota-boton{font-size:12px;color:var(--mudo);text-align:center;margin-top:11px}
+
+  /* ─── Formulario ─── */
+  .campo{display:block;margin-bottom:12px}
+  .campo span{display:block;font-size:10.5px;letter-spacing:.16em;font-weight:600;color:var(--mudo);margin-bottom:6px}
+  .campo input{width:100%;padding:15px 16px;border-radius:12px;border:1px solid var(--linea);background:var(--campo);
+    color:var(--tinta);font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s}
+  .campo input::placeholder{color:var(--mudo)}
+  .campo input:focus{border-color:var(--oro2);box-shadow:0 0 0 3px rgba(212,163,86,.2)}
+  .error{display:none;font-size:13px;color:#FF8090;background:rgba(255,128,144,.1);border:1px solid rgba(255,128,144,.3);
+    padding:10px 12px;border-radius:10px;margin-bottom:12px}
+  body.tpl-b .error{color:#A3243B}
+  .error.ver{display:block}
+  .trampa{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
+  /* ─── Cuenta regresiva ─── */
+  .reloj{display:flex;gap:8px}
+  .reloj div{min-width:62px;padding:10px 8px;border-radius:12px;text-align:center;background:var(--caja);border:1px solid var(--linea)}
+  .reloj b{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;line-height:1;font-weight:600;font-variant-numeric:tabular-nums}
+  .reloj small{font-size:9px;letter-spacing:.16em;color:var(--mudo)}
+
+  /* ─── Puntos ─── */
+  .puntos{list-style:none;display:grid;gap:12px}
+  .puntos li{display:flex;gap:13px;align-items:flex-start;font-size:16px;line-height:1.45}
+  .tilde{flex-shrink:0;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:1px;
+    background:linear-gradient(135deg,#F7CD7C,#DDA63F);color:#3A1608}
+
+  /* ─── Quién ─── */
+  .bio{display:flex;gap:22px;align-items:center}
+  .bio-foto{flex-shrink:0;width:112px;height:112px;border-radius:50%;object-fit:cover;border:2px solid var(--oro2)}
+  .bio-letra{flex-shrink:0;width:112px;height:112px;border-radius:50%;border:2px solid var(--oro2);display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:54px;color:var(--oro);background:var(--caja)}
+  .bio h3{font-size:10.5px;letter-spacing:.2em;color:var(--oro);font-weight:600;margin-bottom:6px}
+  .bio strong{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:27px;font-weight:600;line-height:1.1;margin-bottom:8px}
+  .bio p{font-size:15px;color:var(--suave)}
+
+  .pie{padding:34px 0 110px;text-align:center;font-size:11.5px;color:var(--mudo)}
+  .pie a{color:inherit}
+
+  /* Botón pegado abajo en el celular */
+  .pegado{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(to top,var(--fondo) 62%,transparent);transform:translateY(110%);transition:transform .3s}
+  .pegado.ver{transform:none}
+  .pegado .boton{padding:16px 20px}
+  @media(min-width:900px){ .pegado{display:none} .pie{padding-bottom:40px} }
+
+
+  /* ═══════════════════════════════════════════════════════════════
+     DISEÑO A · DIRECTO  (oscuro, el formulario a la vista)
+     ═══════════════════════════════════════════════════════════════ */
+  .a-fondo{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(60% 50% at 12% 0%,rgba(107,26,46,.75),transparent 70%),
+      radial-gradient(45% 45% at 100% 100%,rgba(212,163,86,.2),transparent 70%),
+      #14090F}
+  .a-cab{padding:22px 0}
+  .a-hero{display:grid;grid-template-columns:1.12fr .88fr;gap:54px;align-items:center;padding:26px 0 70px}
+  .ceja{display:inline-flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.22em;font-weight:600;color:var(--oro);margin-bottom:20px}
+  .ceja::before{content:'';width:34px;height:1px;background:var(--oro2)}
+  .a-hero h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(38px,5.4vw,68px);line-height:1.02;letter-spacing:-.015em}
+  .a-hero .sub{font-size:18px;color:var(--suave);margin-top:20px;max-width:540px}
+  .chips{display:flex;flex-wrap:wrap;gap:9px;margin:26px 0 22px}
+  .chip{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;font-size:13.5px;
+    background:var(--caja);border:1px solid var(--linea)}
+  .a-tarjeta{padding:30px 28px;border-radius:22px;background:linear-gradient(160deg,rgba(255,245,240,.08),rgba(255,245,240,.03));
+    border:1px solid rgba(212,163,86,.35);box-shadow:0 30px 80px rgba(0,0,0,.45);backdrop-filter:blur(10px)}
+  .a-tarjeta h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:29px;line-height:1.1;margin-bottom:6px}
+  .a-tarjeta .bajada{font-size:14px;color:var(--suave);margin-bottom:20px}
+  .a-bloque{padding:62px 0;border-top:1px solid var(--linea)}
+  .a-bloque h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(28px,3.6vw,42px);line-height:1.1;margin-bottom:28px}
+  .a-dos{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center}
+  @media(max-width:899px){
+    .a-hero{grid-template-columns:1fr;gap:30px;padding:8px 0 44px}
+    .a-hero .sub{font-size:16.5px}
+    .a-tarjeta{padding:24px 20px}
+    .a-bloque{padding:44px 0}
+    .a-dos{grid-template-columns:1fr;gap:36px}
+    .reloj div{min-width:0;flex:1}
+  }
+
+
+  /* ═══════════════════════════════════════════════════════════════
+     DISEÑO B · EVENTO  (claro, un solo botón, el formulario se abre)
+     ═══════════════════════════════════════════════════════════════ */
+  .b-franja{background:#4A0F1E;color:#FFF5F0;text-align:center;padding:11px 16px;font-size:13px;letter-spacing:.04em}
+  .b-franja b{color:#FAC775;font-variant-numeric:tabular-nums}
+  .b-cab{padding:20px 0;display:flex;justify-content:center}
+  .b-hero{text-align:center;padding:30px 0 56px;max-width:860px;margin:0 auto}
+  .pildora{display:inline-block;padding:8px 16px;border-radius:999px;font-size:11px;letter-spacing:.2em;font-weight:700;
+    color:#4A0F1E;background:rgba(200,146,58,.18);border:1px solid rgba(200,146,58,.5);margin-bottom:24px}
+  .b-hero h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:clamp(40px,6.6vw,82px);line-height:.98;letter-spacing:-.02em;color:#2A1118}
+  body.tpl-b .oro{color:#8F1D36}
+  .b-hero .sub{font-size:19px;color:var(--suave);margin:22px auto 30px;max-width:620px}
+  .b-hero .boton{max-width:430px;padding:21px 26px;font-size:15px}
+  .b-cuando{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 22px;margin-top:22px;font-size:14.5px;color:var(--suave)}
+  .b-cuando span{display:inline-flex;align-items:center;gap:7px}
+  .b-pasos{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-bottom:64px}
+  .b-paso{padding:24px 22px;border-radius:18px;background:#fff;border:1px solid var(--linea)}
+  .b-paso i{display:block;font-style:normal;font-family:'Cormorant Garamond',Georgia,serif;font-size:40px;line-height:1;color:#C8923A;margin-bottom:10px}
+  .b-paso b{display:block;font-size:16px;margin-bottom:4px}
+  .b-paso span{font-size:14px;color:var(--suave)}
+  .b-oscuro{background:#2A1118;color:#FFF5F0;padding:68px 0}
+  .b-oscuro h2,.b-bloque h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:clamp(30px,4.2vw,48px);line-height:1.05;margin-bottom:32px;text-align:center}
+  .b-tarjetas{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:900px;margin:0 auto}
+  .b-tarjetas div{display:flex;gap:16px;align-items:flex-start;padding:22px;border-radius:16px;background:rgba(255,245,240,.06);border:1px solid rgba(255,245,240,.12);font-size:16px;line-height:1.4}
+  .b-tarjetas i{font-style:normal;font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;line-height:.9;color:#FAC775}
+  .b-bloque{padding:68px 0}
+  .b-bio{max-width:760px;margin:0 auto;padding:30px;border-radius:22px;background:#fff;border:1px solid var(--linea)}
+  .b-final{text-align:center;padding:0 0 30px}
+  .b-final .boton{max-width:430px}
+  @media(max-width:899px){
+    .b-hero{padding:18px 0 40px}
+    .b-hero .sub{font-size:17px}
+    .b-pasos{grid-template-columns:1fr;padding-bottom:46px}
+    .b-tarjetas{grid-template-columns:1fr}
+    .b-oscuro,.b-bloque{padding:48px 0}
+    .bio{flex-direction:column;text-align:center}
+  }
+
+  /* ─── La hoja con el formulario (diseño B) ─── */
+  .hoja-fondo{position:fixed;inset:0;z-index:60;background:rgba(20,9,15,.72);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px}
+  .hoja-fondo.ver{display:flex}
+  .hoja{width:100%;max-width:440px;background:#fff;color:#2A1118;border-radius:22px;padding:30px 26px;position:relative;
+    box-shadow:0 30px 90px rgba(0,0,0,.5);animation:sube .28s cubic-bezier(.2,.9,.3,1)}
+  .hoja h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:30px;line-height:1.08;margin-bottom:6px}
+  .hoja .bajada{font-size:14.5px;color:#5E4148;margin-bottom:20px}
+  .hoja-x{position:absolute;top:12px;right:14px;width:34px;height:34px;border:none;background:none;font-size:26px;line-height:1;color:#93777D;cursor:pointer}
+  @keyframes sube{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  @media(max-width:560px){
+    .hoja-fondo{align-items:flex-end;padding:0}
+    .hoja{border-radius:22px 22px 0 0;padding:26px 20px calc(22px + env(safe-area-inset-bottom));max-width:none}
+  }
+
+  /* ═══ GRACIAS (los dos diseños) ═══ */
+  .gracias{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:24px;overflow-y:auto;
+    background:radial-gradient(60% 50% at 50% 0%,rgba(107,26,46,.85),transparent 70%),#14090F;color:#FFF5F0;text-align:center}
+  .gracias.ver{display:flex}
+  .gracias-caja{max-width:520px;animation:sube .4s cubic-bezier(.2,.9,.3,1)}
+  .gracias-ok{width:76px;height:76px;border-radius:50%;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#F7CD7C,#DDA63F);color:#3A1608;box-shadow:0 0 0 12px rgba(221,166,63,.14)}
+  .gracias h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(34px,6vw,50px);line-height:1.05;margin-bottom:14px}
+  .gracias h2 .oro{color:#FAC775}
+  .gracias p{font-size:17px;color:rgba(255,245,240,.75);margin-bottom:28px}
+  .boton.wa{background:linear-gradient(135deg,#2BD46B,#1DB954);color:#06371A;box-shadow:0 10px 30px rgba(37,211,102,.35)}
+  .gracias small{display:block;margin-top:16px;font-size:12.5px;color:rgba(255,245,240,.45)}
+
+  @media (prefers-reduced-motion:reduce){ *{animation:none !important;transition:none !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body class="tpl-a">
+
+<div class="cargando" id="cargando">CARGANDO…</div>
+<div id="pagina" hidden></div>
+
+<!-- La hoja con el formulario (solo diseño B) -->
+<div class="hoja-fondo" id="hoja" onclick="if(event.target===this)cerrarHoja()">
+  <div class="hoja">
+    <button class="hoja-x" onclick="cerrarHoja()" aria-label="Cerrar">×</button>
+    <h2 class="serif">Reservá tu lugar</h2>
+    <p class="bajada" id="hojaBajada">Dejá tus datos y te mandamos el acceso.</p>
+    <div id="hojaForm"></div>
+  </div>
+</div>
+
+<!-- Gracias -->
+<div class="gracias" id="gracias">
+  <div class="gracias-caja">
+    <div class="gracias-ok"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+    <h2 id="graciasTit"></h2>
+    <p id="graciasTxt"></p>
+    <a class="boton wa" id="graciasGrupo" href="#" target="_blank" rel="noopener" data-metrica="Entrar al grupo de WhatsApp" hidden>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.7-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg>
+      ENTRAR AL GRUPO DE WHATSAPP
+    </a>
+    <small id="graciasPie">Guardá este enlace: por acá te avisamos todo.</small>
+  </div>
+</div>
+
+<!-- Botón pegado abajo (celular) -->
+<div class="pegado" id="pegado">
+  <button class="boton" onclick="irAlFormulario()" data-metrica="Botón de abajo (celular)"><span id="pegadoTxt">QUIERO MI LUGAR GRATIS</span></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// PÁGINA DE CAPTURA
+// Pide sus datos a la base apenas abre, sin esperar ninguna librería:
+// así aparece rápido aunque la conexión sea lenta.
+// ═══════════════════════════════════════════════════════════════════
+const CAP_URL = 'https://pdwooahpyustbqlrvlxz.supabase.co';
+const CAP_KEY = 'sb_publishable_3ED52aGMAAPuOTnFGRWM1Q_IHjmgmOp';
+
+// milenacmm.com/c/mi-pagina   (o  /captura?p=mi-pagina)
+const CAP_SLUG = (function(){
+  const m = location.pathname.match(/\/c\/([a-z0-9-]+)/i);
+  if(m) return m[1].toLowerCase();
+  return (new URLSearchParams(location.search).get('p') || '').toLowerCase().replace(/[^a-z0-9-]/g, '');
+})();
+
+let PAG = null;
+let enviando = false;
+
+const limpiar = t => { const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; };
+// **palabra** → dorado en cursiva
+const conMarcas = t => limpiar(t).replace(/\*\*(.+?)\*\*/g, '<span class="oro">$1</span>');
+const FLECHA = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const TILDE = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>';
+
+function cabeceras(){ return { apikey: CAP_KEY, Authorization: 'Bearer ' + CAP_KEY, 'Content-Type': 'application/json' }; }
+
+// ─── Fechas ───
+function fechaLarga(d){
+  const t = d.toLocaleDateString('es-PY', { weekday: 'long', day: 'numeric', month: 'long' });
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+function horaCorta(d){ return d.toLocaleTimeString('es-PY', { hour: '2-digit', minute: '2-digit', hour12: false }) + ' h'; }
+
+// ─── El formulario (el mismo en los dos diseños) ───
+function htmlFormulario(){
+  return '<form onsubmit="return registrar(event, this)" novalidate>' +
+    '<div class="error" role="alert"></div>' +
+    '<label class="campo"><span>TU NOMBRE</span><input name="nombre" autocomplete="given-name" placeholder="Cómo te llamás" required maxlength="80"></label>' +
+    '<label class="campo"><span>TU MEJOR EMAIL</span><input name="email" type="email" inputmode="email" autocomplete="email" placeholder="vos@ejemplo.com" required maxlength="120"></label>' +
+    (PAG.pedir_whatsapp
+      ? '<label class="campo"><span>TU WHATSAPP</span><input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="0981 123 456" maxlength="25"></label>'
+      : '') +
+    '<input class="trampa" name="sitio" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+    '<button class="boton" type="submit"><span>' + limpiar(PAG.boton || 'QUIERO MI LUGAR GRATIS') + '</span>' + FLECHA + '</button>' +
+    (PAG.nota_boton ? '<div class="nota-boton">🔒 ' + limpiar(PAG.nota_boton) + '</div>' : '') +
+  '</form>';
+}
+
+function htmlReloj(){
+  return '<div class="reloj" data-reloj>' +
+    '<div><b data-d>00</b><small>DÍAS</small></div><div><b data-h>00</b><small>HORAS</small></div>' +
+    '<div><b data-m>00</b><small>MIN</small></div><div><b data-s>00</b><small>SEG</small></div></div>';
+}
+
+function htmlBio(){
+  if(!PAG.bio) return '';
+  const foto = /^https:\/\/[^\s"'<>]+$/.test(PAG.foto_url || '') ? PAG.foto_url : '';
+  return '<div class="bio">' +
+    (foto ? '<img class="bio-foto" src="' + limpiar(foto) + '" alt="Milena Machado" loading="lazy" width="112" height="112">'
+          : '<div class="bio-letra">M</div>') +
+    '<div><h3>' + limpiar((PAG.bio_titulo || 'Quién te va a acompañar').toUpperCase()) + '</h3>' +
+    '<strong>Milena Machado</strong><p>' + limpiar(PAG.bio) + '</p></div></div>';
+}
+
+// ═══ DISEÑO A ═══════════════════════════════════════════════════════
+function pintarA(){
+  const f = PAG.fecha_evento ? new Date(PAG.fecha_evento) : null;
+  const puntos = Array.isArray(PAG.puntos) ? PAG.puntos.filter(Boolean) : [];
+
+  return '<div class="a-fondo"></div>' +
+  '<header class="a-cab"><div class="ancho"><div class="marca"><div class="marca-m">M</div><div class="marca-t">MILENA<br>MACHADO</div></div></div></header>' +
+
+  '<main class="ancho">' +
+    '<section class="a-hero">' +
+      '<div>' +
+        (PAG.etiqueta ? '<div class="ceja">' + limpiar(PAG.etiqueta) + '</div>' : '') +
+        '<h1>' + conMarcas(PAG.titulo) + '</h1>' +
+        (PAG.subtitulo ? '<p class="sub">' + limpiar(PAG.subtitulo) + '</p>' : '') +
+        '<div class="chips">' +
+          (f ? '<span class="chip">📅 ' + limpiar(fechaLarga(f)) + '</span><span class="chip">🕗 ' + horaCorta(f) + '</span>' : '') +
+          (PAG.lugar ? '<span class="chip">📍 ' + limpiar(PAG.lugar) + '</span>' : '') +
+        '</div>' +
+        (f && f > new Date() ? htmlReloj() : '') +
+      '</div>' +
+
+      '<div class="a-tarjeta" id="formulario">' +
+        '<h2>Reservá tu lugar</h2>' +
+        '<p class="bajada">Completá tus datos y te mandamos el acceso.</p>' +
+        htmlFormulario() +
+      '</div>' +
+    '</section>' +
+
+    ((puntos.length || PAG.bio) ? '<section class="a-bloque"><div class="a-dos">' +
+      (puntos.length ? '<div><h2>Lo que te vas a <span class="oro">llevar</span></h2>' +
+        '<ul class="puntos">' + puntos.map(p => '<li><span class="tilde">' + TILDE + '</span><span>' + limpiar(p) + '</span></li>').join('') + '</ul></div>' : '<div></div>') +
+      '<div>' + htmlBio() + '</div>' +
+    '</div></section>' : '') +
+  '</main>' +
+
+  '<footer class="pie">Creando Mentes Millonarias · <a href="/privacidad">Privacidad</a></footer>';
+}
+
+// ═══ DISEÑO B ═══════════════════════════════════════════════════════
+function pintarB(){
+  const f = PAG.fecha_evento ? new Date(PAG.fecha_evento) : null;
+  const puntos = Array.isArray(PAG.puntos) ? PAG.puntos.filter(Boolean) : [];
+  const btn = limpiar(PAG.boton || 'QUIERO MI LUGAR GRATIS');
+  const boton = (donde) => '<button class="boton" onclick="abrirHoja()" data-metrica="' + donde + '"><span>' + btn + '</span>' + FLECHA + '</button>';
+
+  return (f && f > new Date() ? '<div class="b-franja">⏳ Empieza en <b data-franja>…</b> · los lugares son limitados</div>' : '') +
+  '<header class="b-cab"><div class="marca"><div class="marca-m">M</div><div class="marca-t">MILENA<br>MACHADO</div></div></header>' +
+
+  '<main>' +
+    '<section class="ancho"><div class="b-hero">' +
+      (PAG.etiqueta ? '<div class="pildora">' + limpiar(PAG.etiqueta) + '</div>' : '') +
+      '<h1>' + conMarcas(PAG.titulo) + '</h1>' +
+      (PAG.subtitulo ? '<p class="sub">' + limpiar(PAG.subtitulo) + '</p>' : '') +
+      boton('Botón principal') +
+      (PAG.nota_boton ? '<div class="nota-boton">🔒 ' + limpiar(PAG.nota_boton) + '</div>' : '') +
+      '<div class="b-cuando">' +
+        (f ? '<span>📅 ' + limpiar(fechaLarga(f)) + '</span><span>🕗 ' + horaCorta(f) + '</span>' : '') +
+        (PAG.lugar ? '<span>📍 ' + limpiar(PAG.lugar) + '</span>' : '') +
+      '</div>' +
+    '</div>' +
+
+    '<div class="b-pasos">' +
+      '<div class="b-paso"><i>1</i><b>Te registrás gratis</b><span>Nombre, email y WhatsApp. Menos de un minuto.</span></div>' +
+      '<div class="b-paso"><i>2</i><b>Entrás al grupo</b><span>Ahí avisamos cuándo empieza cada clase.</span></div>' +
+      '<div class="b-paso"><i>3</i><b>Mirás en vivo</b><span>Desde tu celular o tu compu, donde estés.</span></div>' +
+    '</div></section>' +
+
+    (puntos.length ? '<section class="b-oscuro"><div class="ancho">' +
+      '<h2>Lo que te vas a <span class="oro" style="color:#FAC775">llevar</span></h2>' +
+      '<div class="b-tarjetas">' + puntos.map((p, i) => '<div><i>' + (i + 1) + '</i><span>' + limpiar(p) + '</span></div>').join('') + '</div>' +
+    '</div></section>' : '') +
+
+    (PAG.bio ? '<section class="b-bloque"><div class="ancho"><div class="b-bio">' + htmlBio() + '</div></div></section>' : '<div style="height:50px"></div>') +
+
+    '<section class="ancho b-final">' + boton('Botón del final') + '</section>' +
+  '</main>' +
+
+  '<footer class="pie">Creando Mentes Millonarias · <a href="/privacidad">Privacidad</a></footer>';
+}
+
+// ─── La hoja (diseño B) ───
+function abrirHoja(){
+  document.getElementById('hoja').classList.add('ver');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.querySelector('#hojaForm input[name=nombre]')?.focus(), 120);
+}
+function cerrarHoja(){
+  document.getElementById('hoja').classList.remove('ver');
+  document.body.style.overflow = '';
+}
+function irAlFormulario(){
+  if(PAG && PAG.plantilla === 'b') return abrirHoja();
+  const f = document.getElementById('formulario');
+  if(f){ f.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => f.querySelector('input')?.focus({ preventScroll: true }), 450); }
+}
+
+// ─── La cuenta regresiva ───
+function arrancarReloj(){
+  if(!PAG.fecha_evento) return;
+  const fin = new Date(PAG.fecha_evento).getTime();
+  const dos = n => String(n).padStart(2, '0');
+  function tic(){
+    const ms = Math.max(0, fin - Date.now());
+    const d = Math.floor(ms / 86400000), h = Math.floor(ms % 86400000 / 3600000),
+          m = Math.floor(ms % 3600000 / 60000), s = Math.floor(ms % 60000 / 1000);
+    document.querySelectorAll('[data-reloj]').forEach(r => {
+      r.querySelector('[data-d]').textContent = dos(d); r.querySelector('[data-h]').textContent = dos(h);
+      r.querySelector('[data-m]').textContent = dos(m); r.querySelector('[data-s]').textContent = dos(s);
+    });
+    const fr = document.querySelector('[data-franja]');
+    if(fr) fr.textContent = (d ? d + ' d ' : '') + dos(h) + ' h ' + dos(m) + ' m ' + dos(s) + ' s';
+  }
+  tic();
+  setInterval(tic, 1000);
+}
+
+// ─── De dónde vino (para saber qué anuncio trae registros) ───
+function deDonde(){
+  let campana = '';
+  try{
+    const p = new URLSearchParams(location.search);
+    if(p.get('utm_source') || p.get('utm_campaign')) campana = [p.get('utm_source'), p.get('utm_medium'), p.get('utm_campaign')].filter(Boolean).join(' · ');
+    else if(p.get('fbclid')) campana = 'facebook · anuncio';
+    else if(p.get('gclid')) campana = 'google · anuncio';
+    else if(p.get('ttclid')) campana = 'tiktok · anuncio';
+    if(campana) sessionStorage.setItem('cmm_campana', campana.slice(0, 120));
+    else campana = sessionStorage.getItem('cmm_campana') || '';
+  }catch(e){}
+
+  let ref = document.referrer || '';
+  if(!ref || /milenacmm\.com/i.test(ref)){
+    const a = navigator.userAgent || '';
+    if(/Instagram/i.test(a)) ref = 'instagram-app';
+    else if(/FBAN|FBAV|FB_IAB/i.test(a)) ref = 'facebook-app';
+    else if(/musical_ly|TikTok|BytedanceWebview/i.test(a)) ref = 'tiktok-app';
+  }
+
+  const a = navigator.userAgent || '';
+  const disp = /iPad|Tablet/i.test(a) ? 'tablet' : /Mobi|Android|iPhone/i.test(a) ? 'celular' : 'computadora';
+
+  let vis = '';
+  try{ vis = localStorage.getItem('cmm_visitante') || ''; }catch(e){}
+  return { campana, referencia: ref, dispositivo: disp, visitante: vis };
+}
+
+// ─── Registrarse ───
+async function registrar(ev, form){
+  ev.preventDefault();
+  if(enviando) return false;
+
+  const err = form.querySelector('.error');
+  const btn = form.querySelector('button[type=submit]');
+  const ver = m => { err.textContent = m; err.classList.add('ver'); };
+  err.classList.remove('ver');
+
+  const nombre = form.nombre.value.trim();
+  const email = form.email.value.trim().toLowerCase();
+  const whatsapp = form.whatsapp ? form.whatsapp.value.trim() : '';
+
+  if(form.sitio.value) return false;                         // un robot llenó el campo escondido
+  if(nombre.length < 2){ ver('Poné tu nombre'); form.nombre.focus(); return false; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ ver('Revisá tu email: parece que falta algo'); form.email.focus(); return false; }
+  if(PAG.pedir_whatsapp && whatsapp.replace(/\D/g, '').length < 7){ ver('Poné tu WhatsApp, así te avisamos cuando empiece'); form.whatsapp.focus(); return false; }
+
+  enviando = true;
+  btn.disabled = true;
+  const txt = btn.querySelector('span');
+  const antes = txt.textContent;
+  txt.textContent = 'RESERVANDO…';
+
+  try{
+    const r = await fetch(CAP_URL + '/rest/v1/rpc/guardar_lead', {
+      method: 'POST', headers: cabeceras(),
+      body: JSON.stringify({ p_datos: Object.assign({ pagina: CAP_SLUG, nombre, email, whatsapp }, deDonde()) })
+    });
+    const d = await r.json().catch(() => null);
+    if(!r.ok || !d || !d.exito) throw new Error((d && d.error) || 'No pudimos guardar tu registro. Probá de nuevo.');
+
+    // Para los anuncios de Meta y para nuestras métricas
+    try{ if(typeof pixelPersona === 'function') pixelPersona(email, nombre); }catch(e){}
+    try{ if(typeof pixel === 'function') pixel('Lead', { content_name: CAP_SLUG, content_category: 'captura' }); }catch(e){}
+    try{ if(typeof anotarEvento === 'function') anotarEvento('clic', { detalle: 'Se registró', referencia: '' }); }catch(e){}
+
+    mostrarGracias(nombre, d.grupo || PAG.grupo_whatsapp || '');
+  }catch(e){
+    ver(e.message || 'No pudimos guardar tu registro. Probá de nuevo.');
+    btn.disabled = false;
+    txt.textContent = antes;
+  }
+  enviando = false;
+  return false;
+}
+
+function mostrarGracias(nombre, grupo){
+  cerrarHoja();
+  const n = nombre.split(/\s+/)[0];
+  document.getElementById('graciasTit').innerHTML =
+    conMarcas(String(PAG.gracias_titulo || '¡Listo, **{nombre}**!').replace(/\{nombre\}/g, n));
+  document.getElementById('graciasTxt').textContent = PAG.gracias_texto || '';
+
+  const a = document.getElementById('graciasGrupo');
+  const conGrupo = /^https:\/\//.test(grupo);
+  if(conGrupo){ a.href = grupo; a.hidden = false; }
+  else { a.hidden = true; }
+  document.getElementById('graciasPie').hidden = !conGrupo;
+
+  document.getElementById('pegado').classList.remove('ver');
+  document.getElementById('gracias').classList.add('ver');
+  document.body.style.overflow = 'hidden';
+  window.scrollTo(0, 0);
+}
+
+function noEsta(){
+  document.body.className = 'tpl-a';
+  document.getElementById('cargando').outerHTML =
+    '<div class="cargando" style="flex-direction:column;gap:18px;letter-spacing:0;font-size:16px;color:rgba(255,245,240,.75);text-align:center;padding:24px">' +
+    '<div class="serif" style="font-size:34px;color:#FFF5F0">Esta página ya no está abierta</div>' +
+    '<a href="/" style="color:#FAC775">Ir a milenacmm.com →</a></div>';
+}
+
+// ═══ ARRANCAR ═══════════════════════════════════════════════════════
+(async function(){
+  if(!CAP_SLUG) return noEsta();
+  try{
+    const r = await fetch(CAP_URL + '/rest/v1/paginas_captura?slug=eq.' + encodeURIComponent(CAP_SLUG) + '&activa=eq.true&select=*&limit=1',
+      { headers: cabeceras() });
+    const filas = r.ok ? await r.json() : [];
+    PAG = filas && filas[0];
+  }catch(e){ PAG = null; }
+
+  if(!PAG) return noEsta();
+
+  document.body.className = PAG.plantilla === 'b' ? 'tpl-b' : 'tpl-a';
+  document.title = String(PAG.titulo || '').replace(/\*\*/g, '') + ' · Milena Machado';
+  if(PAG.plantilla === 'b') document.querySelector('meta[name=theme-color]').setAttribute('content', '#4A0F1E');
+
+  const cont = document.getElementById('pagina');
+  cont.innerHTML = PAG.plantilla === 'b' ? pintarB() : pintarA();
+  document.getElementById('hojaForm').innerHTML = PAG.plantilla === 'b' ? htmlFormulario() : '';
+  document.getElementById('pegadoTxt').textContent = PAG.boton || 'QUIERO MI LUGAR GRATIS';
+  document.getElementById('cargando').remove();
+  cont.hidden = false;
+
+  arrancarReloj();
+
+  // El botón de abajo aparece cuando el formulario (o el botón principal) deja de verse
+  const ancla = document.getElementById('formulario') || document.querySelector('.b-hero .boton');
+  if(ancla && 'IntersectionObserver' in window){
+    new IntersectionObserver(es => {
+      const abierto = document.getElementById('gracias').classList.contains('ver');
+      document.getElementById('pegado').classList.toggle('ver', !es[0].isIntersecting && !abierto);
+    }, { threshold: 0.05 }).observe(ancla);
+  }
+
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') cerrarHoja(); });
+})();
+</script>
+
+<!-- Métricas del panel y Meta Pixel: se cargan después, sin frenar la página -->
+<script src="/supabase-config.js" defer></script>
+</body>
+</html>

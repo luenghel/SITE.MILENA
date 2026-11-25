@@ -1556,6 +1556,50 @@
   }
 
   /* ═══ FORMULARIOS ═══ */
+  /* ═══ PÁGINAS DE CAPTURA ═══ */
+  .cap-num{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+  .cap-num div{padding:9px 6px;border-radius:10px;background:rgba(255,245,240,0.04);text-align:center}
+  .cap-num b{display:block;font-size:19px;font-variant-numeric:tabular-nums}
+  .cap-num small{font-size:9.5px;letter-spacing:.1em;color:rgba(255,245,240,0.5)}
+  .cap-num .verde b{color:#9FE1CB}
+  .cap-num .oro b{color:#FAC775}
+  .cap-letra{font-size:9.5px;letter-spacing:.14em;font-weight:700;padding:4px 8px;border-radius:6px;background:rgba(212,163,86,0.16);color:#FAC775}
+  .cap-par{display:flex;align-items:flex-end;gap:1px;width:100%;flex:1;min-height:0;padding-top:60px}
+  .cap-par i{flex:1;display:block;border-radius:3px 3px 0 0;min-height:2px;background:linear-gradient(180deg,#FAC775,#D4A356)}
+  .cap-par i.verde{background:linear-gradient(180deg,#9FE1CB,#3FA47F)}
+  .cap-fila{display:grid;grid-template-columns:minmax(0,1.4fr) 1fr 150px;gap:10px;align-items:center;padding:9px 0;border-bottom:0.5px solid rgba(255,245,240,0.06);font-size:12.5px}
+  .cap-fila:last-child{border-bottom:none}
+  .cap-fila-nom{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cap-fila-num{text-align:right;font-variant-numeric:tabular-nums;color:rgba(255,245,240,0.7)}
+  .cap-fila-num b{color:#9FE1CB}
+  .cap-lead{display:grid;grid-template-columns:36px minmax(0,1.2fr) minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 4px;border-bottom:0.5px solid rgba(255,245,240,0.07)}
+  .cap-lead.nueva{background:rgba(212,163,86,0.05)}
+  .cap-lead-acc{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .cap-lead-acc .pesq-accion{padding:7px 10px;font-size:11.5px}
+  .cap-plantillas{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+  .cap-plantilla{display:flex;gap:12px;align-items:center;padding:12px;border-radius:13px;cursor:pointer;
+    background:rgba(255,245,240,0.035);border:1px solid rgba(255,245,240,0.12)}
+  .cap-plantilla.on{border-color:#D4A356;background:rgba(212,163,86,0.1)}
+  .cap-plantilla strong{display:block;font-size:13.5px}
+  .cap-plantilla span{font-size:11.5px;color:rgba(255,245,240,0.55);line-height:1.4;display:block;margin-top:2px}
+  .cap-mini{flex-shrink:0;width:54px;height:66px;border-radius:7px;padding:7px 6px;display:flex;flex-direction:column;gap:4px}
+  .cap-mini i{height:3px;width:40%;border-radius:2px;background:#D4A356}
+  .cap-mini b{height:5px;border-radius:2px}
+  .cap-mini u{margin-top:auto;height:10px;border-radius:3px;background:linear-gradient(135deg,#F7CD7C,#DDA63F)}
+  .cap-mini.a{background:#1E0D15;border:1px solid rgba(255,245,240,0.15)}
+  .cap-mini.a b{background:rgba(255,245,240,0.75)}
+  .cap-mini.b{background:#FBF4EC;align-items:center}
+  .cap-mini.b b{background:#2A1118;width:90%}
+  .cap-mini.b u{width:80%}
+  @media (max-width:900px){
+    .cap-lead{grid-template-columns:32px 1fr}
+    .cap-lead > :nth-child(3){display:none}
+    .cap-lead-acc{grid-column:1/-1;justify-content:flex-start}
+    .cap-plantillas{grid-template-columns:1fr}
+    .cap-fila{grid-template-columns:1fr 140px}
+    .cap-fila > :nth-child(2){display:none}
+  }
+
   .frm-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
   .frm-card{padding:18px;border-radius:15px;cursor:pointer;background:rgba(255,245,240,0.035);
     border:0.5px solid rgba(255,245,240,0.1);transition:all .2s}
@@ -2088,6 +2132,11 @@ body{visibility:hidden}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       Métricas
       <span class="sidebar-badge dim" id="metricasCount">0</span>
+    </a>
+    <a href="#" onclick="cambiarTab('captura')" class="sidebar-item" id="nav-captura">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15c-1.5 1.3-2 5-2 5s3.700-.5 5-2c.7-.8.7-2.100-.1-2.900a2.100 2.100 0 0 0-2.900-.1z"/><path d="M12 15l-3-3a22 22 0 0 1 2-4A12.900 12.900 0 0 1 22 2c0 2.700-.8 7.500-6 11a22 22 0 0 1-4 2z"/></svg>
+      Páginas de captura
+      <span class="sidebar-badge dim" id="capturaCount">0</span>
     </a>
     <a href="#" onclick="cambiarTab('seguimiento')" class="sidebar-item" id="nav-seguimiento">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg>
@@ -3849,6 +3898,214 @@ body{visibility:hidden}
         </div>
         <div id="sfClases"></div>
         <div id="sfHist" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ -->
+  <!-- TAB: PÁGINAS DE CAPTURA -->
+  <!-- ============================ -->
+  <div class="tab-content" id="content-captura">
+
+    <div class="pm-cab" style="margin-bottom:14px">
+      <div>
+        <h3 class="chart-title" style="margin-bottom:2px">🚀 Páginas de captura</h3>
+        <p class="chart-subtitle">Páginas de lanzamiento para juntar registros. Cada una con su enlace, sus números y su lista de personas.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-secondary" onclick="nuevaCaptura()">+ Nueva página</button>
+        <button class="btn-secondary" onclick="cargarCaptura()">Actualizar</button>
+      </div>
+    </div>
+
+    <div class="met-filtros">
+      <div class="met-periodos" id="capPeriodos">
+        <button data-d="0" onclick="periodoCap(0)">Hoy</button>
+        <button data-d="7" onclick="periodoCap(7)">7 días</button>
+        <button data-d="30" class="on" onclick="periodoCap(30)">30 días</button>
+        <button data-d="90" onclick="periodoCap(90)">90 días</button>
+        <button data-d="365" onclick="periodoCap(365)">1 año</button>
+      </div>
+    </div>
+
+    <div id="capFalta" class="met-aviso" style="display:none"></div>
+
+    <!-- Las páginas -->
+    <div class="frm-lista" id="capLista"></div>
+
+    <!-- El detalle de la elegida -->
+    <div id="capDetalle" style="display:none">
+      <div class="pm-cab" style="margin:30px 0 16px">
+        <div>
+          <h3 class="chart-title" style="margin-bottom:2px" id="capDetTit">—</h3>
+          <p class="chart-subtitle" id="capDetSub"></p>
+        </div>
+      </div>
+
+      <div class="met-tarjetas" id="capTarjetas"></div>
+
+      <div class="pm-seccion">
+        <div class="pm-cab"><div>
+          <h3 class="chart-title" style="margin-bottom:2px">📈 Día por día</h3>
+          <p class="chart-subtitle">Barra dorada: personas que entraron · barra verde: las que se registraron</p>
+        </div></div>
+        <div class="met-grafico cap-grafico" id="capGrafico"></div>
+      </div>
+
+      <div class="met-dos">
+        <div class="pm-seccion">
+          <div class="pm-cab"><div>
+            <h3 class="chart-title" style="margin-bottom:2px">🔗 De dónde vienen</h3>
+            <p class="chart-subtitle">Entraron → se registraron · % de conversión</p>
+          </div></div>
+          <div id="capOrigen"></div>
+        </div>
+        <div class="pm-seccion">
+          <div class="pm-cab"><div>
+            <h3 class="chart-title" style="margin-bottom:2px">📣 Por anuncio o campaña</h3>
+            <p class="chart-subtitle">Los enlaces con <code>?utm_source=</code> o que vienen de anuncios</p>
+          </div></div>
+          <div id="capCampanas"></div>
+        </div>
+      </div>
+
+      <div class="pm-seccion">
+        <div class="pm-cab">
+          <div>
+            <h3 class="chart-title" style="margin-bottom:2px">👥 Quién se registró</h3>
+            <p class="chart-subtitle" id="capLeadsSub"></p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <input class="form-input met-buscar" id="capBuscar" placeholder="Buscar nombre, email o teléfono" oninput="pintarLeads()">
+            <button class="btn-secondary" onclick="bajarLeads()">⬇ Descargar</button>
+          </div>
+        </div>
+        <div id="capLeads"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EDITAR UNA PÁGINA DE CAPTURA ═══ -->
+  <div class="frm-fondo" id="capFondo" onclick="if(event.target===this)cerrarCaptura()">
+    <div class="frm-modal">
+      <div class="frm-modal-cab">
+        <div>
+          <div class="frm-modal-sub">PÁGINA DE CAPTURA</div>
+          <div class="frm-modal-tit" id="ceTitVista">—</div>
+        </div>
+        <button class="frm-x" onclick="cerrarCaptura()" title="Cerrar">×</button>
+      </div>
+      <div class="frm-modal-cuerpo">
+
+        <span class="form-label">DISEÑO</span>
+        <div class="cap-plantillas">
+          <div class="cap-plantilla" id="cePlA" onclick="elegirPlantilla('a')">
+            <div class="cap-mini a"><i></i><b></b><b></b><u></u></div>
+            <div><strong>A · Directo</strong><span>Oscuro. El formulario está a la vista desde el principio.</span></div>
+          </div>
+          <div class="cap-plantilla" id="cePlB" onclick="elegirPlantilla('b')">
+            <div class="cap-mini b"><i></i><b></b><b></b><u></u></div>
+            <div><strong>B · Evento</strong><span>Claro. Un botón grande que abre el formulario.</span></div>
+          </div>
+        </div>
+
+        <div class="frm-campos" style="margin-top:16px">
+          <label class="frm-campo">
+            <span class="form-label">NOMBRE · SOLO LO VES VOS</span>
+            <input class="form-input" id="ceNombre" placeholder="Clases gratis · diciembre">
+          </label>
+          <label class="frm-campo">
+            <span class="form-label">ENLACE</span>
+            <div class="frm-slug"><span>milenacmm.com/c/</span>
+              <input class="form-input" id="ceSlug" placeholder="clases-gratis" oninput="limpiarSlugCampo(this)"></div>
+          </label>
+
+          <label class="frm-campo ancho">
+            <span class="form-label">LÍNEA CHICA DE ARRIBA</span>
+            <input class="form-input" id="ceEtiqueta" placeholder="CLASES GRATUITAS · 100% ONLINE">
+          </label>
+
+          <label class="frm-campo ancho">
+            <span class="form-label">TÍTULO GRANDE</span>
+            <textarea class="form-input" id="ceTitulo" rows="2" placeholder="Aprendé a **vender todos los días** con tu marca personal"></textarea>
+            <span class="frm-nota"><code>**palabras**</code> salen resaltadas en color. Corto y con una promesa clara es lo que mejor convierte.</span>
+          </label>
+
+          <label class="frm-campo ancho">
+            <span class="form-label">TEXTO DE ABAJO DEL TÍTULO</span>
+            <textarea class="form-input" id="ceSub" rows="2"></textarea>
+          </label>
+
+          <label class="frm-campo">
+            <span class="form-label">FECHA Y HORA DEL EVENTO</span>
+            <input class="form-input" id="ceFecha" type="datetime-local">
+            <span class="frm-nota">Muestra la fecha y la cuenta regresiva. Vacío = no aparecen.</span>
+          </label>
+          <label class="frm-campo">
+            <span class="form-label">DÓNDE</span>
+            <input class="form-input" id="ceLugar" placeholder="Online y en vivo">
+          </label>
+
+          <label class="frm-campo ancho">
+            <span class="form-label">LO QUE SE VAN A LLEVAR · UNO POR RENGLÓN</span>
+            <textarea class="form-input" id="cePuntos" rows="4"></textarea>
+          </label>
+
+          <label class="frm-campo">
+            <span class="form-label">TEXTO DEL BOTÓN</span>
+            <input class="form-input" id="ceBoton" placeholder="QUIERO MI LUGAR GRATIS">
+          </label>
+          <label class="frm-campo">
+            <span class="form-label">TEXTO CHICO BAJO EL BOTÓN</span>
+            <input class="form-input" id="ceNota" placeholder="100% gratis · Sin tarjeta">
+          </label>
+
+          <label class="frm-campo ancho">
+            <span class="form-label">FOTO DE MILENA · ENLACE DE LA IMAGEN · OPCIONAL</span>
+            <input class="form-input" id="ceFoto" placeholder="https://...">
+            <span class="frm-nota">Sin foto, aparece la M dorada.</span>
+          </label>
+          <label class="frm-campo ancho">
+            <span class="form-label">QUIÉN ES MILENA</span>
+            <textarea class="form-input" id="ceBio" rows="3"></textarea>
+          </label>
+
+          <label class="frm-campo ancho">
+            <span class="form-label">GRUPO DE WHATSAPP · APARECE DESPUÉS DE REGISTRARSE</span>
+            <input class="form-input" id="ceGrupo" placeholder="https://chat.whatsapp.com/...">
+          </label>
+          <label class="frm-campo ancho">
+            <span class="form-label">TÍTULO DESPUÉS DE REGISTRARSE</span>
+            <input class="form-input" id="ceGTit" placeholder="¡Listo, **{nombre}**! Ya tenés tu lugar">
+            <span class="frm-nota"><code>{nombre}</code> pone su nombre</span>
+          </label>
+          <label class="frm-campo ancho">
+            <span class="form-label">TEXTO DESPUÉS DE REGISTRARSE</span>
+            <textarea class="form-input" id="ceGTxt" rows="2"></textarea>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">📱 Pedir el WhatsApp</div>
+            <div class="toggle-help">Apagado, solo pide nombre y email (más registros, pero sin teléfono)</div>
+          </div>
+          <div class="toggle-switch" id="ceWa" onclick="this.classList.toggle('on')"></div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">🟢 Página abierta</div>
+            <div class="toggle-help">Apagada, el enlace muestra "esta página ya no está abierta"</div>
+          </div>
+          <div class="toggle-switch" id="ceActiva" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="frm-pie">
+          <button class="frm-peligro" id="ceBorrar" onclick="borrarCaptura()">Borrar página</button>
+          <button class="btn-secondary" id="ceDuplicar" onclick="duplicarCaptura()">Duplicar</button>
+          <a class="btn-secondary" id="ceVer" href="#" target="_blank" rel="noopener" style="text-decoration:none">Ver ↗</a>
+          <button class="cta-gold btn-save" onclick="guardarCaptura()">GUARDAR</button>
+        </div>
       </div>
     </div>
   </div>
@@ -7381,6 +7638,344 @@ body{visibility:hidden}
     cont.innerHTML = html;
   }
 
+  // ═══ PÁGINAS DE CAPTURA ══════════════════════════════════════════
+  let capDias = 30;
+  let capDatos = null;
+  let capElegida = null;
+  let capLeads = [];
+  let capEditando = null;      // id de la que se está editando · null = nueva
+  let capPlantilla = 'a';
+
+  const enlaceCap = p => 'https://milenacmm.com/c/' + p.slug;
+  const pctCap = (leads, personas) => {
+    leads = Number(leads) || 0; personas = Number(personas) || 0;
+    if(!personas) return leads ? '—' : '0%';
+    return Math.min(100, Math.round(1000 * leads / personas) / 10) + '%';
+  };
+
+  function periodoCap(d){
+    capDias = d;
+    document.querySelectorAll('#capPeriodos button').forEach(b => b.classList.toggle('on', Number(b.dataset.d) === d));
+    cargarCaptura();
+  }
+
+  async function cargarCaptura(){
+    const falta = document.getElementById('capFalta');
+    if(!falta) return;
+    const { data, error } = await sb.rpc('captura_panel', { p_dias: capDias });
+    if(error || !data || data.error){
+      const msj = (error && error.message) || (data && data.error) || '';
+      falta.style.display = 'block';
+      falta.innerHTML = /captura_panel|schema cache|does not exist|PGRST202/i.test(msj)
+        ? '<strong>Falta un paso.</strong> Corré el archivo <code>SQL-CAPTURA.sql</code> en Supabase y volvé a tocar Actualizar.'
+        : 'No se pudieron traer las páginas: ' + esc(msj || 'sin respuesta');
+      document.getElementById('capLista').innerHTML = '';
+      document.getElementById('capDetalle').style.display = 'none';
+      return;
+    }
+    falta.style.display = 'none';
+    capDatos = data;
+    const pags = data.paginas || [];
+    const cuenta = document.getElementById('capturaCount');
+    if(cuenta){
+      const nuevos = pags.reduce((s, p) => s + (Number(p.sin_leer) || 0), 0);
+      cuenta.textContent = nuevos || pags.length;
+      cuenta.classList.toggle('dim', !nuevos);
+    }
+    if(!pags.find(p => p.id === capElegida)) capElegida = pags.length ? pags[0].id : null;
+    pintarCapturas();
+    if(capElegida) await verCaptura(capElegida, true);
+    else document.getElementById('capDetalle').style.display = 'none';
+  }
+
+  function pintarCapturas(){
+    const cont = document.getElementById('capLista');
+    const pags = (capDatos && capDatos.paginas) || [];
+    if(!pags.length){
+      cont.innerHTML = '<div class="met-vacio">Todavía no hay páginas de captura.<br>Tocá <strong>+ Nueva página</strong> para crear la primera.</div>';
+      return;
+    }
+    cont.innerHTML = pags.map(p => {
+      const link = enlaceCap(p);
+      return '<div class="frm-card' + (p.id === capElegida ? ' elegido' : '') + '" onclick="verCaptura(\'' + p.id + '\')">' +
+        '<div class="frm-card-cab">' +
+          '<div class="frm-card-nom">' + esc(p.nombre) + '</div>' +
+          '<span class="frm-estado ' + (p.activa ? 'on' : 'off') + '">' + (p.activa ? 'ABIERTA' : 'CERRADA') + '</span>' +
+        '</div>' +
+        '<div class="frm-card-link"><span class="cap-letra">DISEÑO ' + esc(String(p.plantilla || 'a').toUpperCase()) + '</span> &nbsp;' + esc(link.replace('https://', '')) + '</div>' +
+        '<div class="cap-num">' +
+          '<div><b>' + numCorto(p.personas) + '</b><small>ENTRARON</small></div>' +
+          '<div class="verde"><b>' + numCorto(p.leads) + '</b><small>REGISTROS</small></div>' +
+          '<div class="oro"><b>' + pctCap(p.leads, p.personas) + '</b><small>CONVERSIÓN</small></div>' +
+        '</div>' +
+        '<div class="frm-card-num">' + (Number(p.leads_total) || 0) + ' en total' +
+          (Number(p.sin_leer) ? ' · <span class="frm-nuevas">' + p.sin_leer + ' sin ver</span>' : '') + '</div>' +
+        '<div class="frm-card-acc" onclick="event.stopPropagation()">' +
+          '<button class="pesq-accion" onclick="editarCaptura(\'' + p.id + '\')">✏️ Editar</button>' +
+          '<button class="pesq-accion" onclick="copiarEnlaceCap(\'' + p.id + '\')">🔗 Copiar enlace</button>' +
+          '<a class="pesq-accion" href="' + esc(link) + '" target="_blank" rel="noopener">↗ Abrir</a>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function copiarEnlaceCap(id){
+    const p = ((capDatos && capDatos.paginas) || []).find(x => x.id === id);
+    if(!p) return;
+    navigator.clipboard.writeText(enlaceCap(p))
+      .then(() => mostrarToast('✓ Enlace copiado'))
+      .catch(() => mostrarToast('No se pudo copiar', true));
+  }
+
+  // ═══ EL DETALLE DE UNA PÁGINA ════════════════════════════════════
+  async function verCaptura(id, sinPintarLista){
+    capElegida = id;
+    if(!sinPintarLista) pintarCapturas();
+    const p = ((capDatos && capDatos.paginas) || []).find(x => x.id === id);
+    if(!p) return;
+    document.getElementById('capDetalle').style.display = 'block';
+    document.getElementById('capDetTit').textContent = p.nombre;
+    document.getElementById('capDetSub').textContent = enlaceCap(p).replace('https://', '') +
+      ' · ' + (capDias ? 'últimos ' + capDias + ' días' : 'hoy');
+
+    const personas = Number(p.personas) || 0, leads = Number(p.leads) || 0;
+    const t = (lbl, num, pie, cls) => '<div class="met-t"><div class="met-t-lbl">' + lbl + '</div>' +
+      '<div class="met-t-num ' + (cls || '') + '">' + num + '</div><div class="met-t-pie">' + pie + '</div></div>';
+    document.getElementById('capTarjetas').innerHTML =
+      t('PERSONAS QUE ENTRARON', numCorto(personas), 'cada una cuenta una sola vez') +
+      t('VISITAS', numCorto(p.vistas), 'contando las que volvieron') +
+      t('REGISTROS', numCorto(leads), (Number(p.leads_hoy) || 0) + ' hoy · ' + (Number(p.leads_total) || 0) + ' desde siempre', 'verde') +
+      t('CONVERSIÓN', pctCap(leads, personas), 'de cada 100 que entran, cuántas se registran', 'oro');
+
+    const mias = k => ((capDatos[k] || []).filter(x => x.pagina_id === id));
+    pintarSerieCap(mias('serie'));
+    pintarTablaCap('capOrigen', mias('origen'), 'Todavía nadie entró en este período.');
+    pintarTablaCap('capCampanas', mias('campanas').filter(c => c.nombre),
+      'Sin campañas todavía. Aparecen cuando el enlace lleva <code>?utm_source=</code>.');
+
+    const { data, error } = await sb.from('leads_captura').select('*')
+      .eq('pagina_id', id).order('creado_en', { ascending: false }).limit(5000);
+    capLeads = error ? [] : (data || []);
+    pintarLeads();
+  }
+
+  function pintarSerieCap(serie){
+    const cont = document.getElementById('capGrafico');
+    if(!serie.length){ cont.innerHTML = '<div class="met-vacio">Todavía nadie en este período.</div>'; return; }
+    const mapa = {};
+    serie.forEach(s => { mapa[s.dia] = s; });
+    const pad = x => String(x).padStart(2, '0');
+    const dias = Math.max(1, Math.min(capDias || 1, 365));
+    const filas = [];
+    for(let i = dias - 1; i >= 0; i--){
+      const d = new Date(Date.now() - i * 86400000);
+      const k = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+      filas.push({ lbl: d.getDate() + '/' + (d.getMonth() + 1), s: mapa[k] || {} });
+    }
+    const tope = Math.max(...filas.map(f => Math.max(Number(f.s.personas) || 0, Number(f.s.leads) || 0)), 1);
+    const cada = filas.length > 120 ? 30 : filas.length > 60 ? 7 : filas.length > 31 ? 3 : 1;
+    cont.classList.toggle('denso', filas.length > 45);
+    const alto = n => Math.max(n ? 3 : 0, Math.round(100 * n / tope));
+    cont.innerHTML = filas.map((f, i) => {
+      const pe = Number(f.s.personas) || 0, le = Number(f.s.leads) || 0;
+      const lado = i < filas.length * 0.2 ? ' izq' : i > filas.length * 0.8 ? ' der' : '';
+      return '<div class="met-barra' + lado + '">' +
+        '<div class="met-globo">' + f.lbl + '<br><b>' + pe + '</b> entraron<br><b>' + le + '</b> se registraron</div>' +
+        '<div class="cap-par"><i style="height:' + alto(pe) + '%"></i><i class="verde" style="height:' + alto(le) + '%"></i></div>' +
+        '<div class="met-barra-dia">' + (i % cada === 0 ? f.lbl.split('/')[0] : '&nbsp;') + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function pintarTablaCap(idCont, filas, vacio){
+    const cont = document.getElementById(idCont);
+    if(!filas.length){ cont.innerHTML = '<div class="met-vacio">' + vacio + '</div>'; return; }
+    filas = filas.slice().sort((a, b) => (Number(b.leads) - Number(a.leads)) || (Number(b.personas) - Number(a.personas))).slice(0, 12);
+    const tope = Math.max(...filas.map(f => Number(f.personas) || 0), 1);
+    cont.innerHTML = filas.map(f =>
+      '<div class="cap-fila">' +
+        '<div class="cap-fila-nom" title="' + esc(f.nombre || '') + '">' + esc(f.nombre || 'Directo') + '</div>' +
+        '<div class="met-fila-barra" style="width:100%"><div style="width:' + Math.round(100 * (Number(f.personas) || 0) / tope) + '%"></div></div>' +
+        '<div class="cap-fila-num">' + (Number(f.personas) || 0) + ' → <b>' + (Number(f.leads) || 0) + '</b> · ' + pctCap(f.leads, f.personas) + '</div>' +
+      '</div>').join('');
+  }
+
+  // ═══ QUIÉN SE REGISTRÓ ═══════════════════════════════════════════
+  const soloNumeros = t => String(t || '').replace(/\D/g, '');
+  function cuandoCap(iso){
+    const d = new Date(iso);
+    return d.toLocaleDateString('es', { day: 'numeric', month: 'short' }) + ' · ' +
+      d.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function pintarLeads(){
+    const cont = document.getElementById('capLeads');
+    const q = (document.getElementById('capBuscar').value || '').trim().toLowerCase();
+    const lista = !q ? capLeads : capLeads.filter(l =>
+      [l.nombre, l.email, l.whatsapp, l.campana].some(x => String(x || '').toLowerCase().includes(q)));
+    document.getElementById('capLeadsSub').textContent = capLeads.length +
+      (capLeads.length === 1 ? ' persona' : ' personas') + ' desde siempre' + (q ? ' · ' + lista.length + ' con esa búsqueda' : '');
+    if(!lista.length){
+      cont.innerHTML = '<div class="met-vacio">' + (capLeads.length ? 'Nadie con esa búsqueda.' : 'Todavía no se registró nadie.<br>Compartí el enlace y van a ir apareciendo acá.') + '</div>';
+      return;
+    }
+    cont.innerHTML = lista.slice(0, 400).map(l => {
+      const tel = soloNumeros(l.whatsapp);
+      return '<div class="cap-lead' + (l.leida ? '' : ' nueva') + '">' +
+        '<div class="avatar-sm" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(212,163,86,0.18);color:#FAC775;font-weight:600">' +
+          esc((l.nombre || '?').trim().charAt(0).toUpperCase()) + '</div>' +
+        '<div style="min-width:0"><div style="font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(l.nombre) +
+            (l.leida ? '' : ' <span class="frm-nuevas" style="font-size:10px;letter-spacing:.12em">NUEVA</span>') + '</div>' +
+          '<div style="font-size:12px;color:rgba(255,245,240,0.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(l.email) +
+            (l.whatsapp ? ' · ' + esc(l.whatsapp) : '') + '</div></div>' +
+        '<div style="font-size:11.5px;color:rgba(255,245,240,0.5);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
+          cuandoCap(l.creado_en) + '<br>' + esc(l.campana || 'sin campaña') + (l.dispositivo ? ' · ' + esc(l.dispositivo) : '') + '</div>' +
+        '<div class="cap-lead-acc">' +
+          (tel ? '<a class="pesq-accion" href="https://wa.me/' + tel + '" target="_blank" rel="noopener">WhatsApp</a>' : '') +
+          '<a class="pesq-accion" href="mailto:' + esc(l.email) + '">Email</a>' +
+          '<button class="pesq-accion" onclick="marcarLead(\'' + l.id + '\')">' + (l.leida ? 'Marcar nueva' : '✓ Vista') + '</button>' +
+        '</div>' +
+      '</div>';
+    }).join('') + (lista.length > 400 ? '<div class="met-vacio">Se muestran 400. Descargá la lista para verlas todas.</div>' : '');
+  }
+
+  async function marcarLead(id){
+    const l = capLeads.find(x => x.id === id);
+    if(!l) return;
+    const { error } = await sb.from('leads_captura').update({ leida: !l.leida }).eq('id', id);
+    if(error){ mostrarToast('No se pudo guardar', true); return; }
+    l.leida = !l.leida;
+    const p = ((capDatos && capDatos.paginas) || []).find(x => x.id === capElegida);
+    if(p) p.sin_leer = capLeads.filter(x => !x.leida).length;
+    pintarLeads(); pintarCapturas();
+  }
+
+  function bajarLeads(){
+    if(!capLeads.length){ mostrarToast('Todavía no hay nadie para descargar', true); return; }
+    const p = ((capDatos && capDatos.paginas) || []).find(x => x.id === capElegida);
+    // Sin saltos de línea ni fórmulas (por si alguien escribe "=..." en su nombre)
+    const limpio = x => { let t = String(x == null ? '' : x).replace(/[\r\n;]+/g, ' ').trim();
+      if(/^[=+\-@]/.test(t)) t = "'" + t; return t; };
+    const csv = '﻿' + ['Fecha', 'Nombre', 'Email', 'WhatsApp', 'Campaña', 'Vino de', 'Dispositivo'].join(';') + '\n' +
+      capLeads.map(l => [new Date(l.creado_en).toLocaleString('es'), l.nombre, l.email, l.whatsapp, l.campana, l.referencia, l.dispositivo]
+        .map(limpio).join(';')).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'registros-' + ((p && p.slug) || 'captura') + '-' + new Date().toISOString().slice(0, 10) + '.csv';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+
+  // ═══ CREAR Y EDITAR ══════════════════════════════════════════════
+  function elegirPlantilla(x){
+    capPlantilla = x === 'b' ? 'b' : 'a';
+    document.getElementById('cePlA').classList.toggle('on', capPlantilla === 'a');
+    document.getElementById('cePlB').classList.toggle('on', capPlantilla === 'b');
+  }
+  const ceVal = id => document.getElementById(id).value.trim();
+  function fechaParaCampo(iso){
+    if(!iso) return '';
+    const d = new Date(iso), pad = x => String(x).padStart(2, '0');
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  function llenarCaptura(p){
+    const pone = (id, v) => { document.getElementById(id).value = v == null ? '' : v; };
+    pone('ceNombre', p.nombre); pone('ceSlug', p.slug); pone('ceEtiqueta', p.etiqueta);
+    pone('ceTitulo', p.titulo); pone('ceSub', p.subtitulo); pone('ceFecha', fechaParaCampo(p.fecha_evento));
+    pone('ceLugar', p.lugar); pone('cePuntos', (Array.isArray(p.puntos) ? p.puntos : []).join('\n'));
+    pone('ceBoton', p.boton); pone('ceNota', p.nota_boton); pone('ceFoto', p.foto_url); pone('ceBio', p.bio);
+    pone('ceGrupo', p.grupo_whatsapp); pone('ceGTit', p.gracias_titulo); pone('ceGTxt', p.gracias_texto);
+    document.getElementById('ceWa').classList.toggle('on', p.pedir_whatsapp !== false);
+    document.getElementById('ceActiva').classList.toggle('on', p.activa !== false);
+    elegirPlantilla(p.plantilla || 'a');
+  }
+
+  function abrirCaptura(p, esNueva){
+    capEditando = esNueva ? null : p.id;
+    llenarCaptura(p);
+    document.getElementById('ceTitVista').textContent = esNueva ? 'Nueva página' : p.nombre;
+    document.getElementById('ceBorrar').style.display = esNueva ? 'none' : '';
+    document.getElementById('ceDuplicar').style.display = esNueva ? 'none' : '';
+    const ver = document.getElementById('ceVer');
+    ver.style.display = esNueva ? 'none' : '';
+    if(!esNueva) ver.href = enlaceCap(p);
+    document.getElementById('capFondo').classList.add('show');
+  }
+  function cerrarCaptura(){ document.getElementById('capFondo').classList.remove('show'); }
+
+  function nuevaCaptura(){
+    abrirCaptura({ nombre: '', slug: '', plantilla: 'a', activa: true, pedir_whatsapp: true,
+      etiqueta: 'CLASES GRATUITAS · 100% ONLINE', boton: 'QUIERO MI LUGAR GRATIS',
+      nota_boton: '100% gratis · Sin tarjeta', lugar: 'Online y en vivo', puntos: [],
+      gracias_titulo: '¡Listo, **{nombre}**! Ya tenés tu lugar' }, true);
+  }
+  function editarCaptura(id){
+    const p = ((capDatos && capDatos.paginas) || []).find(x => x.id === id);
+    if(p) abrirCaptura(p, false);
+  }
+  function duplicarCaptura(){
+    // Deja todo como está, pero como página nueva: sirve para probar otro diseño u otro título
+    capEditando = null;
+    document.getElementById('ceNombre').value = ceVal('ceNombre') + ' (copia)';
+    document.getElementById('ceSlug').value = hacerSlug(ceVal('ceSlug') + '-2');
+    document.getElementById('ceTitVista').textContent = 'Copia · todavía sin guardar';
+    ['ceBorrar', 'ceDuplicar', 'ceVer'].forEach(i => { document.getElementById(i).style.display = 'none'; });
+    mostrarToast('Es una copia: cambiá lo que quieras y tocá GUARDAR');
+  }
+
+  async function guardarCaptura(){
+    const nombre = ceVal('ceNombre'), titulo = ceVal('ceTitulo');
+    const slug = hacerSlug(ceVal('ceSlug') || nombre);
+    if(!nombre){ mostrarToast('Ponele un nombre a la página', true); return; }
+    if(!slug){ mostrarToast('Falta el enlace', true); return; }
+    if(!titulo){ mostrarToast('Falta el título grande', true); return; }
+    const enlace = (id, que) => {
+      const v = ceVal(id);
+      if(v && !/^https:\/\//i.test(v)){ mostrarToast(que + ' tiene que empezar con https://', true); throw 0; }
+      return v || null;
+    };
+    let foto, grupo;
+    try{ foto = enlace('ceFoto', 'La foto'); grupo = enlace('ceGrupo', 'El grupo'); }catch(e){ return; }
+    const f = ceVal('ceFecha');
+    const fila = {
+      nombre, slug, titulo, plantilla: capPlantilla,
+      etiqueta: ceVal('ceEtiqueta') || null, subtitulo: ceVal('ceSub') || null,
+      fecha_evento: f ? new Date(f).toISOString() : null, lugar: ceVal('ceLugar') || null,
+      puntos: ceVal('cePuntos').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 8),
+      boton: ceVal('ceBoton') || 'QUIERO MI LUGAR GRATIS', nota_boton: ceVal('ceNota') || null,
+      foto_url: foto, bio: ceVal('ceBio') || null, grupo_whatsapp: grupo,
+      gracias_titulo: ceVal('ceGTit') || null, gracias_texto: ceVal('ceGTxt') || null,
+      pedir_whatsapp: document.getElementById('ceWa').classList.contains('on'),
+      activa: document.getElementById('ceActiva').classList.contains('on')
+    };
+    const r = capEditando
+      ? await sb.from('paginas_captura').update(fila).eq('id', capEditando).select('id').maybeSingle()
+      : await sb.from('paginas_captura').insert(fila).select('id').maybeSingle();
+    if(r.error){
+      mostrarToast(/duplicate|unique/i.test(r.error.message) ? 'Ya hay otra página con ese enlace. Cambialo.' : 'No se pudo guardar: ' + r.error.message, true);
+      return;
+    }
+    if(r.data && r.data.id) capElegida = r.data.id;
+    cerrarCaptura();
+    mostrarToast('✓ Página guardada');
+    cargarCaptura();
+  }
+
+  async function borrarCaptura(){
+    if(!capEditando) return;
+    const p = ((capDatos && capDatos.paginas) || []).find(x => x.id === capEditando);
+    const n = (p && Number(p.leads_total)) || 0;
+    if(!confirm('¿Borrar "' + ((p && p.nombre) || 'esta página') + '"?' +
+      (n ? '\n\nSus ' + n + ' registros dejan de verse acá. Descargá la lista antes.' : ''))) return;
+    const { error } = await sb.from('paginas_captura').delete().eq('id', capEditando);
+    if(error){ mostrarToast('No se pudo borrar: ' + error.message, true); return; }
+    capElegida = null;
+    cerrarCaptura();
+    mostrarToast('Página borrada');
+    cargarCaptura();
+  }
+
   function cambiarTab(tab){
     // Cerrar sidebar en móvil
     if (window.innerWidth <= 900) {
@@ -7400,6 +7995,7 @@ body{visibility:hidden}
     if(tab === 'metricas') cargarMetricas();
     if(tab === 'pesquisa') cargarPesquisa();
     if(tab === 'seguimiento') cargarSeguimiento();
+    if(tab === 'captura') cargarCaptura();
   }
 
   // Cuánto se usa cada hashtag, con datos reales
@@ -14139,6 +14735,7 @@ body{visibility:hidden}
       cargarAvisos(),
       leerPixelAdmin().catch(() => {}),
       cargarSeguimiento().catch(() => {}),
+      cargarCaptura().catch(() => {}),
       cargarBonos().catch(() => {}),
       cargarClasesParaAnuncio(),
       cargarHashtags(),

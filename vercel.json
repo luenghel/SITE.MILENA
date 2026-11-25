@@ -84,6 +84,10 @@
     {
       "source": "/f/:slug",
       "destination": "/pesquisa"
+    },
+    {
+      "source": "/c/:slug",
+      "destination": "/captura"
     }
   ],
   "redirects": [
