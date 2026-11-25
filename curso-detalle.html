@@ -624,6 +624,10 @@ async function mostrarTemario(curso, user, compraDeEsta){
   const modulos = rMod.data || [];
   const clases = rCla.data || [];
 
+  // Más abajo se usa con este nombre (antes no existía y la página se rompía
+  // para quien miraba un curso con clases de muestra sin haberlo comprado)
+  const compra = compraDeEsta || null;
+
   // ¿Tiene el curso?
   const esMio = !!(user && compraDeEsta);
 
